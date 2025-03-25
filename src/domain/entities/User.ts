@@ -2,7 +2,7 @@
 
 type Role = "client" | "admin";
 
-interface IUser {
+export interface IUser {
   id: number;
   public_id: string;
   name: string;
