@@ -1,5 +1,4 @@
 {
-  "extends": "@tsconfig/node22/tsconfig.json",
   "$schema": "https://json.schemastore.org/tsconfig",
   "_version": "22.0.0",
 
