@@ -12,7 +12,7 @@ export interface IUser {
   role: Role;
   is_active: boolean;
   created_at: Date;
-  email_verified_at?: Date;
+  email_verified_at?: Date | null;
 }
 
 export class User implements IUser {
@@ -25,7 +25,7 @@ export class User implements IUser {
   public role: Role;
   public is_active: boolean;
   public created_at: Date;
-  public email_verified_at?: Date;
+  public email_verified_at?: Date | null;
 
   constructor({
     id,
@@ -37,7 +37,6 @@ export class User implements IUser {
     role,
     is_active,
     created_at,
-    email_verified_at,
   }: IUser) {
     this.id = id;
     this.public_id = public_id;
@@ -48,6 +47,6 @@ export class User implements IUser {
     this.role = role;
     this.is_active = is_active;
     this.created_at = created_at;
-    this.email_verified_at = email_verified_at;
+    this.email_verified_at = null;
   }
 }
