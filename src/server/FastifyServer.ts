@@ -1,10 +1,14 @@
 import fastify, { FastifyInstance } from "fastify";
-import { ServerAdapter } from "./ServerAdapter";
+import { ServerAdapter } from "../adapters/ServerAdapter";
 
 class FastifyServer implements ServerAdapter {
-  app: FastifyInstance;
+ private app!: FastifyInstance;
 
   constructor() {
+    this.init();
+  }
+
+  private async init() {
     this.app = fastify({ logger: true });
   }
 

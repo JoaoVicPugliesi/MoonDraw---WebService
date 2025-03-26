@@ -4,7 +4,7 @@
   "description": "WebService for our e-commerce page",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/application.ts"
   },
   "keywords": [],
   "author": "",

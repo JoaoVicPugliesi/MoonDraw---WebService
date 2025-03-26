@@ -1,6 +1,6 @@
 import { ServerAdapter } from "./adapters/ServerAdapter";
 import { configDotenv } from "dotenv";
-import { app } from "./adapters/FastifyServer";
+import { app } from "./server/FastifyServer";
 
 configDotenv();
 
