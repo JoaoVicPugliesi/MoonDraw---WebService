@@ -9,7 +9,7 @@ export class ICreateUserUseCase {
     private readonly iMailProvider: IMailProvider
   ) {}
 
-  async execute(DTO: ICreateUserDTO): Promise<boolean | void> {
+  async execute(DTO: ICreateUserDTO): Promise<boolean | User> {
     const isUser: boolean = await this.iCreateUserRepo.findUser(DTO.email);
 
     if (isUser) {
@@ -29,5 +29,7 @@ export class ICreateUserUseCase {
         text: 'blabla',
         body: '<button>Confirm Email</button>'
     });
+
+    return user;
   }
 }
