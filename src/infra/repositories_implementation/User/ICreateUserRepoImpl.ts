@@ -3,6 +3,7 @@ import { ICreateUserDTO } from "../../../application/useCases/User/CreateUser/IC
 import { User } from "../../../domain/entities/User";
 import { ICreateUserRepo } from "../../../domain/repositories/User/ICreateUserRepo";
 import { prisma } from "../../db/Prisma";
+import { IPasswordService } from "../../../domain/services/IPasswordService";
 
 export class ICreateUserRepoImpl implements ICreateUserRepo {
   async findUser<T>(param: T): Promise<boolean> {
@@ -19,19 +20,18 @@ export class ICreateUserRepoImpl implements ICreateUserRepo {
     return false;
   }
 
-  async save({
-    name,
-    surname,
-    email,
-    password,
-  }: ICreateUserDTO): Promise<User> {
+  async save(
+    { name, surname, email, password }: ICreateUserDTO,
+    iPasswordService: IPasswordService
+  ): Promise<User> {
+    const hash: string = await iPasswordService.hash(password);
     const user: User = await prisma.user.create({
       data: {
         public_id: randomUUID(),
         name: name,
         surname: surname,
         email: email,
-        password: password,
+        password: hash,
       },
     });
 

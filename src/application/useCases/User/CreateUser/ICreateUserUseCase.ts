@@ -1,12 +1,14 @@
 import { User } from "../../../../domain/entities/User";
 import { IMailProvider } from "../../../../domain/providers/repositories/Mail/IMailProvider";
 import { ICreateUserRepo } from "../../../../domain/repositories/User/ICreateUserRepo";
+import { IPasswordService } from "../../../../domain/services/IPasswordService";
 import { ICreateUserDTO } from "./ICreateUserDTO";
 
 export class ICreateUserUseCase {
   constructor(
     private readonly iCreateUserRepo: ICreateUserRepo,
-    private readonly iMailProvider: IMailProvider
+    private readonly iMailProvider: IMailProvider,
+    private readonly iPasswordService: IPasswordService
   ) {}
 
   async execute(DTO: ICreateUserDTO): Promise<boolean | User> {
@@ -16,7 +18,7 @@ export class ICreateUserUseCase {
       return false;
     }
 
-    const user: User = await this.iCreateUserRepo.save(DTO);
+    const user: User = await this.iCreateUserRepo.save(DTO, this.iPasswordService);
 
     await this.iMailProvider.sendMail({
         to: {
