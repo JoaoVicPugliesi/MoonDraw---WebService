@@ -1,27 +1,37 @@
-import { app } from './app';
-import dotenv from 'dotenv';
+import { ServerAdapter } from "./adapters/ServerAdapter";
+import { configDotenv } from "dotenv";
+import { app } from "./adapters/FastifyServer";
 
-dotenv.config();
+configDotenv();
 
-const PORT: number = parseInt(process.env.PORT as string) || 5000;
-const HOST: string = process.env.HOST as string || '127.0.0.1';
+const PORT: number = parseInt(process.env.PORT as string) ?? 5000;
+const HOST: string = process.env.HOST ?? "127.0.0.1";
 
-async function server(): Promise<void> {
+class Application {
+  app: ServerAdapter;
+  port: number;
+  host: string;
+
+  constructor(app: ServerAdapter) {
+    this.app = app;
+    this.port = PORT;
+    this.host = HOST;
+  }
+
+  async server() {
     try {
-        await app.listen({
-            port: PORT,
-            host: HOST
-        });
+      await this.app.listen({
+        port: this.port,
+        host: this.host,
+      });
 
-        app.log.info(`🚀 server is running on http://${HOST}:${PORT}`);
-    } catch (err) {
-        app.log.error(err);
+      this.app.log.info(`🚀 server is running on http://${this.host}:${this.port}`);
+    } catch(error) {
+        this.app.log.error(error as Error);
         process.exit(1);
     }
+  }
 }
 
-server();
-
-app.get('/', (req, res) => {
-    res.status(200).send({ message: 'Hello World' });
-});
+const application = new Application(app);
+application.server();
