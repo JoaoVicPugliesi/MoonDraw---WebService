@@ -1,18 +1,18 @@
-import { IPasswordServiceImpl } from "../../../../infra/services_implementation/IPasswordServiceImpl";
 import { ICreateUserRepoImpl } from "../../../../infra/repositories_implementation/User/ICreateUserRepoImpl";
 import { IMailProviderImpl } from "./../../../../infra/providers_implementation/Mail/IMailProviderImplementation";
+import { IBCryptServiceImpl } from "../../../../infra/services_implementation/IBCryptServiceImpl";
 import { ICreateUserUseCase } from "./ICreateUserUseCase";
 import { ICreateUserController } from "./ICreateUserController";
 
-const iPasswordService: IPasswordServiceImpl = new IPasswordServiceImpl();
-const iCreateUserRepo: ICreateUserRepoImpl = new ICreateUserRepoImpl();
-const iMailProvider: IMailProviderImpl = new IMailProviderImpl();
-const iCreateUserUseCase: ICreateUserUseCase = new ICreateUserUseCase(
+const iBCryptService = new IBCryptServiceImpl();
+const iCreateUserRepo = new ICreateUserRepoImpl();
+const iMailProvider = new IMailProviderImpl();
+const iCreateUserUseCase = new ICreateUserUseCase(
   iCreateUserRepo,
   iMailProvider,
-  iPasswordService
+  iBCryptService
 );
-const iCreateUserController: ICreateUserController = new ICreateUserController(
+const iCreateUserController = new ICreateUserController(
   iCreateUserUseCase
 );
 

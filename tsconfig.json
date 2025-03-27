@@ -1,15 +1,21 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "_version": "22.0.0",
-
   "compilerOptions": {
-    "lib": ["es2023"],
-    "module": "nodenext",
-    "target": "es2022",
+    "lib": ["ES2023"],
+    "module": "NodeNext",
+    "target": "ES2022",
 
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node16"
+    "moduleResolution": "NodeNext",
+    "isolatedModules": true,
+
+    "baseUrl": "./src",
+    "paths": {
+      "@application/*": ["application/*"],
+      "@domain/*": ["domain/*"],
+      "@infra/*": ["infra/*"]
+    }
   }
 }

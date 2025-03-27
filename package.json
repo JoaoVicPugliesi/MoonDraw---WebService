@@ -4,14 +4,19 @@
   "description": "WebService for our e-commerce page",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/application.ts"
+    "dev": "tsx watch src/application.ts",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.13.13",
+    "jest": "^29.7.0",
     "prisma": "^6.5.0",
+    "ts-jest": "^29.3.0",
+    "ts-node": "^10.9.2",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2"
   },
