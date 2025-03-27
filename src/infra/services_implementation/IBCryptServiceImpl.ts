@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
-import { IPasswordService } from "../../domain/services/IPasswordService";
+import { IBCryptService } from "../../domain/services/IBCryptService";
 
-export class IPasswordServiceImpl implements IPasswordService {
+export class IBCryptServiceImpl implements IBCryptService {
 
     private readonly salts: number = 10;
 

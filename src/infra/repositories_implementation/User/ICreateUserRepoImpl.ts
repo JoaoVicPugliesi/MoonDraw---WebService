@@ -3,7 +3,7 @@ import { ICreateUserDTO } from "../../../application/useCases/User/CreateUser/IC
 import { User } from "../../../domain/entities/User";
 import { ICreateUserRepo } from "../../../domain/repositories/User/ICreateUserRepo";
 import { prisma } from "../../db/Prisma";
-import { IPasswordService } from "../../../domain/services/IPasswordService";
+import { IPasswordService } from "../../../domain/services/IBCryptService";
 
 export class ICreateUserRepoImpl implements ICreateUserRepo {
   async findUser<T>(param: T): Promise<boolean> {
