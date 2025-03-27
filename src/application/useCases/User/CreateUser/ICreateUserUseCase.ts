@@ -18,18 +18,21 @@ export class ICreateUserUseCase {
       return false;
     }
 
-    const user: User = await this.iCreateUserRepo.save(DTO, this.iPasswordService);
+    const user: User = await this.iCreateUserRepo.save(
+      DTO,
+      this.iPasswordService
+    );
 
     await this.iMailProvider.sendMail({
-        to: {
-            email: user.email,
-        },
-        from: {
-            email: 'ecommerce@gmail.com'
-        },
-        subject: 'Confirm Email',
-        text: 'blabla',
-        body: '<button>Confirm Email</button>'
+      to: {
+        email: user.email,
+      },
+      from: {
+        email: "ecommerce@gmail.com",
+      },
+      subject: "Confirm Email",
+      text: "blabla",
+      body: "<button>Confirm Email</button>",
     });
 
     return user;

@@ -1,18 +1,18 @@
-type IMessage = {
+type IAddress = {
   email: string;
 };
 
 interface IMail {
-  to: IMessage;
-  from: IMessage;
+  to: IAddress;
+  from: IAddress;
   subject: string;
   text: string;
   body: string;
 }
 
 export class Mail implements IMail {
-  to: IMessage;
-  from: IMessage;
+  to: IAddress;
+  from: IAddress;
   subject: string;
   text: string;
   body: string;
