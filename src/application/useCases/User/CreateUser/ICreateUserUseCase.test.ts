@@ -53,4 +53,24 @@ describe("Create User UseCase", () => {
     });
   });
 
+  it("Should fail for the reason of email must be unique and because of this user already exists", async () => {
+    // Arrange
+    const iCreateUserRepoInMemory = new ICreateUserRepoImplInMemory(users);
+    const sut = new ICreateUserUseCase(
+      iCreateUserRepoInMemory,
+      iMailProvider,
+      iBCryptService
+    );
+
+    // Act
+    const created = await sut.execute({
+      name: "João",
+      surname: "Pugliesi",
+      email: "mrlanguages62@gmail.com",
+      password: "Mrlanguages1234##",
+    });
+
+    // Assert
+    expect(created).toBeFalsy();
+  });
 });
