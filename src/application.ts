@@ -37,5 +37,6 @@ class Application {
   }
 }
 
+app.run();
 const application = new Application(app);
 application.server();

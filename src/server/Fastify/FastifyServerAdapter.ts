@@ -1,29 +1,25 @@
 import fastify, {
   FastifyInstance,
-  FastifyReply,
-  FastifyRequest,
 } from "fastify";
 import { ServerAdapter } from "../../adapters/ServerAdapter";
-import { createUser } from "../../application/useCases/User/CreateUser";
-import { FastifyRequestResponseAdapter } from "./FastifyRequestResponseAdapter";
+import { Post } from "routes/post";
 
 class FastifyServerAdapter implements ServerAdapter {
   private app!: FastifyInstance;
+  private post!: Post;
 
-  constructor() {
+  run() {
     this.init();
   }
 
   private async init() {
     this.app = fastify({ logger: true });
+    this.post = new Post(this.app);
     this.setupRoutes();
   }
 
   private async setupRoutes() {
-    this.app.post("/user", async (req: FastifyRequest, res: FastifyReply) => {
-      const fastify = new FastifyRequestResponseAdapter(req, res);
-      await createUser.handle(fastify);
-    });
+    this.post.setupRoutes();
   }
 
   async listen(options: { port: number; host: string }): Promise<void> {
@@ -36,3 +32,4 @@ class FastifyServerAdapter implements ServerAdapter {
 }
 
 export const app = new FastifyServerAdapter();
+
