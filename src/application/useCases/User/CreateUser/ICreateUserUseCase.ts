@@ -1,7 +1,7 @@
 import { User } from "../../../../domain/entities/User";
-import { IMailProvider } from "../../../../domain/providers/repositories/Mail/IMailProvider";
-import { ICreateUserRepo } from "../../../../domain/repositories/User/ICreateUserRepo";
 import { IBCryptService } from "../../../../domain/services/IBCryptService";
+import { ICreateUserRepo } from "../../../../domain/repositories/User/ICreateUserRepo";
+import { IMailProvider } from "../../../../domain/providers/repositories/Mail/IMailProvider";
 import { ICreateUserDTO } from "./ICreateUserDTO";
 
 export class ICreateUserUseCase {
