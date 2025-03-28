@@ -1,12 +1,12 @@
 import bcrypt from 'bcrypt';
-import { IBCryptService } from "../../domain/services/IBCryptService";
+import { IHashService } from "../../domain/services/IHashService";
 
-export class IBCryptServiceImpl implements IBCryptService {
+export class IHashServiceImpl implements IHashService {
 
-    private readonly salts: number = 10;
+    private readonly salt: number = 10;
 
     async hash(plainPassword: string): Promise<string> {
-        const hash: string = await bcrypt.hash(plainPassword, this.salts);
+        const hash: string = await bcrypt.hash(plainPassword, this.salt);
         return hash;
     }
 

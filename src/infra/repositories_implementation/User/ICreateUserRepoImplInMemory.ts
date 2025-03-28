@@ -2,7 +2,7 @@ import { User } from "../../../domain/entities/User";
 import { randomUUID } from "crypto";
 import { ICreateUserDTO } from "../../../application/useCases/User/CreateUser/ICreateUserDTO";
 import { ICreateUserRepo } from "../../../domain/repositories/User/ICreateUserRepo";
-import { IBCryptService } from "../../../domain/services/IBCryptService";
+import { IHashService } from "../../../domain/services/IHashService";
 
 export class ICreateUserRepoImplInMemory implements ICreateUserRepo {
   constructor(private readonly users: User[]) {}
@@ -23,9 +23,9 @@ export class ICreateUserRepoImplInMemory implements ICreateUserRepo {
 
   async save(
     { name, surname, email, password }: ICreateUserDTO,
-    iBCryptService: IBCryptService
+    iHashService: IHashService
   ): Promise<User> {
-    const hash: string = await iBCryptService.hash(password);
+    const hash: string = await iHashService.hash(password);
     return new Promise((resolve, reject) => {
       const user: User = {
         id: this.users.length + 1,

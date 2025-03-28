@@ -4,21 +4,21 @@ import { ICreateUserUseCase } from "./ICreateUserUseCase";
 
 // Mocks
 const iMailProvider = { sendMail: jest.fn() };
-const iBCryptService = {
+const iHashService = {
   hash: jest.fn().mockResolvedValue("hashed_password"),
   compare: jest.fn(),
 };
 
-describe("Create User UseCase", () => {
+describe("ICreateUserUseCase", () => {
   const users: User[] = [];
 
-  it("Should create a user successfully", async () => {
+  it("must create a user successfully", async () => {
     // Arrange
     const iCreateUserRepoInMemory = new ICreateUserRepoImplInMemory(users);
     const sut = new ICreateUserUseCase(
       iCreateUserRepoInMemory,
       iMailProvider,
-      iBCryptService
+      iHashService
     );
 
     // Act
@@ -38,7 +38,7 @@ describe("Create User UseCase", () => {
     expect(created.email).toBe("mrlanguages62@gmail.com");
     expect(created.password).toBe("hashed_password");
     expect(created.is_active).toBe(false);
-    expect(created.created_at).not.toBe(null);
+    expect(created.created_at).toBeInstanceOf(Date);
     expect(created.email_verified_at).toBe(null);
     expect(iMailProvider.sendMail).toHaveBeenCalledWith({
       to: {
@@ -53,13 +53,13 @@ describe("Create User UseCase", () => {
     });
   });
 
-  it("Should fail for the reason of email must be unique and because of this user already exists", async () => {
+  it("must fail for the reason email should be unique and because of this user already exists", async () => {
     // Arrange
     const iCreateUserRepoInMemory = new ICreateUserRepoImplInMemory(users);
     const sut = new ICreateUserUseCase(
       iCreateUserRepoInMemory,
       iMailProvider,
-      iBCryptService
+      iHashService
     );
 
     // Act

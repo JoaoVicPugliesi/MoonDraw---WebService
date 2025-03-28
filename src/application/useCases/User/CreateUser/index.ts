@@ -1,16 +1,16 @@
 import { ICreateUserRepoImpl } from "../../../../infra/repositories_implementation/User/ICreateUserRepoImpl";
 import { IMailProviderImpl } from "./../../../../infra/providers_implementation/Mail/IMailProviderImplementation";
-import { IBCryptServiceImpl } from "../../../../infra/services_implementation/IBCryptServiceImpl";
+import { IHashServiceImpl } from "../../../../infra/services_implementation/IHashServiceImpl";
 import { ICreateUserUseCase } from "./ICreateUserUseCase";
 import { ICreateUserController } from "./ICreateUserController";
 
-const iBCryptService = new IBCryptServiceImpl();
 const iCreateUserRepo = new ICreateUserRepoImpl();
 const iMailProvider = new IMailProviderImpl();
+const iHashService = new IHashServiceImpl();
 const iCreateUserUseCase = new ICreateUserUseCase(
   iCreateUserRepo,
   iMailProvider,
-  iBCryptService
+  iHashService
 );
 const iCreateUserController = new ICreateUserController(
   iCreateUserUseCase
