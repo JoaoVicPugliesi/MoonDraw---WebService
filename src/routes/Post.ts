@@ -6,7 +6,7 @@ export class Post {
   constructor(private readonly app: FastifyInstance) {}
 
   setupRoutes() {
-    this.app.post("/users", async (req: FastifyRequest, res: FastifyReply) => {
+    this.app.post("/api/users/register", async (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
       await register.handle(adapter);
     });
