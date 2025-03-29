@@ -1,9 +1,9 @@
 import fastify, {
   FastifyInstance,
-} from "fastify";
-import fastifyCors from "@fastify/cors";
-import { ServerAdapter } from "../../adapters/ServerAdapter";
-import { Post } from "routes/Post";
+} from 'fastify';
+import fastifyCors from '@fastify/cors';
+import { ServerAdapter } from '../../adapters/ServerAdapter';
+import { Post } from 'routes/Post';
 
 class FastifyServerAdapter implements ServerAdapter {
   private app!: FastifyInstance;

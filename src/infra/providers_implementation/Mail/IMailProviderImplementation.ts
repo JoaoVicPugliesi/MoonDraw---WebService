@@ -1,7 +1,7 @@
-import nodemailer from "nodemailer";
-import { Mail } from "../../../domain/providers/externals/Mail";
-import { IMailProvider } from "../../../domain/providers/repositories/Mail/IMailProvider";
-import { configDotenv } from "dotenv";
+import nodemailer from 'nodemailer';
+import { Mail } from '../../../domain/providers/externals/Mail';
+import { IMailProvider } from '../../../domain/providers/repositories/Mail/IMailProvider';
+import { configDotenv } from 'dotenv';
 
 configDotenv();
 
@@ -17,7 +17,7 @@ export class IMailProviderImpl implements IMailProvider {
     this.user = USER;
     this.pass = PASS;
     this.transporter = nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
+      host: 'sandbox.smtp.mailtrap.io',
       port: 2525,
       auth: {
         user: this.user,

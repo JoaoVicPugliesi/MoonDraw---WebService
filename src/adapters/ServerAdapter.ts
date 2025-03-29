@@ -1,5 +1,5 @@
 export interface ServerAdapter {
-  register(x: any, options: {
+  register(x: any, options?: {
     origin: string | string[],
     methods: string | string[],
     allowedHeaders: string | string[]

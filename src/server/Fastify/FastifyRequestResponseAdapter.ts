@@ -1,5 +1,5 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import { RequestResponseAdapter } from "../../adapters/ServerAdapter";
+import { FastifyReply, FastifyRequest } from 'fastify';
+import { RequestResponseAdapter } from '../../adapters/ServerAdapter';
 
 export class FastifyRequestResponseAdapter implements RequestResponseAdapter {
   constructor(

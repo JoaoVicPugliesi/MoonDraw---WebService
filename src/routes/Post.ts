@@ -1,4 +1,4 @@
-import { createUser } from "@application/useCases/User/CreateUser";
+import { register } from "@application/useCases/User/Register";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { FastifyRequestResponseAdapter } from "server/Fastify/FastifyRequestResponseAdapter";
 
@@ -8,7 +8,7 @@ export class Post {
   setupRoutes() {
     this.app.post("/users", async (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
-      await createUser.handle(adapter);
+      await register.handle(adapter);
     });
   }
 }

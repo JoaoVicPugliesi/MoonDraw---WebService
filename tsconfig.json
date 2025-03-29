@@ -13,9 +13,13 @@
 
     "baseUrl": "./src",
     "paths": {
+      "@adapters/*": ["adapters/*"],
       "@application/*": ["application/*"],
       "@domain/*": ["domain/*"],
-      "@infra/*": ["infra/*"]
+      "@infra/*": ["infra/*"],
+      "@routes/*": ["routes/*"],
+      "@server/*": ["server/*"],
+      "@tests/*": ["tests/*"],
     }
   }
 }

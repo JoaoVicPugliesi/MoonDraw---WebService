@@ -1,10 +1,10 @@
-import { User } from "../../../domain/entities/User";
-import { randomUUID } from "crypto";
-import { ICreateUserDTO } from "../../../application/useCases/User/CreateUser/ICreateUserDTO";
-import { ICreateUserRepo } from "../../../domain/repositories/User/ICreateUserRepo";
-import { IHashService } from "../../../domain/services/IHashService";
+import { User } from '@domain/entities/User';
+import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
+import { IRegisterRepo } from '@domain/repositories/User/IRegisterRepo';
+import { IHashService } from '@domain/services/IHashService';
+import { randomUUID } from 'crypto';
 
-export class ICreateUserRepoImplInMemory implements ICreateUserRepo {
+export class IRegisterRepoImplInMemory implements IRegisterRepo {
   constructor(private readonly users: User[]) {}
 
   async findUser<T>(param: T): Promise<boolean> {
@@ -22,7 +22,7 @@ export class ICreateUserRepoImplInMemory implements ICreateUserRepo {
   }
 
   async save(
-    { name, surname, email, password }: ICreateUserDTO,
+    { name, surname, email, password }: IRegisterDTO,
     iHashService: IHashService
   ): Promise<User> {
     const hash: string = await iHashService.hash(password);

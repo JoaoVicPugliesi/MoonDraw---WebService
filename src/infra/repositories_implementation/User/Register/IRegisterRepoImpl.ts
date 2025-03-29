@@ -1,11 +1,11 @@
-import { randomUUID } from "crypto";
-import { ICreateUserDTO } from "../../../application/useCases/User/CreateUser/ICreateUserDTO";
-import { User } from "../../../domain/entities/User";
-import { ICreateUserRepo } from "../../../domain/repositories/User/ICreateUserRepo";
-import { prisma } from "../../db/Prisma";
-import { IHashService } from "../../../domain/services/IHashService";
+import { User } from './../../../../domain/entities/User';
+import { prisma } from './../../../db/Prisma';
+import { randomUUID } from 'crypto';
+import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
+import { IRegisterRepo } from '@domain/repositories/User/IRegisterRepo';
+import { IHashService } from '@domain/services/IHashService';
 
-export class ICreateUserRepoImpl implements ICreateUserRepo {
+export class IRegisterRepoImpl implements IRegisterRepo {
   async findUser<T>(param: T): Promise<boolean> {
     const isUser = await prisma.user.findUnique({
       where: {
@@ -21,7 +21,7 @@ export class ICreateUserRepoImpl implements ICreateUserRepo {
   }
 
   async save(
-    { name, surname, email, password }: ICreateUserDTO,
+    { name, surname, email, password }: IRegisterDTO,
     iHashService: IHashService
   ): Promise<User> {
     const hash: string = await iHashService.hash(password);
