@@ -4,10 +4,12 @@ import fastify, {
 import fastifyCors from '@fastify/cors';
 import { ServerAdapter } from '../../adapters/ServerAdapter';
 import { Post } from 'routes/Post';
+import { Put } from '@routes/Put';
 
 class FastifyServerAdapter implements ServerAdapter {
   private app!: FastifyInstance;
   private post!: Post;
+  private put!: Put;
 
   run() {
     this.init();
@@ -21,11 +23,13 @@ class FastifyServerAdapter implements ServerAdapter {
       allowedHeaders: 'Content-Type'
     });
     this.post = new Post(this.app);
+    this.put = new Put(this.app);
     this.setupRoutes();
   }
 
   private async setupRoutes() {
     this.post.setupRoutes();
+    this.put.setupRoutes()
   }
 
   async register(x: any, options: { origin: string | string[]; methods: string | string[]; allowedHeaders: string | string[]; }): Promise<void> {
