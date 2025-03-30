@@ -10,9 +10,9 @@ import {
   InvalidUserNotFoundError,
   InvalidPasswordIsNotEqualError,
 } from '@application/handlers/User/ILoginHandlers';
-import { configDotenv } from 'dotenv';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+import { configDotenv } from 'dotenv';
 configDotenv();
 
 export class ILoginUseCase {

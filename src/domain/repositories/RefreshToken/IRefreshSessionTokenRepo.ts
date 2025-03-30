@@ -1,5 +1,5 @@
 import { RefreshToken } from "@prisma/client";
 
-export interface IRefreshTokenRepo {
+export interface IRefreshSessionTokenRepo {
     findRefreshToken<T>(param: T): Promise<RefreshToken | null>;
 }
