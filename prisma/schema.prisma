@@ -19,16 +19,27 @@ enum Role {
 }
 
 model User {
-  id                Int       @default(autoincrement())
-  public_id         String    @id
+  id                Int           @default(autoincrement())
+  public_id         String        @id
   name              String
   surname           String
-  email             String    @unique
+  email             String        @unique
   password          String
-  role              Role      @default(client)
-  is_active         Boolean   @default(false)
-  created_at        DateTime  @default(now())
+  role              Role          @default(client)
+  is_active         Boolean       @default(false)
+  created_at        DateTime      @default(now())
   email_verified_at DateTime?
+  refreshToken      RefreshToken?
 
   @@map("users")
+}
+
+model RefreshToken {
+  id         Int    @default(autoincrement())
+  public_id  String @id
+  expires_in Int
+  user       User   @relation(fields: [user_id], references: [public_id])
+  user_id    String @unique
+
+  @@map("refresh_token")
 }
