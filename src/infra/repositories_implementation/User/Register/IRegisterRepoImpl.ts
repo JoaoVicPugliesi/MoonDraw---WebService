@@ -20,7 +20,7 @@ export class IRegisterRepoImpl implements IRegisterRepo {
     return false;
   }
 
-  async save(
+  async saveUser(
     { name, surname, email, password }: IRegisterDTO,
     iHashService: IHashService
   ): Promise<User> {

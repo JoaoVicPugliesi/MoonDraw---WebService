@@ -4,6 +4,6 @@ import { User } from '../../entities/User';
 
 export interface IRegisterRepo {
     findUser<T>(param: T): Promise<boolean>;
-    save(DTO: IRegisterDTO, iBcryptService: IHashService): Promise<User>; 
+    saveUser(DTO: IRegisterDTO, iBcryptService: IHashService): Promise<User>; 
 }
 

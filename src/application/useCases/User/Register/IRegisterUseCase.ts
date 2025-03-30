@@ -13,12 +13,12 @@ export class IRegisterUseCase {
     private readonly iHashService: IHashService
   ) {}
 
-  async execute(DTO: IRegisterDTO): Promise<object | User> {
+  async execute(DTO: IRegisterDTO): Promise<InvalidUserConflictError | User> {
     const isUser: boolean = await this.iRegisterRepo.findUser(DTO.email);
 
     if (isUser) return new InvalidUserConflictError();
 
-    const user: User = await this.iRegisterRepo.save(
+    const user: User = await this.iRegisterRepo.saveUser(
       DTO,
       this.iHashService
     );

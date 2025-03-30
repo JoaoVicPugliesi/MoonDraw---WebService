@@ -21,7 +21,7 @@ export class IRegisterRepoImplInMemory implements IRegisterRepo {
     });
   }
 
-  async save(
+  async saveUser(
     { name, surname, email, password }: IRegisterDTO,
     iHashService: IHashService
   ): Promise<User> {

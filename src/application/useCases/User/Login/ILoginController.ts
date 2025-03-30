@@ -7,6 +7,7 @@ import {
   InvalidUserNotFoundError,
   InvalidPasswordIsNotEqualError
 } from '@application/handlers/User/ILoginHandlers';
+import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
 
 export class ILoginController {
 
@@ -22,12 +23,14 @@ export class ILoginController {
     try {
       const DTO: ILoginDTO = schema.parse(adapter.req.body);
 
-      const logged: object = await this.iLoginUseCase.execute(DTO);
+      const logged: InvalidUserNotFoundError | InvalidPasswordIsNotEqualError | object = await this.iLoginUseCase.execute(DTO);
 
       if (logged instanceof InvalidUserNotFoundError)
         return adapter.res.status(404).send({ message: 'User or Password incorrect' });
       if (logged instanceof InvalidPasswordIsNotEqualError)
         return adapter.res.status(401).send({ message: 'Non authorized' });
+      if (logged instanceof InvalidGenerateRefreshToken)
+        return adapter.res.status(501).send({ message: 'Failed to generate refresh token' });
 
       return adapter.res.status(200).send({ current_user: logged });
     } catch (error) {

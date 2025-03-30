@@ -18,7 +18,7 @@ export class IConfirmMailController {
 
     try {
       const DTO: IConfirmMailDTO = schema.parse(adapter.req.body);
-      const confirmed: object | number = await this.iConfirmMailUseCase.execute(
+      const confirmed: InvalidUserNotFoundError | number = await this.iConfirmMailUseCase.execute(
         DTO
       );
 

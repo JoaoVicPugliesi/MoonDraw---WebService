@@ -19,7 +19,7 @@ export class IRegisterController {
 
     try {
       const DTO: IRegisterDTO = schema.parse(adapter.req.body);
-      const registered: object | User =
+      const registered: InvalidUserConflictError | User =
         await this.iRegisterUseCase.execute(DTO);
 
       if (registered instanceof InvalidUserConflictError) {
