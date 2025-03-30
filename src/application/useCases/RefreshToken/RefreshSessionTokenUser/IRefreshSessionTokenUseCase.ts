@@ -34,13 +34,13 @@ export class IRefreshSessionTokenUseCase {
             },
             secret_key: this.secret_key,
             options: {
-                expiresIn: '30m'
+                expiresIn: '20s'
             }
         });
 
         if(refreshTokenExpired) {
-            await this.iRefreshSessionTokenRepo.deleteRelatedRefreshToken(refreshToken.user_id)
-            const expiresIn = dayjs().add(7, 'days').unix();
+            await this.iRefreshSessionTokenRepo.deleteRelatedRefreshTokens(refreshToken.user_id)
+            const expiresIn = dayjs().add(20, 'seconds').unix();
             const DTO: IGenerateRefreshTokenDTO = {
                 user_id: refreshToken.user_id,
                 expires_in: expiresIn

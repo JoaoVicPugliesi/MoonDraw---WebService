@@ -14,12 +14,12 @@ export class IRefreshSessionTokenRepoImpl implements IRefreshSessionTokenRepo {
 
         return refreshToken;
     }
-
-    async deleteRelatedRefreshToken<T>(param: T): Promise<void> {
+    async deleteRelatedRefreshTokens<T>(param: T): Promise<void> {
         await prisma.refreshToken.deleteMany({
             where: {
                 user_id: param as string
             }
         })
     }
+
 }

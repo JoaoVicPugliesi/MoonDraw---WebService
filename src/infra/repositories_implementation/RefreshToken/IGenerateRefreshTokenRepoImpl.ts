@@ -6,6 +6,26 @@ import { randomUUID } from "crypto";
 
 
 export class IGenerateRefreshTokenRepoImpl implements IGenerateRefreshTokenRepo {
+
+    async findRelatedRefreshTokens<T>(param: T): Promise<RefreshToken | RefreshToken[] | null> {
+        const refreshTokens: RefreshToken | RefreshToken[] | null = await prisma.refreshToken.findMany({
+            where: {
+                user_id: param as string
+            }
+        })
+
+        if(!refreshTokens) return null;
+
+        return refreshTokens;
+    }
+
+    async deleteRelatedRefreshTokens<T>(param: T): Promise<void> {
+        await prisma.refreshToken.deleteMany({
+            where: {
+                user_id: param as string
+            }
+        })
+    }
     async saveRefreshToken(DTO: IGenerateRefreshTokenDTO): Promise<RefreshToken | null> {
 
         const refreshToken: RefreshToken | null = await prisma.refreshToken.create({
@@ -20,4 +40,5 @@ export class IGenerateRefreshTokenRepoImpl implements IGenerateRefreshTokenRepo 
 
         return refreshToken;
     }
+
 }
