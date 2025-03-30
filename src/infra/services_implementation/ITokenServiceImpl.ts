@@ -1,6 +1,6 @@
-import { Token } from "@domain/services/helpers/Token";
-import { ITokenService } from "@domain/services/ITokenService";
-import { JwtPayload, sign, verify } from "jsonwebtoken";
+import { Token } from '@domain/services/helpers/Token';
+import { ITokenService } from '@domain/services/ITokenService';
+import { JwtPayload, sign, verify } from 'jsonwebtoken';
 
 export class ITokenServiceImpl implements ITokenService {
     sign(params: Token): string {

@@ -14,7 +14,9 @@ export interface RequestResponseAdapter {
     body?: any;
     params?: Record<string, string>;
     query?: Record<string, string | string[]>;
-    headers?: Record<string, string>;
+    headers?: {
+      authorization?: string,
+    } & Record<string, string | string[] | undefined>;
   }
   res: {
     status(statusCode: number): any;

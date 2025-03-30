@@ -5,9 +5,11 @@ import fastifyCors from '@fastify/cors';
 import { ServerAdapter } from '../../adapters/ServerAdapter';
 import { Post } from 'routes/Post';
 import { Put } from '@routes/Put';
+import { Get } from '@routes/Get';
 
 class FastifyServerAdapter implements ServerAdapter {
   private app!: FastifyInstance;
+  private get!: Get;
   private post!: Post;
   private put!: Put;
 
@@ -23,12 +25,14 @@ class FastifyServerAdapter implements ServerAdapter {
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
       allowedHeaders: 'Content-Type'
     });
+    this.get = new Get(this.app);
     this.post = new Post(this.app);
     this.put = new Put(this.app);
     this.setupRoutes();
   }
 
   private async setupRoutes() {
+    this.get.setupRoutes();
     this.post.setupRoutes();
     this.put.setupRoutes()
   }

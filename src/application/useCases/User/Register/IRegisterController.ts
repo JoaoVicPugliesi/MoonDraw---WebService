@@ -1,16 +1,21 @@
 import z from 'zod';
+import { User } from '@domain/entities/User';
 import { IRegisterUseCase } from './IRegisterUseCase';
-import { IRegisterValidator } from '../../../validators/IRegisterValidator';
+import { IRegisterValidator } from '@application/validators/IRegisterValidator';
 import { IRegisterDTO } from './IRegisterDTO';
-import { User } from '../../../../domain/entities/User';
-import { RequestResponseAdapter } from '../../../../adapters/ServerAdapter';
+import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { InvalidUserConflictError } from '@application/handlers/User/IRegisterHandlers';
 
 export class IRegisterController {
-  constructor(private readonly iRegisterUseCase: IRegisterUseCase) {}
+
+  private readonly iRegisterValidator: IRegisterValidator;
+
+  constructor(private readonly iRegisterUseCase: IRegisterUseCase) {
+    this.iRegisterValidator = new IRegisterValidator();
+  }
 
   async handle(adapter: RequestResponseAdapter): Promise<void> {
-    const schema = IRegisterValidator();
+    const schema = this.iRegisterValidator.validate();
 
     try {
       const DTO: IRegisterDTO = schema.parse(adapter.req.body);

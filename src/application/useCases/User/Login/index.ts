@@ -1,8 +1,8 @@
-import { ILoginRepoImpl } from "./../../../../infra/repositories_implementation/User/Login/ILoginRepoImpl";
-import { IHashServiceImpl } from "@infra/services_implementation/IHashServiceImpl";
-import { ITokenServiceImpl } from "@infra/services_implementation/ITokenServiceImpl";
-import { ILoginUseCase } from "./ILoginUseCase";
-import { ILoginController } from "./ILoginController";
+import { ILoginRepoImpl } from './../../../../infra/repositories_implementation/User/Login/ILoginRepoImpl';
+import { IHashServiceImpl } from '@infra/services_implementation/IHashServiceImpl';
+import { ITokenServiceImpl } from '@infra/services_implementation/ITokenServiceImpl';
+import { ILoginUseCase } from './ILoginUseCase';
+import { ILoginController } from './ILoginController';
 
 const iLoginRepo = new ILoginRepoImpl();
 const iHashService = new IHashServiceImpl();

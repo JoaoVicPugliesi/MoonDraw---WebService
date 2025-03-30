@@ -3,8 +3,8 @@ import { ILoginRepo } from '@domain/repositories/User/ILoginRepo';
 import { IHashService } from '@domain/services/IHashService';
 import { ITokenService } from '@domain/services/ITokenService';
 import { ILoginDTO } from './ILoginDTO';
-import { configDotenv } from "dotenv";
 import { InvalidUserNotFoundError, InvalidPasswordIsNotEqualError } from '@application/handlers/User/ILoginHandlers';
+import { configDotenv } from 'dotenv';
 configDotenv();
 
 export class ILoginUseCase {
@@ -27,11 +27,10 @@ export class ILoginUseCase {
     const accessToken: string = this.iTokenService.sign({
       payload: {
         sub: user.public_id,
-        email: user.email,
       },
       secret_key: process.env.SECRET_KEY as string,
       options: {
-        expiresIn: '1h',
+        expiresIn: '30m',
       },
     });
 

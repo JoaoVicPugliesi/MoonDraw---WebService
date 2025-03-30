@@ -1,11 +1,11 @@
-import { ServerAdapter } from "./adapters/ServerAdapter";
-import { configDotenv } from "dotenv";
-import { app } from "./server/Fastify/FastifyServerAdapter";
+import { ServerAdapter } from './adapters/ServerAdapter';
+import { configDotenv } from 'dotenv';
+import { app } from './server/Fastify/FastifyServerAdapter';
 
 configDotenv();
 
 const PORT: number = parseInt(process.env.PORT as string) ?? 5000;
-const HOST: string = process.env.HOST ?? "127.0.0.1";
+const HOST: string = process.env.HOST ?? '127.0.0.1';
 
 class Application {
   app: ServerAdapter;

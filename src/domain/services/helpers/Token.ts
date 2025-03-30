@@ -1,11 +1,10 @@
-
-
 interface IPayload {
   sub?: string;
   email?: string;
 }
 
 interface IOptions {
+  subject?: string,
   expiresIn?: any;
   notBefore?: any;
   mutatePayload?: boolean;
