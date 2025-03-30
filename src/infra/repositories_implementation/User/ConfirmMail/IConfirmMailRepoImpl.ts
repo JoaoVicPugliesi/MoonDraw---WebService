@@ -4,7 +4,7 @@ import { IConfirmMailRepo } from "@domain/repositories/User/IConfirmMailRepo";
 
 export class IConfirmMailRepoImpl implements IConfirmMailRepo {
   async findUser<T>(param: T): Promise<boolean> {
-    const user: User | null = await prisma.user.findUnique({
+    const user: User | null = await prisma.user.findFirst({
       where: {
         email: param as string,
       },

@@ -4,7 +4,7 @@ import { IRegisterValidator } from '../../../validators/IRegisterValidator';
 import { IRegisterDTO } from './IRegisterDTO';
 import { User } from '../../../../domain/entities/User';
 import { RequestResponseAdapter } from '../../../../adapters/ServerAdapter';
-import { InvalidUserConflictError } from '@application/handlers/IRegisterHandlers';
+import { InvalidUserConflictError } from '@application/handlers/User/IRegisterHandlers';
 
 export class IRegisterController {
   constructor(private readonly iRegisterUseCase: IRegisterUseCase) {}

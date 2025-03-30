@@ -4,7 +4,7 @@ import { IHashService } from '@domain/services/IHashService';
 import { ITokenService } from '@domain/services/ITokenService';
 import { ILoginDTO } from './ILoginDTO';
 import { configDotenv } from "dotenv";
-import { InvalidUserNotFoundError, InvalidPasswordIsNotEqualError } from '@application/handlers/ILoginHandlers';
+import { InvalidUserNotFoundError, InvalidPasswordIsNotEqualError } from '@application/handlers/User/ILoginHandlers';
 configDotenv();
 
 export class ILoginUseCase {

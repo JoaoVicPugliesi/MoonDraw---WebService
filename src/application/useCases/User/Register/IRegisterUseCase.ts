@@ -4,7 +4,7 @@ import { IRegisterRepo } from '../../../../domain/repositories/User/IRegisterRep
 import { IMailProvider } from '../../../../domain/providers/repositories/Mail/IMailProvider';
 import { IRegisterDTO } from './IRegisterDTO';
 import { randomBytes } from 'crypto';
-import { InvalidUserConflictError } from '@application/handlers/IRegisterHandlers';
+import { InvalidUserConflictError } from '@application/handlers/User/IRegisterHandlers';
 
 export class IRegisterUseCase {
   constructor(

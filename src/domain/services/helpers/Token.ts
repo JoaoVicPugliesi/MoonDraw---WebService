@@ -1,4 +1,4 @@
-type SecondsOrTimeSpan = string | number;
+
 
 interface IPayload {
   sub?: string;
@@ -6,8 +6,8 @@ interface IPayload {
 }
 
 interface IOptions {
-  expiresIn?: SecondsOrTimeSpan;
-  notBefore?: SecondsOrTimeSpan;
+  expiresIn?: any;
+  notBefore?: any;
   mutatePayload?: boolean;
   allowInsecureKeySizes?: boolean;
   allowInvalidAsymmetricKeyTypes?: boolean;

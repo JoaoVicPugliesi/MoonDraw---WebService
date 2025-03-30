@@ -3,7 +3,7 @@ import { RequestResponseAdapter } from "@adapters/ServerAdapter";
 import { IConfirmMailUseCase } from "./IConfirmMailUseCase";
 import { IConfirmMailDTO } from "./IConfirmMailDTO";
 import { IConfirmMailValidator } from "@application/validators/IConfirmMailValidator";
-import { InvalidUserNotFoundError } from "@application/handlers/IConfirmMailHandlers";
+import { InvalidUserNotFoundError } from "@application/handlers/User/IConfirmMailHandlers";
 
 export class IConfirmMailController {
   constructor(private readonly iConfirmMailUseCase: IConfirmMailUseCase) {}

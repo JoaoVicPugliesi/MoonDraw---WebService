@@ -6,7 +6,7 @@ import { ILoginDTO } from "./ILoginDTO";
 import {
   InvalidUserNotFoundError,
   InvalidPasswordIsNotEqualError
-} from "@application/handlers/ILoginHandlers";
+} from "@application/handlers/User/ILoginHandlers";
 
 export class ILoginController {
   constructor(private readonly iLoginUseCase: ILoginUseCase) {}
@@ -20,11 +20,11 @@ export class ILoginController {
       const logged: object = await this.iLoginUseCase.execute(DTO);
 
       if (logged instanceof InvalidUserNotFoundError)
-        return adapter.res.status(404).send({ message: "User not found" });
+        return adapter.res.status(404).send({ message: "User or Password incorrect" });
       if (logged instanceof InvalidPasswordIsNotEqualError)
         return adapter.res.status(401).send({ message: "Non authorized" });
 
-      return adapter.res.status(200).send({ user: logged });
+      return adapter.res.status(200).send({ current_user: logged });
     } catch (error) {
       if (error instanceof z.ZodError) {
         return adapter.res.status(422).send({
