@@ -7,7 +7,7 @@ import { IHashService } from '@domain/services/IHashService';
 
 export class IRegisterRepoImpl implements IRegisterRepo {
   async findUser<T>(param: T): Promise<boolean> {
-    const isUser = await prisma.user.findUnique({
+    const isUser = await prisma.user.findFirst({
       where: {
         email: param as string,
       },
