@@ -7,7 +7,7 @@ export class IGenerateRefreshTokenUseCase {
     constructor(private readonly iGenerateRefreshTokenRepo: IGenerateRefreshTokenRepo) {}
 
     async execute(DTO: IGenerateRefreshTokenDTO): Promise<InvalidGenerateRefreshToken | RefreshToken> {
-        const refreshToken: RefreshToken | null = await this.iGenerateRefreshTokenRepo.saveRefreshToken(DTO.public_id);
+        const refreshToken: RefreshToken | null = await this.iGenerateRefreshTokenRepo.saveRefreshToken(DTO);
 
         if(!refreshToken) return new InvalidGenerateRefreshToken();
 

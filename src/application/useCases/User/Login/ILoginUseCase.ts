@@ -1,6 +1,7 @@
+import dayjs from "dayjs";
 import { User } from '@domain/entities/User';
-import { IGenerateRefreshTokenDTO } from './../../RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
-import { IGenerateRefreshTokenUseCase } from './../../RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
+import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
+import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { ILoginRepo } from '@domain/repositories/User/ILoginRepo';
 import { IHashService } from '@domain/services/IHashService';
 import { ITokenService } from '@domain/services/ITokenService';
@@ -45,12 +46,15 @@ export class ILoginUseCase {
       },
       secret_key: process.env.SECRET_KEY as string,
       options: {
-        expiresIn: '30m',
+        expiresIn: '20s',
       },
     });
 
+    const expiresIn = dayjs().add(20, 'second').unix();
+
     const iGenerateRefreshTokenDTO: IGenerateRefreshTokenDTO = {
-      public_id: user.public_id,
+      user_id: user.public_id,
+      expires_in: expiresIn
     };
     
     const refreshToken: InvalidGenerateRefreshToken | RefreshToken =
