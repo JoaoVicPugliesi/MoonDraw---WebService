@@ -1,12 +1,12 @@
+import dayjs from "dayjs";
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { IRefreshSessionTokenRepo } from "@domain/repositories/RefreshToken/IRefreshSessionTokenRepo";
 import { ITokenService } from "@domain/services/ITokenService";
 import { IRefreshSessionTokenDTO } from "./IRefreshSessionTokenDTO";
 import { RefreshToken } from "@domain/entities/RefreshToken";
 import { InvalidRefreshToken } from "@application/handlers/RefreshToken/IRefreshSessionTokenHandler";
-import dayjs from "dayjs";
-import { configDotenv } from 'dotenv';
 import { IGenerateRefreshTokenDTO } from '../GenerateRefreshToken/IGenerateRefreshTokenDTO';
+import { configDotenv } from 'dotenv';
 configDotenv();
 
 export class IRefreshSessionTokenUseCase {
@@ -25,7 +25,7 @@ export class IRefreshSessionTokenUseCase {
         const refreshToken: RefreshToken | null = await this.iRefreshSessionTokenRepo.findRefreshToken(DTO.public_id);
         
         if(!refreshToken) return new InvalidRefreshToken();
-
+        
         const refreshTokenExpired: boolean = dayjs().isAfter(dayjs.unix(refreshToken.expires_in));
 
         const sessionToken: string = this.iTokenService.sign({
@@ -34,16 +34,14 @@ export class IRefreshSessionTokenUseCase {
             },
             secret_key: this.secret_key,
             options: {
-                expiresIn: '20s'
+                expiresIn: '30m'
             }
         });
 
         if(refreshTokenExpired) {
             await this.iRefreshSessionTokenRepo.deleteRelatedRefreshTokens(refreshToken.user_id)
-            const expiresIn = dayjs().add(20, 'seconds').unix();
             const DTO: IGenerateRefreshTokenDTO = {
                 user_id: refreshToken.user_id,
-                expires_in: expiresIn
             };
             const newRefreshToken = await this.iGenerateRefreshTokenUseCase.execute(DTO);
 

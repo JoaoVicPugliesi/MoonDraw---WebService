@@ -46,14 +46,12 @@ export class ILoginUseCase {
       },
       secret_key: process.env.SECRET_KEY as string,
       options: {
-        expiresIn: '20s',
+        expiresIn: '30m',
       },
     });
 
-    const expiresIn = dayjs().add(20, 'seconds').unix();
-
     const iGenerateRefreshTokenDTO: IGenerateRefreshTokenDTO = {
-      
+      user_id: user.public_id
     };
     
     const refreshToken: InvalidGenerateRefreshToken | RefreshToken =

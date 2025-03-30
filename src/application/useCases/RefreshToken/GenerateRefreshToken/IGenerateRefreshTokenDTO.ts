@@ -1,3 +1,3 @@
 import { IRefreshToken } from "@domain/entities/RefreshToken";
 
-export interface IGenerateRefreshTokenDTO extends Pick<IRefreshToken, 'user_id' | 'expires_in'> {};
+export interface IGenerateRefreshTokenDTO extends Pick<IRefreshToken, 'user_id'> {};
