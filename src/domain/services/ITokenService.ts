@@ -1,6 +1,6 @@
-import { Token } from "./helpers/Token";
+import { Token } from './helpers/Token';
 
 export interface ITokenService {
-    sign(params: Token): string;
-    verify(params: Token): boolean;
+  sign(params: Token): string;
+  verify(params: Token): boolean;
 }
