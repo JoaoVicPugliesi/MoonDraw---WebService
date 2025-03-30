@@ -3,7 +3,7 @@ import { RefreshToken } from "@prisma/client";
 import { IGenerateRefreshTokenDTO } from "./IGenerateRefreshTokenDTO";
 import { IGenerateRefreshTokenRepo } from "@domain/repositories/RefreshToken/IGenerateRefreshTokenRepo";
 
-export class IGenerateRefreshToken {
+export class IGenerateRefreshTokenUseCase {
     constructor(private readonly iGenerateRefreshTokenRepo: IGenerateRefreshTokenRepo) {}
 
     async execute(DTO: IGenerateRefreshTokenDTO): Promise<InvalidGenerateRefreshToken | RefreshToken> {

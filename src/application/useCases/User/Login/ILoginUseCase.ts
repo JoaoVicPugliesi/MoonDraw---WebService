@@ -1,6 +1,6 @@
 import { User } from '@domain/entities/User';
 import { IGenerateRefreshTokenDTO } from './../../RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
-import { IGenerateRefreshToken } from './../../RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
+import { IGenerateRefreshTokenUseCase } from './../../RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { ILoginRepo } from '@domain/repositories/User/ILoginRepo';
 import { IHashService } from '@domain/services/IHashService';
 import { ITokenService } from '@domain/services/ITokenService';
@@ -19,7 +19,7 @@ export class ILoginUseCase {
     private readonly iLoginRepo: ILoginRepo,
     private readonly iHashService: IHashService,
     private readonly iTokenService: ITokenService,
-    private readonly iGenerateRefreshToken: IGenerateRefreshToken
+    private readonly iGenerateRefreshTokenUseCase: IGenerateRefreshTokenUseCase
   ) {}
 
   async execute(
@@ -54,7 +54,7 @@ export class ILoginUseCase {
     };
     
     const refreshToken: InvalidGenerateRefreshToken | RefreshToken =
-      await this.iGenerateRefreshToken.execute(iGenerateRefreshTokenDTO);
+      await this.iGenerateRefreshTokenUseCase.execute(iGenerateRefreshTokenDTO);
 
     if (refreshToken instanceof InvalidGenerateRefreshToken)
       return new InvalidGenerateRefreshToken();
