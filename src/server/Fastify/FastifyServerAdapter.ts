@@ -18,8 +18,9 @@ class FastifyServerAdapter implements ServerAdapter {
   private async init() {
     this.app = fastify({ logger: true });
     this.register(fastifyCors, {
+      credentials: true,
       origin: '*',
-      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
       allowedHeaders: 'Content-Type'
     });
     this.post = new Post(this.app);
@@ -32,7 +33,7 @@ class FastifyServerAdapter implements ServerAdapter {
     this.put.setupRoutes()
   }
 
-  async register(x: any, options: { origin: string | string[]; methods: string | string[]; allowedHeaders: string | string[]; }): Promise<void> {
+  async register(x: any, options: { credentials: boolean, origin: string | string[]; methods: string | string[]; allowedHeaders: string | string[]; }): Promise<void> {
       await this.app.register(x, options);
   }
 

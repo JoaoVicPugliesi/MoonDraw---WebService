@@ -22,7 +22,7 @@ export class IRegisterUseCase {
       this.iHashService
     );
 
-    const mailToken: string = randomBytes(65).toString('hex');
+    const mailToken: string = randomBytes(3).toString('hex');
 
     await this.iMailProvider.sendMail({
       to: {
@@ -33,7 +33,7 @@ export class IRegisterUseCase {
       },
       subject: 'Confirm Email',
       text: 'blabla',
-      body: `<button data-mail=${user.email} data-token=${mailToken}>Confirm Email</button>`,
+      body: `<p>${mailToken}</p>`,
     });
 
     return user;
