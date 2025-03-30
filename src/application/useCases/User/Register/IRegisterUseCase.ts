@@ -4,6 +4,7 @@ import { IRegisterRepo } from '../../../../domain/repositories/User/IRegisterRep
 import { IMailProvider } from '../../../../domain/providers/repositories/Mail/IMailProvider';
 import { IRegisterDTO } from './IRegisterDTO';
 import { randomBytes } from 'crypto';
+import { InvalidUserConflictError } from '@application/handlers/IRegisterHandlers';
 
 export class IRegisterUseCase {
   constructor(
@@ -12,10 +13,10 @@ export class IRegisterUseCase {
     private readonly iHashService: IHashService
   ) {}
 
-  async execute(DTO: IRegisterDTO): Promise<boolean | User> {
+  async execute(DTO: IRegisterDTO): Promise<object | User> {
     const isUser: boolean = await this.iRegisterRepo.findUser(DTO.email);
 
-    if (isUser) return false;
+    if (isUser) return new InvalidUserConflictError();
 
     const user: User = await this.iRegisterRepo.save(
       DTO,
