@@ -35,11 +35,6 @@ export class ILoginUseCase {
     });
 
     return {
-      user: {
-        public_id: user.public_id,
-        name: user.name,
-        surname: user.surname
-      },
       accessToken: accessToken
     };
   }
