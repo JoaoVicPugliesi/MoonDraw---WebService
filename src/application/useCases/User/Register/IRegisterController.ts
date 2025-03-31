@@ -1,5 +1,4 @@
 import z from 'zod';
-import { User } from '@domain/entities/User';
 import { IRegisterUseCase } from './IRegisterUseCase';
 import { IRegisterValidator } from '@application/validators/IRegisterValidator';
 import { IRegisterDTO } from './IRegisterDTO';
@@ -19,7 +18,7 @@ export class IRegisterController {
 
     try {
       const DTO: IRegisterDTO = schema.parse(adapter.req.body);
-      const registered: InvalidUserConflictError | User =
+      const registered: InvalidUserConflictError | object =
         await this.iRegisterUseCase.execute(DTO);
 
       if (registered instanceof InvalidUserConflictError) {
@@ -27,7 +26,7 @@ export class IRegisterController {
           message: 'Conflict: user with email provided already exists',
         });
       }
-
+      
       return adapter.res.status(201).send({ message: 'User created successfully', user: registered });
 
     } catch (error) {

@@ -38,7 +38,7 @@ model RefreshToken {
   id         Int    @default(autoincrement())
   public_id  String @id
   expires_in Int
-  user       User   @relation(fields: [user_id], references: [public_id])
+  user       User   @relation(fields: [user_id], references: [public_id], onDelete: Cascade)
   user_id    String @unique
 
   @@map("refresh_token")

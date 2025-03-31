@@ -1,3 +1,4 @@
+import { InvalidUserConflictError } from './../../../handlers/User/IRegisterHandlers';
 import { User } from '../../../../domain/entities/User';
 import { IRegisterRepoImplInMemory } from '../../../../infra/repositories_implementation/User/Register/IRegisterRepoImplInMemory';
 import { IRegisterUseCase } from './IRegisterUseCase';
@@ -49,7 +50,7 @@ describe('I Register UseCase', () => {
       },
       subject: 'Confirm Email',
       text: 'blabla',
-      body: '<button>Confirm Email</button>',
+      body: '<p>2hd8k3</p>',
     });
   });
 
@@ -71,6 +72,6 @@ describe('I Register UseCase', () => {
     });
 
     // Assert
-    expect(created).toBeFalsy();
+    expect(created).toBeInstanceOf(InvalidUserConflictError);
   });
 });

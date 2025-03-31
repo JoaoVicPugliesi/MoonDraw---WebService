@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { User } from '@domain/entities/User';
 import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
@@ -9,6 +8,7 @@ import { ILoginDTO } from './ILoginDTO';
 import {
   InvalidUserNotFoundError,
   InvalidPasswordIsNotEqualError,
+  SuccessLoginResponse,
 } from '@application/handlers/User/ILoginHandlers';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
@@ -29,7 +29,7 @@ export class ILoginUseCase {
     | InvalidUserNotFoundError
     | InvalidPasswordIsNotEqualError
     | InvalidGenerateRefreshToken
-    | object
+    | SuccessLoginResponse
   > {
     const user: User | null = await this.iLoginRepo.findUser(DTO.email);
     if (!user) return new InvalidUserNotFoundError();
@@ -61,8 +61,8 @@ export class ILoginUseCase {
       return new InvalidGenerateRefreshToken();
 
     return {
-      accessToken: accessToken,
-      refreshToken: refreshToken,
+      access_token: accessToken,
+      refresh_token: refreshToken,
     };
   }
 }

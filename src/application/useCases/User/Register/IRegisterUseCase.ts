@@ -3,8 +3,8 @@ import { IHashService } from '../../../../domain/services/IHashService';
 import { IRegisterRepo } from '../../../../domain/repositories/User/IRegisterRepo';
 import { IMailProvider } from '../../../../domain/providers/repositories/Mail/IMailProvider';
 import { IRegisterDTO } from './IRegisterDTO';
-import { randomBytes } from 'crypto';
 import { InvalidUserConflictError } from '@application/handlers/User/IRegisterHandlers';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 export class IRegisterUseCase {
   constructor(
@@ -13,7 +13,7 @@ export class IRegisterUseCase {
     private readonly iHashService: IHashService
   ) {}
 
-  async execute(DTO: IRegisterDTO): Promise<InvalidUserConflictError | User> {
+  async execute(DTO: IRegisterDTO): Promise<InvalidUserConflictError | object> {
     const isUser: boolean = await this.iRegisterRepo.findUser(DTO.email);
 
     if (isUser) return new InvalidUserConflictError();
@@ -23,9 +23,7 @@ export class IRegisterUseCase {
       this.iHashService
     );
 
-    const mailToken: string = randomBytes(3).toString('hex');
-
-    await this.iMailProvider.sendMail({
+    const sent: SMTPTransport.SentMessageInfo = await this.iMailProvider.sendMail({
       to: {
         email: user.email,
       },
@@ -34,9 +32,12 @@ export class IRegisterUseCase {
       },
       subject: 'Confirm Email',
       text: 'blabla',
-      body: `<p>${mailToken}</p>`,
+      body: '<p>2hd8k3</p>',
     });
 
-    return user;
+    return {
+      email: sent,
+      user: User
+    };
   }
 }
