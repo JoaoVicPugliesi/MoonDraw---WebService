@@ -6,7 +6,7 @@ import { ILoginDTO } from './ILoginDTO';
 import {
   InvalidUserNotFoundError,
   InvalidPasswordIsNotEqualError,
-  SuccessLoginResponse
+  LoginResponse
 } from '@application/handlers/User/ILoginHandlers';
 import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
 
@@ -24,7 +24,7 @@ export class ILoginController {
     try {
       const DTO: ILoginDTO = schema.parse(adapter.req.body);
 
-      const logged: InvalidUserNotFoundError | InvalidPasswordIsNotEqualError | SuccessLoginResponse = await this.iLoginUseCase.execute(DTO);
+      const logged: InvalidUserNotFoundError | InvalidPasswordIsNotEqualError | LoginResponse = await this.iLoginUseCase.execute(DTO);
 
       if (logged instanceof InvalidUserNotFoundError)
         return adapter.res.status(404).send({ message: 'User or Password incorrect' });
@@ -41,7 +41,7 @@ export class ILoginController {
         maxAge: logged.refresh_token.expires_in, 
       });
 
-      return adapter.res.status(200).send({ current_user: logged });
+      return adapter.res.status(200).send({ current_user: logged.access_token });
     } catch (error) {
       if (error instanceof z.ZodError) {
         return adapter.res.status(422).send({
