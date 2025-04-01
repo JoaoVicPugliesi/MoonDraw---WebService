@@ -4,13 +4,13 @@ import { IGenerateRefreshTokenRepo } from "@domain/repositories/RefreshToken/IGe
 import { randomUUID } from "crypto";
 import dayjs from "dayjs";
 
-export class IGenerateRefreshTokenImplInMemory implements IGenerateRefreshTokenRepo {
+export class IGenerateRefreshTokenRepoImplInMemory implements IGenerateRefreshTokenRepo {
 
     constructor(private refreshTokens: RefreshToken[]) {}
 
     findRelatedRefreshTokens<T>(param: T): Promise<RefreshToken | RefreshToken[] | null> {
         return new Promise((resolve, reject) => {
-            const refreshTokens: RefreshToken | RefreshToken[] | null = this.refreshTokens.filter((refreshToken) => refreshToken.user_id = param as string);
+            const refreshTokens: RefreshToken | RefreshToken[] | null = this.refreshTokens.filter((refreshToken) => refreshToken.user_id === param as string);
 
             if(refreshTokens) resolve(refreshTokens);
             
@@ -19,11 +19,16 @@ export class IGenerateRefreshTokenImplInMemory implements IGenerateRefreshTokenR
     }
 
     deleteRelatedRefreshTokens<T>(param: T): Promise<void> {
-        return new Promise((resolve, reject) => {
-            const refreshTokens: RefreshToken | RefreshToken[] | null | undefined = this.refreshTokens.filter((refreshToken) => refreshToken.user_id !== param as string);
-            this.refreshTokens = refreshTokens;
+        return new Promise((resolve) => {
+            for (let i = this.refreshTokens.length - 1; i >= 0; i--) {
+                if (this.refreshTokens[i].user_id === param as string) {
+                    this.refreshTokens.splice(i, 1); 
+                }
+            }
+            resolve();
         });
     }
+    
 
     saveRefreshToken({ user_id }: IGenerateRefreshTokenDTO): Promise<RefreshToken | null> {
         const expiresIn: number = dayjs().add(7, 'days').unix();

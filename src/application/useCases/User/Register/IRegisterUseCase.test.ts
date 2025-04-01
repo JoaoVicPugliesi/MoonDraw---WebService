@@ -10,40 +10,40 @@
 //   compare: jest.fn(),
 // };
 
-// describe('I Register UseCase', () => {
+// describe('I register', () => {
 //   const users: User[] = [];
 
-//   it('must create a user successfully', async () => {
+//   test('must register a user successfully', async () => {
 //     // Arrange
-//     const iCreateUserRepoInMemory = new IRegisterRepoImplInMemory(users);
+//     const iRegisterUserRepoInMemory = new IRegisterRepoImplInMemory(users);
 //     const sut = new IRegisterUseCase(
-//       iCreateUserRepoInMemory,
+//       iRegisterUserRepoInMemory,
 //       iMailProvider,
 //       iHashService
 //     );
 
 //     // Act
-//     const created = await sut.execute({
+//     const registered = await sut.execute({
 //       name: 'João',
 //       surname: 'Pugliesi',
 //       email: 'mrlanguages62@gmail.com',
 //       password: 'Mrlanguages1234##',
 //     }) as User;
 
-//     console.log(created);
+//     console.log(registered);
 //     console.log(users);
 
 //     // Assert
-//     expect(created).toHaveProperty('id');
-//     expect(created).toHaveProperty('public_id');
-//     expect(created.email).toBe('mrlanguages62@gmail.com');
-//     expect(created.password).toBe('hashed_password');
-//     expect(created.is_active).toBe(false);
-//     expect(created.created_at).toBeInstanceOf(Date);
-//     expect(created.email_verified_at).toBe(null);
+//     expect(registered).toHaveProperty('id');
+//     expect(registered).toHaveProperty('public_id');
+//     expect(registered.email).toBe('mrlanguages62@gmail.com');
+//     expect(registered.password).toBe('hashed_password');
+//     expect(registered.is_active).toBe(false);
+//     expect(registered.registerd_at).toBeInstanceOf(Date);
+//     expect(registered.email_verified_at).toBe(null);
 //     expect(iMailProvider.sendMail).toHaveBeenCalledWith({
 //       to: {
-//         email: created.email,
+//         email: registerd.email,
 //       },
 //       from: {
 //         email: 'ecommerce@gmail.com',
@@ -54,17 +54,17 @@
 //     });
 //   });
 
-//   it('must fail for the reason email should be unique and because of this user already exists', async () => {
+//   test('must fail for the reason email should be unique and because of this user already exists', async () => {
 //     // Arrange
-//     const iCreateUserRepoInMemory = new IRegisterRepoImplInMemory(users);
+//     const iregisterUserRepoInMemory = new IRegisterRepoImplInMemory(users);
 //     const sut = new IRegisterUseCase(
-//       iCreateUserRepoInMemory,
+//       iregisterUserRepoInMemory,
 //       iMailProvider,
 //       iHashService
 //     );
 
 //     // Act
-//     const created = await sut.execute({
+//     const registered = await sut.execute({
 //       name: 'João',
 //       surname: 'Pugliesi',
 //       email: 'mrlanguages62@gmail.com',
@@ -72,6 +72,6 @@
 //     });
 
 //     // Assert
-//     expect(created).toBeInstanceOf(InvalidUserConflictError);
+//     expect(registered).toBeInstanceOf(InvalidUserConflictError);
 //   });
 // });
