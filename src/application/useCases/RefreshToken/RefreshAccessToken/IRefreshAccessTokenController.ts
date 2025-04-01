@@ -1,11 +1,11 @@
 import z from 'zod';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import { IRefreshSessionTokenUseCase } from './IRefreshSessionTokenUseCase';
-import { IRefreshSessionTokenDTO } from './IRefreshSessionTokenDTO';
-import { InvalidRefreshToken } from '@application/handlers/RefreshToken/IRefreshSessionTokenHandler';
-export class IRefreshSessionTokenController {
+import { IRefreshAccessTokenUseCase } from './IRefreshAccessTokenUseCase';
+import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
+import { InvalidRefreshToken } from '@application/handlers/RefreshToken/IRefreshAccessTokenHandler';
+export class IRefreshAccessTokenController {
   constructor(
-    private readonly iRefreshSessionTokenUseCase: IRefreshSessionTokenUseCase
+    private readonly iRefreshAccessTokenUseCase: IRefreshAccessTokenUseCase
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
@@ -17,9 +17,9 @@ export class IRefreshSessionTokenController {
     });
 
     try {
-      const DTO: IRefreshSessionTokenDTO = schema.parse(adapter.req.body);
+      const DTO: IRefreshAccessTokenDTO = schema.parse(adapter.req.body);
       const refreshed: InvalidRefreshToken | object =
-        await this.iRefreshSessionTokenUseCase.execute(DTO);
+        await this.iRefreshAccessTokenUseCase.execute(DTO);
 
       if (refreshed instanceof InvalidRefreshToken)
         return adapter.res

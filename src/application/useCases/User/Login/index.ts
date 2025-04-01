@@ -1,7 +1,7 @@
 import { ILoginRepoImpl } from './../../../../infra/repositories_implementation/User/Login/ILoginRepoImpl';
 import { IHashServiceImpl } from '@infra/services_implementation/IHashServiceImpl';
 import { ITokenServiceImpl } from '@infra/services_implementation/ITokenServiceImpl';
-import { IGenerateRefreshTokenRepoImpl } from '@infra/repositories_implementation/RefreshToken/IGenerateRefreshTokenRepoImpl';
+import { IGenerateRefreshTokenRepoImpl } from '@infra/repositories_implementation/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenRepoImpl';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { ILoginUseCase } from './ILoginUseCase';
 import { ILoginController } from './ILoginController';

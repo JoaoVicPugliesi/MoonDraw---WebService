@@ -2,7 +2,7 @@ import { IRegisterRepoImpl } from '@infra/repositories_implementation/User/Regis
 import { IMailProviderImpl } from '@infra/providers_implementation/Mail/IMailProviderImplementation';
 import { IHashServiceImpl } from '@infra/services_implementation/IHashServiceImpl';
 import { ITokenServiceImpl } from '@infra/services_implementation/ITokenServiceImpl';
-import { IGenerateRefreshTokenRepoImpl } from '@infra/repositories_implementation/RefreshToken/IGenerateRefreshTokenRepoImpl';
+import { IGenerateRefreshTokenRepoImpl } from '@infra/repositories_implementation/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenRepoImpl';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { ILoginRepoImpl } from '@infra/repositories_implementation/User/Login/ILoginRepoImpl';
 import { ILoginUseCase } from '../Login/ILoginUseCase';

@@ -1,34 +1,34 @@
 import dayjs from "dayjs";
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
-import { IRefreshSessionTokenRepo } from "@domain/repositories/RefreshToken/IRefreshSessionTokenRepo";
+import { IRefreshAccessTokenRepo } from "@domain/repositories/RefreshToken/IRefreshAccessTokenRepo";
 import { ITokenService } from "@domain/services/ITokenService";
-import { IRefreshSessionTokenDTO } from "./IRefreshSessionTokenDTO";
+import { IRefreshAccessTokenDTO } from "./IRefreshAccessTokenDTO";
 import { RefreshToken } from "@domain/entities/RefreshToken";
-import { InvalidRefreshToken } from "@application/handlers/RefreshToken/IRefreshSessionTokenHandler";
+import { InvalidRefreshToken } from '@application/handlers/RefreshToken/IRefreshAccessTokenHandler';
 import { IGenerateRefreshTokenDTO } from '../GenerateRefreshToken/IGenerateRefreshTokenDTO';
 import { configDotenv } from 'dotenv';
 configDotenv();
 
-export class IRefreshSessionTokenUseCase {
+export class IRefreshAccessTokenUseCase {
 
     private readonly secret_key: string;
 
     constructor(
-        private readonly iRefreshSessionTokenRepo: IRefreshSessionTokenRepo,
+        private readonly iRefreshAccessTokenRepo: IRefreshAccessTokenRepo,
         private readonly iGenerateRefreshTokenUseCase: IGenerateRefreshTokenUseCase,
         private readonly iTokenService: ITokenService
     ) {
         this.secret_key = process.env.SECRET_KEY as string;
     }
 
-    async execute(DTO: IRefreshSessionTokenDTO): Promise<InvalidRefreshToken | object> {
-        const refreshToken: RefreshToken | null = await this.iRefreshSessionTokenRepo.findRefreshToken(DTO.public_id);
+    async execute(DTO: IRefreshAccessTokenDTO): Promise<InvalidRefreshToken | object> {
+        const refreshToken: RefreshToken | null = await this.iRefreshAccessTokenRepo.findRefreshToken(DTO.public_id);
         
         if(!refreshToken) return new InvalidRefreshToken();
         
         const refreshTokenExpired: boolean = dayjs().isAfter(dayjs.unix(refreshToken.expires_in));
 
-        const sessionToken: string = this.iTokenService.sign({
+        const AccessToken: string = this.iTokenService.sign({
             payload: {
                 sub: refreshToken.user_id
             },
@@ -39,21 +39,21 @@ export class IRefreshSessionTokenUseCase {
         });
 
         if(refreshTokenExpired) {
-            await this.iRefreshSessionTokenRepo.deleteRelatedRefreshTokens(refreshToken.user_id)
+            await this.iRefreshAccessTokenRepo.deleteRelatedRefreshTokens(refreshToken.user_id)
             const DTO: IGenerateRefreshTokenDTO = {
                 user_id: refreshToken.user_id,
             };
             const newRefreshToken = await this.iGenerateRefreshTokenUseCase.execute(DTO);
 
             return { 
-                session_token: sessionToken,
+                Access_token: AccessToken,
                 refresh_token: newRefreshToken
             }
         }
 
 
         return {
-            session_token: sessionToken
+            Access_token: AccessToken
         }
     }
 }

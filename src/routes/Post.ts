@@ -1,4 +1,4 @@
-import { refreshToken } from './../application/useCases/RefreshToken/RefreshSessionTokenUser/index';
+import { refreshToken } from '../application/useCases/RefreshToken/RefreshAccessToken/index';
 import { login } from "@application/useCases/User/Login";
 import { register } from "@application/useCases/User/Register";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
