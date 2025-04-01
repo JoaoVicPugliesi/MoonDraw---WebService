@@ -8,7 +8,7 @@ import { ILoginDTO } from './ILoginDTO';
 import {
   InvalidUserNotFoundError,
   InvalidPasswordIsNotEqualError,
-  SuccessLoginResponse,
+  LoginResponse,
 } from '@application/handlers/User/ILoginHandlers';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
@@ -29,7 +29,7 @@ export class ILoginUseCase {
     | InvalidUserNotFoundError
     | InvalidPasswordIsNotEqualError
     | InvalidGenerateRefreshToken
-    | SuccessLoginResponse
+    | LoginResponse
   > {
     const user: User | null = await this.iLoginRepo.findUser(DTO.email);
     if (!user) return new InvalidUserNotFoundError();
