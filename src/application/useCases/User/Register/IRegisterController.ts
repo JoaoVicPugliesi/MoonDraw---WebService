@@ -42,7 +42,7 @@ export class IRegisterController {
       if (registered.login_response instanceof InvalidGenerateRefreshTokenErrorResponse) {
         return adapter.res.status(501).send({ message: 'Failed to generate refresh token' });
       }
-
+      
       adapter.res.setCookie('refreshToken', registered.login_response.refresh_token.public_id, {
         httpOnly: true, 
         secure: true,  
