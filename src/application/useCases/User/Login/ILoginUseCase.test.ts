@@ -34,6 +34,7 @@ users.push({
 });
 
 describe('I login use case', () => {
+   // super arrange
 
   it('should fail because there is no user registered matching DTO.email provided', async () => {
     // arrange
@@ -47,7 +48,7 @@ describe('I login use case', () => {
       iGenerateRefreshTokenRepo
     );
     const iLoginRepo = new ILoginRepoImplInMemory(usersSpliced);
-    const iLoginUseCase = new ILoginUseCase(
+    const sut = new ILoginUseCase(
       iLoginRepo,
       iHashService,
       iTokenService,
@@ -55,7 +56,7 @@ describe('I login use case', () => {
     );
 
     // act
-    const logged: Logged = await iLoginUseCase.execute({
+    const logged: Logged = await sut.execute({
       email: 'mrlanguages62@gmail.com',
       password: 'Mrlanguages1234##',
     });
@@ -75,7 +76,7 @@ describe('I login use case', () => {
       iGenerateRefreshTokenRepo
     );
     const iLoginRepo = new ILoginRepoImplInMemory(users);
-    const iLoginUseCase = new ILoginUseCase(
+    const sut = new ILoginUseCase(
       iLoginRepo,
       iHashService,
       iTokenService,
@@ -83,7 +84,7 @@ describe('I login use case', () => {
     );
 
     // act
-    const logged: Logged = await iLoginUseCase.execute({
+    const logged: Logged = await sut.execute({
       email: 'mrlanguages62@gmail.com',
       password: 'mrlanguages1234##',
     });
@@ -103,7 +104,7 @@ describe('I login use case', () => {
       iGenerateRefreshTokenRepo
     );
     const iLoginRepo = new ILoginRepoImplInMemory(users);
-    const iLoginUseCase = new ILoginUseCase(
+    const sut = new ILoginUseCase(
       iLoginRepo,
       iHashService,
       iTokenService,
@@ -111,7 +112,7 @@ describe('I login use case', () => {
     );
 
     // act
-    const logged: Logged = await iLoginUseCase.execute({
+    const logged: Logged = await sut.execute({
       email: 'mrlanguages62@gmail.com',
       password: 'Mrlanguages1234##',
     });

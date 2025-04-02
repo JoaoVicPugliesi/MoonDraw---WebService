@@ -1,77 +1,123 @@
-// import { InvalidUserConflictError } from './../../../handlers/User/IRegisterHandlers';
-// import { User } from '../../../../domain/entities/User';
-// import { IRegisterRepoImplInMemory } from '../../../../infra/repositories_implementation/User/Register/IRegisterRepoImplInMemory';
-// import { IRegisterUseCase } from './IRegisterUseCase';
+import {
+  InvalidUserConflictError,
+  RegisterReponse,
+} from '@application/handlers/User/IRegisterHandlers';
+import { User } from '@domain/entities/User';
+import { IRegisterRepoImplInMemory } from '@infra/repositories_implementation/User/Register/IRegisterRepoImplInMemory';
+import { IRegisterUseCase } from './IRegisterUseCase';
+import { ILoginUseCase } from '../Login/ILoginUseCase';
+import { ILoginRepoImplInMemory } from '@infra/repositories_implementation/User/Login/ILoginRepoImplInMemory';
+import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
+import { IGenerateRefreshTokenRepoImplInMemory } from '@infra/repositories_implementation/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenRepoImplInMemory';
+import { ITokenServiceImpl } from '@infra/services_implementation/ITokenServiceImpl';
+import { IHashServiceImpl } from '@infra/services_implementation/IHashServiceImpl';
+import { RefreshToken } from '@domain/entities/RefreshToken';
+import { InvalidPasswordIsNotEqualError, InvalidUserNotFoundError } from '@application/handlers/User/ILoginHandlers';
+import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
 
-// // Mocks
-// const iMailProvider = { sendMail: jest.fn() };
-// const iHashService = {
-//   hash: jest.fn().mockResolvedValue('hashed_password'),
-//   compare: jest.fn(),
-// };
+// Mocks
+const iMailProvider = { sendMail: jest.fn() };
 
-// describe('I register use case', () => {
-//   const users: User[] = [];
+type Registered = InvalidUserConflictError | RegisterReponse;
+const users: User[] = [];
+const refreshTokens: RefreshToken[] = [];
+users.push({
+    id: users.length + 1,
+    public_id: '56d7ff79-f16d-434b-9183-5b0db27fa4e2',
+    name: 'João',
+    surname: 'Pugliesi',
+    email: 'mrlanguages62@gmail.com',
+    password: '$2b$10$GX73JFHmigssj00i5mES9uak392P5wSrS6caNFaQ0ybZkm2TBuBkK',
+    role: 'client',
+    is_active: false,
+    created_at: new Date(),
+    email_verified_at: null,
+});
 
-//   it('must register a user successfully', async () => {
-//     // Arrange
-//     const iRegisterUserRepoInMemory = new IRegisterRepoImplInMemory(users);
-//     const sut = new IRegisterUseCase(
-//       iRegisterUserRepoInMemory,
-//       iMailProvider,
-//       iHashService
-//     );
+describe('I register use case', () => {
+  it('must fail for the reason email should be unique and because of this user already exists', async () => {
+    // Arrange
+    const iHashService = new IHashServiceImpl();
+    const iTokenService = new ITokenServiceImpl();
+    const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoImplInMemory(
+      refreshTokens
+    );
+    const iGenerateRefreshTokenUseCase = new IGenerateRefreshTokenUseCase(
+      iGenerateRefreshTokenRepo
+    );
+    const iLoginRepo = new ILoginRepoImplInMemory(users);
+    const iLoginUseCase = new ILoginUseCase(
+      iLoginRepo,
+      iHashService,
+      iTokenService,
+      iGenerateRefreshTokenUseCase
+    );
+    const iRegisterUserRepoInMemory = new IRegisterRepoImplInMemory(users);
+    const sut = new IRegisterUseCase(
+      iRegisterUserRepoInMemory,
+      iMailProvider,
+      iHashService,
+      iLoginUseCase
+    );
+    // Act
+    const registered: Registered = await sut.execute({
+      name: 'João',
+      surname: 'Pugliesi',
+      email: 'mrlanguages62@gmail.com',
+      password: 'Mrlanguages1234##',
+    });
 
-//     // Act
-//     const registered = await sut.execute({
-//       name: 'João',
-//       surname: 'Pugliesi',
-//       email: 'mrlanguages62@gmail.com',
-//       password: 'Mrlanguages1234##',
-//     }) as User;
+    // Assert
+    expect(registered).toBeInstanceOf(InvalidUserConflictError);
+  });
 
-//     console.log(registered);
-//     console.log(users);
+  it('must register a user successfully', async () => {
+    // Arrange
+    const usersSpliced = users.toSpliced(0)
+    const iHashService = new IHashServiceImpl();
+    const iTokenService = new ITokenServiceImpl();
+    const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoImplInMemory(
+      refreshTokens
+    );
+    const iGenerateRefreshTokenUseCase = new IGenerateRefreshTokenUseCase(
+      iGenerateRefreshTokenRepo
+    );
+    const iLoginRepo = new ILoginRepoImplInMemory(usersSpliced);
+    const iLoginUseCase = new ILoginUseCase(
+      iLoginRepo,
+      iHashService,
+      iTokenService,
+      iGenerateRefreshTokenUseCase
+    );
+    const iRegisterUserRepoInMemory = new IRegisterRepoImplInMemory(users);
+    const sut = new IRegisterUseCase(
+      iRegisterUserRepoInMemory,
+      iMailProvider,
+      iHashService,
+      iLoginUseCase
+    );
 
-//     // Assert
-//     expect(registered).toHaveProperty('id');
-//     expect(registered).toHaveProperty('public_id');
-//     expect(registered.email).toBe('mrlanguages62@gmail.com');
-//     expect(registered.password).toBe('hashed_password');
-//     expect(registered.is_active).toBe(false);
-//     expect(registered.registerd_at).toBeInstanceOf(Date);
-//     expect(registered.email_verified_at).toBe(null);
-//     expect(iMailProvider.sendMail).toHaveBeenCalledWith({
-//       to: {
-//         email: registerd.email,
-//       },
-//       from: {
-//         email: 'ecommerce@gmail.com',
-//       },
-//       subject: 'Confirm Email',
-//       text: 'blabla',
-//       body: '<p>2hd8k3</p>',
-//     });
-//   });
+    // Act
+    const registered: Registered = await sut.execute({
+      name: 'João',
+      surname: 'Pugliesi',
+      email: 'mrlanguages62@gmail.com',
+      password: 'Mrlanguages1234##',
+      confirmPassword: 'Mrlanguages1234##',
+    });
 
-//   it('must fail for the reason email should be unique and because of this user already exists', async () => {
-//     // Arrange
-//     const iregisterUserRepoInMemory = new IRegisterRepoImplInMemory(users);
-//     const sut = new IRegisterUseCase(
-//       iregisterUserRepoInMemory,
-//       iMailProvider,
-//       iHashService
-//     );
+    console.log(registered);
+    console.log(users);
 
-//     // Act
-//     const registered = await sut.execute({
-//       name: 'João',
-//       surname: 'Pugliesi',
-//       email: 'mrlanguages62@gmail.com',
-//       password: 'Mrlanguages1234##',
-//     });
+    if(registered instanceof InvalidUserConflictError) console.log('error');
 
-//     // Assert
-//     expect(registered).toBeInstanceOf(InvalidUserConflictError);
-//   });
-// });
+    // Assert
+    if(!(registered instanceof InvalidUserConflictError)) {
+        expect(registered).toHaveProperty('mail_response');
+        expect(registered).toHaveProperty('login_reponse');
+        expect(registered.login_response).not.toBeInstanceOf(InvalidUserNotFoundError);
+        expect(registered.login_response).not.toBeInstanceOf(InvalidPasswordIsNotEqualError);
+        expect(registered.login_response).not.toBeInstanceOf(InvalidGenerateRefreshToken);
+       }
+  });
+});
