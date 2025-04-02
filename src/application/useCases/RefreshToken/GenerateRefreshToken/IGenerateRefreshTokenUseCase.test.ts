@@ -5,7 +5,7 @@ import { IGenerateRefreshTokenDTO } from './IGenerateRefreshTokenDTO';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 
 
-describe('I generate refresh token', () => {
+describe('I generate refresh token use case', () => {
     const refreshTokens: RefreshToken[] = [];
     it('should generate a refresh token successfully', async () => {
         // Arrange
@@ -21,7 +21,7 @@ describe('I generate refresh token', () => {
         // assert
 
         console.log(refreshTokens);
-        if(refreshToken instanceof InvalidGenerateRefreshToken) return console.log('error');
+        if(refreshToken instanceof InvalidGenerateRefreshToken) return console.log('error generating refresh token');
         expect(refreshToken).toHaveProperty('id');
         expect(refreshToken).toHaveProperty('public_id');
         expect(refreshToken).toHaveProperty('expires_in');

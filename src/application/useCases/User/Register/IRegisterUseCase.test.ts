@@ -10,10 +10,10 @@
 //   compare: jest.fn(),
 // };
 
-// describe('I register', () => {
+// describe('I register use case', () => {
 //   const users: User[] = [];
 
-//   test('must register a user successfully', async () => {
+//   it('must register a user successfully', async () => {
 //     // Arrange
 //     const iRegisterUserRepoInMemory = new IRegisterRepoImplInMemory(users);
 //     const sut = new IRegisterUseCase(
@@ -54,7 +54,7 @@
 //     });
 //   });
 
-//   test('must fail for the reason email should be unique and because of this user already exists', async () => {
+//   it('must fail for the reason email should be unique and because of this user already exists', async () => {
 //     // Arrange
 //     const iregisterUserRepoInMemory = new IRegisterRepoImplInMemory(users);
 //     const sut = new IRegisterUseCase(
