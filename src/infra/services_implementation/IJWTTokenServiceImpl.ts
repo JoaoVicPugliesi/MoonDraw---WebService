@@ -2,7 +2,7 @@ import { Token } from '@domain/services/helpers/Token';
 import { ITokenService } from '@domain/services/ITokenService';
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
 
-export class ITokenServiceImpl implements ITokenService {
+export class IJWTTokenServiceImpl implements ITokenService {
     sign(params: Token): string {
         return sign(params.payload as object, params.secret_key as string, params.options)
     }

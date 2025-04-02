@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { IHashService } from '../../domain/services/IHashService';
 
-export class IHashServiceImpl implements IHashService {
+export class IBcryptHashServiceImpl implements IHashService {
 
     private readonly salt: number = 10;
 

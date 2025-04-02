@@ -1,6 +1,5 @@
 import { ILoginUseCase } from '@application/useCases/User/Login/ILoginUseCase';
 import { User } from '@domain/entities/User';
-import { IHashService } from '@domain/services/IHashService';
 import { IRegisterRepo } from '@domain/repositories/User/IRegisterRepo';
 import { IMailProvider } from '@domain/providers/repositories/Mail/IMailProvider';
 import { IRegisterDTO } from './IRegisterDTO';
@@ -20,7 +19,6 @@ export class IRegisterUseCase {
   constructor(
     private readonly iRegisterRepo: IRegisterRepo,
     private readonly iMailProvider: IMailProvider,
-    private readonly iHashService: IHashService,
     private readonly iLoginUseCase: ILoginUseCase
   ) {}
 
@@ -32,8 +30,7 @@ export class IRegisterUseCase {
     if (isUser) return new InvalidUserConflictError();
 
     const user: User = await this.iRegisterRepo.saveUser(
-      DTO,
-      this.iHashService
+      DTO
     );
 
     const mailResponse: SMTPTransport.SentMessageInfo =

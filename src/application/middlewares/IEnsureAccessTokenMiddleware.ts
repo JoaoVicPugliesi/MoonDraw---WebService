@@ -1,7 +1,5 @@
 import { ITokenService } from '@domain/services/ITokenService';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import { configDotenv } from 'dotenv';
-configDotenv();
 
 export class IEnsureAccessTokenMiddleware {
   private readonly secret_key: string;

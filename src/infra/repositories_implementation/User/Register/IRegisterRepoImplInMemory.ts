@@ -5,7 +5,10 @@ import { IHashService } from '@domain/services/IHashService';
 import { randomUUID } from 'crypto';
 
 export class IRegisterRepoImplInMemory implements IRegisterRepo {
-  constructor(private readonly users: User[]) {}
+  constructor(
+    private readonly users: User[],
+    private readonly iHashService: IHashService
+  ) {}
 
   async findUser<T>(param: T): Promise<boolean> {
     return new Promise((resolve, reject) => {
@@ -23,9 +26,8 @@ export class IRegisterRepoImplInMemory implements IRegisterRepo {
 
   async saveUser(
     { name, surname, email, password }: IRegisterDTO,
-    iHashService: IHashService
   ): Promise<User> {
-    const hash: string = await iHashService.hash(password);
+    const hash: string = await this.iHashService.hash(password);
     return new Promise((resolve, reject) => {
       const user: User = {
         id: this.users.length + 1,

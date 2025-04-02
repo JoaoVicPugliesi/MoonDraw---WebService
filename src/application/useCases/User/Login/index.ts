@@ -1,14 +1,14 @@
 import { ILoginRepoImpl } from './../../../../infra/repositories_implementation/User/Login/ILoginRepoImpl';
-import { IHashServiceImpl } from '@infra/services_implementation/IHashServiceImpl';
-import { ITokenServiceImpl } from '@infra/services_implementation/ITokenServiceImpl';
+import { IBcryptHashServiceImpl } from '@infra/services_implementation/IBcryptHashServiceImpl';
+import { IJWTTokenServiceImpl } from '@infra/services_implementation/IJWTTokenServiceImpl';
 import { IGenerateRefreshTokenRepoImpl } from '@infra/repositories_implementation/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenRepoImpl';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { ILoginUseCase } from './ILoginUseCase';
 import { ILoginController } from './ILoginController';
 
 const iLoginRepo = new ILoginRepoImpl();
-const iHashService = new IHashServiceImpl();
-const iTokenService = new ITokenServiceImpl();
+const iHashService = new IBcryptHashServiceImpl();
+const iTokenService = new IJWTTokenServiceImpl();
 const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoImpl();
 const iGenerateRefreshTokenUseCase = new IGenerateRefreshTokenUseCase(
   iGenerateRefreshTokenRepo

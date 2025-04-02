@@ -6,6 +6,9 @@ import { IRegisterRepo } from '@domain/repositories/User/IRegisterRepo';
 import { IHashService } from '@domain/services/IHashService';
 
 export class IRegisterRepoImpl implements IRegisterRepo {
+
+  constructor(private readonly iHashService: IHashService) {}
+
   async findUser<T>(param: T): Promise<boolean> {
     const isUser = await prisma.user.findFirst({
       where: {
@@ -22,9 +25,8 @@ export class IRegisterRepoImpl implements IRegisterRepo {
 
   async saveUser(
     { name, surname, email, password }: IRegisterDTO,
-    iHashService: IHashService
   ): Promise<User> {
-    const hash: string = await iHashService.hash(password);
+    const hash: string = await this.iHashService.hash(password);
     const user: User = await prisma.user.create({
       data: {
         public_id: randomUUID(),

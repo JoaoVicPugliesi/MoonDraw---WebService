@@ -3,8 +3,8 @@ import { IGenerateRefreshTokenRepoImplInMemory } from '@infra/repositories_imple
 import { ILoginUseCase } from './ILoginUseCase';
 import { User } from '@domain/entities/User';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
-import { ITokenServiceImpl } from '@infra/services_implementation/ITokenServiceImpl';
-import { IHashServiceImpl } from '@infra/services_implementation/IHashServiceImpl';
+import { IJWTTokenServiceImpl } from '@infra/services_implementation/IJWTTokenServiceImpl';
+import { IBcryptHashServiceImpl } from '@infra/services_implementation/IBcryptHashServiceImpl';
 import {
   InvalidPasswordIsNotEqualError,
   InvalidUserNotFoundError,
@@ -39,8 +39,8 @@ describe('I login use case', () => {
   it('should fail because there is no user registered matching DTO.email provided', async () => {
     // arrange
     const usersSpliced = users.toSpliced(0);
-    const iHashService = new IHashServiceImpl();
-    const iTokenService = new ITokenServiceImpl();
+    const iHashService = new IBcryptHashServiceImpl();
+    const iTokenService = new IJWTTokenServiceImpl();
     const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoImplInMemory(
       refreshTokens
     );
@@ -67,8 +67,8 @@ describe('I login use case', () => {
   });
   it('should fail because DTO.password provided does not match user.password found', async () => {
     // arrange
-    const iHashService = new IHashServiceImpl();
-    const iTokenService = new ITokenServiceImpl();
+    const iHashService = new IBcryptHashServiceImpl();
+    const iTokenService = new IJWTTokenServiceImpl();
     const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoImplInMemory(
       refreshTokens
     );
@@ -95,8 +95,8 @@ describe('I login use case', () => {
   });
   it('should login the user successfully', async () => {
     // arrange
-    const iHashService = new IHashServiceImpl();
-    const iTokenService = new ITokenServiceImpl();
+    const iHashService = new IBcryptHashServiceImpl();
+    const iTokenService = new IJWTTokenServiceImpl();
     const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoImplInMemory(
       refreshTokens
     );

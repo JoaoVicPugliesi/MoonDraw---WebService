@@ -1,5 +1,5 @@
 import { IEnsureAccessTokenMiddleware } from '@application/middlewares/IEnsureAccessTokenMiddleware';
-import { ITokenServiceImpl } from '@infra/services_implementation/ITokenServiceImpl';
+import { IJWTTokenServiceImpl } from '@infra/services_implementation/IJWTTokenServiceImpl';
 import { FastifyRequestResponseAdapter } from '@server/Fastify/FastifyRequestResponseAdapter';
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
@@ -9,7 +9,7 @@ export class Get {
   setupRoutes() {
     this.app.get('/api/products', (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
-      const iTokenService = new ITokenServiceImpl();
+      const iTokenService = new IJWTTokenServiceImpl();
       const iEnsureAccessTokenMiddleware = new IEnsureAccessTokenMiddleware(adapter, iTokenService);
       iEnsureAccessTokenMiddleware.ensure();
       return res.status(200).send([

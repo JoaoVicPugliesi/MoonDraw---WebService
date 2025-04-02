@@ -9,8 +9,8 @@ import { ILoginUseCase } from '../Login/ILoginUseCase';
 import { ILoginRepoImplInMemory } from '@infra/repositories_implementation/User/Login/ILoginRepoImplInMemory';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { IGenerateRefreshTokenRepoImplInMemory } from '@infra/repositories_implementation/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenRepoImplInMemory';
-import { ITokenServiceImpl } from '@infra/services_implementation/ITokenServiceImpl';
-import { IHashServiceImpl } from '@infra/services_implementation/IHashServiceImpl';
+import { IJWTTokenServiceImpl } from '@infra/services_implementation/IJWTTokenServiceImpl';
+import { IBcryptHashServiceImpl } from '@infra/services_implementation/IBcryptHashServiceImpl';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { InvalidPasswordIsNotEqualError, InvalidUserNotFoundError } from '@application/handlers/User/ILoginHandlers';
 import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
@@ -35,10 +35,10 @@ users.push({
 });
 
 describe('I register use case', () => {
-  it('must fail for the reason email should be unique and because of this user already exists', async () => {
+  it('must fail for the reason email should be unique and user already exists', async () => {
     // Arrange
-    const iHashService = new IHashServiceImpl();
-    const iTokenService = new ITokenServiceImpl();
+    const iHashService = new IBcryptHashServiceImpl();
+    const iTokenService = new IJWTTokenServiceImpl();
     const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoImplInMemory(
       refreshTokens
     );
@@ -52,11 +52,10 @@ describe('I register use case', () => {
       iTokenService,
       iGenerateRefreshTokenUseCase
     );
-    const iRegisterUserRepoInMemory = new IRegisterRepoImplInMemory(users);
+    const iRegisterUserRepoInMemory = new IRegisterRepoImplInMemory(users, iHashService);
     const sut = new IRegisterUseCase(
       iRegisterUserRepoInMemory,
       iMailProvider,
-      iHashService,
       iLoginUseCase
     );
     // Act
@@ -74,8 +73,8 @@ describe('I register use case', () => {
   it('must register a user successfully', async () => {
     // Arrange
     const usersSpliced = users.toSpliced(0)
-    const iHashService = new IHashServiceImpl();
-    const iTokenService = new ITokenServiceImpl();
+    const iHashService = new IBcryptHashServiceImpl();
+    const iTokenService = new IJWTTokenServiceImpl();
     const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoImplInMemory(
       refreshTokens
     );
@@ -89,11 +88,10 @@ describe('I register use case', () => {
       iTokenService,
       iGenerateRefreshTokenUseCase
     );
-    const iRegisterUserRepoInMemory = new IRegisterRepoImplInMemory(users);
+    const iRegisterUserRepoInMemory = new IRegisterRepoImplInMemory(users, iHashService);
     const sut = new IRegisterUseCase(
       iRegisterUserRepoInMemory,
       iMailProvider,
-      iHashService,
       iLoginUseCase
     );
 

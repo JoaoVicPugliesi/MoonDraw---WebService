@@ -6,8 +6,6 @@ import { IRefreshAccessTokenDTO } from "./IRefreshAccessTokenDTO";
 import { RefreshToken } from "@domain/entities/RefreshToken";
 import { InvalidRefreshToken } from '@application/handlers/RefreshToken/IRefreshAccessTokenHandler';
 import { IGenerateRefreshTokenDTO } from '../GenerateRefreshToken/IGenerateRefreshTokenDTO';
-import { configDotenv } from 'dotenv';
-configDotenv();
 
 export class IRefreshAccessTokenUseCase {
 
@@ -28,7 +26,7 @@ export class IRefreshAccessTokenUseCase {
         
         const refreshTokenExpired: boolean = dayjs().isAfter(dayjs.unix(refreshToken.expires_in));
 
-        const AccessToken: string = this.iTokenService.sign({
+        const accessToken: string = this.iTokenService.sign({
             payload: {
                 sub: refreshToken.user_id
             },
@@ -46,14 +44,14 @@ export class IRefreshAccessTokenUseCase {
             const newRefreshToken = await this.iGenerateRefreshTokenUseCase.execute(DTO);
 
             return { 
-                Access_token: AccessToken,
+                access_token: accessToken,
                 refresh_token: newRefreshToken
             }
         }
 
 
         return {
-            Access_token: AccessToken
+            access_token: accessToken
         }
     }
 }

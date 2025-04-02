@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 
 export class IGenerateRefreshTokenRepoImplInMemory implements IGenerateRefreshTokenRepo {
 
-    constructor(private refreshTokens: RefreshToken[]) {}
+    constructor(private readonly refreshTokens: RefreshToken[]) {}
 
     findRelatedRefreshTokens<T>(param: T): Promise<RefreshToken | RefreshToken[] | null> {
         return new Promise((resolve, reject) => {

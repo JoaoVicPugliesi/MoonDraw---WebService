@@ -1,15 +1,12 @@
 import nodemailer from 'nodemailer';
 import { Mail } from '../../../domain/providers/externals/Mail';
 import { IMailProvider } from '../../../domain/providers/repositories/Mail/IMailProvider';
-import { configDotenv } from 'dotenv';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
-
-configDotenv();
 
 const USER: string = process.env.USER as string;
 const PASS: string = process.env.PASS as string;
 
-export class IMailProviderImpl implements IMailProvider {
+export class INodemailerMailProviderImpl implements IMailProvider {
   private readonly transporter;
   private readonly user: string;
   private readonly pass: string;
