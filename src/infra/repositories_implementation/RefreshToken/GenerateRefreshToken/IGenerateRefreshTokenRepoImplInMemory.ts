@@ -1,12 +1,14 @@
+import dayjs from "dayjs";
 import { IGenerateRefreshTokenDTO } from "@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO";
 import { RefreshToken } from "@domain/entities/RefreshToken";
 import { IGenerateRefreshTokenRepo } from "@domain/repositories/RefreshToken/IGenerateRefreshTokenRepo";
 import { randomUUID } from "crypto";
-import dayjs from "dayjs";
 
 export class IGenerateRefreshTokenRepoImplInMemory implements IGenerateRefreshTokenRepo {
 
-    constructor(private readonly refreshTokens: RefreshToken[]) {}
+    constructor(
+        private readonly refreshTokens: RefreshToken[],
+    ) {}
 
     findRelatedRefreshTokens<T>(param: T): Promise<RefreshToken | RefreshToken[] | null> {
         return new Promise((resolve, reject) => {

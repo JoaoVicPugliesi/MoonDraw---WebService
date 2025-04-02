@@ -12,6 +12,8 @@ import {
 } from '@application/handlers/User/ILoginHandlers';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+import { configDotenv } from 'dotenv';
+configDotenv();
 
 export class ILoginUseCase {
   constructor(

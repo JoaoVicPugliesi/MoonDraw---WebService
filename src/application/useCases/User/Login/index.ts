@@ -1,24 +1,7 @@
-import { ILoginRepoImpl } from './../../../../infra/repositories_implementation/User/Login/ILoginRepoImpl';
-import { IBcryptHashServiceImpl } from '@infra/services_implementation/IBcryptHashServiceImpl';
-import { IJWTTokenServiceImpl } from '@infra/services_implementation/IJWTTokenServiceImpl';
-import { IGenerateRefreshTokenRepoImpl } from '@infra/repositories_implementation/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenRepoImpl';
-import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
-import { ILoginUseCase } from './ILoginUseCase';
-import { ILoginController } from './ILoginController';
+import { ILoginFactory } from "@application/factories/User/Login/ILoginFactory";
+import { ILoginController } from "./ILoginController";
 
-const iLoginRepo = new ILoginRepoImpl();
-const iHashService = new IBcryptHashServiceImpl();
-const iTokenService = new IJWTTokenServiceImpl();
-const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoImpl();
-const iGenerateRefreshTokenUseCase = new IGenerateRefreshTokenUseCase(
-  iGenerateRefreshTokenRepo
-);
-const iLoginUseCase = new ILoginUseCase(
-  iLoginRepo,
-  iHashService,
-  iTokenService,
-  iGenerateRefreshTokenUseCase
-);
+const iLoginFactory = new ILoginFactory();
+const iLoginUseCase = iLoginFactory.compose();
 const iLoginController = new ILoginController(iLoginUseCase);
-
 export const login: ILoginController = iLoginController;

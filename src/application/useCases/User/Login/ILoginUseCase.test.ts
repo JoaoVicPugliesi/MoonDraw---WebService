@@ -1,17 +1,13 @@
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { IGenerateRefreshTokenRepoImplInMemory } from '@infra/repositories_implementation/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenRepoImplInMemory';
 import { ILoginUseCase } from './ILoginUseCase';
 import { User } from '@domain/entities/User';
-import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
-import { IJWTTokenServiceImpl } from '@infra/services_implementation/IJWTTokenServiceImpl';
-import { IBcryptHashServiceImpl } from '@infra/services_implementation/IBcryptHashServiceImpl';
 import {
   InvalidPasswordIsNotEqualError,
   InvalidUserNotFoundError,
   LoginResponse,
 } from '@application/handlers/User/ILoginHandlers';
 import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
-import { ILoginRepoImplInMemory } from '@infra/repositories_implementation/User/Login/ILoginRepoImplInMemory';
+import { ILoginFactoryInMemory } from '@application/factories/User/Login/ILoginFactoryInMemory';
 
 type Logged = | InvalidUserNotFoundError
 | InvalidPasswordIsNotEqualError
@@ -39,21 +35,8 @@ describe('I login use case', () => {
   it('should fail because there is no user registered matching DTO.email provided', async () => {
     // arrange
     const usersSpliced = users.toSpliced(0);
-    const iHashService = new IBcryptHashServiceImpl();
-    const iTokenService = new IJWTTokenServiceImpl();
-    const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoImplInMemory(
-      refreshTokens
-    );
-    const iGenerateRefreshTokenUseCase = new IGenerateRefreshTokenUseCase(
-      iGenerateRefreshTokenRepo
-    );
-    const iLoginRepo = new ILoginRepoImplInMemory(usersSpliced);
-    const sut = new ILoginUseCase(
-      iLoginRepo,
-      iHashService,
-      iTokenService,
-      iGenerateRefreshTokenUseCase
-    );
+    const iLoginFactory = new ILoginFactoryInMemory(usersSpliced, refreshTokens);
+    const sut: ILoginUseCase = iLoginFactory.compose();
 
     // act
     const logged: Logged = await sut.execute({
@@ -63,26 +46,13 @@ describe('I login use case', () => {
 
     // assert
 
-    expect(logged instanceof InvalidUserNotFoundError);
+    expect(logged).toBeInstanceOf(InvalidUserNotFoundError);
   });
   it('should fail because DTO.password provided does not match user.password found', async () => {
     // arrange
-    const iHashService = new IBcryptHashServiceImpl();
-    const iTokenService = new IJWTTokenServiceImpl();
-    const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoImplInMemory(
-      refreshTokens
-    );
-    const iGenerateRefreshTokenUseCase = new IGenerateRefreshTokenUseCase(
-      iGenerateRefreshTokenRepo
-    );
-    const iLoginRepo = new ILoginRepoImplInMemory(users);
-    const sut = new ILoginUseCase(
-      iLoginRepo,
-      iHashService,
-      iTokenService,
-      iGenerateRefreshTokenUseCase
-    );
-
+    const iLoginFactory = new ILoginFactoryInMemory(users, refreshTokens);
+    const sut: ILoginUseCase = iLoginFactory.compose();
+    
     // act
     const logged: Logged = await sut.execute({
       email: 'mrlanguages62@gmail.com',
@@ -91,25 +61,12 @@ describe('I login use case', () => {
 
     // assert
 
-    expect(logged instanceof InvalidPasswordIsNotEqualError);
+    expect(logged).toBeInstanceOf(InvalidPasswordIsNotEqualError);
   });
   it('should login the user successfully', async () => {
     // arrange
-    const iHashService = new IBcryptHashServiceImpl();
-    const iTokenService = new IJWTTokenServiceImpl();
-    const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoImplInMemory(
-      refreshTokens
-    );
-    const iGenerateRefreshTokenUseCase = new IGenerateRefreshTokenUseCase(
-      iGenerateRefreshTokenRepo
-    );
-    const iLoginRepo = new ILoginRepoImplInMemory(users);
-    const sut = new ILoginUseCase(
-      iLoginRepo,
-      iHashService,
-      iTokenService,
-      iGenerateRefreshTokenUseCase
-    );
+    const iLoginFactory = new ILoginFactoryInMemory(users, refreshTokens);
+    const sut: ILoginUseCase = iLoginFactory.compose();
 
     // act
     const logged: Logged = await sut.execute({
