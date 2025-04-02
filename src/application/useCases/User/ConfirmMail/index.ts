@@ -1,9 +1,8 @@
-import { IConfirmMailRepoImpl } from "@infra/repositories_implementation/User/ConfirmMail/IConfirmMailRepoImpl";
-import { IConfirmMailUseCase } from "./IConfirmMailUseCase";
+import { IConfirmMailFactory } from "@application/factories/User/ConfirmMail/IConfirmMailFactory";
 import { IConfirmMailController } from "./IConfirmMailController";
 
-const iConfirmMailRepo = new IConfirmMailRepoImpl();
-const iConfirmMailUseCase = new IConfirmMailUseCase(iConfirmMailRepo);
+const iConfirmMailFactory = new IConfirmMailFactory();
+const iConfirmMailUseCase = iConfirmMailFactory.compose();
 const iConfirmMailController = new IConfirmMailController(iConfirmMailUseCase);
 
 export const confirmMail: IConfirmMailController = iConfirmMailController;

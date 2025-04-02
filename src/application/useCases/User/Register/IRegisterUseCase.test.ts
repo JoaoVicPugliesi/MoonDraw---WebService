@@ -15,18 +15,20 @@ const iMailProvider = { sendMail: jest.fn() };
 type Registered = InvalidUserConflictErrorResponse | RegisterReponse;
 const users: User[] = [];
 const refreshTokens: RefreshToken[] = [];
-users.push({
-    id: users.length + 1,
-    public_id: '56d7ff79-f16d-434b-9183-5b0db27fa4e2',
-    name: 'João',
-    surname: 'Pugliesi',
-    email: 'mrlanguages62@gmail.com',
-    password: '$2b$10$GX73JFHmigssj00i5mES9uak392P5wSrS6caNFaQ0ybZkm2TBuBkK',
-    role: 'client',
-    is_active: false,
-    created_at: new Date(),
-    email_verified_at: null,
-});
+
+const user: User = {
+  id: users.length + 1,
+  public_id: '56d7ff79-f16d-434b-9183-5b0db27fa4e2',
+  name: 'João',
+  surname: 'Pugliesi',
+  email: 'mrlanguages62@gmail.com',
+  password: '$2b$10$GX73JFHmigssj00i5mES9uak392P5wSrS6caNFaQ0ybZkm2TBuBkK',
+  role: 'client',
+  is_active: false,
+  created_at: new Date(),
+  email_verified_at: null,
+}
+users.push(user);
 
 describe('I register use case', () => {
   it('must fail for the reason email should be unique and user already exists', async () => {
