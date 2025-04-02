@@ -1,1 +1,1 @@
-export class InvalidGenerateRefreshToken extends Error {};
+export class InvalidGenerateRefreshTokenErrorResponse extends Error {};

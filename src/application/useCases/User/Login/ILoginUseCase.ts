@@ -6,12 +6,12 @@ import { IHashService } from '@domain/services/IHashService';
 import { ITokenService } from '@domain/services/ITokenService';
 import { ILoginDTO } from './ILoginDTO';
 import {
-  InvalidUserNotFoundError,
-  InvalidPasswordIsNotEqualError,
+  InvalidUserNotFoundErrorResponse,
+  InvalidPasswordIsNotEqualErrorResponse,
   LoginResponse,
 } from '@application/handlers/User/ILoginHandlers';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
 import { configDotenv } from 'dotenv';
 configDotenv();
 
@@ -26,19 +26,19 @@ export class ILoginUseCase {
   async execute(
     DTO: ILoginDTO
   ): Promise<
-    | InvalidUserNotFoundError
-    | InvalidPasswordIsNotEqualError
-    | InvalidGenerateRefreshToken
+    | InvalidUserNotFoundErrorResponse
+    | InvalidPasswordIsNotEqualErrorResponse
+    | InvalidGenerateRefreshTokenErrorResponse
     | LoginResponse
   > {
     const user: User | null = await this.iLoginRepo.findUser(DTO.email);
-    if (!user) return new InvalidUserNotFoundError();
+    if (!user) return new InvalidUserNotFoundErrorResponse();
 
     const isPasswordEqual: boolean = await this.iHashService.compare(
       DTO.password,
       user.password
     );
-    if (!isPasswordEqual) return new InvalidPasswordIsNotEqualError();
+    if (!isPasswordEqual) return new InvalidPasswordIsNotEqualErrorResponse();
 
     const accessToken: string = this.iTokenService.sign({
       payload: {
@@ -54,11 +54,11 @@ export class ILoginUseCase {
       user_id: user.public_id
     };
     
-    const refreshToken: InvalidGenerateRefreshToken | RefreshToken =
+    const refreshToken: InvalidGenerateRefreshTokenErrorResponse | RefreshToken =
       await this.iGenerateRefreshTokenUseCase.execute(iGenerateRefreshTokenDTO);
 
-    if (refreshToken instanceof InvalidGenerateRefreshToken)
-      return new InvalidGenerateRefreshToken();
+    if (refreshToken instanceof InvalidGenerateRefreshTokenErrorResponse)
+      return new InvalidGenerateRefreshTokenErrorResponse();
 
     return {
       access_token: accessToken,

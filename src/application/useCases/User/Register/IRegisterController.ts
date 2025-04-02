@@ -4,14 +4,14 @@ import { IRegisterValidator } from '@application/validators/IRegisterValidator';
 import { IRegisterDTO } from './IRegisterDTO';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import {
-  InvalidUserConflictError,
+  InvalidUserConflictErrorResponse,
   RegisterReponse,
 } from '@application/handlers/User/IRegisterHandlers';
 import {
-  InvalidPasswordIsNotEqualError,
-  InvalidUserNotFoundError,
+  InvalidPasswordIsNotEqualErrorResponse,
+  InvalidUserNotFoundErrorResponse,
 } from '@application/handlers/User/ILoginHandlers';
-import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
 
 export class IRegisterController {
   private readonly iRegisterValidator: IRegisterValidator;
@@ -25,21 +25,21 @@ export class IRegisterController {
 
     try {
       const DTO: IRegisterDTO = schema.parse(adapter.req.body);
-      const registered: InvalidUserConflictError | RegisterReponse =
+      const registered: InvalidUserConflictErrorResponse | RegisterReponse =
         await this.iRegisterUseCase.execute(DTO);
 
-      if (registered instanceof InvalidUserConflictError) {
+      if (registered instanceof InvalidUserConflictErrorResponse) {
         return adapter.res.status(409).send({
           message: 'Conflict: user with email provided already exists',
         });
       }
-      if (registered.login_response instanceof InvalidUserNotFoundError) {
+      if (registered.login_response instanceof InvalidUserNotFoundErrorResponse) {
         return adapter.res.status(404).send({ message: 'User or Password incorrect' });
       }
-      if (registered.login_response instanceof InvalidPasswordIsNotEqualError) {
+      if (registered.login_response instanceof InvalidPasswordIsNotEqualErrorResponse) {
         return adapter.res.status(401).send({ message: 'Non authorized' });
       }
-      if (registered.login_response instanceof InvalidGenerateRefreshToken) {
+      if (registered.login_response instanceof InvalidGenerateRefreshTokenErrorResponse) {
         return adapter.res.status(501).send({ message: 'Failed to generate refresh token' });
       }
 

@@ -4,7 +4,7 @@ import { IBcryptHashServiceImpl } from '@infra/services_implementation/IBcryptHa
 import { IJWTTokenServiceImpl } from '@infra/services_implementation/IJWTTokenServiceImpl';
 import { ILoginUseCase } from '@application/useCases/User/Login/ILoginUseCase';
 import { ILoginRepoImplInMemory } from '@infra/repositories_implementation/User/Login/ILoginRepoImplInMemory';
-import { IGenerateRefreshTokenFactoryInMemory } from '@application/factories/RefreshToken/IGenerateRefreshTokenInMemory';
+import { IGenerateRefreshTokenFactoryInMemory } from '@application/factories/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenInMemory';
 
 export class ILoginFactoryInMemory {
 

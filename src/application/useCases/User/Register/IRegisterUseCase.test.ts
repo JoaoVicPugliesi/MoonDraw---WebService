@@ -1,18 +1,18 @@
 import {
-  InvalidUserConflictError,
+  InvalidUserConflictErrorResponse,
   RegisterReponse,
 } from '@application/handlers/User/IRegisterHandlers';
 import { User } from '@domain/entities/User';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { InvalidPasswordIsNotEqualError, InvalidUserNotFoundError } from '@application/handlers/User/ILoginHandlers';
-import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+import { InvalidPasswordIsNotEqualErrorResponse, InvalidUserNotFoundErrorResponse } from '@application/handlers/User/ILoginHandlers';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
 import { IRegisterFactoryInMemory } from '@application/factories/User/Register/IRegisterFactoryInMemory';
 import { IRegisterUseCase } from './IRegisterUseCase';
 
 // Mocks
 const iMailProvider = { sendMail: jest.fn() };
 
-type Registered = InvalidUserConflictError | RegisterReponse;
+type Registered = InvalidUserConflictErrorResponse | RegisterReponse;
 const users: User[] = [];
 const refreshTokens: RefreshToken[] = [];
 users.push({
@@ -42,7 +42,7 @@ describe('I register use case', () => {
     });
 
     // Assert
-    expect(registered).toBeInstanceOf(InvalidUserConflictError);
+    expect(registered).toBeInstanceOf(InvalidUserConflictErrorResponse);
   });
 
   it('must register a user successfully', async () => {
@@ -63,15 +63,15 @@ describe('I register use case', () => {
     console.log(registered);
     console.log(users);
 
-    if(registered instanceof InvalidUserConflictError) console.log('error');
+    if(registered instanceof InvalidUserConflictErrorResponse) console.log('error');
 
     // Assert
-    if(!(registered instanceof InvalidUserConflictError)) {
+    if(!(registered instanceof InvalidUserConflictErrorResponse)) {
         expect(registered).toHaveProperty('mail_response');
         expect(registered).toHaveProperty('login_response');
-        expect(registered.login_response).not.toBeInstanceOf(InvalidUserNotFoundError);
-        expect(registered.login_response).not.toBeInstanceOf(InvalidPasswordIsNotEqualError);
-        expect(registered.login_response).not.toBeInstanceOf(InvalidGenerateRefreshToken);
+        expect(registered.login_response).not.toBeInstanceOf(InvalidUserNotFoundErrorResponse);
+        expect(registered.login_response).not.toBeInstanceOf(InvalidPasswordIsNotEqualErrorResponse);
+        expect(registered.login_response).not.toBeInstanceOf(InvalidGenerateRefreshTokenErrorResponse);
        }
   });
 });

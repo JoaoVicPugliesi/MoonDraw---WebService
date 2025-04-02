@@ -1,6 +1,6 @@
 import { IGenerateRefreshTokenRepoImplInMemory } from '@infra/repositories_implementation/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenRepoImplInMemory';
 import { IGenerateRefreshTokenUseCase } from './IGenerateRefreshTokenUseCase';
-import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
 import { IGenerateRefreshTokenDTO } from './IGenerateRefreshTokenDTO';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 
@@ -16,12 +16,12 @@ describe('I generate refresh token use case', () => {
             user_id: userId
         }
         // Act
-        const refreshToken: InvalidGenerateRefreshToken | RefreshToken = await sut.execute(DTO);
+        const refreshToken: InvalidGenerateRefreshTokenErrorResponse | RefreshToken = await sut.execute(DTO);
 
-        // assert
+        // Assert
 
         console.log(refreshTokens);
-        if(refreshToken instanceof InvalidGenerateRefreshToken) return console.log('error generating refresh token');
+        if(refreshToken instanceof InvalidGenerateRefreshTokenErrorResponse) return console.log('error generating refresh token');
         expect(refreshToken).toHaveProperty('id');
         expect(refreshToken).toHaveProperty('public_id');
         expect(refreshToken).toHaveProperty('expires_in');
@@ -38,8 +38,8 @@ describe('I generate refresh token use case', () => {
              user_id: userId
          }
          // Act
-        const refreshToken: InvalidGenerateRefreshToken | RefreshToken = await sut.execute(DTO);
-        if(refreshToken instanceof InvalidGenerateRefreshToken) return console.log('error');
+        const refreshToken: InvalidGenerateRefreshTokenErrorResponse | RefreshToken = await sut.execute(DTO);
+        if(refreshToken instanceof InvalidGenerateRefreshTokenErrorResponse) return console.log('error');
         
         const refreshTokensRelatedToCurrentUser = refreshTokens.filter((refreshToken) => refreshToken.user_id === userId);
         

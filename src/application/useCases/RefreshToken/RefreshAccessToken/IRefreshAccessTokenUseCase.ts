@@ -1,11 +1,14 @@
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
 import dayjs from "dayjs";
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { IRefreshAccessTokenRepo } from "@domain/repositories/RefreshToken/IRefreshAccessTokenRepo";
 import { ITokenService } from "@domain/services/ITokenService";
 import { IRefreshAccessTokenDTO } from "./IRefreshAccessTokenDTO";
 import { RefreshToken } from "@domain/entities/RefreshToken";
-import { InvalidRefreshToken } from '@application/handlers/RefreshToken/IRefreshAccessTokenHandler';
+import { InvalidRefreshTokenNotFoundResponse, RefreshAccessTokenResponse } from '@application/handlers/RefreshToken/IRefreshAccessTokenHandler';
 import { IGenerateRefreshTokenDTO } from '../GenerateRefreshToken/IGenerateRefreshTokenDTO';
+import { configDotenv } from "dotenv";
+configDotenv();
 
 export class IRefreshAccessTokenUseCase {
 
@@ -19,10 +22,10 @@ export class IRefreshAccessTokenUseCase {
         this.secret_key = process.env.SECRET_KEY as string;
     }
 
-    async execute(DTO: IRefreshAccessTokenDTO): Promise<InvalidRefreshToken | object> {
+    async execute(DTO: IRefreshAccessTokenDTO): Promise<InvalidRefreshTokenNotFoundResponse | RefreshAccessTokenResponse> {
         const refreshToken: RefreshToken | null = await this.iRefreshAccessTokenRepo.findRefreshToken(DTO.public_id);
         
-        if(!refreshToken) return new InvalidRefreshToken();
+        if(!refreshToken) return new InvalidRefreshTokenNotFoundResponse();
         
         const refreshTokenExpired: boolean = dayjs().isAfter(dayjs.unix(refreshToken.expires_in));
 
@@ -41,14 +44,13 @@ export class IRefreshAccessTokenUseCase {
             const DTO: IGenerateRefreshTokenDTO = {
                 user_id: refreshToken.user_id,
             };
-            const newRefreshToken = await this.iGenerateRefreshTokenUseCase.execute(DTO);
+            const newRefreshToken: InvalidGenerateRefreshTokenErrorResponse | RefreshToken = await this.iGenerateRefreshTokenUseCase.execute(DTO);
 
             return { 
                 access_token: accessToken,
-                refresh_token: newRefreshToken
+                refresh_token: newRefreshToken as RefreshToken
             }
         }
-
 
         return {
             access_token: accessToken

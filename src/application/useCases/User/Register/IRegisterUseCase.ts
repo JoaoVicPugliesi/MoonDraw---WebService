@@ -4,16 +4,16 @@ import { IRegisterRepo } from '@domain/repositories/User/IRegisterRepo';
 import { IMailProvider } from '@domain/providers/repositories/Mail/IMailProvider';
 import { IRegisterDTO } from './IRegisterDTO';
 import {
-  InvalidUserConflictError,
+  InvalidUserConflictErrorResponse,
   RegisterReponse,
 } from '@application/handlers/User/IRegisterHandlers';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import {
-  InvalidPasswordIsNotEqualError,
-  InvalidUserNotFoundError,
+  InvalidPasswordIsNotEqualErrorResponse,
+  InvalidUserNotFoundErrorResponse,
   LoginResponse,
 } from '@application/handlers/User/ILoginHandlers';
-import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
 
 export class IRegisterUseCase {
   constructor(
@@ -24,10 +24,10 @@ export class IRegisterUseCase {
 
   async execute(
     DTO: IRegisterDTO
-  ): Promise<InvalidUserConflictError | RegisterReponse> {
+  ): Promise<InvalidUserConflictErrorResponse | RegisterReponse> {
     const isUser: boolean = await this.iRegisterRepo.findUser(DTO.email);
 
-    if (isUser) return new InvalidUserConflictError();
+    if (isUser) return new InvalidUserConflictErrorResponse();
 
     const user: User = await this.iRegisterRepo.saveUser(
       DTO
@@ -47,9 +47,9 @@ export class IRegisterUseCase {
       });
 
     const loginResponse:
-      | InvalidUserNotFoundError
-      | InvalidPasswordIsNotEqualError
-      | InvalidGenerateRefreshToken
+      | InvalidUserNotFoundErrorResponse
+      | InvalidPasswordIsNotEqualErrorResponse
+      | InvalidGenerateRefreshTokenErrorResponse
       | LoginResponse = await this.iLoginUseCase.execute({
       email: user.email,
       password: DTO.password,

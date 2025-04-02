@@ -2,7 +2,7 @@ import z from 'zod';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IRefreshAccessTokenUseCase } from './IRefreshAccessTokenUseCase';
 import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
-import { InvalidRefreshToken } from '@application/handlers/RefreshToken/IRefreshAccessTokenHandler';
+import { InvalidRefreshTokenNotFoundResponse, RefreshAccessTokenResponse } from '@application/handlers/RefreshToken/IRefreshAccessTokenHandler';
 export class IRefreshAccessTokenController {
   constructor(
     private readonly iRefreshAccessTokenUseCase: IRefreshAccessTokenUseCase
@@ -18,10 +18,10 @@ export class IRefreshAccessTokenController {
 
     try {
       const DTO: IRefreshAccessTokenDTO = schema.parse(adapter.req.body);
-      const refreshed: InvalidRefreshToken | object =
+      const refreshed: InvalidRefreshTokenNotFoundResponse | RefreshAccessTokenResponse =
         await this.iRefreshAccessTokenUseCase.execute(DTO);
 
-      if (refreshed instanceof InvalidRefreshToken)
+      if (refreshed instanceof InvalidRefreshTokenNotFoundResponse)
         return adapter.res
           .status(404)
           .send({ message: 'Refresh Token not found' });

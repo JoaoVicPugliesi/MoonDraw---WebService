@@ -1,5 +1,5 @@
-export class InvalidUserNotFoundError extends Error {}
-export class InvalidPasswordIsNotEqualError extends Error {}
+export class InvalidUserNotFoundErrorResponse extends Error {}
+export class InvalidPasswordIsNotEqualErrorResponse extends Error {}
 
 export interface LoginResponse {
     access_token: string,

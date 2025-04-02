@@ -2,16 +2,16 @@ import { RefreshToken } from '@domain/entities/RefreshToken';
 import { ILoginUseCase } from './ILoginUseCase';
 import { User } from '@domain/entities/User';
 import {
-  InvalidPasswordIsNotEqualError,
-  InvalidUserNotFoundError,
+  InvalidUserNotFoundErrorResponse,
+  InvalidPasswordIsNotEqualErrorResponse,
   LoginResponse,
 } from '@application/handlers/User/ILoginHandlers';
-import { InvalidGenerateRefreshToken } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
 import { ILoginFactoryInMemory } from '@application/factories/User/Login/ILoginFactoryInMemory';
 
-type Logged = | InvalidUserNotFoundError
-| InvalidPasswordIsNotEqualError
-| InvalidGenerateRefreshToken
+type Logged = | InvalidUserNotFoundErrorResponse
+| InvalidPasswordIsNotEqualErrorResponse
+| InvalidGenerateRefreshTokenErrorResponse
 | LoginResponse
 
 const users: User[] = [];
@@ -30,51 +30,49 @@ users.push({
 });
 
 describe('I login use case', () => {
-   // super arrange
-
   it('should fail because there is no user registered matching DTO.email provided', async () => {
-    // arrange
+    // Arrange
     const usersSpliced = users.toSpliced(0);
     const iLoginFactory = new ILoginFactoryInMemory(usersSpliced, refreshTokens);
     const sut: ILoginUseCase = iLoginFactory.compose();
 
-    // act
+    // Act
     const logged: Logged = await sut.execute({
       email: 'mrlanguages62@gmail.com',
       password: 'Mrlanguages1234##',
     });
 
-    // assert
+    // Assert
 
-    expect(logged).toBeInstanceOf(InvalidUserNotFoundError);
+    expect(logged).toBeInstanceOf(InvalidUserNotFoundErrorResponse);
   });
   it('should fail because DTO.password provided does not match user.password found', async () => {
-    // arrange
+    // Arrange
     const iLoginFactory = new ILoginFactoryInMemory(users, refreshTokens);
     const sut: ILoginUseCase = iLoginFactory.compose();
     
-    // act
+    // Act
     const logged: Logged = await sut.execute({
       email: 'mrlanguages62@gmail.com',
       password: 'mrlanguages1234##',
     });
 
-    // assert
+    // Assert
 
-    expect(logged).toBeInstanceOf(InvalidPasswordIsNotEqualError);
+    expect(logged).toBeInstanceOf(InvalidPasswordIsNotEqualErrorResponse);
   });
   it('should login the user successfully', async () => {
-    // arrange
+    // Arrange
     const iLoginFactory = new ILoginFactoryInMemory(users, refreshTokens);
     const sut: ILoginUseCase = iLoginFactory.compose();
 
-    // act
+    // Act
     const logged: Logged = await sut.execute({
       email: 'mrlanguages62@gmail.com',
       password: 'Mrlanguages1234##',
     });
 
-    // assert
+    // Assert
     expect(logged).toHaveProperty('access_token');
     expect(logged).toHaveProperty('refresh_token');
     console.log(logged);
