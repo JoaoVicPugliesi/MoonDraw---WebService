@@ -1,7 +1,7 @@
 import { IConfirmMailFactoryInMemory } from "@application/factories/User/ConfirmMail/IConfirmMailFactoryInMemory";
 import { User } from "@domain/entities/User";
 import { IConfirmMailDTO } from "./IConfirmMailDTO";
-import { InvalidUserNotFoundError } from "@application/handlers/User/IConfirmMailHandlers";
+import { InvalidUserNotFoundError } from "@application/handlers/UseCasesReponses/User/IConfirmMailHandlers";
 
 const users: User[] = [];
 const user: User = {

@@ -12,13 +12,13 @@ export class IEnsureAccessTokenMiddleware {
   }
 
   ensure() {
-    const authToken = this.adapter.req.headers?.authorization;
+    const accessToken = this.adapter.req.headers?.authorization;
 
-    if (!authToken) {
+    if (!accessToken) {
       return this.adapter.res.status(401).send({ message: 'Token is missing' });
     }
 
-    const [, token] = authToken.split(' ');
+    const [, token] = accessToken.split(' ');
 
     try {
       this.iTokenService.verify({

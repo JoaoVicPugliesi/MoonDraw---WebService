@@ -1,6 +1,6 @@
 import { IGenerateRefreshTokenRepoImplInMemory } from '@infra/repositories_implementation/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenRepoImplInMemory';
 import { IGenerateRefreshTokenUseCase } from './IGenerateRefreshTokenUseCase';
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesReponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { IGenerateRefreshTokenDTO } from './IGenerateRefreshTokenDTO';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 

@@ -23,6 +23,7 @@ export interface CookieOptions {
 export interface RequestResponseAdapter {
   req: {
     body?: any;
+    cookies: { [cookieName: string]: string };
     params?: Record<string, string>;
     query?: Record<string, string | string[]>;
     headers?: {

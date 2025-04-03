@@ -29,7 +29,7 @@ export class IGenerateRefreshTokenRepoImpl implements IGenerateRefreshTokenRepo 
     }
     async saveRefreshToken(DTO: IGenerateRefreshTokenDTO): Promise<RefreshToken | null> {
 
-        const expiresIn = dayjs().add(7, 'days').unix();
+        const expiresIn = dayjs().add(14, 'days').unix();
         const refreshToken: RefreshToken | null = await prisma.refreshToken.create({
             data: {
                 public_id: randomUUID(),

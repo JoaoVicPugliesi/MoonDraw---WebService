@@ -9,5 +9,5 @@ export interface RegisterReponse {
     login_response: InvalidUserNotFoundErrorResponse
           | InvalidPasswordIsNotEqualErrorResponse
           | InvalidGenerateRefreshTokenErrorResponse
-          | LoginResponse
+          | LoginResponse,
 }

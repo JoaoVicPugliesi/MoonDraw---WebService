@@ -10,6 +10,7 @@ export class FastifyRequestResponseAdapter implements RequestResponseAdapter {
 
   get req() {
     return {
+      cookies: this.request.cookies,
       body: this.request.body,
       params: this.request.params as Record<string, string>,
       query: this.request.query as Record<string, string | string[]>,

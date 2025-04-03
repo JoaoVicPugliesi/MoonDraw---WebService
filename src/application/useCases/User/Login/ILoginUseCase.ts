@@ -9,9 +9,9 @@ import {
   InvalidUserNotFoundErrorResponse,
   InvalidPasswordIsNotEqualErrorResponse,
   LoginResponse,
-} from '@application/handlers/User/ILoginHandlers';
+} from '@application/handlers/UseCasesReponses/User/ILoginHandlers';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesReponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { configDotenv } from 'dotenv';
 configDotenv();
 
@@ -39,14 +39,22 @@ export class ILoginUseCase {
       user.password
     );
     if (!isPasswordEqual) return new InvalidPasswordIsNotEqualErrorResponse();
+    
+    const { name, surname, email, role, is_active } = user;
 
     const accessToken: string = this.iTokenService.sign({
       payload: {
-        sub: user.public_id,
+        subject: {
+          name: name,
+          surname: surname,
+          email: email,
+          role: role,
+          is_active: is_active,
+        },
       },
       secret_key: process.env.SECRET_KEY as string,
       options: {
-        expiresIn: '30m',
+        expiresIn: '1h',
       },
     });
 
@@ -59,7 +67,7 @@ export class ILoginUseCase {
 
     if (refreshToken instanceof InvalidGenerateRefreshTokenErrorResponse)
       return new InvalidGenerateRefreshTokenErrorResponse();
-
+    
     return {
       access_token: accessToken,
       refresh_token: refreshToken,

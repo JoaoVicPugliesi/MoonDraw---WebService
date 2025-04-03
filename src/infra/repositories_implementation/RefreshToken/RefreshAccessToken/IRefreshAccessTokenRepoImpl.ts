@@ -1,6 +1,6 @@
 import { IRefreshAccessTokenRepo } from "@domain/repositories/RefreshToken/IRefreshAccessTokenRepo";
 import { prisma } from "@infra/db/Prisma";
-import { RefreshToken } from "@prisma/client";
+import { RefreshToken, User } from "@prisma/client";
 
 export class IRefreshAccessTokenRepoImpl implements IRefreshAccessTokenRepo {
     async findRefreshToken<T>(param: T): Promise<RefreshToken | null> {
@@ -14,6 +14,19 @@ export class IRefreshAccessTokenRepoImpl implements IRefreshAccessTokenRepo {
 
         return refreshToken;
     }
+
+    async findRefreshTokenUser<T>(param: T): Promise<User | null> {
+        const user: User | null = await prisma.user.findFirst({
+            where: {
+                public_id: param as string
+            }
+        });
+
+        if(user) return user;
+
+        return null;
+    }
+    
     async deleteRelatedRefreshTokens<T>(param: T): Promise<void> {
         await prisma.refreshToken.deleteMany({
             where: {
@@ -21,5 +34,6 @@ export class IRefreshAccessTokenRepoImpl implements IRefreshAccessTokenRepo {
             }
         })
     }
+
 
 }

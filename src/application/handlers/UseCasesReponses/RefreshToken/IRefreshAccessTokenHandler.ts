@@ -1,5 +1,6 @@
 import { RefreshToken } from '@domain/entities/RefreshToken';
-export class InvalidRefreshTokenNotFoundResponse extends Error {};
+export class InvalidRefreshTokenNotFoundErrorResponse extends Error {};
+export class InvalidRefreshTokenUserNotFoundErrorResponse extends Error{};
 
 export interface RefreshAccessTokenResponse {
     access_token: string,

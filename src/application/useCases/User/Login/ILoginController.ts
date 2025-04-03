@@ -7,8 +7,8 @@ import {
   InvalidUserNotFoundErrorResponse,
   InvalidPasswordIsNotEqualErrorResponse,
   LoginResponse,
-} from '@application/handlers/User/ILoginHandlers';
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+} from '@application/handlers/UseCasesReponses/User/ILoginHandlers';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesReponses/RefreshToken/IGenerateRefreshTokenHandler';
 
 export class ILoginController {
   private readonly iLoginValidator: ILoginValidator;
@@ -39,7 +39,7 @@ export class ILoginController {
           .status(501)
           .send({ message: 'Failed to generate refresh token' });
 
-      adapter.res.setCookie('refresh_token', logged.refresh_token.public_id, {
+      adapter.res.setCookie('refresh_token', JSON.stringify(logged.refresh_token), {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
@@ -48,7 +48,7 @@ export class ILoginController {
       });
 
       return adapter.res.status(200).send({
-        current_user: {
+        current_user:{
           access_token: logged.access_token,
         },
       });
