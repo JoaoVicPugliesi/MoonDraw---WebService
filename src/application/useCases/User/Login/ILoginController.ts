@@ -38,7 +38,7 @@ export class ILoginController {
         return adapter.res
           .status(501)
           .send({ message: 'Failed to generate refresh token' });
-
+          
       adapter.res.setCookie('refresh_token', JSON.stringify(logged.refresh_token), {
         httpOnly: true,
         secure: true,

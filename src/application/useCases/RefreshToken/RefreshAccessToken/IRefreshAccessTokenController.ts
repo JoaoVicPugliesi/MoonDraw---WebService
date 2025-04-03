@@ -1,24 +1,20 @@
 import z from 'zod';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IRefreshAccessTokenUseCase } from './IRefreshAccessTokenUseCase';
-import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
 import { InvalidRefreshTokenNotFoundErrorResponse, InvalidRefreshTokenUserNotFoundErrorResponse, RefreshAccessTokenResponse } from '@application/handlers/UseCasesReponses/RefreshToken/IRefreshAccessTokenHandler';
 import { RefreshToken } from '@domain/entities/RefreshToken';
+import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
 export class IRefreshAccessTokenController {
   constructor(
     private readonly iRefreshAccessTokenUseCase: IRefreshAccessTokenUseCase
   ) {}
 
   async handle(adapter: RequestResponseAdapter, refreshToken: RefreshToken) {
-    const schema = z.object({
-      public_id: z.string({
-        required_error: 'public_id is required',
-        invalid_type_error: 'public_id should be a string',
-      }),
-    });
 
     try {
-      const DTO: IRefreshAccessTokenDTO = schema.parse(refreshToken.public_id);
+      const DTO: IRefreshAccessTokenDTO = {
+        public_id: refreshToken.public_id
+      }
       const refreshed: InvalidRefreshTokenNotFoundErrorResponse | RefreshAccessTokenResponse =
       await this.iRefreshAccessTokenUseCase.execute(DTO);
 
@@ -32,7 +28,6 @@ export class IRefreshAccessTokenController {
           .send({ message: 'User not found' });
 
       if(refreshed.refresh_token) {
-        adapter.res.clearCookie('refresh_token');
         adapter.res.setCookie('refresh_token', JSON.stringify(refreshed.refresh_token), {
           httpOnly: true,
           secure: true,
@@ -44,7 +39,9 @@ export class IRefreshAccessTokenController {
 
       return adapter.res.status(200).send({ 
         current_user: {
-          token: refreshed.access_token
+          token: {
+            access_token: refreshed.access_token
+          }
         } 
       });
     } catch (error) {
