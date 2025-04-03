@@ -1,4 +1,4 @@
-import { InvalidGenerateRefreshTokenErrorResponse } from '../../../handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
+import { InvalidGenerateRefreshTokenErrorResponse } from '../../../handlers/RefreshToken/IGenerateRefreshTokenHandler';
 import { RefreshToken } from "@prisma/client";
 import { IGenerateRefreshTokenDTO } from "./IGenerateRefreshTokenDTO";
 import { IGenerateRefreshTokenRepo } from "@domain/repositories/RefreshToken/IGenerateRefreshTokenRepo";

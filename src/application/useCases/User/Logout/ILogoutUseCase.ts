@@ -1,7 +1,7 @@
 import { ILogoutRepo } from "@domain/repositories/User/ILogoutRepo";
 import { ILogoutDTO } from "./ILogoutDTO";
 import { RefreshToken } from "@domain/entities/RefreshToken";
-import { InvalidRefreshTokenNotFoundErrorResponse } from "@application/handlers/UseCasesResponses/User/ILogoutHandlers";
+import { InvalidRefreshTokenNotFoundErrorResponse } from "@application/handlers/User/ILogoutHandlers";
 
 export class ILogoutUseCase {
     constructor(private readonly iLogoutRepo: ILogoutRepo) {}

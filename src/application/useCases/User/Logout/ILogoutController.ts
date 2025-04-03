@@ -2,7 +2,7 @@ import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ILogoutUseCase } from './ILogoutUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { ILogoutDTO } from './ILogoutDTO';
-import { InvalidRefreshTokenNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/User/ILogoutHandlers';
+import { InvalidRefreshTokenNotFoundErrorResponse } from '@application/handlers/User/ILogoutHandlers';
 
 export class ILogOutController {
   constructor(private readonly iLogoutUseCase: ILogoutUseCase) {}
