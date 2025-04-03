@@ -1,5 +1,5 @@
 interface IPayload {
-  subject?: string | Record<string, any>;
+  content: string | Record<string, any>;
 }
 
 interface IOptions {

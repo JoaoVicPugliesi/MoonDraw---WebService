@@ -22,6 +22,7 @@ export class ILogOutController {
       }
 
       adapter.res.clearCookie('refresh_token');
+      adapter.res.unsignCookie('refresh_token');
 
       return adapter.res.status(204).send();
     } catch (error) {

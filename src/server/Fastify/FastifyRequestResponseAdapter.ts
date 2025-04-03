@@ -26,6 +26,9 @@ export class FastifyRequestResponseAdapter implements RequestResponseAdapter {
       clearCookie: (name: string, cookieOptions: CookieOptions) => {
         this.reply.clearCookie(name, cookieOptions);
       },
+      unsignCookie: (name: string) => {
+        this.reply.unsignCookie(name);
+      },
       status: (statusCode: number) => {
         this.reply.code(statusCode);
         return this.res;

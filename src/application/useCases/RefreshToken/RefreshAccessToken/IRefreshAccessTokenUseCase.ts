@@ -45,17 +45,11 @@ export class IRefreshAccessTokenUseCase {
 
     if (!user) return new InvalidRefreshTokenUserNotFoundErrorResponse();
 
-    const { name, surname, email, role, is_active } = user;
+    const { public_id, name, surname, email, role, is_active } = user;
 
     const accessToken: string = this.iTokenService.sign({
       payload: {
-        subject: {
-          name: name,
-          surname: surname,
-          email: email,
-          role: role,
-          is_active: is_active,
-        },
+        content: public_id
       },
       secret_key: this.secret_key,
       options: {
@@ -81,11 +75,25 @@ export class IRefreshAccessTokenUseCase {
       return {
         access_token: accessToken,
         refresh_token: newRefreshToken as RefreshToken,
+        user: {
+          name: name,
+          surname: surname,
+          email: email,
+          role: role,
+          is_active: is_active,
+        }
       };
     }
 
     return {
       access_token: accessToken,
+      user: {
+        name: name,
+        surname: surname,
+        email: email,
+        role: role,
+        is_active: is_active,
+      }
     };
   }
 }

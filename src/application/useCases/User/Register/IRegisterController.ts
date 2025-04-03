@@ -54,7 +54,8 @@ export class IRegisterController {
       return adapter.res.status(201).send({ 
         message: 'User created successfully', 
         current_user: {
-          access_token: registered.login_response.access_token
+          access_token: registered.login_response.access_token,
+          user: registered.login_response.user
         }
       });
     } catch (error) {

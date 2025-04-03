@@ -26,6 +26,7 @@ export class ILoginController {
       const logged:
         | InvalidUserNotFoundErrorResponse
         | InvalidPasswordIsNotEqualErrorResponse
+        | InvalidGenerateRefreshTokenErrorResponse
         | LoginResponse = await this.iLoginUseCase.execute(DTO);
 
       if (logged instanceof InvalidUserNotFoundErrorResponse)
@@ -43,13 +44,14 @@ export class ILoginController {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        path: '/',
+        path: 'http://localhost:5173',
         maxAge: logged.refresh_token.expires_in,
       });
 
       return adapter.res.status(200).send({
         current_user:{
           access_token: logged.access_token,
+          user: logged.user
         },
       });
     } catch (error) {

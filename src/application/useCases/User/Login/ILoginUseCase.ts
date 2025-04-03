@@ -40,17 +40,11 @@ export class ILoginUseCase {
     );
     if (!isPasswordEqual) return new InvalidPasswordIsNotEqualErrorResponse();
     
-    const { name, surname, email, role, is_active } = user;
+    const { public_id, name, surname, email, role, is_active } = user;
 
     const accessToken: string = this.iTokenService.sign({
       payload: {
-        subject: {
-          name: name,
-          surname: surname,
-          email: email,
-          role: role,
-          is_active: is_active,
-        },
+        content: public_id
       },
       secret_key: process.env.SECRET_KEY as string,
       options: {
@@ -59,7 +53,7 @@ export class ILoginUseCase {
     });
 
     const iGenerateRefreshTokenDTO: IGenerateRefreshTokenDTO = {
-      user_id: user.public_id
+      user_id: public_id
     };
     
     const refreshToken: InvalidGenerateRefreshTokenErrorResponse | RefreshToken =
@@ -71,6 +65,13 @@ export class ILoginUseCase {
     return {
       access_token: accessToken,
       refresh_token: refreshToken,
+      user: {
+        name: name,
+        surname: surname,
+        email: email,
+        role: role,
+        is_active: is_active,
+      }
     };
   }
 }

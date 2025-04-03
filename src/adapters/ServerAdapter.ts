@@ -33,6 +33,7 @@ export interface RequestResponseAdapter {
   res: {
     setCookie(name: string, refreshToken: string, cookieOptions: CookieOptions): any;
     clearCookie(name: string, cookieOptions?: CookieOptions): any;
+    unsignCookie(name: string): any;
     status(statusCode: number): any;
     json(body: any): void;
     send(body?: any): void;
