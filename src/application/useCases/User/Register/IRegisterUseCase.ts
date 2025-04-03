@@ -6,14 +6,14 @@ import { IRegisterDTO } from './IRegisterDTO';
 import {
   InvalidUserConflictErrorResponse,
   RegisterReponse,
-} from '@application/handlers/User/IRegisterHandlers';
+} from '@application/handlers/UseCasesResponses/User/IRegisterHandlers';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import {
   InvalidPasswordIsNotEqualErrorResponse,
   InvalidUserNotFoundErrorResponse,
   LoginResponse,
-} from '@application/handlers/User/ILoginHandlers';
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+} from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 
 export class IRegisterUseCase {
   constructor(

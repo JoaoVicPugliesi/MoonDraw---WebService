@@ -1,7 +1,7 @@
 import { IRefreshAccessTokenFactoryInMemory } from "@application/factories/RefreshToken/RefreshAccessToken/IRefreshAccessTokenFactoryInMemory";
 import { RefreshToken } from "@domain/entities/RefreshToken";
 import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
-import { InvalidRefreshTokenNotFoundResponse, RefreshAccessTokenResponse } from "@application/handlers/RefreshToken/IRefreshAccessTokenHandler";
+import { InvalidRefreshTokenNotFoundResponse, RefreshAccessTokenResponse } from "@application/handlers/UseCasesResponses/RefreshToken/IRefreshAccessTokenHandler";
 import dayjs from "dayjs";
 
 const refreshTokens: RefreshToken[] = [];

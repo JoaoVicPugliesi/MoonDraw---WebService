@@ -1,0 +1,1 @@
+export class InvalidRefreshTokenNotFoundErrorResponse extends Error {}

@@ -1,6 +1,6 @@
 import { IConfirmMailRepo } from "@domain/repositories/User/IConfirmMailRepo";
 import { IConfirmMailDTO } from "./IConfirmMailDTO";
-import { InvalidUserNotFoundError } from "@application/handlers/User/IConfirmMailHandlers";
+import { InvalidUserNotFoundError } from "@application/handlers/UseCasesResponses/User/IConfirmMailHandlers";
 
 export class IConfirmMailUseCase {
   constructor(private readonly iConfirmMailRepo: IConfirmMailRepo) {}

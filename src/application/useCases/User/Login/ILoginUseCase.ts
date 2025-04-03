@@ -9,9 +9,9 @@ import {
   InvalidUserNotFoundErrorResponse,
   InvalidPasswordIsNotEqualErrorResponse,
   LoginResponse,
-} from '@application/handlers/User/ILoginHandlers';
+} from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { configDotenv } from 'dotenv';
 configDotenv();
 
