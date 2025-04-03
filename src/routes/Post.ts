@@ -5,6 +5,7 @@ import { register } from "@application/useCases/User/Register";
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { FastifyRequestResponseAdapter } from "server/Fastify/FastifyRequestResponseAdapter";
+import { logout } from '@application/useCases/User/Logout';
 
 export class Post {
   constructor(private readonly app: FastifyInstance) {}
@@ -25,6 +26,13 @@ export class Post {
       const iEnsureRefreshTokenMiddleware = new IEnsureRefreshTokenMiddleware(adapter);
       const refreshTokenCookie: RefreshToken = iEnsureRefreshTokenMiddleware.ensure();
       await refreshToken.handle(adapter, refreshTokenCookie);
+    });
+
+    this.app.post('/api/logout', async(req: FastifyRequest, res: FastifyReply) => {
+      const adapter = new FastifyRequestResponseAdapter(req, res);
+      const iEnsureRefreshTokenMiddleware = new IEnsureRefreshTokenMiddleware(adapter);
+      const refreshTokenCookie: RefreshToken = iEnsureRefreshTokenMiddleware.ensure();
+      await logout.handle(adapter, refreshTokenCookie);
     });
   }
 }

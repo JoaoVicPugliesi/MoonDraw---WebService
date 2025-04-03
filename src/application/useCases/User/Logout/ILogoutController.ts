@@ -2,7 +2,7 @@ import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ILogoutUseCase } from './ILogoutUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { ILogoutDTO } from './ILogoutDTO';
-import { InvalidRefreshTokenNotFoundErrorResponse } from '@application/handlers/User/ILogoutHandlers';
+import { InvalidRefreshTokenNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/User/ILogoutHandlers';
 
 export class ILogOutController {
   constructor(private readonly iLogoutUseCase: ILogoutUseCase) {}
@@ -20,6 +20,8 @@ export class ILogOutController {
           .status(404)
           .send({ message: 'Refresh Token Not Found' });
       }
+
+      adapter.res.clearCookie('refresh_token');
 
       return adapter.res.status(204).send();
     } catch (error) {

@@ -5,8 +5,8 @@ import {
   InvalidUserNotFoundErrorResponse,
   InvalidPasswordIsNotEqualErrorResponse,
   LoginResponse,
-} from '@application/handlers/UseCasesReponses/User/ILoginHandlers';
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesReponses/RefreshToken/IGenerateRefreshTokenHandler';
+} from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { ILoginFactoryInMemory } from '@application/factories/User/Login/ILoginFactoryInMemory';
 
 type Logged =

@@ -1,7 +1,7 @@
 import z from 'zod';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IRefreshAccessTokenUseCase } from './IRefreshAccessTokenUseCase';
-import { InvalidRefreshTokenNotFoundErrorResponse, InvalidRefreshTokenUserNotFoundErrorResponse, RefreshAccessTokenResponse } from '@application/handlers/UseCasesReponses/RefreshToken/IRefreshAccessTokenHandler';
+import { InvalidRefreshTokenNotFoundErrorResponse, InvalidRefreshTokenUserNotFoundErrorResponse, RefreshAccessTokenResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IRefreshAccessTokenHandler';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
 export class IRefreshAccessTokenController {

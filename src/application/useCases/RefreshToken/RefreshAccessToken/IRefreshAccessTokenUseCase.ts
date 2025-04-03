@@ -1,4 +1,4 @@
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesReponses/RefreshToken/IGenerateRefreshTokenHandler';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import dayjs from 'dayjs';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { IRefreshAccessTokenRepo } from '@domain/repositories/RefreshToken/IRefreshAccessTokenRepo';
@@ -9,7 +9,7 @@ import {
   InvalidRefreshTokenNotFoundErrorResponse,
   InvalidRefreshTokenUserNotFoundErrorResponse,
   RefreshAccessTokenResponse,
-} from '@application/handlers/UseCasesReponses/RefreshToken/IRefreshAccessTokenHandler';
+} from '@application/handlers/UseCasesResponses/RefreshToken/IRefreshAccessTokenHandler';
 import { IGenerateRefreshTokenDTO } from '../GenerateRefreshToken/IGenerateRefreshTokenDTO';
 import { configDotenv } from 'dotenv';
 import { User } from '@domain/entities/User';
