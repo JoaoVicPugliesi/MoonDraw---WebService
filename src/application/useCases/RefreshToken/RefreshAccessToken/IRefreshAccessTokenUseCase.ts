@@ -1,59 +1,91 @@
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
-import dayjs from "dayjs";
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesReponses/RefreshToken/IGenerateRefreshTokenHandler';
+import dayjs from 'dayjs';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
-import { IRefreshAccessTokenRepo } from "@domain/repositories/RefreshToken/IRefreshAccessTokenRepo";
-import { ITokenService } from "@domain/services/ITokenService";
-import { IRefreshAccessTokenDTO } from "./IRefreshAccessTokenDTO";
-import { RefreshToken } from "@domain/entities/RefreshToken";
-import { InvalidRefreshTokenNotFoundResponse, RefreshAccessTokenResponse } from '@application/handlers/RefreshToken/IRefreshAccessTokenHandler';
+import { IRefreshAccessTokenRepo } from '@domain/repositories/RefreshToken/IRefreshAccessTokenRepo';
+import { ITokenService } from '@domain/services/ITokenService';
+import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
+import { RefreshToken } from '@domain/entities/RefreshToken';
+import {
+  InvalidRefreshTokenNotFoundErrorResponse,
+  InvalidRefreshTokenUserNotFoundErrorResponse,
+  RefreshAccessTokenResponse,
+} from '@application/handlers/UseCasesReponses/RefreshToken/IRefreshAccessTokenHandler';
 import { IGenerateRefreshTokenDTO } from '../GenerateRefreshToken/IGenerateRefreshTokenDTO';
-import { configDotenv } from "dotenv";
+import { configDotenv } from 'dotenv';
+import { User } from '@domain/entities/User';
 configDotenv();
 
 export class IRefreshAccessTokenUseCase {
+  private readonly secret_key: string;
 
-    private readonly secret_key: string;
+  constructor(
+    private readonly iRefreshAccessTokenRepo: IRefreshAccessTokenRepo,
+    private readonly iGenerateRefreshTokenUseCase: IGenerateRefreshTokenUseCase,
+    private readonly iTokenService: ITokenService
+  ) {
+    this.secret_key = process.env.SECRET_KEY as string;
+  }
 
-    constructor(
-        private readonly iRefreshAccessTokenRepo: IRefreshAccessTokenRepo,
-        private readonly iGenerateRefreshTokenUseCase: IGenerateRefreshTokenUseCase,
-        private readonly iTokenService: ITokenService
-    ) {
-        this.secret_key = process.env.SECRET_KEY as string;
+  async execute(
+    DTO: IRefreshAccessTokenDTO
+  ): Promise<
+    | InvalidRefreshTokenNotFoundErrorResponse
+    | InvalidRefreshTokenUserNotFoundErrorResponse
+    | RefreshAccessTokenResponse
+  > {
+    const refreshToken: RefreshToken | null =
+      await this.iRefreshAccessTokenRepo.findRefreshToken(DTO.public_id);
+
+    if (!refreshToken) return new InvalidRefreshTokenNotFoundErrorResponse();
+
+    const user: User | null =
+      await this.iRefreshAccessTokenRepo.findRefreshTokenUser(
+        refreshToken.user_id
+      );
+
+    if (!user) return new InvalidRefreshTokenUserNotFoundErrorResponse();
+
+    const { name, surname, email, role, is_active } = user;
+
+    const accessToken: string = this.iTokenService.sign({
+      payload: {
+        subject: {
+          name: name,
+          surname: surname,
+          email: email,
+          role: role,
+          is_active: is_active,
+        },
+      },
+      secret_key: this.secret_key,
+      options: {
+        expiresIn: '1h',
+      },
+    });
+
+    const refreshTokenExpired: boolean = dayjs().isAfter(
+      dayjs.unix(refreshToken.expires_in)
+    );
+
+    if (refreshTokenExpired) {
+      await this.iRefreshAccessTokenRepo.deleteRelatedRefreshTokens(
+        refreshToken.user_id
+      );
+      const DTO: IGenerateRefreshTokenDTO = {
+        user_id: refreshToken.user_id,
+      };
+      const newRefreshToken:
+        | InvalidGenerateRefreshTokenErrorResponse
+        | RefreshToken = await this.iGenerateRefreshTokenUseCase.execute(DTO);
+
+      return {
+        access_token: accessToken,
+        refresh_token: newRefreshToken as RefreshToken,
+      };
     }
 
-    async execute(DTO: IRefreshAccessTokenDTO): Promise<InvalidRefreshTokenNotFoundResponse | RefreshAccessTokenResponse> {
-        const refreshToken: RefreshToken | null = await this.iRefreshAccessTokenRepo.findRefreshToken(DTO.public_id);
-        
-        if(!refreshToken) return new InvalidRefreshTokenNotFoundResponse();
-        
-        const refreshTokenExpired: boolean = dayjs().isAfter(dayjs.unix(refreshToken.expires_in));
-
-        const accessToken: string = this.iTokenService.sign({
-            payload: {
-                sub: refreshToken.user_id
-            },
-            secret_key: this.secret_key,
-            options: {
-                expiresIn: '30m'
-            }
-        });
-
-        if(refreshTokenExpired) {
-            await this.iRefreshAccessTokenRepo.deleteRelatedRefreshTokens(refreshToken.user_id)
-            const DTO: IGenerateRefreshTokenDTO = {
-                user_id: refreshToken.user_id,
-            };
-            const newRefreshToken: InvalidGenerateRefreshTokenErrorResponse | RefreshToken = await this.iGenerateRefreshTokenUseCase.execute(DTO);
-
-            return { 
-                access_token: accessToken,
-                refresh_token: newRefreshToken as RefreshToken
-            }
-        }
-
-        return {
-            access_token: accessToken
-        }
-    }
+    return {
+      access_token: accessToken,
+    };
+  }
 }

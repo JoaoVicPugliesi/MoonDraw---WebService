@@ -23,6 +23,7 @@ export interface CookieOptions {
 export interface RequestResponseAdapter {
   req: {
     body?: any;
+    cookies: { [cookieName: string]: string };
     params?: Record<string, string>;
     query?: Record<string, string | string[]>;
     headers?: {
@@ -31,7 +32,7 @@ export interface RequestResponseAdapter {
   };
   res: {
     setCookie(name: string, refreshToken: string, cookieOptions: CookieOptions): any;
-    clearCookie(name: string, cookieOptions?: CookieOptions): any;
+    clearCookie(name: string, cookieOptions: CookieOptions): any;
     status(statusCode: number): any;
     json(body: any): void;
     send(body?: any): void;

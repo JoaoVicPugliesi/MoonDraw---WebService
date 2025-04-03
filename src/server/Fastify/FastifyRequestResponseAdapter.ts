@@ -10,6 +10,7 @@ export class FastifyRequestResponseAdapter implements RequestResponseAdapter {
 
   get req() {
     return {
+      cookies: this.request.cookies,
       body: this.request.body,
       params: this.request.params as Record<string, string>,
       query: this.request.query as Record<string, string | string[]>,
@@ -22,7 +23,7 @@ export class FastifyRequestResponseAdapter implements RequestResponseAdapter {
       setCookie: (name: string, refreshToken: string, cookieOptions: CookieOptions) => {
         this.reply.setCookie(name, refreshToken, cookieOptions);
       },
-      clearCookie: (name: string, cookieOptions?: CookieOptions) => {
+      clearCookie: (name: string, cookieOptions: CookieOptions) => {
         this.reply.clearCookie(name, cookieOptions);
       },
       status: (statusCode: number) => {

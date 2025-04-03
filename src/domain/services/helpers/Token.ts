@@ -1,6 +1,5 @@
 interface IPayload {
-  sub?: string;
-  email?: string;
+  subject?: string | Record<string, any>;
 }
 
 interface IOptions {

@@ -6,12 +6,12 @@ import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import {
   InvalidUserConflictErrorResponse,
   RegisterReponse,
-} from '@application/handlers/User/IRegisterHandlers';
+} from '@application/handlers/UseCasesReponses/User/IRegisterHandlers';
 import {
   InvalidPasswordIsNotEqualErrorResponse,
   InvalidUserNotFoundErrorResponse,
-} from '@application/handlers/User/ILoginHandlers';
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+} from '@application/handlers/UseCasesReponses/User/ILoginHandlers';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesReponses/RefreshToken/IGenerateRefreshTokenHandler';
 
 export class IRegisterController {
   private readonly iRegisterValidator: IRegisterValidator;
@@ -43,7 +43,7 @@ export class IRegisterController {
         return adapter.res.status(501).send({ message: 'Failed to generate refresh token' });
       }
       
-      adapter.res.setCookie('refresh_token', registered.login_response.refresh_token.public_id, {
+      adapter.res.setCookie('refresh_token', JSON.stringify(registered.login_response.refresh_token), {
         httpOnly: true, 
         secure: true,  
         sameSite: 'strict', 
@@ -51,7 +51,12 @@ export class IRegisterController {
         maxAge: registered.login_response.refresh_token.expires_in, 
       });
 
-      return adapter.res.status(201).send({ message: 'User created successfully', current_user: registered.login_response.access_token });
+      return adapter.res.status(201).send({ 
+        message: 'User created successfully', 
+        current_user: {
+          access_token: registered.login_response.access_token
+        }
+      });
     } catch (error) {
       if (error instanceof z.ZodError) {
         return adapter.res.status(422).send({

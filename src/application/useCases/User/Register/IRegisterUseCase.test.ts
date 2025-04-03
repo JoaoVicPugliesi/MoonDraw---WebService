@@ -1,11 +1,11 @@
 import {
   InvalidUserConflictErrorResponse,
   RegisterReponse,
-} from '@application/handlers/User/IRegisterHandlers';
+} from '@application/handlers/UseCasesReponses/User/IRegisterHandlers';
 import { User } from '@domain/entities/User';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { InvalidPasswordIsNotEqualErrorResponse, InvalidUserNotFoundErrorResponse } from '@application/handlers/User/ILoginHandlers';
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/RefreshToken/IGenerateRefreshTokenHandler';
+import { InvalidPasswordIsNotEqualErrorResponse, InvalidUserNotFoundErrorResponse } from '@application/handlers/UseCasesReponses/User/ILoginHandlers';
+import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesReponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { IRegisterFactoryInMemory } from '@application/factories/User/Register/IRegisterFactoryInMemory';
 import { IRegisterUseCase } from './IRegisterUseCase';
 
