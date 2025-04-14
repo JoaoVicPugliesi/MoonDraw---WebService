@@ -1,11 +1,11 @@
 import { IEnsureRefreshTokenMiddleware } from '@application/middlewares/IEnsureRefreshTokenMiddleware';
-import { refreshToken } from '../application/useCases/RefreshToken/RefreshAccessToken/index';
-import { login } from "@application/useCases/User/Login";
-import { register } from "@application/useCases/User/Register";
+import { refreshToken } from '../application/useCases/RefreshToken/RefreshAccessToken/IRefreshAccessTokenComposer';
+import { login } from "@application/useCases/User/Login/ILoginComposer";
+import { register } from "@application/useCases/User/Register/IRegisterComposer";
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { FastifyRequestResponseAdapter } from "server/Fastify/FastifyRequestResponseAdapter";
-import { logout } from '@application/useCases/User/Logout';
+import { logout } from '@application/useCases/User/Logout/ILogoutComposer';
 
 export class Post {
   constructor(private readonly app: FastifyInstance) {}

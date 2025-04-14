@@ -15,9 +15,9 @@ export class IRefreshAccessTokenRepoImplInMemory implements IRefreshAccessTokenR
         (refreshToken) => refreshToken.public_id === (param as string)
       );
 
-      if (refreshToken) resolve(refreshToken);
+      if (refreshToken) return resolve(refreshToken);
 
-      resolve(null);
+      return resolve(null);
     });
   }
 
@@ -25,9 +25,9 @@ export class IRefreshAccessTokenRepoImplInMemory implements IRefreshAccessTokenR
       return new Promise((resolve, reject) => {
         const user: User | undefined = this.users.find((user) => user.public_id === param as string);
 
-        if(user) resolve(user);
+        if(user) return resolve(user);
 
-        resolve(null);
+        return resolve(null);
       });
   }
 
@@ -38,6 +38,7 @@ export class IRefreshAccessTokenRepoImplInMemory implements IRefreshAccessTokenR
           this.refreshTokens.splice(i, 1);
         }
       }
+
       resolve();
     });
   }
