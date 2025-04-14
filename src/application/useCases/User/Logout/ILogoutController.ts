@@ -5,7 +5,9 @@ import { ILogoutDTO } from './ILogoutDTO';
 import { InvalidRefreshTokenNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/User/ILogoutHandlers';
 
 export class ILogOutController {
-  constructor(private readonly iLogoutUseCase: ILogoutUseCase) {}
+  constructor(
+    private readonly iLogoutUseCase: ILogoutUseCase
+  ) {}
 
   async handle(adapter: RequestResponseAdapter, refreshToken: RefreshToken) {
     try {

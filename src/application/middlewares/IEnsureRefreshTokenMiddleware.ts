@@ -1,8 +1,10 @@
-import { RequestResponseAdapter } from "@adapters/ServerAdapter";
-import { RefreshToken } from "@domain/entities/RefreshToken";
+import { RequestResponseAdapter } from '@adapters/ServerAdapter';
+import { RefreshToken } from '@domain/entities/RefreshToken';
 
 export class IEnsureRefreshTokenMiddleware {
-    constructor(private readonly adapter: RequestResponseAdapter) {}
+    constructor(
+        private readonly adapter: RequestResponseAdapter
+    ) {}
 
     ensure() {
         const refreshTokenCookie = this.adapter.req.cookies.refresh_token;

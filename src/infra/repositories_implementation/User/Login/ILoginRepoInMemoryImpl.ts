@@ -3,7 +3,9 @@ import { ILoginRepo } from "@domain/repositories/User/ILoginRepo";
 
 export class ILoginRepoInMemoryImpl implements ILoginRepo {
 
-    constructor(private readonly users: User[]) {}
+    constructor(
+        private readonly users: User[]
+    ) {}
 
     findUser<T>(param: T): Promise<User | null> {
         return new Promise((resolve, reject) => {

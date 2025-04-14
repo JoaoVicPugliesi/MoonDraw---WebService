@@ -13,7 +13,9 @@ import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/
 export class ILoginController {
   private readonly iLoginValidator: ILoginValidator;
 
-  constructor(private readonly iLoginUseCase: ILoginUseCase) {
+  constructor(
+    private readonly iLoginUseCase: ILoginUseCase
+  ) {
     this.iLoginValidator = new ILoginValidator();
   }
 

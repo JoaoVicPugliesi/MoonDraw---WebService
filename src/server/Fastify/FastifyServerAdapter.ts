@@ -1,50 +1,55 @@
-import fastify, {
+import {
   FastifyInstance,
   FastifyPluginOptions,
   FastifyRegisterOptions,
-} from 'fastify';
-import fastifyCors from '@fastify/cors';
-import { ServerAdapter } from '../../adapters/ServerAdapter';
-import { Post } from 'routes/Post';
-import { Put } from '@routes/Put';
-import { Get } from '@routes/Get';
-import { fastifyCookie} from 'fastify-cookie';
+} from "fastify";
+import fastifyCors from "@fastify/cors";
+import { ServerAdapter } from "@adapters/ServerAdapter";
+import { fastifyCookie } from "fastify-cookie";
+import { iFastify, routes } from "./FastifyServerComposer";
+import { Routes } from "@routes/Routes";
 
 class FastifyServerAdapter implements ServerAdapter {
-  private app!: FastifyInstance;
-  private cookie!: any;
-  private get!: Get;
-  private post!: Post;
-  private put!: Put;
+  private cookie: any;
+  
+  constructor(
+    private readonly app: FastifyInstance,
+    private readonly routes: Routes
+  ) {}
 
   run() {
     this.init();
   }
-
+  
   private async init() {
-    this.app = fastify({ logger: true });
-    this.cookie = fastifyCookie
+    this.cookie = fastifyCookie;
     this.register(fastifyCors, {
       credentials: true,
-      origin: 'http://localhost:5173',
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
+      origin: "http://localhost:5173",
+      methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
     });
     this.register(this.cookie);
-    this.get = new Get(this.app);
-    this.post = new Post(this.app);
-    this.put = new Put(this.app);
     this.setupRoutes();
   }
 
   private async setupRoutes() {
-    this.get.setupRoutes();
-    this.post.setupRoutes();
-    this.put.setupRoutes()
+    this.routes.setupRoutes();
   }
 
-  async register(x: any, options?: { credentials?: boolean, origin?: string | string[]; methods?: string | string[]; allowedHeaders?: string | string[]; }): Promise<void> {
-      await this.app.register(x, options as FastifyRegisterOptions<FastifyPluginOptions>);
+  async register(
+    x: any,
+    options?: {
+      credentials?: boolean;
+      origin?: string | string[];
+      methods?: string | string[];
+      allowedHeaders?: string | string[];
+    }
+  ): Promise<void> {
+    await this.app.register(
+      x,
+      options as FastifyRegisterOptions<FastifyPluginOptions>
+    );
   }
 
   async listen(options: { port: number; host: string }): Promise<void> {
@@ -56,5 +61,4 @@ class FastifyServerAdapter implements ServerAdapter {
   }
 }
 
-export const app = new FastifyServerAdapter();
-
+export const app = new FastifyServerAdapter(iFastify, routes);

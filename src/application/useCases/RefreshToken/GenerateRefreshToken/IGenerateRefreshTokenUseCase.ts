@@ -1,10 +1,12 @@
 import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
-import { RefreshToken } from "@prisma/client";
-import { IGenerateRefreshTokenDTO } from "./IGenerateRefreshTokenDTO";
-import { IGenerateRefreshTokenRepo } from "@domain/repositories/RefreshToken/IGenerateRefreshTokenRepo";
+import { RefreshToken } from '@prisma/client';
+import { IGenerateRefreshTokenDTO } from './IGenerateRefreshTokenDTO';
+import { IGenerateRefreshTokenRepo } from '@domain/repositories/RefreshToken/IGenerateRefreshTokenRepo';
 
 export class IGenerateRefreshTokenUseCase {
-    constructor(private readonly iGenerateRefreshTokenRepo: IGenerateRefreshTokenRepo) {}
+    constructor(
+        private readonly iGenerateRefreshTokenRepo: IGenerateRefreshTokenRepo
+    ) {}
 
     async execute(DTO: IGenerateRefreshTokenDTO): Promise<InvalidGenerateRefreshTokenErrorResponse | RefreshToken> {
 

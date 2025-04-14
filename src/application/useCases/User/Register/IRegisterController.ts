@@ -16,7 +16,9 @@ import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/
 export class IRegisterController {
   private readonly iRegisterValidator: IRegisterValidator;
 
-  constructor(private readonly iRegisterUseCase: IRegisterUseCase) {
+  constructor(
+    private readonly iRegisterUseCase: IRegisterUseCase
+  ) {
     this.iRegisterValidator = new IRegisterValidator();
   }
 

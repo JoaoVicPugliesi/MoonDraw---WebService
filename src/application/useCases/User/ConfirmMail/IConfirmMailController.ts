@@ -9,7 +9,9 @@ export class IConfirmMailController {
 
   private readonly iConfirmMailValidator: IConfirmMailValidator;
 
-  constructor(private readonly iConfirmMailUseCase: IConfirmMailUseCase) {
+  constructor(
+    private readonly iConfirmMailUseCase: IConfirmMailUseCase
+  ) {
     this.iConfirmMailValidator = new IConfirmMailValidator();
   }
 

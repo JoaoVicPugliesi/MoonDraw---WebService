@@ -4,7 +4,9 @@ import { IGenerateRefreshTokenRepoInMemoryImpl } from '@infra/repositories_imple
 
 export class IGenerateRefreshTokenFactoryInMemory {
 
-  constructor(private readonly refreshTokens: RefreshToken[]) {}
+  constructor(
+    private readonly refreshTokens: RefreshToken[]
+  ) {}
 
   compose(): IGenerateRefreshTokenUseCase {
     const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoInMemoryImpl(this.refreshTokens);

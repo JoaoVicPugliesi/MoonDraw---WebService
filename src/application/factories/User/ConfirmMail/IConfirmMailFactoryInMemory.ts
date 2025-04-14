@@ -3,7 +3,9 @@ import { IConfirmMailUseCase } from '@application/useCases/User/ConfirmMail/ICon
 import { User } from '@domain/entities/User';
 
 export class IConfirmMailFactoryInMemory {
-  constructor(private readonly users: User[]) {}
+  constructor(
+    private readonly users: User[]
+  ) {}
 
   compose(): IConfirmMailUseCase {
     const iConfirmMailRepo = new IConfirmMailRepoInMemoryImpl(this.users);

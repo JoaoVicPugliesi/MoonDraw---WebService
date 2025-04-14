@@ -3,7 +3,9 @@ import { IConfirmMailDTO } from "./IConfirmMailDTO";
 import { InvalidUserNotFoundError } from "@application/handlers/UseCasesResponses/User/IConfirmMailHandlers";
 
 export class IConfirmMailUseCase {
-  constructor(private readonly iConfirmMailRepo: IConfirmMailRepo) {}
+  constructor(
+    private readonly iConfirmMailRepo: IConfirmMailRepo
+  ) {}
 
   async execute(DTO: IConfirmMailDTO): Promise<InvalidUserNotFoundError | void> {
     const isUser: boolean = await this.iConfirmMailRepo.findUser(DTO.email);
