@@ -48,7 +48,7 @@ export class IRegisterController {
         secure: true,  
         sameSite: 'strict', 
         path: '/',        
-        maxAge: registered.login_response.refresh_token.expires_in, 
+        maxAge: 60 * 60 * 24 * 30, 
       });
 
       return adapter.res.status(201).send({ 

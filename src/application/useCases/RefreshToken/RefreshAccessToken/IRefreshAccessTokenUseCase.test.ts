@@ -4,6 +4,7 @@ import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
 import { InvalidRefreshTokenNotFoundErrorResponse, InvalidRefreshTokenUserNotFoundErrorResponse, RefreshAccessTokenResponse } from "@application/handlers/UseCasesResponses/RefreshToken/IRefreshAccessTokenHandler";
 import dayjs from "dayjs";
 import { User } from "@domain/entities/User";
+import { IRefreshAccessTokenUseCase } from "./IRefreshAccessTokenUseCase";
 
 type RefreshAccessResponse =  InvalidRefreshTokenNotFoundErrorResponse | InvalidRefreshTokenUserNotFoundErrorResponse | RefreshAccessTokenResponse;
 
@@ -37,7 +38,7 @@ describe('I refresh access token use case', () => {
         // Arrange
         const refreshTokensSpliced = refreshTokens.toSpliced(0)
         const iRefreshAccessTokenFactoryInMemory = new IRefreshAccessTokenFactoryInMemory(users, refreshTokensSpliced);
-        const sut = iRefreshAccessTokenFactoryInMemory.compose();
+        const sut: IRefreshAccessTokenUseCase = iRefreshAccessTokenFactoryInMemory.compose();
         // Act
         const DTO: IRefreshAccessTokenDTO = {
             public_id: 'a09d22d2-2464-42e3-827c-fe73626ff8b6'
@@ -52,7 +53,7 @@ describe('I refresh access token use case', () => {
         // Arrange
         const usersSpliced = users.toSpliced(0)
         const iRefreshAccessTokenFactoryInMemory = new IRefreshAccessTokenFactoryInMemory(usersSpliced, refreshTokens);
-        const sut = iRefreshAccessTokenFactoryInMemory.compose();
+        const sut: IRefreshAccessTokenUseCase = iRefreshAccessTokenFactoryInMemory.compose();
         // Act
         const DTO: IRefreshAccessTokenDTO = {
             public_id: 'a09d22d2-2464-42e3-827c-fe73626ff8b6'
@@ -66,7 +67,7 @@ describe('I refresh access token use case', () => {
     it('should refresh the access token successfully', async () => {
         // Arrange
         const iRefreshAccessTokenFactoryInMemory = new IRefreshAccessTokenFactoryInMemory(users, refreshTokens);
-        const sut = iRefreshAccessTokenFactoryInMemory.compose();
+        const sut: IRefreshAccessTokenUseCase = iRefreshAccessTokenFactoryInMemory.compose();
         // Act
         const DTO: IRefreshAccessTokenDTO = {
             public_id: 'a09d22d2-2464-42e3-827c-fe73626ff8b6'
@@ -76,24 +77,23 @@ describe('I refresh access token use case', () => {
         expect(refreshed).not.toBeInstanceOf(InvalidRefreshTokenUserNotFoundErrorResponse);
         expect(refreshed).not.toBeInstanceOf(InvalidRefreshTokenNotFoundErrorResponse);
         expect(refreshed).toHaveProperty('access_token');
-        console.log(refreshed);
     });
 
     it('should refresh the access token and renovate the refresh token successfully', async () => {
         // Arrange
         refreshToken.expires_in = dayjs().add(0, 'seconds').unix();
         const iRefreshAccessTokenFactoryInMemory = new IRefreshAccessTokenFactoryInMemory(users, refreshTokens);
-        const sut = iRefreshAccessTokenFactoryInMemory.compose();
+        const sut: IRefreshAccessTokenUseCase = iRefreshAccessTokenFactoryInMemory.compose();
         // Act
         const DTO: IRefreshAccessTokenDTO = {
             public_id: 'a09d22d2-2464-42e3-827c-fe73626ff8b6'
         }
         const refreshed: RefreshAccessResponse = await sut.execute(DTO)
+        console.log(refreshed);
         // Assert
         expect(refreshed).not.toBeInstanceOf(InvalidRefreshTokenUserNotFoundErrorResponse);
         expect(refreshed).not.toBeInstanceOf(InvalidRefreshTokenNotFoundErrorResponse);
         expect(refreshed).toHaveProperty('access_token');
         expect(refreshed).toHaveProperty('refresh_token');
-        console.log(refreshed);
     });
 });

@@ -16,37 +16,16 @@ export interface IUser {
 }
 
 export class User implements IUser {
-  public id: number;
-  public public_id: string;
-  public name: string;
-  public surname: string;
-  public email: string;
-  public password: string;
-  public role: Role;
-  public is_active: boolean;
-  public created_at: Date;
-  public email_verified_at?: Date | null;
-
-  constructor({
-    id,
-    public_id,
-    name,
-    surname,
-    email,
-    password,
-    role,
-    is_active,
-    created_at,
-  }: IUser) {
-    this.id = id;
-    this.public_id = public_id;
-    this.name = name;
-    this.surname = surname;
-    this.email = email;
-    this.password = password;
-    this.role = role;
-    this.is_active = is_active;
-    this.created_at = created_at;
-    this.email_verified_at = null;
-  }
+  constructor(
+    readonly id: number,
+    readonly public_id: string,
+    readonly name: string,
+    readonly surname: string,
+    readonly email: string,
+    readonly password: string,
+    readonly role: Role,
+    readonly is_active: boolean,
+    readonly created_at: Date,
+    readonly email_verified_at?: Date | null
+  ) {}
 }
