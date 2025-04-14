@@ -41,5 +41,18 @@ model RefreshToken {
   user       User   @relation(fields: [user_id], references: [public_id], onDelete: Cascade)
   user_id    String @unique
 
-  @@map("refresh_token")
+  @@map("refresh_tokens")
+}
+
+model Product {
+  id           Int      @default(autoincrement())
+  public_id    String   @id
+  name         String
+  description  String
+  price        Float    @default(0)
+  supply       Int      @default(0)
+  publisher    String
+  published_at DateTime @default(now())
+
+  @@map("products")
 }

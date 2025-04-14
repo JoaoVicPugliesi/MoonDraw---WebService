@@ -4,4 +4,6 @@ import { IRegisterFactory } from "@application/factories/User/Register/IRegister
 const iRegisterFactory = new IRegisterFactory();
 const iRegisterUseCase = iRegisterFactory.compose();
 const iRegisterController = new IRegisterController(iRegisterUseCase);
-export const register: IRegisterController = iRegisterController;
+const register: IRegisterController = iRegisterController;
+
+export { register };

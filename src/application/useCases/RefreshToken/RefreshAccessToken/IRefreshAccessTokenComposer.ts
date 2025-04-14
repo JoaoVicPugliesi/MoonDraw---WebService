@@ -6,6 +6,6 @@ const iRefreshAccessTokenUseCase = iRefreshAccessTokenFactory.compose();
 const iRefreshAccessTokenController = new IRefreshAccessTokenController(
   iRefreshAccessTokenUseCase
 );
+const refreshToken: IRefreshAccessTokenController = iRefreshAccessTokenController;
 
-export const refreshToken: IRefreshAccessTokenController =
-  iRefreshAccessTokenController;
+export { refreshToken };

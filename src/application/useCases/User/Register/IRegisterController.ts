@@ -25,37 +25,37 @@ export class IRegisterController {
 
     try {
       const DTO: IRegisterDTO = schema.parse(adapter.req.body);
-      const registered: InvalidUserConflictErrorResponse | RegisterReponse =
+      const response: InvalidUserConflictErrorResponse | RegisterReponse =
         await this.iRegisterUseCase.execute(DTO);
 
-      if (registered instanceof InvalidUserConflictErrorResponse) {
+      if (response instanceof InvalidUserConflictErrorResponse) {
         return adapter.res.status(409).send({
           message: 'Conflict: user with email provided already exists',
         });
       }
-      if (registered.login_response instanceof InvalidUserNotFoundErrorResponse) {
+      if (response.login_response instanceof InvalidUserNotFoundErrorResponse) {
         return adapter.res.status(404).send({ message: 'User or Password incorrect' });
       }
-      if (registered.login_response instanceof InvalidPasswordIsNotEqualErrorResponse) {
+      if (response.login_response instanceof InvalidPasswordIsNotEqualErrorResponse) {
         return adapter.res.status(401).send({ message: 'Non authorized' });
       }
-      if (registered.login_response instanceof InvalidGenerateRefreshTokenErrorResponse) {
+      if (response.login_response instanceof InvalidGenerateRefreshTokenErrorResponse) {
         return adapter.res.status(501).send({ message: 'Failed to generate refresh token' });
       }
       
-      adapter.res.setCookie('refresh_token', JSON.stringify(registered.login_response.refresh_token), {
+      adapter.res.setCookie('refresh_token', JSON.stringify(response.login_response.refresh_token), {
         httpOnly: true, 
         secure: true,  
         sameSite: 'strict', 
         path: '/',        
-        maxAge: 60 * 60 * 24 * 30, 
+        maxAge: response.login_response.refresh_token.expires_in, 
       });
 
       return adapter.res.status(201).send({ 
         message: 'User created successfully', 
         current_user: {
-          access_token: registered.login_response.access_token,
-          user: registered.login_response.user
+          access_token: response.login_response.access_token,
+          user: response.login_response.user
         }
       });
     } catch (error) {
@@ -66,11 +66,9 @@ export class IRegisterController {
         });
       }
 
-      if (error instanceof Error) {
-        return adapter.res.status(500).send({
-          message: 'Intern Server Error',
-        });
-      }
+      return adapter.res.status(500).send({
+         message: 'Intern Server Error',
+      });
     }
   }
 }

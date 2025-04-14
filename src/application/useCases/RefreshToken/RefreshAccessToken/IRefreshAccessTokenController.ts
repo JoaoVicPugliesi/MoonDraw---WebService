@@ -15,33 +15,33 @@ export class IRefreshAccessTokenController {
       const DTO: IRefreshAccessTokenDTO = {
         public_id: refreshToken.public_id
       }
-      const refreshed: InvalidRefreshTokenNotFoundErrorResponse | RefreshAccessTokenResponse =
+      const response: InvalidRefreshTokenNotFoundErrorResponse | RefreshAccessTokenResponse =
       await this.iRefreshAccessTokenUseCase.execute(DTO);
 
-      if (refreshed instanceof InvalidRefreshTokenNotFoundErrorResponse)
+      if (response instanceof InvalidRefreshTokenNotFoundErrorResponse)
         return adapter.res
           .status(404)
           .send({ message: 'Refresh Token not found' });
-      if (refreshed instanceof InvalidRefreshTokenUserNotFoundErrorResponse)
+      if (response instanceof InvalidRefreshTokenUserNotFoundErrorResponse)
         return adapter.res
           .status(404)
           .send({ message: 'User not found' });
 
-      if(refreshed.refresh_token) {
-        adapter.res.setCookie('refresh_token', JSON.stringify(refreshed.refresh_token), {
+      if(response.refresh_token) {
+        adapter.res.setCookie('refresh_token', JSON.stringify(response.refresh_token), {
           httpOnly: true,
           secure: true,
           sameSite: 'strict',
           path: '/',
-          maxAge: refreshed.refresh_token?.expires_in
+          maxAge: response.refresh_token?.expires_in
         });
       }
 
       return adapter.res.status(200).send({ 
         current_user: {
           token: {
-            access_token: refreshed.access_token,
-            user: refreshed.user
+            access_token: response.access_token,
+            user: response.user
           }
         } 
       });
@@ -53,11 +53,9 @@ export class IRefreshAccessTokenController {
         });
       }
 
-      if (error instanceof Error) {
-        return adapter.res
-          .status(500)
-          .send({ message: 'Server internal error' });
-      }
+      return adapter.res
+        .status(500)
+        .send({ message: 'Server internal error' });
     }
   }
 }

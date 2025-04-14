@@ -12,10 +12,10 @@ export class ILogOutController {
       const DTO: ILogoutDTO = {
         public_id: refreshToken.public_id,
       };
-      const loggedOut: InvalidRefreshTokenNotFoundErrorResponse | void =
+      const response: InvalidRefreshTokenNotFoundErrorResponse | void =
         await this.iLogoutUseCase.execute(DTO);
 
-      if (loggedOut instanceof InvalidRefreshTokenNotFoundErrorResponse) {
+      if (response instanceof InvalidRefreshTokenNotFoundErrorResponse) {
         return adapter.res
           .status(404)
           .send({ message: 'Refresh Token Not Found' });
@@ -26,11 +26,11 @@ export class ILogOutController {
 
       return adapter.res.status(204).send();
     } catch (error) {
-      if (error instanceof Error) {
-        return adapter.res
-          .status(500)
-          .send({ message: 'Server internal error' });
-      }
+
+      return adapter.res
+        .status(500)
+        .send({ message: 'Server internal error' });
+      
     }
   }
 }

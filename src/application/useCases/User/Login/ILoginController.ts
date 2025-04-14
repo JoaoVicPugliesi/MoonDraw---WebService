@@ -23,35 +23,35 @@ export class ILoginController {
     try {
       const DTO: ILoginDTO = schema.parse(adapter.req.body);
 
-      const logged:
+      const response:
         | InvalidUserNotFoundErrorResponse
         | InvalidPasswordIsNotEqualErrorResponse
         | InvalidGenerateRefreshTokenErrorResponse
         | LoginResponse = await this.iLoginUseCase.execute(DTO);
 
-      if (logged instanceof InvalidUserNotFoundErrorResponse)
+      if (response instanceof InvalidUserNotFoundErrorResponse)
         return adapter.res
           .status(404)
           .send({ message: 'User or Password incorrect' });
-      if (logged instanceof InvalidPasswordIsNotEqualErrorResponse)
+      if (response instanceof InvalidPasswordIsNotEqualErrorResponse)
         return adapter.res.status(401).send({ message: 'Non authorized' });
-      if (logged instanceof InvalidGenerateRefreshTokenErrorResponse)
+      if (response instanceof InvalidGenerateRefreshTokenErrorResponse)
         return adapter.res
           .status(501)
           .send({ message: 'Failed to generate refresh token' });
           
-      adapter.res.setCookie('refresh_token', JSON.stringify(logged.refresh_token), {
+      adapter.res.setCookie('refresh_token', JSON.stringify(response.refresh_token), {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
         path: 'http://localhost:5173',
-        maxAge: logged.refresh_token.expires_in,
+        maxAge: response.refresh_token.expires_in,
       });
 
       return adapter.res.status(200).send({
         current_user:{
-          access_token: logged.access_token,
-          user: logged.user
+          access_token: response.access_token,
+          user: response.user
         },
       });
     } catch (error) {
@@ -62,11 +62,9 @@ export class ILoginController {
         });
       }
 
-      if (error instanceof Error) {
-        return adapter.res
-          .status(500)
-          .send({ message: 'Server internal error' });
-      }
+      return adapter.res
+        .status(500)
+        .send({ message: 'Server internal error' });
     }
   }
 }

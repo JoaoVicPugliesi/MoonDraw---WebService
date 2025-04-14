@@ -5,4 +5,6 @@ import { ILogOutController } from "./ILogoutController";
 const iLogoutRepo = new ILogoutRepoPrismaImpl();
 const iLogoutUseCase = new ILogoutUseCase(iLogoutRepo);
 const iLogoutController = new ILogOutController(iLogoutUseCase);
-export const logout: ILogOutController = iLogoutController;
+const logout: ILogOutController = iLogoutController;
+
+export { logout };
