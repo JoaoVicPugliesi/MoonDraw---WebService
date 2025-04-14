@@ -4,7 +4,7 @@ import { IRegisterRepo } from '@domain/repositories/User/IRegisterRepo';
 import { IHashService } from '@domain/services/IHashService';
 import { randomUUID } from 'crypto';
 
-export class IRegisterRepoImplInMemory implements IRegisterRepo {
+export class IRegisterRepoInMemoryImpl implements IRegisterRepo {
   constructor(
     private readonly users: User[],
     private readonly iHashService: IHashService

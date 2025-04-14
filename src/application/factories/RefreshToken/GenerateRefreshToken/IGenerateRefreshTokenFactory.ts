@@ -1,11 +1,10 @@
-import { IGenerateRefreshTokenRepoImpl } from '@infra/repositories_implementation/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenRepoImpl';
+import { iGenerateRefreshTokenDecorator } from '@application/decorators/RefreshToken/IGenerateRefreshTokenDecorator';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 
 export class IGenerateRefreshTokenFactory {
   compose(): IGenerateRefreshTokenUseCase {
-    const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoImpl();
     const iGenerateRefreshTokenUseCase = new IGenerateRefreshTokenUseCase(
-      iGenerateRefreshTokenRepo
+      iGenerateRefreshTokenDecorator
     );
 
     return iGenerateRefreshTokenUseCase;

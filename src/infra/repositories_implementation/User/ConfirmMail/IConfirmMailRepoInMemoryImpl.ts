@@ -1,7 +1,7 @@
 import { User } from '@domain/entities/User';
 import { IConfirmMailRepo } from '@domain/repositories/User/IConfirmMailRepo';
 
-export class IConfirmMailRepoImplInMemory implements IConfirmMailRepo {
+export class IConfirmMailRepoInMemoryImpl implements IConfirmMailRepo {
   constructor(private readonly users: User[]) {}
 
   async findUser<T>(param: T): Promise<boolean> {

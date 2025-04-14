@@ -3,7 +3,7 @@ import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IBcryptHashServiceImpl } from '@infra/services_implementation/IBcryptHashServiceImpl';
 import { IJWTTokenServiceImpl } from '@infra/services_implementation/IJWTTokenServiceImpl';
 import { ILoginUseCase } from '@application/useCases/User/Login/ILoginUseCase';
-import { ILoginRepoImplInMemory } from '@infra/repositories_implementation/User/Login/ILoginRepoImplInMemory';
+import { ILoginRepoInMemoryImpl } from '@infra/repositories_implementation/User/Login/ILoginRepoInMemoryImpl';
 import { IGenerateRefreshTokenFactoryInMemory } from '@application/factories/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenInMemory';
 
 export class ILoginFactoryInMemory {
@@ -14,7 +14,7 @@ export class ILoginFactoryInMemory {
   ) {}
 
   compose(): ILoginUseCase {
-    const iLoginRepo = new ILoginRepoImplInMemory(this.users);
+    const iLoginRepo = new ILoginRepoInMemoryImpl(this.users);
     const iHashService = new IBcryptHashServiceImpl();
     const iTokenService = new IJWTTokenServiceImpl();
     const iGenerateRefreshTokenFactoryInMemory = new IGenerateRefreshTokenFactoryInMemory(this.refreshTokens);

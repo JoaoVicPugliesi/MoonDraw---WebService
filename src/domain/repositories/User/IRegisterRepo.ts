@@ -1,5 +1,5 @@
-import { IRegisterDTO } from '../../../application/useCases/User/Register/IRegisterDTO';
-import { User } from '../../entities/User';
+import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
+import { User } from '@domain/entities/User';
 
 export interface IRegisterRepo {
     findUser<T>(param: T): Promise<boolean>;

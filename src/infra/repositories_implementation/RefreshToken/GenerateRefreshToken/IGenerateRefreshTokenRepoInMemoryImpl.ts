@@ -4,7 +4,7 @@ import { RefreshToken } from "@domain/entities/RefreshToken";
 import { IGenerateRefreshTokenRepo } from "@domain/repositories/RefreshToken/IGenerateRefreshTokenRepo";
 import { randomUUID } from "crypto";
 
-export class IGenerateRefreshTokenRepoImplInMemory implements IGenerateRefreshTokenRepo {
+export class IGenerateRefreshTokenRepoInMemoryImpl implements IGenerateRefreshTokenRepo {
 
     constructor(
         private readonly refreshTokens: RefreshToken[],

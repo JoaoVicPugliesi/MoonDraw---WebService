@@ -2,7 +2,7 @@ import { ILoginFactoryInMemory } from '@application/factories/User/Login/ILoginF
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { User } from '@domain/entities/User';
 import { IBcryptHashServiceImpl } from '@infra/services_implementation/IBcryptHashServiceImpl';
-import { IRegisterRepoImplInMemory } from '@infra/repositories_implementation/User/Register/IRegisterRepoImplInMemory';
+import { IRegisterRepoInMemoryImpl } from '@infra/repositories_implementation/User/Register/IRegisterRepoInMemoryImpl';
 import { IRegisterUseCase } from '@application/useCases/User/Register/IRegisterUseCase';
 
 export class IRegisterFactoryInMemory {
@@ -16,7 +16,7 @@ export class IRegisterFactoryInMemory {
     const iHashService = new IBcryptHashServiceImpl();
     const iLoginFactoryInMemory = new ILoginFactoryInMemory(this.users, this.refreshTokens)
     const iLoginUseCase = iLoginFactoryInMemory.compose();
-    const iRegisterRepo = new IRegisterRepoImplInMemory(
+    const iRegisterRepo = new IRegisterRepoInMemoryImpl(
       this.users,
       iHashService
     );

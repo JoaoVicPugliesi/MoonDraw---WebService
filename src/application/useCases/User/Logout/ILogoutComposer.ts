@@ -1,8 +1,8 @@
-import { ILogoutRepoImpl } from "@infra/repositories_implementation/User/Logout/ILogoutRepoImpl";
+import { ILogoutRepoPrismaImpl } from "@infra/repositories_implementation/User/Logout/ILogoutRepoPrismaImpl";
 import { ILogoutUseCase } from "./ILogoutUseCase";
 import { ILogOutController } from "./ILogoutController";
 
-const iLogoutRepo = new ILogoutRepoImpl();
+const iLogoutRepo = new ILogoutRepoPrismaImpl();
 const iLogoutUseCase = new ILogoutUseCase(iLogoutRepo);
 const iLogoutController = new ILogOutController(iLogoutUseCase);
 export const logout: ILogOutController = iLogoutController;

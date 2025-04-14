@@ -6,7 +6,7 @@ import { IGenerateRefreshTokenRepo } from "@domain/repositories/RefreshToken/IGe
 import { randomUUID } from "crypto";
 
 
-export class IGenerateRefreshTokenRepoImpl implements IGenerateRefreshTokenRepo {
+export class IGenerateRefreshTokenRepoPrismaImpl implements IGenerateRefreshTokenRepo {
 
     async findRelatedRefreshTokens<T>(param: T): Promise<RefreshToken | RefreshToken[] | null> {
         const refreshTokens: RefreshToken | RefreshToken[] | null = await prisma.refreshToken.findMany({

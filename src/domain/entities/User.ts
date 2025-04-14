@@ -1,5 +1,3 @@
-// Primitive Types
-
 type Role = "client" | "admin";
 
 export interface IUser {
@@ -24,8 +22,8 @@ export class User implements IUser {
     readonly email: string,
     readonly password: string,
     readonly role: Role,
-    readonly is_active: boolean,
+    public is_active: boolean,
     readonly created_at: Date,
-    readonly email_verified_at?: Date | null
+    public email_verified_at?: Date | null
   ) {}
 }

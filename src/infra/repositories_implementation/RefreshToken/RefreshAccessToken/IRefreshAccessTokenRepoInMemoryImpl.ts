@@ -2,7 +2,7 @@ import { RefreshToken } from '@domain/entities/RefreshToken';
 import { User } from '@domain/entities/User';
 import { IRefreshAccessTokenRepo } from '@domain/repositories/RefreshToken/IRefreshAccessTokenRepo';
 
-export class IRefreshAccessTokenRepoImplInMemory implements IRefreshAccessTokenRepo
+export class IRefreshAccessTokenRepoInMemoryImpl implements IRefreshAccessTokenRepo
 {
   constructor(
     private readonly users: User[],

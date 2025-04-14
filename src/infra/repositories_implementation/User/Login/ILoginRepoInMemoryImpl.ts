@@ -1,7 +1,7 @@
 import { User } from "@domain/entities/User";
 import { ILoginRepo } from "@domain/repositories/User/ILoginRepo";
 
-export class ILoginRepoImplInMemory implements ILoginRepo {
+export class ILoginRepoInMemoryImpl implements ILoginRepo {
 
     constructor(private readonly users: User[]) {}
 

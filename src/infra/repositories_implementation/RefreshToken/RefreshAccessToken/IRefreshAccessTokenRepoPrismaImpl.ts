@@ -2,7 +2,7 @@ import { IRefreshAccessTokenRepo } from "@domain/repositories/RefreshToken/IRefr
 import { prisma } from "@infra/db/Prisma";
 import { RefreshToken, User } from "@prisma/client";
 
-export class IRefreshAccessTokenRepoImpl implements IRefreshAccessTokenRepo {
+export class IRefreshAccessTokenRepoPrismaImpl implements IRefreshAccessTokenRepo {
     async findRefreshToken<T>(param: T): Promise<RefreshToken | null> {
         const refreshToken: RefreshToken | null = await prisma.refreshToken.findFirst({
             where: {

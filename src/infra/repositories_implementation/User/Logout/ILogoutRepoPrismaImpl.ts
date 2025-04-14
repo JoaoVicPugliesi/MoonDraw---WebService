@@ -2,7 +2,7 @@ import { RefreshToken } from '@domain/entities/RefreshToken';
 import { ILogoutRepo } from '@domain/repositories/User/ILogoutRepo';
 import { prisma } from '@infra/db/Prisma';
 
-export class ILogoutRepoImpl implements ILogoutRepo {
+export class ILogoutRepoPrismaImpl implements ILogoutRepo {
   async findRefreshToken<T>(param: T): Promise<RefreshToken | null> {
     const refreshToken: RefreshToken | null =
       await prisma.refreshToken.findFirst({
