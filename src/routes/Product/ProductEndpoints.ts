@@ -1,20 +1,13 @@
-import { IEnsureAccessTokenMiddleware } from "@application/middlewares/IEnsureAccessTokenMiddleware";
+import { RequestResponseAdapter, ServerAdapter } from "@adapters/ServerAdapter";
 import { fetchProducts } from "@application/useCases/Product/FetchProducts/IFetchProductsComposer";
-import { IJWTTokenServiceImpl } from "@infra/services_implementation/IJWTTokenServiceImpl";
-import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { FastifyRequestResponseAdapter } from "server/Fastify/FastifyRequestResponseAdapter";
 
 export class ProductEndpoints {
   constructor(
-    private readonly app: FastifyInstance
+    private readonly app: ServerAdapter
   ) {}
 
   setupRoutes() {
-    this.app.get('/api/products/:page', async (req: FastifyRequest, res: FastifyReply) => {
-        const adapter = new FastifyRequestResponseAdapter(req, res);
-        const iTokenService = new IJWTTokenServiceImpl();
-        const iEnsureAccessTokenMiddleware = new IEnsureAccessTokenMiddleware(adapter, iTokenService);
-        iEnsureAccessTokenMiddleware.ensure();
+    this.app.get('/api/products/:page', async (adapter: RequestResponseAdapter) => {
         await fetchProducts.handle(adapter)
       });
 

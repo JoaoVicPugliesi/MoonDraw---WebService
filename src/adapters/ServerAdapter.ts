@@ -1,4 +1,8 @@
 export interface ServerAdapter {
+  delete(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>): void;
+  post(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>): void;
+  put(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>): void;
+  get(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>): void;
   register(
     x: any,
     options?: {

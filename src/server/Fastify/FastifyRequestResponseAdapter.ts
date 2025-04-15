@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { RequestResponseAdapter } from '../../adapters/ServerAdapter';
+import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { CookieOptions } from 'react-router';
 
 export class FastifyRequestResponseAdapter implements RequestResponseAdapter {

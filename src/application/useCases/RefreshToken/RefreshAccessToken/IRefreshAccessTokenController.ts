@@ -4,14 +4,17 @@ import { IRefreshAccessTokenUseCase } from './IRefreshAccessTokenUseCase';
 import { InvalidRefreshTokenNotFoundErrorResponse, InvalidRefreshTokenUserNotFoundErrorResponse, RefreshAccessTokenResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IRefreshAccessTokenHandler';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
+import { IEnsureRefreshTokenMiddleware } from '@application/middlewares/IEnsureRefreshTokenMiddleware';
 export class IRefreshAccessTokenController {
   constructor(
     private readonly iRefreshAccessTokenUseCase: IRefreshAccessTokenUseCase
   ) {}
 
-  async handle(adapter: RequestResponseAdapter, refreshToken: RefreshToken) {
+  async handle(adapter: RequestResponseAdapter) {
 
     try {
+      const iEnsureRefreshTokenMiddleware = new IEnsureRefreshTokenMiddleware(adapter);
+      const refreshToken: RefreshToken = iEnsureRefreshTokenMiddleware.ensure();
       const DTO: IRefreshAccessTokenDTO = {
         public_id: refreshToken.public_id
       }

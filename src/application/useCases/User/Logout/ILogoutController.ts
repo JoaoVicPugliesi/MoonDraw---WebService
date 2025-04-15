@@ -3,14 +3,17 @@ import { ILogoutUseCase } from './ILogoutUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { ILogoutDTO } from './ILogoutDTO';
 import { InvalidRefreshTokenNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/User/ILogoutHandlers';
+import { IEnsureRefreshTokenMiddleware } from '@application/middlewares/IEnsureRefreshTokenMiddleware';
 
 export class ILogOutController {
   constructor(
     private readonly iLogoutUseCase: ILogoutUseCase
   ) {}
 
-  async handle(adapter: RequestResponseAdapter, refreshToken: RefreshToken) {
+  async handle(adapter: RequestResponseAdapter) {
     try {
+      const iEnsureRefreshTokenMiddleware = new IEnsureRefreshTokenMiddleware(adapter);
+      const refreshToken: RefreshToken = iEnsureRefreshTokenMiddleware.ensure();
       const DTO: ILogoutDTO = {
         public_id: refreshToken.public_id,
       };
@@ -31,7 +34,7 @@ export class ILogOutController {
 
       return adapter.res
         .status(500)
-        .send({ message: 'Server internal error' });
+        .send({ message: error });
       
     }
   }

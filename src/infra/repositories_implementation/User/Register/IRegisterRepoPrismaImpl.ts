@@ -1,5 +1,5 @@
-import { User } from '../../../../domain/entities/User';
-import { prisma } from '../../../db/Prisma';
+import { User } from '@domain/entities/User';
+import { prisma } from '@infra/db/Prisma';
 import { randomUUID } from 'crypto';
 import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
 import { IRegisterRepo } from '@domain/repositories/User/IRegisterRepo';

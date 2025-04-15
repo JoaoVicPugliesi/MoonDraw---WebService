@@ -10,7 +10,7 @@ import {
   InvalidRefreshTokenUserNotFoundErrorResponse,
   RefreshAccessTokenResponse,
 } from '@application/handlers/UseCasesResponses/RefreshToken/IRefreshAccessTokenHandler';
-import { IGenerateRefreshTokenDTO } from '../GenerateRefreshToken/IGenerateRefreshTokenDTO';
+import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
 import { configDotenv } from 'dotenv';
 import { User } from '@domain/entities/User';
 configDotenv();

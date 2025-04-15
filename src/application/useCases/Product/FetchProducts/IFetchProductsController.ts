@@ -2,6 +2,8 @@ import { RequestResponseAdapter } from "@adapters/ServerAdapter";
 import { IFetchProductsUseCase } from "./IFetchProductsUseCase";
 import { IFetchProductsDTO } from "./IFetchProductsDTO";
 import { FetchProductsResponse, InvalidProductsNotFoundErrorResponse } from "@application/handlers/UseCasesResponses/Product/IFetchProductsHandlers";
+import { IEnsureAccessTokenMiddleware } from "@application/middlewares/IEnsureAccessTokenMiddleware";
+import { IJWTTokenServiceImpl } from "@infra/services_implementation/IJWTTokenServiceImpl";
 
 export class IFetchProductsController {
     constructor(
@@ -10,6 +12,9 @@ export class IFetchProductsController {
 
     async handle(adapter: RequestResponseAdapter) {
         try {
+            const iTokenService = new IJWTTokenServiceImpl();
+            const iEnsureAccessTokenMiddleware = new IEnsureAccessTokenMiddleware(adapter, iTokenService);
+            iEnsureAccessTokenMiddleware.ensure();
             const { page } = adapter.req.params as { page: number };
             const DTO: IFetchProductsDTO = {
                 page
@@ -24,7 +29,7 @@ export class IFetchProductsController {
 
         } catch (error) {
             return adapter.res.status(500)
-            .send({ message: 'Server Internal Error' })
+            .send({ message: error })
         }
     }
 }
