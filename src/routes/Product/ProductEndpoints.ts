@@ -1,5 +1,5 @@
 import { RequestResponseAdapter, ServerAdapter } from "@adapters/ServerAdapter";
-import { fetchProducts } from "@application/useCases/Product/FetchProducts/IFetchProductsComposer";
+import { selectProducts } from "@application/useCases/Product/SelectProducts/ISelectProductsComposer";
 
 export class ProductEndpoints {
   constructor(
@@ -8,7 +8,7 @@ export class ProductEndpoints {
 
   setupRoutes() {
     this.app.get('/api/products/:page', async (adapter: RequestResponseAdapter) => {
-        await fetchProducts.handle(adapter)
+        await selectProducts.handle(adapter)
       });
 
   }

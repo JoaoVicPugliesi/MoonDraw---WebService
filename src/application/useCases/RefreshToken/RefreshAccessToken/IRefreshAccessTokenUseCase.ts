@@ -25,14 +25,16 @@ export class IRefreshAccessTokenUseCase {
   }
 
   async execute(
-    DTO: IRefreshAccessTokenDTO
+    {
+      public_id
+    }: IRefreshAccessTokenDTO
   ): Promise<
     | InvalidRefreshTokenNotFoundErrorResponse
     | InvalidRefreshTokenUserNotFoundErrorResponse
     | RefreshAccessTokenResponse
   > {
     const refreshToken: RefreshToken | null =
-      await this.iRefreshAccessTokenRepo.findRefreshToken(DTO.public_id);
+      await this.iRefreshAccessTokenRepo.findRefreshToken(public_id);
 
     if (!refreshToken) return new InvalidRefreshTokenNotFoundErrorResponse();
 
@@ -43,11 +45,11 @@ export class IRefreshAccessTokenUseCase {
 
     if (!user) return new InvalidRefreshTokenUserNotFoundErrorResponse();
 
-    const { public_id, name, surname, email, role, is_active } = user;
+    const { name, surname, email, role, is_active } = user;
 
     const accessToken: string = this.iTokenService.sign({
       payload: {
-        content: public_id
+        content: user.public_id
       },
       secret_key: this.secret_key,
       options: {

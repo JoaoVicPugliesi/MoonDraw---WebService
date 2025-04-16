@@ -7,11 +7,11 @@ export class IConfirmMailUseCase {
     private readonly iConfirmMailRepo: IConfirmMailRepo
   ) {}
 
-  async execute(DTO: IConfirmMailDTO): Promise<InvalidUserNotFoundError | void> {
-    const isUser: boolean = await this.iConfirmMailRepo.findUser(DTO.email);
+  async execute({ email, token }: IConfirmMailDTO): Promise<InvalidUserNotFoundError | void> {
+    const isUser: boolean = await this.iConfirmMailRepo.findUser(email);
 
     if (!isUser) return new InvalidUserNotFoundError();
 
-    await this.iConfirmMailRepo.activateUser(DTO.email);
+    await this.iConfirmMailRepo.activateUser(email);
   }
 }

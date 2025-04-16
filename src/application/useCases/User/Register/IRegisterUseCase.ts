@@ -23,15 +23,25 @@ export class IRegisterUseCase {
   ) {}
 
   async execute(
-    DTO: IRegisterDTO
+    {
+      name,
+      surname,
+      email,
+      password,
+      confirmPassword
+    }: IRegisterDTO
   ): Promise<InvalidUserConflictErrorResponse | RegisterReponse> {
-    const isUser: boolean = await this.iRegisterRepo.findUser(DTO.email);
+    const isUser: boolean = await this.iRegisterRepo.findUser(email);
 
     if (isUser) return new InvalidUserConflictErrorResponse();
 
-    const user: User = await this.iRegisterRepo.saveUser(
-      DTO
-    );
+    const user: User = await this.iRegisterRepo.saveUser({
+      name,
+      surname,
+      email,
+      password,
+      confirmPassword
+    });
 
     const mailResponse: SMTPTransport.SentMessageInfo =
       await this.iMailProvider.sendMail({
@@ -52,7 +62,7 @@ export class IRegisterUseCase {
       | InvalidGenerateRefreshTokenErrorResponse
       | LoginResponse = await this.iLoginUseCase.execute({
       email: user.email,
-      password: DTO.password,
+      password: password,
     });
 
     return {

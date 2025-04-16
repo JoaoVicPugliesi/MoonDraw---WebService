@@ -22,23 +22,26 @@ export class ILoginUseCase {
   ) {}
 
   async execute(
-    DTO: ILoginDTO
+    {
+      email,
+      password
+    }: ILoginDTO
   ): Promise<
     | InvalidUserNotFoundErrorResponse
     | InvalidPasswordIsNotEqualErrorResponse
     | InvalidGenerateRefreshTokenErrorResponse
     | LoginResponse
   > {
-    const user: User | null = await this.iLoginRepo.findUser(DTO.email);
+    const user: User | null = await this.iLoginRepo.findUser(email);
     if (!user) return new InvalidUserNotFoundErrorResponse();
 
     const isPasswordEqual: boolean = await this.iHashService.compare(
-      DTO.password,
+      password,
       user.password
     );
     if (!isPasswordEqual) return new InvalidPasswordIsNotEqualErrorResponse();
     
-    const { public_id, name, surname, email, role, is_active } = user;
+    const { public_id, name, surname, role, is_active } = user;
 
     const accessToken: string = this.iTokenService.sign({
       payload: {

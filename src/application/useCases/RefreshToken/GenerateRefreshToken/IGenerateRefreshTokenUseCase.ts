@@ -4,22 +4,33 @@ import { IGenerateRefreshTokenDTO } from './IGenerateRefreshTokenDTO';
 import { IGenerateRefreshTokenRepo } from '@domain/repositories/RefreshToken/IGenerateRefreshTokenRepo';
 
 export class IGenerateRefreshTokenUseCase {
-    constructor(
-        private readonly iGenerateRefreshTokenRepo: IGenerateRefreshTokenRepo
-    ) {}
+  constructor(
+    private readonly iGenerateRefreshTokenRepo: IGenerateRefreshTokenRepo
+  ) {}
 
-    async execute(DTO: IGenerateRefreshTokenDTO): Promise<InvalidGenerateRefreshTokenErrorResponse | RefreshToken> {
+  async execute({
+    user_id,
+  }: IGenerateRefreshTokenDTO): Promise<
+    InvalidGenerateRefreshTokenErrorResponse | RefreshToken
+  > {
+    const relatedTokens: RefreshToken | RefreshToken[] | null =
+      await this.iGenerateRefreshTokenRepo.findRelatedRefreshTokens(
+        user_id
+      );
 
-        const relatedTokens: RefreshToken | RefreshToken[] | null = await this.iGenerateRefreshTokenRepo.findRelatedRefreshTokens(DTO.user_id);
-
-        if(relatedTokens) {
-            await this.iGenerateRefreshTokenRepo.deleteRelatedRefreshTokens(DTO.user_id);
-        }
-    
-        const refreshToken: RefreshToken | null = await this.iGenerateRefreshTokenRepo.saveRefreshToken(DTO);
-
-        if(!refreshToken) return new InvalidGenerateRefreshTokenErrorResponse();
-
-        return refreshToken;
+    if (relatedTokens) {
+      await this.iGenerateRefreshTokenRepo.deleteRelatedRefreshTokens(
+        user_id
+      );
     }
+
+    const refreshToken: RefreshToken | null =
+      await this.iGenerateRefreshTokenRepo.saveRefreshToken({
+        user_id
+      });
+
+    if (!refreshToken) return new InvalidGenerateRefreshTokenErrorResponse();
+
+    return refreshToken;
+  }
 }
