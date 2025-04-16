@@ -1,5 +1,5 @@
 import { IGenerateRefreshTokenFactoryInMemory } from '@application/factories/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenInMemory';
-import { IJWTTokenServiceImpl } from '@infra/services_implementation/IJWTTokenServiceImpl';
+import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
 import { IRefreshAccessTokenUseCase } from '@application/useCases/RefreshToken/RefreshAccessToken/IRefreshAccessTokenUseCase';
 import { IRefreshAccessTokenRepoInMemoryImpl } from '@infra/repositories_implementation/RefreshToken/RefreshAccessToken/IRefreshAccessTokenRepoInMemoryImpl';
 import { RefreshToken } from '@domain/entities/RefreshToken';
@@ -14,7 +14,7 @@ export class IRefreshAccessTokenFactoryInMemory {
 
   compose(): IRefreshAccessTokenUseCase {
     const iRefreshAccessTokenRepo = new IRefreshAccessTokenRepoInMemoryImpl(this.users, this.refreshTokens);
-    const iTokenService = new IJWTTokenServiceImpl();
+    const iTokenService = new ITokenServiceJWTImpl();
     const iGenerateRefreshTokenFactoryInMemory = new IGenerateRefreshTokenFactoryInMemory(this.refreshTokens);
     const iGenerateRefreshTokenUseCase = iGenerateRefreshTokenFactoryInMemory.compose()
     const iRefreshAccessTokenUseCase = new IRefreshAccessTokenUseCase(

@@ -3,7 +3,7 @@ import { IFetchProductsUseCase } from "./IFetchProductsUseCase";
 import { IFetchProductsDTO } from "./IFetchProductsDTO";
 import { FetchProductsResponse, InvalidProductsNotFoundErrorResponse } from "@application/handlers/UseCasesResponses/Product/IFetchProductsHandlers";
 import { IEnsureAccessTokenMiddleware } from "@application/middlewares/IEnsureAccessTokenMiddleware";
-import { IJWTTokenServiceImpl } from "@infra/services_implementation/IJWTTokenServiceImpl";
+import { IJWTTokenServiceImpl } from "@infra/services_implementation/ITokenServiceJWTImpl";
 
 export class IFetchProductsController {
     constructor(
