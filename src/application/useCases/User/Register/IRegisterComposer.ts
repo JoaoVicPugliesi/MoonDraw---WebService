@@ -1,5 +1,5 @@
-import { IRegisterController } from "./IRegisterController";
-import { IRegisterFactory } from "@application/factories/User/Register/IRegisterFactory";
+import { IRegisterController } from './IRegisterController';
+import { IRegisterFactory } from '@application/factories/User/Register/IRegisterFactory';
 
 const iRegisterFactory = new IRegisterFactory();
 const iRegisterUseCase = iRegisterFactory.compose();

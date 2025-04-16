@@ -17,6 +17,7 @@ class Application {
 
   async server() {
     try {
+      await this.app.run();
       await this.app.listen({
         port: this.port,
         host: this.host,
@@ -34,6 +35,5 @@ class Application {
   }
 }
 
-app.run();
 const application = new Application(app);
 application.server();

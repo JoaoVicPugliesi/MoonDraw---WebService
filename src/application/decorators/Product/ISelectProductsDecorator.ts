@@ -1,6 +1,6 @@
 import { ISelectProductsDTO } from '@application/useCases/Product/SelectProducts/ISelectProductsDTO';
 import { Product } from '@domain/entities/Product';
-import { ISelectProductsRepo } from "@domain/repositories/Product/ISelectProductsRepo";
+import { ISelectProductsRepo } from '@domain/repositories/Product/ISelectProductsRepo';
 import { ISelectProductsRepoPrismaImpl } from '@infra/repositories_implementation/Product/SelectProducts/ISelectProductsRepoPrismaImpl';
 
 export class ISelectProductsDecorator implements ISelectProductsRepo {

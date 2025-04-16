@@ -1,5 +1,5 @@
-import { IConfirmMailRepo } from "@domain/repositories/User/IConfirmMailRepo";
-import { IConfirmMailRepoPrismaImpl } from "@infra/repositories_implementation/User/ConfirmMail/IConfirmMailRepoPrismaImpl";
+import { IConfirmMailRepo } from '@domain/repositories/User/IConfirmMailRepo';
+import { IConfirmMailRepoPrismaImpl } from '@infra/repositories_implementation/User/ConfirmMail/IConfirmMailRepoPrismaImpl';
 
 export class IConfirmMailDecorator implements IConfirmMailRepo {
     constructor(

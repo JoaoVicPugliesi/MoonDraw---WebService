@@ -1,5 +1,5 @@
-import { RequestResponseAdapter, ServerAdapter } from "@adapters/ServerAdapter";
-import { selectProducts } from "@application/useCases/Product/SelectProducts/ISelectProductsComposer";
+import { RequestResponseAdapter, ServerAdapter } from '@adapters/ServerAdapter';
+import { selectProducts } from '@application/useCases/Product/SelectProducts/ISelectProductsComposer';
 
 export class ProductEndpoints {
   constructor(

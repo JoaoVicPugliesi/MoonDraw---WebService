@@ -1,4 +1,4 @@
-type Role = "client" | "admin";
+type Role = 'client' | 'admin';
 
 export interface IUser {
   id: number;

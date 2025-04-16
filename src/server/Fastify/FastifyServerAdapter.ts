@@ -1,15 +1,14 @@
 import {
   FastifyInstance,
-  FastifyPluginOptions,
-  FastifyRegisterOptions,
   FastifyRequest,
   FastifyReply
-} from "fastify";
-import fastifyCors from "@fastify/cors";
-import { RequestResponseAdapter, ServerAdapter } from "@adapters/ServerAdapter";
-import { fastifyCookie } from "fastify-cookie";
-import { Routes } from "@routes/Routes";
-import { FastifyRequestResponseAdapter } from "./FastifyRequestResponseAdapter";
+} from 'fastify';
+import fastifyCors from '@fastify/cors';
+import { RequestResponseAdapter, ServerAdapter } from '@adapters/ServerAdapter';
+import { fastifyCookie } from 'fastify-cookie';
+import { Routes } from '@routes/Routes';
+import { FastifyRequestResponseAdapter } from './FastifyRequestResponseAdapter';
+import fastifyRateLimit from '@fastify/rate-limit';
 
 export class FastifyServerAdapter implements ServerAdapter {
   private cookie: any;
@@ -23,23 +22,8 @@ export class FastifyServerAdapter implements ServerAdapter {
   }
 
   private async setupRoutes() {
-    if (!this.routes) throw new Error("Routes not set!");
+    if (!this.routes) throw new Error('Routes not set!');
     this.routes.setupRoutes();
-  }
-
-  async register(
-    x: any,
-    options?: {
-      credentials?: boolean;
-      origin?: string | string[];
-      methods?: string | string[];
-      allowedHeaders?: string | string[];
-    }
-  ): Promise<void> {
-    await this.app.register(
-      x,
-      options as FastifyRegisterOptions<FastifyPluginOptions>
-    );
   }
 
   get(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
@@ -78,19 +62,38 @@ export class FastifyServerAdapter implements ServerAdapter {
     return this.app.log;
   }
 
-  private async init() {
+  async init() {
     this.cookie = fastifyCookie;
-    this.register(fastifyCors, {
+    await this.app.register(fastifyCors, {
       credentials: true,
-      origin: "http://localhost:5173",
-      methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
-      allowedHeaders: ["Content-Type", "Authorization"],
+      origin: 'http://localhost:5173',
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
     });
-    this.register(this.cookie);
-    this.setupRoutes();
+    await this.app.register(fastifyRateLimit, {
+      global: true,
+      max: 100,
+      timeWindow: '1 minute',
+      ban: 2, 
+      cache: 5000,
+      addHeaders: {
+        'x-ratelimit-limit': true,
+        'x-ratelimit-remaining': true,
+        'x-ratelimit-reset': true
+      },
+      errorResponseBuilder: (req, context) => {
+        return {
+          statusCode: 429,
+          error: 'Too Many Requests',
+          message: `Rate limit exceeded. Try again in ${context.after}`,
+        };
+      }
+    });
+    await this.app.register(this.cookie);
+    await this.setupRoutes();
   }
 
-  run() {
-    this.init();
+  async run() {
+    await this.init();
   }
 }

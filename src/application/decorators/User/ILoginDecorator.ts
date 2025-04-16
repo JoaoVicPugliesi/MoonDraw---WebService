@@ -1,6 +1,6 @@
-import { User } from "@domain/entities/User";
-import { ILoginRepo } from "@domain/repositories/User/ILoginRepo";
-import { ILoginRepoPrismaImpl } from "@infra/repositories_implementation/User/Login/ILoginRepoPrismaImpl";
+import { User } from '@domain/entities/User';
+import { ILoginRepo } from '@domain/repositories/User/ILoginRepo';
+import { ILoginRepoPrismaImpl } from '@infra/repositories_implementation/User/Login/ILoginRepoPrismaImpl';
 
 export class ILoginDecorator implements ILoginRepo {
     constructor(

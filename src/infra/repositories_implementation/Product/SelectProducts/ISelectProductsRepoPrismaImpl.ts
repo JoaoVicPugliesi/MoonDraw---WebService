@@ -1,7 +1,7 @@
-import { ISelectProductsDTO } from "@application/useCases/Product/SelectProducts/ISelectProductsDTO";
-import { Product } from "@domain/entities/Product";
-import { ISelectProductsRepo } from "@domain/repositories/Product/ISelectProductsRepo";
-import { prisma } from "@infra/db/Prisma";
+import { ISelectProductsDTO } from '@application/useCases/Product/SelectProducts/ISelectProductsDTO';
+import { Product } from '@domain/entities/Product';
+import { ISelectProductsRepo } from '@domain/repositories/Product/ISelectProductsRepo';
+import { prisma } from '@infra/db/Prisma';
 
 export class ISelectProductsRepoPrismaImpl implements ISelectProductsRepo {
     async selectProducts({ page }: ISelectProductsDTO): Promise<Product[] | null> {

@@ -1,4 +1,4 @@
-import { User } from "@domain/entities/User"
+import { User } from '@domain/entities/User'
 
 export class InvalidUserNotFoundErrorResponse extends Error {}
 export class InvalidPasswordIsNotEqualErrorResponse extends Error {}

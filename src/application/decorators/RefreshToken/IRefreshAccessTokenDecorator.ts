@@ -1,7 +1,7 @@
-import { User } from "@domain/entities/User";
-import { RefreshToken } from "@domain/entities/RefreshToken";
-import { IRefreshAccessTokenRepo } from "@domain/repositories/RefreshToken/IRefreshAccessTokenRepo";
-import { IRefreshAccessTokenRepoPrismaImpl } from "@infra/repositories_implementation/RefreshToken/RefreshAccessToken/IRefreshAccessTokenRepoPrismaImpl";
+import { User } from '@domain/entities/User';
+import { RefreshToken } from '@domain/entities/RefreshToken';
+import { IRefreshAccessTokenRepo } from '@domain/repositories/RefreshToken/IRefreshAccessTokenRepo';
+import { IRefreshAccessTokenRepoPrismaImpl } from '@infra/repositories_implementation/RefreshToken/RefreshAccessToken/IRefreshAccessTokenRepoPrismaImpl';
 
 export class IRefreshAccessTokenDecorator implements IRefreshAccessTokenRepo {
     constructor(

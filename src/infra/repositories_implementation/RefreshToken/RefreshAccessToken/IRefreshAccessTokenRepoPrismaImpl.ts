@@ -1,6 +1,6 @@
-import { IRefreshAccessTokenRepo } from "@domain/repositories/RefreshToken/IRefreshAccessTokenRepo";
-import { prisma } from "@infra/db/Prisma";
-import { RefreshToken, User } from "@prisma/client";
+import { IRefreshAccessTokenRepo } from '@domain/repositories/RefreshToken/IRefreshAccessTokenRepo';
+import { prisma } from '@infra/db/Prisma';
+import { RefreshToken, User } from '@prisma/client';
 
 export class IRefreshAccessTokenRepoPrismaImpl implements IRefreshAccessTokenRepo {
     async findRefreshToken<T>(param: T): Promise<RefreshToken | null> {

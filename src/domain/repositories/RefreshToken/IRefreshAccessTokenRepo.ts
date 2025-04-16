@@ -1,5 +1,5 @@
-import { RefreshToken } from "@domain/entities/RefreshToken";
-import { User } from "@domain/entities/User";
+import { RefreshToken } from '@domain/entities/RefreshToken';
+import { User } from '@domain/entities/User';
 
 
 export interface IRefreshAccessTokenRepo {

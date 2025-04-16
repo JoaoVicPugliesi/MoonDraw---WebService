@@ -1,6 +1,6 @@
-import { User } from "@domain/entities/User";
-import { prisma } from "@infra/db/Prisma";
-import { IConfirmMailRepo } from "@domain/repositories/User/IConfirmMailRepo";
+import { User } from '@domain/entities/User';
+import { prisma } from '@infra/db/Prisma';
+import { IConfirmMailRepo } from '@domain/repositories/User/IConfirmMailRepo';
 
 export class IConfirmMailRepoPrismaImpl implements IConfirmMailRepo {
   async findUser<T>(param: T): Promise<boolean> {

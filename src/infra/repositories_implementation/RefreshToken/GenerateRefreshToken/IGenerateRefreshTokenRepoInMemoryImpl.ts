@@ -1,8 +1,8 @@
-import dayjs from "dayjs";
-import { IGenerateRefreshTokenDTO } from "@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO";
-import { RefreshToken } from "@domain/entities/RefreshToken";
-import { IGenerateRefreshTokenRepo } from "@domain/repositories/RefreshToken/IGenerateRefreshTokenRepo";
-import { randomUUID } from "crypto";
+import dayjs from 'dayjs';
+import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
+import { RefreshToken } from '@domain/entities/RefreshToken';
+import { IGenerateRefreshTokenRepo } from '@domain/repositories/RefreshToken/IGenerateRefreshTokenRepo';
+import { randomUUID } from 'crypto';
 
 export class IGenerateRefreshTokenRepoInMemoryImpl implements IGenerateRefreshTokenRepo {
 

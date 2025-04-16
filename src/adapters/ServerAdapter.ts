@@ -1,27 +1,32 @@
 export interface ServerAdapter {
-  delete(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>): void;
-  post(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>): void;
-  put(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>): void;
-  get(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>): void;
-  register(
-    x: any,
-    options?: {
-      credentials?: boolean;
-      origin?: string | string[];
-      methods?: string | string[];
-      allowedHeaders?: string | string[];
-    }
-  ): Promise<void>;
+  delete(
+    url: string,
+    callback: (adapter: RequestResponseAdapter) => Promise<any>
+  ): void;
+  post(
+    url: string,
+    callback: (adapter: RequestResponseAdapter) => Promise<any>
+  ): void;
+  put(
+    url: string,
+    callback: (adapter: RequestResponseAdapter) => Promise<any>
+  ): void;
+  get(
+    url: string,
+    callback: (adapter: RequestResponseAdapter) => Promise<any>
+  ): void;
   listen(options: { port: number; host: string }): Promise<void>;
   log: { info(msg: string): void; error(msg: Error): void };
+  init(): Promise<void>;
+  run(): Promise<void>;
 }
 
 export interface CookieOptions {
-  httpOnly?: boolean; 
-  secure?: boolean; 
-  sameSite?:  "lax" | "strict" | "none" | boolean; 
-  path?: string; 
-  maxAge?: number; 
+  httpOnly?: boolean;
+  secure?: boolean;
+  sameSite?: "lax" | "strict" | "none" | boolean;
+  path?: string;
+  maxAge?: number;
 }
 
 export interface RequestResponseAdapter {
@@ -35,7 +40,11 @@ export interface RequestResponseAdapter {
     } & Record<string, string | string[] | undefined>;
   };
   res: {
-    setCookie(name: string, refreshToken: string, cookieOptions: CookieOptions): any;
+    setCookie(
+      name: string,
+      refreshToken: string,
+      cookieOptions: CookieOptions
+    ): any;
     clearCookie(name: string, cookieOptions?: CookieOptions): any;
     unsignCookie(name: string): any;
     status(statusCode: number): any;

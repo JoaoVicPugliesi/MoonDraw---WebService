@@ -1,9 +1,9 @@
-import dayjs from "dayjs";
-import { prisma } from "@infra/db/Prisma";
+import dayjs from 'dayjs';
+import { prisma } from '@infra/db/Prisma';
 import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
-import { RefreshToken } from "@domain/entities/RefreshToken";
-import { IGenerateRefreshTokenRepo } from "@domain/repositories/RefreshToken/IGenerateRefreshTokenRepo";
-import { randomUUID } from "crypto";
+import { RefreshToken } from '@domain/entities/RefreshToken';
+import { IGenerateRefreshTokenRepo } from '@domain/repositories/RefreshToken/IGenerateRefreshTokenRepo';
+import { randomUUID } from 'crypto';
 
 
 export class IGenerateRefreshTokenRepoPrismaImpl implements IGenerateRefreshTokenRepo {
