@@ -8,6 +8,8 @@ import { InvalidPasswordIsNotEqualErrorResponse, InvalidUserNotFoundErrorRespons
 import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { IRegisterFactoryInMemory } from '@application/factories/User/Register/IRegisterFactoryInMemory';
 import { IRegisterUseCase } from './IRegisterUseCase';
+import { configDotenv } from 'dotenv';
+configDotenv()
 
 // Mocks
 const iMailProvider = { sendMail: jest.fn() };

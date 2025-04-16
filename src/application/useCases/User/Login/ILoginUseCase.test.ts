@@ -8,6 +8,8 @@ import {
 } from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
 import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { ILoginFactoryInMemory } from '@application/factories/User/Login/ILoginFactoryInMemory';
+import { configDotenv } from 'dotenv';
+configDotenv()
 
 type Logged =
   | InvalidUserNotFoundErrorResponse

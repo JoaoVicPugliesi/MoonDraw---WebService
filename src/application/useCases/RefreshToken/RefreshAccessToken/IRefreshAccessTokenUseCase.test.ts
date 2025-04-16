@@ -5,6 +5,8 @@ import { InvalidRefreshTokenNotFoundErrorResponse, InvalidRefreshTokenUserNotFou
 import dayjs from "dayjs";
 import { User } from "@domain/entities/User";
 import { IRefreshAccessTokenUseCase } from "./IRefreshAccessTokenUseCase";
+import { configDotenv } from 'dotenv';
+configDotenv()
 
 type RefreshAccessResponse =  InvalidRefreshTokenNotFoundErrorResponse | InvalidRefreshTokenUserNotFoundErrorResponse | RefreshAccessTokenResponse;
 

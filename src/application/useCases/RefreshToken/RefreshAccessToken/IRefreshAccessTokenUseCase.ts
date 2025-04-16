@@ -11,9 +11,7 @@ import {
   RefreshAccessTokenResponse,
 } from '@application/handlers/UseCasesResponses/RefreshToken/IRefreshAccessTokenHandler';
 import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
-import { configDotenv } from 'dotenv';
 import { User } from '@domain/entities/User';
-configDotenv();
 
 export class IRefreshAccessTokenUseCase {
   private readonly secret_key: string;

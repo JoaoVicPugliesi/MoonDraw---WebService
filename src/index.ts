@@ -1,10 +1,7 @@
 import { app } from '@server/ServerComposer';
 import { ServerAdapter } from './adapters/ServerAdapter';
-import { configDotenv } from 'dotenv';
 
-configDotenv();
-
-const PORT: number = parseInt(process.env.PORT as string) ?? 5000;
+const PORT: number = parseInt(process.env.PORT as any) ?? 5000;
 const HOST: string = process.env.HOST ?? '127.0.0.1';
 
 class Application {
