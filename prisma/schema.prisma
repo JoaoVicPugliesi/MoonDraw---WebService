@@ -30,6 +30,7 @@ model User {
   created_at        DateTime      @default(now())
   email_verified_at DateTime?
   refreshToken      RefreshToken?
+  Cart              Cart?
 
   @@map("users")
 }
@@ -48,7 +49,7 @@ model Product {
   id           Int      @default(autoincrement())
   public_id    String   @id
   name         String
-  description  String
+  desc         String
   price        Float    @default(0)
   supply       Int      @default(0)
   publisher    String
@@ -56,3 +57,14 @@ model Product {
 
   @@map("products")
 }
+
+model Cart {
+  id        Int    @default(autoincrement())
+  public_id String @id
+  user_id   String @unique
+
+  user User @relation(fields: [user_id], references: [public_id], onDelete: Cascade)
+
+  @@map("carts")
+}
+

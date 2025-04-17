@@ -2,7 +2,7 @@ export interface IProduct {
   id: number;
   public_id: string;
   name: string;
-  description: string;
+  desc: string;
   price: number;
   supply: number;
   publisher: string;
@@ -14,7 +14,7 @@ export class Product implements IProduct {
     readonly id: number,
     readonly public_id: string,
     readonly name: string,
-    readonly description: string,
+    readonly desc: string,
     readonly price: number,
     readonly supply: number,
     readonly publisher: string,

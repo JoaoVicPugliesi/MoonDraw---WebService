@@ -10,18 +10,20 @@ const product: Product = {
   id: products.length + 1,
   public_id: randomUUID(),
   name: 'Air Jordan',
-  description: 'No Description',
+  desc: 'No Description',
   price: 5.99,
   supply: 100,
   publisher: 'Nike',
   published_at: new Date(),
 }
 products.push(product);
+const map: Map<string, string> = new Map<string, string>();
 describe('I select products use case', () => {
   it('should select products based on the ISelectProductsDTO and pageSize', async () => {
     // Arrange
     const iSelectProductsInMemoryFactory = new ISelectProductsInMemoryFactory(
-      products
+      products,
+      map
     );
     const sut: ISelectProductsUseCase = iSelectProductsInMemoryFactory.compose();
     const { page }: ISelectProductsDTO = {
