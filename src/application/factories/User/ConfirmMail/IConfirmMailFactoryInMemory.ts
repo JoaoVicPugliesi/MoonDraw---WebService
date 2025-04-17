@@ -9,8 +9,7 @@ export class IConfirmMailFactoryInMemory {
 
   compose(): IConfirmMailUseCase {
     const iConfirmMailRepo = new IConfirmMailRepoInMemoryImpl(this.users);
-    const iConfirmMailUseCase = new IConfirmMailUseCase(iConfirmMailRepo);
 
-    return iConfirmMailUseCase;
+    return new IConfirmMailUseCase(iConfirmMailRepo);
   }
 }

@@ -4,7 +4,7 @@ import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServi
 import { ILoginUseCase } from '@application/useCases/User/Login/ILoginUseCase';
 import { ILoginRepoInMemoryImpl } from '@infra/repositories_implementation/User/Login/ILoginRepoInMemoryImpl';
 import { IGenerateRefreshTokenFactoryInMemory } from '@application/factories/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenInMemory';
-import { IHashServiceBCryptImpl } from '@infra/services_implementation/IHashServiceBcryptImpl';
+import { IHashServiceBCryptImpl } from '@infra/services_implementation/IHashServiceBCryptImpl';
 
 export class ILoginFactoryInMemory {
 
@@ -19,13 +19,12 @@ export class ILoginFactoryInMemory {
     const iTokenService = new ITokenServiceJWTImpl();
     const iGenerateRefreshTokenFactoryInMemory = new IGenerateRefreshTokenFactoryInMemory(this.refreshTokens);
     const iGenerateRefreshTokenUseCase = iGenerateRefreshTokenFactoryInMemory.compose();
-    const iLoginUseCase = new ILoginUseCase(
+
+    return new ILoginUseCase(
       iLoginRepo,
       iHashService,
       iTokenService,
       iGenerateRefreshTokenUseCase
     );
-
-    return iLoginUseCase;
   }
 }

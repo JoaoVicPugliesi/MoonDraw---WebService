@@ -1,6 +1,6 @@
+import { ICacheService, ISetOptions } from '@domain/services/ICacheService';
 import { SetOptions } from 'redis';
-import { cache } from '../../../cache/redis';
-import { ICacheService, ISetOptions } from '../../domain/services/ICacheService';
+import { cache } from '../../../../cache/redis';
 
 export class ICacheServiceRedisImpl implements ICacheService {
     async set(key: string, value: string, options?: ISetOptions): Promise<void> {

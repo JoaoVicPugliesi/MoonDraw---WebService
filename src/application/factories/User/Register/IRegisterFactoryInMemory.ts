@@ -3,7 +3,7 @@ import { RefreshToken } from '@domain/entities/RefreshToken';
 import { User } from '@domain/entities/User';
 import { IRegisterRepoInMemoryImpl } from '@infra/repositories_implementation/User/Register/IRegisterRepoInMemoryImpl';
 import { IRegisterUseCase } from '@application/useCases/User/Register/IRegisterUseCase';
-import { IHashServiceBCryptImpl } from '@infra/services_implementation/IHashServiceBcryptImpl';
+import { IHashServiceBCryptImpl } from '@infra/services_implementation/IHashServiceBCryptImpl';
 
 export class IRegisterFactoryInMemory {
   constructor(
@@ -20,12 +20,11 @@ export class IRegisterFactoryInMemory {
       this.users,
       iHashService
     );
-    const iRegisterUseCase = new IRegisterUseCase(
+
+    return new IRegisterUseCase(
       iRegisterRepo,
       this.iMailProvider,
       iLoginUseCase
     );
-
-    return iRegisterUseCase;
   }
 }

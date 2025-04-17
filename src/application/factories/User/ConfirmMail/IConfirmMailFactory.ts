@@ -4,8 +4,7 @@ import { IConfirmMailUseCase } from '@application/useCases/User/ConfirmMail/ICon
 export class IConfirmMailFactory {
   compose(): IConfirmMailUseCase {
     const iConfirmMailRepo = new IConfirmMailRepoPrismaImpl();
-    const iConfirmMailUseCase = new IConfirmMailUseCase(iConfirmMailRepo);
 
-    return iConfirmMailUseCase;
+    return new IConfirmMailUseCase(iConfirmMailRepo);
   }
 }

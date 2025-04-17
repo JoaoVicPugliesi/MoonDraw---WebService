@@ -66,16 +66,16 @@ export class FastifyServerAdapter implements ServerAdapter {
     this.cookie = fastifyCookie;
     await this.app.register(fastifyCors, {
       credentials: true,
-      origin: 'http://localhost:5173',
+      origin: process.env.CORS_ORIGIN,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization'],
     });
     await this.app.register(fastifyRateLimit, {
       global: true,
-      max: 100,
-      timeWindow: '1 minute',
-      ban: 2, 
-      cache: 5000,
+      max: Number(process.env.RATE_LIMIT_MAX),
+      timeWindow: process.env.RATE_LIMIT_WINDOW,
+      ban: Number(process.env.RATE_LIMIT_BAN), 
+      cache: Number(process.env.RATE_LIMIT_CACHE),
       addHeaders: {
         'x-ratelimit-limit': true,
         'x-ratelimit-remaining': true,

@@ -24,7 +24,7 @@ export interface ServerAdapter {
 export interface CookieOptions {
   httpOnly?: boolean;
   secure?: boolean;
-  sameSite?: "lax" | "strict" | "none" | boolean;
+  sameSite?: 'lax' | 'strict' | 'none' | boolean;
   path?: string;
   maxAge?: number;
 }

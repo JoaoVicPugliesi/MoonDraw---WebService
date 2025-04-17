@@ -11,12 +11,11 @@ export class IRefreshAccessTokenFactory {
     const iGenerateRefreshTokenUseCase = new IGenerateRefreshTokenUseCase(
       iGenerateRefreshTokenRepo
     );
-    const iRefreshAccessTokenUseCase = new IRefreshAccessTokenUseCase(
+    
+    return new IRefreshAccessTokenUseCase(
       iRefreshAccessTokenDecorator,
       iGenerateRefreshTokenUseCase,
       iTokenService
-    );
-
-    return iRefreshAccessTokenUseCase;
+    );;
   }
 }

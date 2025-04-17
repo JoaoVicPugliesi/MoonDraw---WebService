@@ -10,10 +10,8 @@ export class IGenerateRefreshTokenFactoryInMemory {
 
   compose(): IGenerateRefreshTokenUseCase {
     const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoInMemoryImpl(this.refreshTokens);
-    const iGenerateRefreshTokenUseCase = new IGenerateRefreshTokenUseCase(
+    return new IGenerateRefreshTokenUseCase(
       iGenerateRefreshTokenRepo
-    );
-
-    return iGenerateRefreshTokenUseCase;
+    );;
   }
 }

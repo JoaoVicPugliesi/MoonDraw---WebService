@@ -1,4 +1,4 @@
-import { createClient, RedisClientType } from "redis";
+import { createClient, RedisClientType } from 'redis';
 
 class Redis {
     private readonly cache: RedisClientType;
@@ -28,4 +28,3 @@ redis.connect();
 const cache: RedisClientType = redis.accessRedis();
 
 export { cache };
-

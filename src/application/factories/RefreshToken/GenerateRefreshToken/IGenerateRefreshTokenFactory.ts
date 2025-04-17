@@ -3,10 +3,6 @@ import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken
 
 export class IGenerateRefreshTokenFactory {
   compose(): IGenerateRefreshTokenUseCase {
-    const iGenerateRefreshTokenUseCase = new IGenerateRefreshTokenUseCase(
-      iGenerateRefreshTokenDecorator
-    );
-
-    return iGenerateRefreshTokenUseCase;
+    return new IGenerateRefreshTokenUseCase(iGenerateRefreshTokenDecorator);
   }
 }

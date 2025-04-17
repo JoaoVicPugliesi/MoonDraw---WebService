@@ -17,12 +17,11 @@ export class IRefreshAccessTokenFactoryInMemory {
     const iTokenService = new ITokenServiceJWTImpl();
     const iGenerateRefreshTokenFactoryInMemory = new IGenerateRefreshTokenFactoryInMemory(this.refreshTokens);
     const iGenerateRefreshTokenUseCase = iGenerateRefreshTokenFactoryInMemory.compose()
-    const iRefreshAccessTokenUseCase = new IRefreshAccessTokenUseCase(
+
+    return new IRefreshAccessTokenUseCase(
       iRefreshAccessTokenRepo,
       iGenerateRefreshTokenUseCase,
       iTokenService
-    );
-
-    return iRefreshAccessTokenUseCase;
+    );;
   }
 }

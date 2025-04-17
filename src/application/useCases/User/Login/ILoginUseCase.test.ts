@@ -9,7 +9,8 @@ import {
 import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { ILoginFactoryInMemory } from '@application/factories/User/Login/ILoginFactoryInMemory';
 import { configDotenv } from 'dotenv';
-configDotenv()
+import { ILoginDTO } from './ILoginDTO';
+configDotenv();
 
 type Logged =
   | InvalidUserNotFoundErrorResponse
@@ -42,31 +43,36 @@ describe('I login use case', () => {
       refreshTokens
     );
     const sut: ILoginUseCase = iLoginFactory.compose();
-
-    // Act
-    const logged: Logged = await sut.execute({
+    const { email, password }: ILoginDTO = {
       email: 'mrlanguages62@gmail.com',
       password: 'Mrlanguages1234##',
+    };
+    // Act
+    const response: Logged = await sut.execute({
+      email,
+      password,
     });
 
     // Assert
-
-    expect(logged).toBeInstanceOf(InvalidUserNotFoundErrorResponse);
+    expect(response).toBeInstanceOf(InvalidUserNotFoundErrorResponse);
   });
   it('should fail because DTO.password provided does not match user.password found', async () => {
     // Arrange
     const iLoginFactory = new ILoginFactoryInMemory(users, refreshTokens);
     const sut: ILoginUseCase = iLoginFactory.compose();
-
-    // Act
-    const logged: Logged = await sut.execute({
+    const { email, password }: ILoginDTO = {
       email: 'mrlanguages62@gmail.com',
       password: 'mrlanguages1234##',
+    };
+
+    // Act
+    const response: Logged = await sut.execute({
+      email,
+      password,
     });
 
     // Assert
-
-    expect(logged).toBeInstanceOf(InvalidPasswordIsNotEqualErrorResponse);
+    expect(response).toBeInstanceOf(InvalidPasswordIsNotEqualErrorResponse);
   });
   it('should login the user successfully', async () => {
     // Arrange
@@ -74,14 +80,14 @@ describe('I login use case', () => {
     const sut: ILoginUseCase = iLoginFactory.compose();
 
     // Act
-    const logged: Logged = await sut.execute({
+    const response: Logged = await sut.execute({
       email: 'mrlanguages62@gmail.com',
       password: 'Mrlanguages1234##',
     });
 
     // Assert
-    expect(logged).toHaveProperty('access_token');
-    expect(logged).toHaveProperty('refresh_token');
-    console.log(logged);
+    expect(response).toHaveProperty('access_token');
+    expect(response).toHaveProperty('refresh_token');
+    console.log(response);
   });
 });

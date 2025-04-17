@@ -1,4 +1,4 @@
-import { ISelectProductsFactory } from '@application/factories/Product/ISelectProductsFactory';
+import { ISelectProductsFactory } from '@application/factories/Product/ISelectProducts/ISelectProductsFactory';
 import { ISelectProductsController } from './ISelectProductsController';
 
 const iSelectProductsFactory = new ISelectProductsFactory();

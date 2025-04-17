@@ -8,12 +8,11 @@ export class IRegisterFactory {
     const iMailProvider = new INodemailerMailProviderImpl();
     const iLoginFactory = new ILoginFactory();
     const iLoginUseCase = iLoginFactory.compose();
-    const iRegisterUseCase = new IRegisterUseCase(
+    
+    return new IRegisterUseCase(
       iRegisterDecorator,
       iMailProvider,
       iLoginUseCase
-    );
-    
-    return iRegisterUseCase;
+    );;
   }
 }
