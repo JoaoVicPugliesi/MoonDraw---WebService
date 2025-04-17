@@ -4,19 +4,18 @@ import { ISelectProductsRepo } from '@domain/repositories/Product/ISelectProduct
 import { ISelectProductsRepoPrismaImpl } from '@infra/repositories_implementation/Product/SelectProducts/ISelectProductsRepoPrismaImpl';
 
 export class ISelectProductsDecorator implements ISelectProductsRepo {
+  constructor(private readonly decoratee: ISelectProductsRepo) {}
 
-    constructor(
-        private readonly decoratee: ISelectProductsRepo
-    ) {}
-
-    async selectProducts({ page }: ISelectProductsDTO): Promise<Product[] | null> {
-        return await this.decoratee.selectProducts({
-            page
-        });
-    }
+  async selectProducts({
+    page,
+  }: ISelectProductsDTO): Promise<Product[] | null> {
+    return await this.decoratee.selectProducts({
+      page,
+    });
+  }
 }
 
-const iSelectProductsRepoPrismaImpl = new ISelectProductsRepoPrismaImpl();
-const iSelectProductDecorator = new ISelectProductsDecorator(iSelectProductsRepoPrismaImpl);
+const decoratee = new ISelectProductsRepoPrismaImpl();
+const iSelectProductsDecorator = new ISelectProductsDecorator(decoratee);
 
-export { iSelectProductDecorator }
+export { iSelectProductsDecorator };

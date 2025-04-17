@@ -21,7 +21,7 @@ export class IGenerateRefreshTokenDecorator implements IGenerateRefreshTokenRepo
     }
 }
 
-const iGenerateRefreshTokenRepoPrisma = new IGenerateRefreshTokenRepoPrismaImpl();
-const iGenerateRefreshTokenDecorator = new IGenerateRefreshTokenDecorator(iGenerateRefreshTokenRepoPrisma);
+const decoratee = new IGenerateRefreshTokenRepoPrismaImpl();
+const iGenerateRefreshTokenDecorator = new IGenerateRefreshTokenDecorator(decoratee);
 
 export { iGenerateRefreshTokenDecorator };

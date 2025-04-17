@@ -2,7 +2,7 @@ import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
 import { User } from '@domain/entities/User';
 import { IRegisterRepo } from '@domain/repositories/User/IRegisterRepo';
 import { IRegisterRepoPrismaImpl } from '@infra/repositories_implementation/User/Register/IRegisterRepoPrismaImpl';
-import { IHashServiceBCryptImpl } from '@infra/services_implementation/IHashServiceBcryptImpl';
+import { IHashServiceBCryptImpl } from '@infra/services_implementation/IHashServiceBCryptImpl';
 
 export class IRegisterDecorator implements IRegisterRepo {
     constructor(
@@ -19,7 +19,7 @@ export class IRegisterDecorator implements IRegisterRepo {
 }
 
 const iHashService = new IHashServiceBCryptImpl();
-const iRegisterRepoPrisma = new IRegisterRepoPrismaImpl(iHashService);
-const iRegisterDecorator = new IRegisterDecorator(iRegisterRepoPrisma);
+const decoratee = new IRegisterRepoPrismaImpl(iHashService);
+const iRegisterDecorator = new IRegisterDecorator(decoratee);
 
 export { iRegisterDecorator };

@@ -15,7 +15,7 @@ export class IConfirmMailDecorator implements IConfirmMailRepo {
     }
 }
 
-const iConfirmMailRepoPrisma = new IConfirmMailRepoPrismaImpl();
-const iConfirmMailDecorator = new IConfirmMailDecorator(iConfirmMailRepoPrisma);
+const decoratee = new IConfirmMailRepoPrismaImpl();
+const iConfirmMailDecorator = new IConfirmMailDecorator(decoratee);
 
 export { iConfirmMailDecorator };

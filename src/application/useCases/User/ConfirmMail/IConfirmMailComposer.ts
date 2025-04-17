@@ -1,9 +1,9 @@
 import { IConfirmMailFactory } from '@application/factories/User/ConfirmMail/IConfirmMailFactory';
 import { IConfirmMailController } from './IConfirmMailController';
 
-const iConfirmMailFactory = new IConfirmMailFactory();
-const iConfirmMailUseCase = iConfirmMailFactory.compose();
-const iConfirmMailController = new IConfirmMailController(iConfirmMailUseCase);
-const confirmMail: IConfirmMailController = iConfirmMailController;
+const iFactory = new IConfirmMailFactory();
+const iUseCase = iFactory.compose();
+const iController = new IConfirmMailController(iUseCase);
+const iConfirmMail: IConfirmMailController = iController;
 
-export { confirmMail };
+export { iConfirmMail };

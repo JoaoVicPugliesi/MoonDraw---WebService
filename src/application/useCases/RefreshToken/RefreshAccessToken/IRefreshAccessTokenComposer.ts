@@ -1,11 +1,9 @@
 import { IRefreshAccessTokenFactory } from '@application/factories/RefreshToken/RefreshAccessToken/IRefreshAccessTokenFactory';
 import { IRefreshAccessTokenController } from './IRefreshAccessTokenController';
 
-const iRefreshAccessTokenFactory = new IRefreshAccessTokenFactory();
-const iRefreshAccessTokenUseCase = iRefreshAccessTokenFactory.compose();
-const iRefreshAccessTokenController = new IRefreshAccessTokenController(
-  iRefreshAccessTokenUseCase
-);
-const refreshToken: IRefreshAccessTokenController = iRefreshAccessTokenController;
+const iFactory = new IRefreshAccessTokenFactory();
+const iUseCase = iFactory.compose();
+const iController = new IRefreshAccessTokenController(iUseCase);
+const iRefreshToken: IRefreshAccessTokenController = iController;
 
-export { refreshToken };
+export { iRefreshToken };

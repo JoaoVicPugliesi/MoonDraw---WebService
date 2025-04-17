@@ -22,7 +22,7 @@ export class IRefreshAccessTokenDecorator implements IRefreshAccessTokenRepo {
  
 }
 
-const iRefreshAccessTokenRepoPrisma = new IRefreshAccessTokenRepoPrismaImpl();
-const iRefreshAccessTokenDecorator = new IRefreshAccessTokenDecorator(iRefreshAccessTokenRepoPrisma);
+const decoratee = new IRefreshAccessTokenRepoPrismaImpl();
+const iRefreshAccessTokenDecorator = new IRefreshAccessTokenDecorator(decoratee);
 
 export { iRefreshAccessTokenDecorator };

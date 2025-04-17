@@ -12,7 +12,7 @@ export class ILoginDecorator implements ILoginRepo {
     }
 }
 
-const iLoginRepoPrisma = new ILoginRepoPrismaImpl();
-const iLoginDecorator = new ILoginDecorator(iLoginRepoPrisma);
+const decoratee = new ILoginRepoPrismaImpl();
+const iLoginDecorator = new ILoginDecorator(decoratee);
 
 export { iLoginDecorator };

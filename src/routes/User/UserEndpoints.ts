@@ -1,7 +1,7 @@
-import { login } from '@application/useCases/User/Login/ILoginComposer';
-import { register } from '@application/useCases/User/Register/IRegisterComposer';
-import { logout } from '@application/useCases/User/Logout/ILogoutComposer';
-import { confirmMail } from '@application/useCases/User/ConfirmMail/IConfirmMailComposer';
+import { iLogin } from '@application/useCases/User/Login/ILoginComposer';
+import { iRegister } from '@application/useCases/User/Register/IRegisterComposer';
+import { iLogout } from '@application/useCases/User/Logout/ILogoutComposer';
+import { iConfirmMail } from '@application/useCases/User/ConfirmMail/IConfirmMailComposer';
 import { RequestResponseAdapter, ServerAdapter } from '@adapters/ServerAdapter';
 
 export class UserEndpoints {
@@ -11,19 +11,19 @@ export class UserEndpoints {
 
   setupRoutes() {
     this.app.post('/api/users/register', async (adapter: RequestResponseAdapter) => {
-      await register.handle(adapter);
+      await iRegister.handle(adapter);
     });
 
     this.app.post('/api/users/login', async (adapter: RequestResponseAdapter) => {
-      await login.handle(adapter);
+      await iLogin.handle(adapter);
     });
 
     this.app.post('/api/logout', async(adapter: RequestResponseAdapter) => {
-      await logout.handle(adapter);
+      await iLogout.handle(adapter);
     });
 
     this.app.put('/api/users/confirmMail', async (adapter: RequestResponseAdapter) => {
-      await confirmMail.handle(adapter);
+      await iConfirmMail.handle(adapter);
     });
   }
 }

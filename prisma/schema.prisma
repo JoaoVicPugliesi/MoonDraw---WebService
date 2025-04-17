@@ -49,7 +49,7 @@ model Product {
   id           Int      @default(autoincrement())
   public_id    String   @id
   name         String
-  desc         String
+  desc         String   @default("No Description")
   price        Float    @default(0)
   supply       Int      @default(0)
   publisher    String

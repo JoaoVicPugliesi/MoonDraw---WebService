@@ -1,9 +1,9 @@
 import { IRegisterController } from './IRegisterController';
 import { IRegisterFactory } from '@application/factories/User/Register/IRegisterFactory';
 
-const iRegisterFactory = new IRegisterFactory();
-const iRegisterUseCase = iRegisterFactory.compose();
-const iRegisterController = new IRegisterController(iRegisterUseCase);
-const register: IRegisterController = iRegisterController;
+const iFactory = new IRegisterFactory();
+const iUseCase = iFactory.compose();
+const iController = new IRegisterController(iUseCase);
+const iRegister: IRegisterController = iController;
 
-export { register };
+export { iRegister };
