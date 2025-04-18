@@ -18,7 +18,7 @@ export class ISearchProductsUseCase {
     if (typeof cachedSearch === 'string') {
       const cachedSearchParsed: Product[] = JSON.parse(cachedSearch);
       return {
-        search: cachedSearchParsed,
+        result: cachedSearchParsed,
       };
     }
 
@@ -29,10 +29,12 @@ export class ISearchProductsUseCase {
 
     if (typeof search === 'undefined') return new InvalidSearchedProductsNotFoundErrorResponse();
 
-    await this.iCacheService.set(`search-${name}`, JSON.stringify(search));
+    await this.iCacheService.set(`search-${name}`, JSON.stringify(search), {
+      EX: 1800
+    });
 
     return {
-      search: search,
+      result: search,
     };
   }
 }

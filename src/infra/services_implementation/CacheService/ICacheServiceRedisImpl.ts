@@ -17,8 +17,8 @@ export class ICacheServiceRedisImpl implements ICacheService {
     async ttl(key: string): Promise<number> {
         return await cache.ttl(key);
     }
-
+    
     async flush() {
-        await cache.flushAll()
+        await cache.flushAll();
     }
 }

@@ -6,10 +6,10 @@ import { ISelectProductRepoPrismaImpl } from '@infra/repositories_implementation
 class ISelectProductDecorator implements ISelectProductRepo {
   constructor(private readonly decoratee: ISelectProductRepo) {}
 
-  async selectOne({
+  async selectProduct({
     public_id,
   }: ISelectProductDTO): Promise<Product | undefined> {
-    return await this.decoratee.selectOne({
+    return await this.decoratee.selectProduct({
       public_id,
     });
   }
