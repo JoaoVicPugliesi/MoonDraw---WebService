@@ -2,5 +2,5 @@ import { ISelectProductDTO } from "@application/useCases/Product/SelectProduct/I
 import { Product } from "@domain/entities/Product";
 
 export interface ISelectProductRepo {
-    selectOne(DTO: ISelectProductDTO): Promise<Product | undefined>;
+    selectProduct(DTO: ISelectProductDTO): Promise<Product | undefined>;
 }

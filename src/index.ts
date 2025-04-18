@@ -5,15 +5,11 @@ const PORT: number = parseInt(process.env.PORT as string) ?? 5000;
 const HOST: string = process.env.HOST ?? '127.0.0.1';
 
 class Application {
-  app: ServerAdapter;
-  port: number;
-  host: string;
-
-  constructor(app: ServerAdapter) {
-    this.app = app;
-    this.port = PORT;
-    this.host = HOST;
-  }
+  constructor(
+    private readonly app: ServerAdapter,
+    private readonly port: number,
+    private readonly host: string
+  ) {}
 
   async server() {
     try {
@@ -35,5 +31,5 @@ class Application {
   }
 }
 
-const application = new Application(app);
+const application = new Application(app, PORT, HOST);
 application.server();

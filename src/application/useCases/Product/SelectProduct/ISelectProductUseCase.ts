@@ -30,7 +30,7 @@ export class ISelectProductUseCase {
     }
 
     const product: Product | undefined =
-      await this.iSelectProductRepo.selectOne({
+      await this.iSelectProductRepo.selectProduct({
         public_id,
       });
 

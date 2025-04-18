@@ -4,7 +4,7 @@ import { ISelectProductRepo } from "@domain/repositories/Product/ISelectProductR
 import { prisma } from "@infra/db/Prisma";
 
 export class ISelectProductRepoPrismaImpl implements ISelectProductRepo {
-    async selectOne({ public_id }: ISelectProductDTO): Promise<Product | undefined> {
+    async selectProduct({ public_id }: ISelectProductDTO): Promise<Product | undefined> {
         const product: Product | null = await prisma.product.findFirst({
             where: {
                 public_id: public_id
