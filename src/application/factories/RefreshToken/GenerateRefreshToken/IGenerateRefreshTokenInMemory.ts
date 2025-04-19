@@ -1,6 +1,6 @@
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { IGenerateRefreshTokenRepoInMemoryImpl } from '@infra/repositories_implementation/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenRepoInMemoryImpl';
+import { IRefreshTokenRepositoryInMemoryImpl } from '@infra/repositories_implementation/RefreshToken/IRefreshTokenRepositoryInMemoryImpl';
 
 export class IGenerateRefreshTokenFactoryInMemory {
 
@@ -9,9 +9,9 @@ export class IGenerateRefreshTokenFactoryInMemory {
   ) {}
 
   compose(): IGenerateRefreshTokenUseCase {
-    const iGenerateRefreshTokenRepo = new IGenerateRefreshTokenRepoInMemoryImpl(this.refreshTokens);
+    const iRefreshTokenRepository = new IRefreshTokenRepositoryInMemoryImpl(this.refreshTokens);
     return new IGenerateRefreshTokenUseCase(
-      iGenerateRefreshTokenRepo
+      iRefreshTokenRepository
     );;
   }
 }

@@ -1,9 +1,9 @@
+import { User } from '@domain/entities/User';
 import { ILoginFactoryInMemory } from '@application/factories/User/Login/ILoginFactoryInMemory';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { User } from '@domain/entities/User';
-import { IRegisterRepoInMemoryImpl } from '@infra/repositories_implementation/User/Register/IRegisterRepoInMemoryImpl';
 import { IRegisterUseCase } from '@application/useCases/User/Register/IRegisterUseCase';
 import { IHashServiceBCryptImpl } from '@infra/services_implementation/IHashServiceBCryptImpl';
+import { IUserRepositoryInMemoryImpl } from '@infra/repositories_implementation/User/IUserRepositoryInMemoryImpl';
 
 export class IRegisterFactoryInMemory {
   constructor(
@@ -16,13 +16,13 @@ export class IRegisterFactoryInMemory {
     const iHashService = new IHashServiceBCryptImpl();
     const iLoginFactoryInMemory = new ILoginFactoryInMemory(this.users, this.refreshTokens)
     const iLoginUseCase = iLoginFactoryInMemory.compose();
-    const iRegisterRepo = new IRegisterRepoInMemoryImpl(
+    const iUserRepository = new IUserRepositoryInMemoryImpl(
       this.users,
       iHashService
     );
 
     return new IRegisterUseCase(
-      iRegisterRepo,
+      iUserRepository,
       this.iMailProvider,
       iLoginUseCase
     );

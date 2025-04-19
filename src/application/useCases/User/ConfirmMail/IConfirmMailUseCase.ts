@@ -1,17 +1,18 @@
-import { IConfirmMailRepo } from '@domain/repositories/User/IConfirmMailRepo';
 import { IConfirmMailDTO } from './IConfirmMailDTO';
 import { InvalidUserNotFoundError } from '@application/handlers/UseCasesResponses/User/IConfirmMailHandlers';
+import { User } from '@domain/entities/User';
+import { IUserRepository } from '@domain/repositories/IUserRepository';
 
 export class IConfirmMailUseCase {
   constructor(
-    private readonly iConfirmMailRepo: IConfirmMailRepo
+    private readonly iUserRepository: IUserRepository
   ) {}
 
   async execute({ email, token }: IConfirmMailDTO): Promise<InvalidUserNotFoundError | void> {
-    const isUser: boolean = await this.iConfirmMailRepo.findUser(email);
+    const isUser: User | null = await this.iUserRepository.findUser(email);
 
     if (!isUser) return new InvalidUserNotFoundError();
 
-    await this.iConfirmMailRepo.activateUser(email);
+    await this.iUserRepository.activateUser(email);
   }
 }

@@ -1,19 +1,21 @@
-import { ILogoutRepo } from '@domain/repositories/User/ILogoutRepo';
 import { ILogoutDTO } from './ILogoutDTO';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { InvalidRefreshTokenNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/User/ILogoutHandlers';
+import { IRefreshTokenRepository } from '@domain/repositories/IRefreshTokenRepository';
 
 export class ILogoutUseCase {
-  constructor(private readonly iLogoutRepo: ILogoutRepo) {}
+  constructor(
+    private readonly iRefreshTokenRepository: IRefreshTokenRepository
+  ) {}
 
   async execute({
     public_id,
   }: ILogoutDTO): Promise<InvalidRefreshTokenNotFoundErrorResponse | void> {
     const refreshToken: RefreshToken | null =
-      await this.iLogoutRepo.findRefreshToken(public_id);
+      await this.iRefreshTokenRepository.findRefreshToken(public_id);
 
     if (!refreshToken) return new InvalidRefreshTokenNotFoundErrorResponse();
 
-    await this.iLogoutRepo.deleteRelatedRefreshTokens(refreshToken.user_id);
+    await this.iRefreshTokenRepository.deleteRelatedRefreshTokens(refreshToken.user_id);
   }
 }

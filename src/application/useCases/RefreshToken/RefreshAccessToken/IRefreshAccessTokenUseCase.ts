@@ -1,7 +1,6 @@
 import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import dayjs from 'dayjs';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
-import { IRefreshAccessTokenRepo } from '@domain/repositories/RefreshToken/IRefreshAccessTokenRepo';
 import { ITokenService } from '@domain/services/ITokenService';
 import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
 import { RefreshToken } from '@domain/entities/RefreshToken';
@@ -12,12 +11,15 @@ import {
 } from '@application/handlers/UseCasesResponses/RefreshToken/IRefreshAccessTokenHandler';
 import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
 import { User } from '@domain/entities/User';
+import { IRefreshTokenRepository } from '@domain/repositories/IRefreshTokenRepository';
+import { IUserRepository } from '@domain/repositories/IUserRepository';
 
 export class IRefreshAccessTokenUseCase {
   private readonly secret_key: string;
 
   constructor(
-    private readonly iRefreshAccessTokenRepo: IRefreshAccessTokenRepo,
+    private readonly iRefreshTokenRepository: IRefreshTokenRepository,
+    private readonly iUserRepository: IUserRepository,
     private readonly iGenerateRefreshTokenUseCase: IGenerateRefreshTokenUseCase,
     private readonly iTokenService: ITokenService
   ) {
@@ -34,12 +36,12 @@ export class IRefreshAccessTokenUseCase {
     | RefreshAccessTokenResponse
   > {
     const refreshToken: RefreshToken | null =
-      await this.iRefreshAccessTokenRepo.findRefreshToken(public_id);
+      await this.iRefreshTokenRepository.findRefreshToken(public_id);
 
     if (!refreshToken) return new InvalidRefreshTokenNotFoundErrorResponse();
 
     const user: User | null =
-      await this.iRefreshAccessTokenRepo.findRefreshTokenUser(
+      await this.iUserRepository.findRefreshTokenUser(
         refreshToken.user_id
       );
 
@@ -62,7 +64,7 @@ export class IRefreshAccessTokenUseCase {
     );
 
     if (refreshTokenExpired) {
-      await this.iRefreshAccessTokenRepo.deleteRelatedRefreshTokens(
+      await this.iRefreshTokenRepository.deleteRelatedRefreshTokens(
         refreshToken.user_id
       );
       const DTO: IGenerateRefreshTokenDTO = {

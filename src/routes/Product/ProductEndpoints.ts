@@ -1,7 +1,7 @@
 import { RequestResponseAdapter, ServerAdapter } from '@adapters/ServerAdapter';
 import { iSearchProducts } from '@application/useCases/Product/SearchProducts/ISearchProductsComposer';
 import { iSelectProduct } from '@application/useCases/Product/SelectProduct/ISelectProductComposer';
-import { iSelectProducts } from '@application/useCases/Product/SelectProducts/ISelectProductsComposer';
+import { iFetchProducts } from '@application/useCases/Product/FetchProducts/IFetchProductsComposer';
 
 export class ProductEndpoints {
   constructor(
@@ -10,9 +10,9 @@ export class ProductEndpoints {
 
   setupRoutes() {
     this.app.get('/api/products/:page(\\d+)', async (adapter: RequestResponseAdapter) => {
-      await iSelectProducts.handle(adapter)
+      await iFetchProducts.handle(adapter)
     });
-    this.app.get('/api/products/product/:id', async (adapter: RequestResponseAdapter) => {
+    this.app.get('/api/products/product/:public_id', async (adapter: RequestResponseAdapter) => {
       await iSelectProduct.handle(adapter)
     });
 

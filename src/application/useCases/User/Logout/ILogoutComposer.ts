@@ -1,8 +1,8 @@
-import { ILogoutRepoPrismaImpl } from '@infra/repositories_implementation/User/Logout/ILogoutRepoPrismaImpl';
 import { ILogoutUseCase } from './ILogoutUseCase';
 import { ILogOutController } from './ILogoutController';
+import { IRefreshTokenRepositoryPrismaImpl } from '@infra/repositories_implementation/RefreshToken/IRefreshTokenRepositoryPrismaImpl';
 
-const iRepo = new ILogoutRepoPrismaImpl();
+const iRepo = new IRefreshTokenRepositoryPrismaImpl();
 const iUseCase = new ILogoutUseCase(iRepo);
 const iController = new ILogOutController(iUseCase);
 const iLogout: ILogOutController = iController;

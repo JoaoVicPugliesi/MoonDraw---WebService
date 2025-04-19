@@ -1,7 +1,6 @@
 import { User } from '@domain/entities/User';
 import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
-import { ILoginRepo } from '@domain/repositories/User/ILoginRepo';
 import { IHashService } from '@domain/services/IHashService';
 import { ITokenService } from '@domain/services/ITokenService';
 import { ILoginDTO } from './ILoginDTO';
@@ -12,10 +11,11 @@ import {
 } from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
+import { IUserRepository } from '@domain/repositories/IUserRepository';
 
 export class ILoginUseCase {
   constructor(
-    private readonly iLoginRepo: ILoginRepo,
+    private readonly iUserRepository: IUserRepository,
     private readonly iHashService: IHashService,
     private readonly iTokenService: ITokenService,
     private readonly iGenerateRefreshTokenUseCase: IGenerateRefreshTokenUseCase
@@ -32,7 +32,7 @@ export class ILoginUseCase {
     | InvalidGenerateRefreshTokenErrorResponse
     | LoginResponse
   > {
-    const user: User | null = await this.iLoginRepo.findUser(email);
+    const user: User | null = await this.iUserRepository.findUser(email);
     if (!user) return new InvalidUserNotFoundErrorResponse();
 
     const isPasswordEqual: boolean = await this.iHashService.compare(

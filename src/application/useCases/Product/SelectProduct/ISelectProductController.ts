@@ -22,7 +22,7 @@ export class ISelectProductController {
       );
       iEnsureAccessTokenMiddleware.ensure();
       const { public_id }: ISelectProductDTO = adapter.req
-        .params as ISelectProductDTO;
+        .query as ISelectProductDTO;
       const response:
         | SelectProductResponse
         | InvalidProductNotFoundErrorResponse =

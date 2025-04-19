@@ -1,6 +1,7 @@
-import { IConfirmMailRepoInMemoryImpl } from '@infra/repositories_implementation/User/ConfirmMail/IConfirmMailRepoInMemoryImpl';
 import { IConfirmMailUseCase } from '@application/useCases/User/ConfirmMail/IConfirmMailUseCase';
 import { User } from '@domain/entities/User';
+import { IUserRepositoryInMemoryImpl } from '@infra/repositories_implementation/User/IUserRepositoryInMemoryImpl';
+import { IHashServiceBCryptImpl } from '@infra/services_implementation/IHashServiceBCryptImpl';
 
 export class IConfirmMailFactoryInMemory {
   constructor(
@@ -8,8 +9,9 @@ export class IConfirmMailFactoryInMemory {
   ) {}
 
   compose(): IConfirmMailUseCase {
-    const iConfirmMailRepo = new IConfirmMailRepoInMemoryImpl(this.users);
+    const iHashService = new IHashServiceBCryptImpl();
+    const iUserRepository = new IUserRepositoryInMemoryImpl(this.users, iHashService);
 
-    return new IConfirmMailUseCase(iConfirmMailRepo);
+    return new IConfirmMailUseCase(iUserRepository);
   }
 }

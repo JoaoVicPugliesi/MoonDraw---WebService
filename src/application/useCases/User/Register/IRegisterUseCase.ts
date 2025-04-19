@@ -1,6 +1,5 @@
 import { ILoginUseCase } from '@application/useCases/User/Login/ILoginUseCase';
 import { User } from '@domain/entities/User';
-import { IRegisterRepo } from '@domain/repositories/User/IRegisterRepo';
 import { IMailProvider } from '@domain/providers/repositories/Mail/IMailProvider';
 import { IRegisterDTO } from './IRegisterDTO';
 import {
@@ -14,10 +13,11 @@ import {
   LoginResponse,
 } from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
 import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
+import { IUserRepository } from '@domain/repositories/IUserRepository';
 
 export class IRegisterUseCase {
   constructor(
-    private readonly iRegisterRepo: IRegisterRepo,
+    private readonly iUserRepository: IUserRepository,
     private readonly iMailProvider: IMailProvider,
     private readonly iLoginUseCase: ILoginUseCase
   ) {}
@@ -31,11 +31,11 @@ export class IRegisterUseCase {
       confirmPassword
     }: IRegisterDTO
   ): Promise<InvalidUserConflictErrorResponse | RegisterReponse> {
-    const isUser: boolean = await this.iRegisterRepo.findUser(email);
+    const isUser: User | null = await this.iUserRepository.findUser(email);
 
     if (isUser) return new InvalidUserConflictErrorResponse();
 
-    const user: User = await this.iRegisterRepo.saveUser({
+    const user: User = await this.iUserRepository.saveUser({
       name,
       surname,
       email,

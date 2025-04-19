@@ -1,4 +1,4 @@
-import { ISearchProductsRepo } from '@domain/repositories/Product/ISearchProductsRepo';
+import { IProductRepository } from '@domain/repositories/IProductRepository';
 import { ICacheService } from '@domain/services/ICacheService';
 import { ISearchProductsDTO } from './ISearchProductsDTO';
 import { Product } from '@domain/entities/Product';
@@ -6,7 +6,7 @@ import { InvalidSearchedProductsNotFoundErrorResponse, ISearchProductsResponse }
 
 export class ISearchProductsUseCase {
   constructor(
-    private readonly iSearchProductsRepo: ISearchProductsRepo,
+    private readonly iProductRepository: IProductRepository,
     private readonly iCacheService: ICacheService
   ) {}
 
@@ -23,7 +23,7 @@ export class ISearchProductsUseCase {
     }
 
     const search: Product[] | undefined =
-      await this.iSearchProductsRepo.searchProducts({
+      await this.iProductRepository.searchProducts({
         name,
       });
 
