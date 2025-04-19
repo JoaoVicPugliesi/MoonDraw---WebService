@@ -14,23 +14,29 @@ import {
 } from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
 import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
+import { IAssignCartOwnerUseCase } from '@application/useCases/Сart/AssignCartOwner/IAssignCartOwnerUseCase';
+import {
+  IAssignCartOwnerResponse,
+  InvalidOwnerNotFoundErrorResponse,
+} from '@application/handlers/UseCasesResponses/Cart/IAssignCartOwnerHandlers';
 
 export class IRegisterUseCase {
   constructor(
     private readonly iUserRepository: IUserRepository,
     private readonly iMailProvider: IMailProvider,
+    private readonly iAssignCartOwnerUseCase: IAssignCartOwnerUseCase,
     private readonly iLoginUseCase: ILoginUseCase
   ) {}
 
-  async execute(
-    {
-      name,
-      surname,
-      email,
-      password,
-      confirmPassword
-    }: IRegisterDTO
-  ): Promise<InvalidUserConflictErrorResponse | RegisterReponse> {
+  async execute({
+    name,
+    surname,
+    email,
+    password,
+    confirmPassword,
+  }: IRegisterDTO): Promise<
+    InvalidUserConflictErrorResponse | RegisterReponse
+  > {
     const isUser: User | null = await this.iUserRepository.findUser(email);
 
     if (isUser) return new InvalidUserConflictErrorResponse();
@@ -40,7 +46,13 @@ export class IRegisterUseCase {
       surname,
       email,
       password,
-      confirmPassword
+      confirmPassword,
+    });
+
+    const iAssignCartOwnerResponse:
+      | InvalidOwnerNotFoundErrorResponse
+      | IAssignCartOwnerResponse = await this.iAssignCartOwnerUseCase.execute({
+      public_id: user.public_id,
     });
 
     const mailResponse: SMTPTransport.SentMessageInfo =
@@ -56,6 +68,7 @@ export class IRegisterUseCase {
         body: '<p>2hd8k3</p>',
       });
 
+
     const loginResponse:
       | InvalidUserNotFoundErrorResponse
       | InvalidPasswordIsNotEqualErrorResponse
@@ -66,6 +79,7 @@ export class IRegisterUseCase {
     });
 
     return {
+      assign_cart_owner_response: iAssignCartOwnerResponse,
       mail_response: mailResponse,
       login_response: loginResponse,
     };

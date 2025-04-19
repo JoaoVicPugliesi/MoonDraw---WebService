@@ -12,6 +12,7 @@ import {
   InvalidUserNotFoundErrorResponse,
 } from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
 import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
+import { InvalidOwnerNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/Cart/IAssignCartOwnerHandlers';
 
 export class IRegisterController {
   private readonly iRegisterValidator: IRegisterValidator;
@@ -57,7 +58,8 @@ export class IRegisterController {
         message: 'User created successfully', 
         current_user: {
           access_token: response.login_response.access_token,
-          user: response.login_response.user
+          user: response.login_response.user,
+          cart: response.assign_cart_owner_response.cart
         }
       });
     } catch (error) {
