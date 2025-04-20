@@ -1,5 +1,5 @@
-import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
 import { User } from '@domain/entities/User';
+import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
 import { IHashService } from '@domain/services/IHashService';
 import { randomUUID } from 'crypto';
@@ -10,17 +10,17 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
     private readonly iHashService: IHashService
   ) {}
 
-  async findUser<T>(param: T): Promise<User | null> {
+  async findUserByEmail(email: string): Promise<User | null> {
     return new Promise((resolve, reject) => {
       const user: User | undefined = this.users.find(
-        (user) => user.email === (param as string)
+        (user) => user.email === (email)
       );
 
       if (typeof user === 'undefined') {
         return resolve(null);
       }
 
-      resolve(user);
+      return resolve(user);
     });
   }
 
@@ -51,10 +51,10 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
     });
   }
 
-  async findRefreshTokenUser<T>(param: T): Promise<User | null> {
+  async findUserById(public_id: string): Promise<User | null> {
     return new Promise((resolve, reject) => {
       const user: User | undefined = this.users.find(
-        (user) => user.public_id === (param as string)
+        (user) => user.public_id === (public_id)
       );
 
       if (user) return resolve(user);

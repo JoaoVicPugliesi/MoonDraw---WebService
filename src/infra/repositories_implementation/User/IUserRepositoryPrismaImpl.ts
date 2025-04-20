@@ -10,10 +10,10 @@ export class IUserRepositoryPrismaImpl implements IUserRepository {
     private readonly iHashService: IHashService
   ) {}
 
-  async findUser<T>(param: T): Promise<User | null> {
+  async findUserByEmail(email: string): Promise<User | null> {
     const user: User | null = await prisma.user.findFirst({
       where: {
-        email: param as any,
+        email: email
       },
     });
 
@@ -40,10 +40,10 @@ export class IUserRepositoryPrismaImpl implements IUserRepository {
     return user;
   }
 
-  async findRefreshTokenUser<T>(param: T): Promise<User | null> {
+  async findUserById(public_id: string): Promise<User | null> {
     const user: User | null = await prisma.user.findFirst({
       where: {
-        public_id: param as any,
+        public_id: public_id,
       },
     });
 
@@ -55,7 +55,7 @@ export class IUserRepositoryPrismaImpl implements IUserRepository {
   async activateUser<T>(param: T): Promise<void> {
     await prisma.user.update({
       where: {
-        email: param as any,
+        email: param as string,
       },
       data: {
         is_active: true,

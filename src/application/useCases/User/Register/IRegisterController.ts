@@ -36,6 +36,9 @@ export class IRegisterController {
           message: 'Conflict: user with email provided already exists',
         });
       }
+      if (response.assign_cart_owner_response instanceof InvalidOwnerNotFoundErrorResponse) {
+        return adapter.res.status(404).send({ message: 'Owner Not Found Error' });
+      }
       if (response.login_response instanceof InvalidUserNotFoundErrorResponse) {
         return adapter.res.status(404).send({ message: 'User or Password incorrect' });
       }

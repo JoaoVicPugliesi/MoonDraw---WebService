@@ -32,7 +32,7 @@ export class ILoginUseCase {
     | InvalidGenerateRefreshTokenErrorResponse
     | LoginResponse
   > {
-    const user: User | null = await this.iUserRepository.findUser(email);
+    const user: User | null = await this.iUserRepository.findUserByEmail(email);
     if (!user) return new InvalidUserNotFoundErrorResponse();
 
     const isPasswordEqual: boolean = await this.iHashService.compare(

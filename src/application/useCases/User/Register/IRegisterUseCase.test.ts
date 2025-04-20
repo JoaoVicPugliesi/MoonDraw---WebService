@@ -13,6 +13,7 @@ import { IRegisterFactoryInMemory } from '@application/factories/User/Register/I
 import { IRegisterUseCase } from './IRegisterUseCase';
 import { configDotenv } from 'dotenv';
 import { IRegisterDTO } from './IRegisterDTO';
+import { Cart } from '@domain/entities/Cart';
 configDotenv();
 
 // Mocks
@@ -36,11 +37,14 @@ const user: User = {
 };
 users.push(user);
 
+const carts: Cart[] = [];
+
 describe('I register use case', () => {
   it('must fail for the reason email should be unique and user already exists', async () => {
     // Arrange
     const iRegisterFactoryInMemory = new IRegisterFactoryInMemory(
       users,
+      carts,
       refreshTokens,
       iMailProvider
     );
@@ -71,6 +75,7 @@ describe('I register use case', () => {
     const usersSpliced = users.toSpliced(0);
     const iRegisterFactoryInMemory = new IRegisterFactoryInMemory(
       usersSpliced,
+      carts,
       refreshTokens,
       iMailProvider
     );

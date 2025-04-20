@@ -18,6 +18,12 @@ enum Role {
   admin
 }
 
+enum Status {
+  pendent
+  completed
+  canceled
+}
+
 model User {
   id                Int           @default(autoincrement())
   public_id         String        @id
@@ -30,8 +36,10 @@ model User {
   created_at        DateTime      @default(now())
   email_verified_at DateTime?
   refreshToken      RefreshToken?
-  Cart              Cart?
+  cart              Cart?
+  purchases         Purchase[]
 
+  @@index([email, public_id])
   @@map("users")
 }
 
@@ -46,25 +54,61 @@ model RefreshToken {
 }
 
 model Product {
-  id           Int      @default(autoincrement())
-  public_id    String   @id
+  id           Int                      @default(autoincrement())
+  public_id    String                   @id
   name         String
-  desc         String   @default("No Description")
-  price        Float    @default(0)
-  supply       Int      @default(0)
+  description  String                   @default("No Description")
+  price        Float                    @default(0)
+  supply       Int                      @default(0)
   publisher    String
-  published_at DateTime @default(now())
+  published_at DateTime                 @default(now())
+  carts        Pivot_Cart_Product[]
+  purchases    Pivot_Purchase_Product[]
 
+  @@index([name, public_id])
   @@map("products")
 }
 
 model Cart {
-  id        Int    @default(autoincrement())
-  public_id String @id
-  user_id   String @unique
-
-  user User @relation(fields: [user_id], references: [public_id], onDelete: Cascade)
+  id        Int                  @default(autoincrement())
+  public_id String               @id
+  user_id   String               @unique
+  user      User                 @relation(fields: [user_id], references: [public_id], onDelete: Cascade)
+  products  Pivot_Cart_Product[]
 
   @@map("carts")
 }
 
+model Purchase {
+  id        Int                      @default(autoincrement())
+  public_id String                   @id
+  user_id   String
+  value     Float
+  status    Status                   @default(pendent)
+  user      User                     @relation(fields: [user_id], references: [public_id], onDelete: Cascade)
+  products  Pivot_Purchase_Product[]
+
+  @@map("purchases")
+}
+
+model Pivot_Cart_Product {
+  cart_id    String
+  product_id String
+
+  cart    Cart    @relation(fields: [cart_id], references: [public_id], onDelete: Cascade)
+  product Product @relation(fields: [product_id], references: [public_id])
+
+  @@id([cart_id, product_id])
+  @@map("pivot_carts_products")
+}
+
+model Pivot_Purchase_Product {
+  purchase_id String
+  product_id  String
+
+  purchase Purchase @relation(fields: [purchase_id], references: [public_id], onDelete: Cascade)
+  product  Product  @relation(fields: [product_id], references: [public_id])
+
+  @@id([purchase_id, product_id])
+  @@map("pivot_purchases_products")
+}

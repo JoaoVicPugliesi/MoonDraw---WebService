@@ -9,7 +9,7 @@ export class IConfirmMailUseCase {
   ) {}
 
   async execute({ email, token }: IConfirmMailDTO): Promise<InvalidUserNotFoundError | void> {
-    const isUser: User | null = await this.iUserRepository.findUser(email);
+    const isUser: User | null = await this.iUserRepository.findUserByEmail(email);
 
     if (!isUser) return new InvalidUserNotFoundError();
 

@@ -41,7 +41,7 @@ export class IRefreshAccessTokenUseCase {
     if (!refreshToken) return new InvalidRefreshTokenNotFoundErrorResponse();
 
     const user: User | null =
-      await this.iUserRepository.findRefreshTokenUser(
+      await this.iUserRepository.findUserById(
         refreshToken.user_id
       );
 
