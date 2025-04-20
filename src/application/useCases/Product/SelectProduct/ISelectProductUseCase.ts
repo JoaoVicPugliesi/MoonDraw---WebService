@@ -18,11 +18,11 @@ export class ISelectProductUseCase {
   }: ISelectProductDTO): Promise<
     SelectProductResponse | InvalidProductNotFoundErrorResponse
   > {
-    const cachedProduct: string | undefined = await this.iCacheService.get(
+    const cachedProduct: string | null = await this.iCacheService.get(
       `product-${public_id}`
     );
 
-    if (typeof cachedProduct === 'string') {
+    if (cachedProduct) {
       const cachedProductParsed: Product = JSON.parse(cachedProduct);
       return {
         product: cachedProductParsed,

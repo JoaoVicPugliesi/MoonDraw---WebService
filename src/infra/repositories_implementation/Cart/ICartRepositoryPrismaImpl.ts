@@ -1,5 +1,7 @@
 import { IAssignCartOwnerDTO } from '@application/useCases/Сart/AssignCartOwner/IAssignCartOwnerDTO';
+import { IListCartContentDTO } from '@application/useCases/Сart/ListCartContent/IListCartContentDTO';
 import { Cart } from '@domain/entities/Cart';
+import { Product } from '@domain/entities/Product';
 import { ICartRepository } from '@domain/repositories/ICartRepository';
 import { prisma } from '@infra/db/Prisma';
 import { randomUUID } from 'crypto';
@@ -16,5 +18,26 @@ export class ICartRepositoryPrismaImpl implements ICartRepository {
     });
 
     return cart;
+  }
+
+  async listCartContent({ 
+    public_id 
+  }: IListCartContentDTO): Promise<Product[] | null> {
+      const content = await prisma.cart.findUnique({
+        where: {
+          public_id: public_id
+        },
+        include: {
+          products: {
+            include: {
+              product: true
+            }
+          }
+        }
+      });
+    
+      if(!content) return null;
+      
+      return content.products.map(p => p.product);
   }
 }

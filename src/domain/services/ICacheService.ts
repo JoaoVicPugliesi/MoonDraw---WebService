@@ -9,7 +9,7 @@ export interface ISetOptions {
   
 export interface ICacheService {
     set(key: string, val: string, options?: ISetOptions): Promise<void>;
-    get(key: string): Promise<string | undefined>;
+    get(key: string): Promise<string | null>;
     ttl(key: string): Promise<number>;
     flush(): Promise<void>;
 }

@@ -11,11 +11,11 @@ export class ISearchProductsUseCase {
   ) {}
 
   async execute({ name }: ISearchProductsDTO): Promise<ISearchProductsResponse | InvalidSearchedProductsNotFoundErrorResponse> {
-    const cachedSearch: string | undefined = await this.iCacheService.get(
+    const cachedSearch: string | null = await this.iCacheService.get(
       `search-${name}`
     );
 
-    if (typeof cachedSearch === 'string') {
+    if (cachedSearch) {
       const cachedSearchParsed: Product[] = JSON.parse(cachedSearch);
       return {
         result: cachedSearchParsed,

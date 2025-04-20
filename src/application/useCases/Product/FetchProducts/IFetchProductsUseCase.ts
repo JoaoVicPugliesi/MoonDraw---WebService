@@ -18,11 +18,11 @@ export class IFetchProductsUseCase {
   }: IFetchProductsDTO): Promise<
     FetchProductsResponse | InvalidProductsNotFoundErrorResponse
   > {
-    const cachedProducts: string | undefined = await this.iCacheService.get(
+    const cachedProducts: string | null = await this.iCacheService.get(
       `products-${page}`
     );
 
-    if (typeof cachedProducts === 'string') {
+    if (cachedProducts) {
       const cachedProductsParsed: Product[] = JSON.parse(cachedProducts);
       return {
         products: cachedProductsParsed,

@@ -6,12 +6,10 @@ export class ICacheServiceRedisImpl implements ICacheService {
     async set(key: string, value: string, options?: ISetOptions): Promise<void> {
         await cache.set(key, value, options as SetOptions); 
     }
-    async get(key: string): Promise<string | undefined> {
+    async get(key: string): Promise<string | null> {
         const element: string | null = await cache.get(key);
         
-        if(!element) return undefined;
-
-        return element;
+        return element
     }
 
     async ttl(key: string): Promise<number> {
