@@ -5,6 +5,6 @@ import { ISearchProductsDTO } from '@application/useCases/Product/SearchProducts
 
 export interface IProductRepository {
     fetchProducts(DTO: IFetchProductsDTO): Promise<Product[] | null>
-    selectProduct(DTO: ISelectProductDTO): Promise<Product | undefined>;
-    searchProducts(DTO: ISearchProductsDTO): Promise<Product[] | undefined>; 
+    selectProduct(DTO: ISelectProductDTO): Promise<Product | null>;
+    searchProducts(DTO: ISearchProductsDTO): Promise<Product[] | null>; 
 }

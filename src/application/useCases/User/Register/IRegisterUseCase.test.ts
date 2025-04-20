@@ -1,14 +1,9 @@
 import {
   InvalidUserConflictErrorResponse,
-  RegisterReponse,
+  IRegisterReponse,
 } from '@application/handlers/UseCasesResponses/User/IRegisterHandlers';
 import { User } from '@domain/entities/User';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import {
-  InvalidPasswordIsNotEqualErrorResponse,
-  InvalidUserNotFoundErrorResponse,
-} from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { IRegisterFactoryInMemory } from '@application/factories/User/Register/IRegisterFactoryInMemory';
 import { IRegisterUseCase } from './IRegisterUseCase';
 import { configDotenv } from 'dotenv';
@@ -19,7 +14,7 @@ configDotenv();
 // Mocks
 const iMailProvider = { sendMail: jest.fn() };
 
-type Registered = InvalidUserConflictErrorResponse | RegisterReponse;
+type Registered = InvalidUserConflictErrorResponse | IRegisterReponse;
 const users: User[] = [];
 const refreshTokens: RefreshToken[] = [];
 
@@ -96,22 +91,9 @@ describe('I register use case', () => {
       confirmPassword
     });
 
-    if (response instanceof InvalidUserConflictErrorResponse)
-      console.log('error');
-
-    // Assert
-    if (!(response instanceof InvalidUserConflictErrorResponse)) {
-      expect(response).toHaveProperty('mail_response');
-      expect(response).toHaveProperty('login_response');
-      expect(response.login_response).not.toBeInstanceOf(
-        InvalidUserNotFoundErrorResponse
-      );
-      expect(response.login_response).not.toBeInstanceOf(
-        InvalidPasswordIsNotEqualErrorResponse
-      );
-      expect(response.login_response).not.toBeInstanceOf(
-        InvalidGenerateRefreshTokenErrorResponse
-      );
-    }
+    // Assert 
+    expect(response).toHaveProperty('assign_cart_owner_response');
+    expect(response).toHaveProperty('mail_response');
+    expect(response).toHaveProperty('login_response');
   });
 });

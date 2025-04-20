@@ -19,21 +19,19 @@ export class IProductRepositoryPrismaImpl implements IProductRepository {
 
   async selectProduct({
     public_id,
-  }: ISelectProductDTO): Promise<Product | undefined> {
+  }: ISelectProductDTO): Promise<Product | null> {
     const product: Product | null = await prisma.product.findUnique({
       where: {
         public_id: public_id,
       },
     });
 
-    if (!product) return undefined;
-
     return product;
   }
 
   async searchProducts({
     name,
-  }: ISearchProductsDTO): Promise<Product[] | undefined> {
+  }: ISearchProductsDTO): Promise<Product[] | null> {
     const products: Product[] | null = await prisma.product.findMany({
       where: {
         name: {
@@ -42,8 +40,6 @@ export class IProductRepositoryPrismaImpl implements IProductRepository {
         },
       },
     });
-
-    if (!products) return undefined;
 
     return products;
   }

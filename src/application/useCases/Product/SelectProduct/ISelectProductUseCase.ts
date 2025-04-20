@@ -29,12 +29,12 @@ export class ISelectProductUseCase {
       };
     }
 
-    const product: Product | undefined =
+    const product: Product | null =
       await this.iProductRepository.selectProduct({
         public_id,
       });
 
-    if (typeof product === 'undefined') return new InvalidProductNotFoundErrorResponse();
+    if (!product) return new InvalidProductNotFoundErrorResponse();
 
     await this.iCacheService.set(
       `product-${public_id}`,

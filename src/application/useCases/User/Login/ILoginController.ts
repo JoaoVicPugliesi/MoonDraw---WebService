@@ -6,7 +6,7 @@ import { ILoginDTO } from './ILoginDTO';
 import {
   InvalidUserNotFoundErrorResponse,
   InvalidPasswordIsNotEqualErrorResponse,
-  LoginResponse,
+  ILoginResponse,
 } from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
 import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 
@@ -29,7 +29,7 @@ export class ILoginController {
         | InvalidUserNotFoundErrorResponse
         | InvalidPasswordIsNotEqualErrorResponse
         | InvalidGenerateRefreshTokenErrorResponse
-        | LoginResponse = await this.iLoginUseCase.execute(DTO);
+        | ILoginResponse = await this.iLoginUseCase.execute(DTO);
 
       if (response instanceof InvalidUserNotFoundErrorResponse)
         return adapter.res

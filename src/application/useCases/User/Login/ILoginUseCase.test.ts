@@ -4,7 +4,7 @@ import { User } from '@domain/entities/User';
 import {
   InvalidUserNotFoundErrorResponse,
   InvalidPasswordIsNotEqualErrorResponse,
-  LoginResponse,
+  ILoginResponse,
 } from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
 import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { ILoginFactoryInMemory } from '@application/factories/User/Login/ILoginFactoryInMemory';
@@ -16,7 +16,7 @@ type Logged =
   | InvalidUserNotFoundErrorResponse
   | InvalidPasswordIsNotEqualErrorResponse
   | InvalidGenerateRefreshTokenErrorResponse
-  | LoginResponse;
+  | ILoginResponse;
 
 const users: User[] = [];
 const refreshTokens: RefreshToken[] = [];

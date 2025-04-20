@@ -19,7 +19,7 @@ export class IRegisterFactoryInMemory {
     const iHashService = new IHashServiceBCryptImpl();
     const iLoginFactoryInMemory = new ILoginFactoryInMemory(this.users, this.refreshTokens)
     const iLoginUseCase = iLoginFactoryInMemory.compose();
-    const iAssignCartOwnerFactoryInMemory = new IAssignCartOwnerFactoryInMemory(this.carts);
+    const iAssignCartOwnerFactoryInMemory = new IAssignCartOwnerFactoryInMemory(this.carts, this.users);
     const iAssignCartOwnerUseCase = iAssignCartOwnerFactoryInMemory.compose();
     const iUserRepository = new IUserRepositoryInMemoryImpl(
       this.users,

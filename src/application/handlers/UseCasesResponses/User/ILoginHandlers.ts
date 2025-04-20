@@ -3,7 +3,7 @@ import { User } from '@domain/entities/User'
 export class InvalidUserNotFoundErrorResponse extends Error {}
 export class InvalidPasswordIsNotEqualErrorResponse extends Error {}
 
-export interface LoginResponse {
+export interface ILoginResponse {
     access_token: string,
     refresh_token: {
         id: number,

@@ -5,7 +5,7 @@ import { IRegisterDTO } from './IRegisterDTO';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import {
   InvalidUserConflictErrorResponse,
-  RegisterReponse,
+  IRegisterReponse,
 } from '@application/handlers/UseCasesResponses/User/IRegisterHandlers';
 import {
   InvalidPasswordIsNotEqualErrorResponse,
@@ -28,7 +28,7 @@ export class IRegisterController {
 
     try {
       const DTO: IRegisterDTO = schema.parse(adapter.req.body);
-      const response: InvalidUserConflictErrorResponse | RegisterReponse =
+      const response: InvalidUserConflictErrorResponse | IRegisterReponse =
         await this.iRegisterUseCase.execute(DTO);
 
       if (response instanceof InvalidUserConflictErrorResponse) {

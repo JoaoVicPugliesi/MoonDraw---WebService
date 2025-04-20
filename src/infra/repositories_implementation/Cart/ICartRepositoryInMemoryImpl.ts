@@ -20,7 +20,7 @@ export class ICartRepositoryInMemoryImpl implements ICartRepository {
 
       this.carts.push(cart);
 
-      return cart;
+      return resolve(cart);
     });
   }
 }

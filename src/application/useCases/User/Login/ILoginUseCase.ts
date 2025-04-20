@@ -7,7 +7,7 @@ import { ILoginDTO } from './ILoginDTO';
 import {
   InvalidUserNotFoundErrorResponse,
   InvalidPasswordIsNotEqualErrorResponse,
-  LoginResponse,
+  ILoginResponse,
 } from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
@@ -30,9 +30,10 @@ export class ILoginUseCase {
     | InvalidUserNotFoundErrorResponse
     | InvalidPasswordIsNotEqualErrorResponse
     | InvalidGenerateRefreshTokenErrorResponse
-    | LoginResponse
+    | ILoginResponse
   > {
     const user: User | null = await this.iUserRepository.findUserByEmail(email);
+    
     if (!user) return new InvalidUserNotFoundErrorResponse();
 
     const isPasswordEqual: boolean = await this.iHashService.compare(

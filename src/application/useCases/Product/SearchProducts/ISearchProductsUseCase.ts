@@ -22,12 +22,12 @@ export class ISearchProductsUseCase {
       };
     }
 
-    const search: Product[] | undefined =
+    const search: Product[] | null =
       await this.iProductRepository.searchProducts({
         name,
       });
 
-    if (typeof search === 'undefined') return new InvalidSearchedProductsNotFoundErrorResponse();
+    if (!search) return new InvalidSearchedProductsNotFoundErrorResponse();
 
     await this.iCacheService.set(`search-${name}`, JSON.stringify(search), {
       EX: 1800

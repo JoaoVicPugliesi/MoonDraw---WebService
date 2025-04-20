@@ -20,11 +20,11 @@ export class IAssignCartOwnerUseCase {
     if(!user) return new InvalidOwnerNotFoundErrorResponse();
     
     const cart: Cart = await this.iCartRepository.assignCart({
-       public_id
+      public_id
     });
 
     return {
-        cart: cart
+      cart: cart
     };
 
   }

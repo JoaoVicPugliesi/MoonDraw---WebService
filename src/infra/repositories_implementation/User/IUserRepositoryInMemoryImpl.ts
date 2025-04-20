@@ -16,9 +16,7 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
         (user) => user.email === (email)
       );
 
-      if (typeof user === 'undefined') {
-        return resolve(null);
-      }
+      if (typeof user === 'undefined') return resolve(null);
 
       return resolve(user);
     });
@@ -57,9 +55,9 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
         (user) => user.public_id === (public_id)
       );
 
-      if (user) return resolve(user);
+      if (typeof user === 'undefined') return resolve(null);
 
-      return resolve(null);
+      return resolve(user);
     });
   }
 
