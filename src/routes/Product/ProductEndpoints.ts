@@ -15,7 +15,6 @@ export class ProductEndpoints {
     this.app.get('/api/products/product/:public_id', async (adapter: RequestResponseAdapter) => {
       await iSelectProduct.handle(adapter)
     });
-
     this.app.get('/api/products/search/:name', async (adapter: RequestResponseAdapter) => {
       await iSearchProducts.handle(adapter)
     });
