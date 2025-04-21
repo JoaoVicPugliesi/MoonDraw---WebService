@@ -1,10 +1,8 @@
 import { ICartRepository } from '@domain/repositories/ICartRepository';
 import { IAttachProductIntoCartDTO } from './IAttachProductIntoCartDTO';
-import { Product } from '@domain/entities/Product';
 import {
   IAttachProductIntoCartResponse,
   InvalidAttachmentAlreadyExistsErrorResponse,
-  InvalidCartEmptyErrorResponse,
 } from '@application/handlers/UseCasesResponses/Cart/IAttachProductIntoCart';
 
 export class IAttachProductIntoCartUseCase {
@@ -15,7 +13,6 @@ export class IAttachProductIntoCartUseCase {
     product_id,
   }: IAttachProductIntoCartDTO): Promise<
     | InvalidAttachmentAlreadyExistsErrorResponse
-    | InvalidCartEmptyErrorResponse
     | IAttachProductIntoCartResponse
   > {
     const attachment: boolean =
@@ -31,15 +28,8 @@ export class IAttachProductIntoCartUseCase {
       product_id,
     });
 
-    const content: Product[] | null =
-      await this.iCartRepository.listCartContent({
-        public_id: cart_id,
-      });
-
-    if (!content) return new InvalidCartEmptyErrorResponse();
-
     return {
-      content: content,
-    };
+      success: true
+    }
   }
 }

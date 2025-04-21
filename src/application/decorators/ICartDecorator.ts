@@ -1,5 +1,5 @@
 import { IAssignCartOwnerDTO } from '@application/useCases/Сart/AssignCartOwner/IAssignCartOwnerDTO';
-import { IAttachProductIntoCart } from '@application/useCases/Сart/AttachProductIntoCart/IAttachProductIntoCartDTO';
+import { IAttachProductIntoCartDTO } from '@application/useCases/Сart/AttachProductIntoCart/IAttachProductIntoCartDTO';
 import { IListCartContentDTO } from '@application/useCases/Сart/ListCartContent/IListCartContentDTO';
 import { Cart } from '@domain/entities/Cart';
 import { Product } from '@domain/entities/Product';
@@ -30,8 +30,18 @@ class ICartDecorator implements ICartRepository {
     async attachProductIntoCart({
         cart_id,
         product_id
-    }: IAttachProductIntoCart): Promise<void> {
+    }: IAttachProductIntoCartDTO): Promise<void> {
         await this.decoratee.attachProductIntoCart({
+            cart_id,
+            product_id
+        });
+    }
+
+    async findAttachmentBetweenProductAndCart({
+        cart_id,
+        product_id
+    }: IAttachProductIntoCartDTO): Promise<boolean> {
+        return await this.decoratee.findAttachmentBetweenProductAndCart({
             cart_id,
             product_id
         });

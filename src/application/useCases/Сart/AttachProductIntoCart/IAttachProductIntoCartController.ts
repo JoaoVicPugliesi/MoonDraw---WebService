@@ -6,8 +6,7 @@ import { IEnsureAccessTokenMiddleware } from '@application/middlewares/IEnsureAc
 import { IAttachProductIntoCartDTO } from './IAttachProductIntoCartDTO';
 import {
   IAttachProductIntoCartResponse,
-  InvalidAttachmentAlreadyExistsErrorResponse,
-  InvalidCartEmptyErrorResponse,
+  InvalidAttachmentAlreadyExistsErrorResponse
 } from '@application/handlers/UseCasesResponses/Cart/IAttachProductIntoCart';
 import { IAttachProductIntoCartValidator } from '@application/validators/IAttachProductIntoCartValidator';
 
@@ -32,7 +31,6 @@ export class IAttachProductIntoCartController {
 
       const response:
         | InvalidAttachmentAlreadyExistsErrorResponse
-        | InvalidCartEmptyErrorResponse
         | IAttachProductIntoCartResponse =
         await this.iAttachProductIntoCartUseCase.execute({
           cart_id,
@@ -42,13 +40,9 @@ export class IAttachProductIntoCartController {
       if (response instanceof InvalidAttachmentAlreadyExistsErrorResponse) {
         return adapter.res.status(409).send({ message: 'Product already exists inside the cart' })
       }
-      if (response instanceof InvalidCartEmptyErrorResponse) {
-        return adapter.res.status(404).send({ message: 'Cart is Empty' });
-      }
 
       return adapter.res.status(201).send({
         message: 'Product Added',
-        content: response.content,
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
