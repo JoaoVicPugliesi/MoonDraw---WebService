@@ -1,6 +1,6 @@
 import z from 'zod';
 
-export class IAttachProductIntoCartValidator {
+export class IDetachProductFromCartValidator {
   validate() {
     return z.object({
       cart_id: z.string({

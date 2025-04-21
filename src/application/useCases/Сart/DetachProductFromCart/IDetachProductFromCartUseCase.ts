@@ -1,18 +1,21 @@
-import { ICartRepository } from "@domain/repositories/ICartRepository";
-import { IDetachProductFromCartDTO } from "./IDetachProductFromCartDTO";
+import { ICartRepository } from '@domain/repositories/ICartRepository';
+import { IDetachProductFromCartDTO } from './IDetachProductFromCartDTO';
 import {
   IDetachProductFromCartResponse,
   InvalidAttachmentDoesNotExistsErrorResponse,
-} from "@application/handlers/UseCasesResponses/Cart/IDetachProductFromCartHandlers";
+} from '@application/handlers/UseCasesResponses/Cart/IDetachProductFromCartHandlers';
 
 export class IDetachProductFromCartUseCase {
-  constructor(private readonly iCartRepository: ICartRepository) {}
+  constructor(
+    private readonly iCartRepository: ICartRepository
+  ) {}
 
   async execute({
     cart_id,
     product_id,
   }: IDetachProductFromCartDTO): Promise<
-    InvalidAttachmentDoesNotExistsErrorResponse | IDetachProductFromCartResponse
+    | InvalidAttachmentDoesNotExistsErrorResponse 
+    | IDetachProductFromCartResponse
   > {
     const attachment: boolean =
       await this.iCartRepository.findAttachmentBetweenProductAndCart({
