@@ -5,11 +5,10 @@ import { IAssignCartOwnerDTO } from '@application/useCases/Сart/AssignCartOwner
 import { IListCartContentDTO } from '@application/useCases/Сart/ListCartContent/IListCartContentDTO';
 import { ICartRepository } from '@domain/repositories/ICartRepository';
 import { IAttachProductIntoCartDTO } from '@application/useCases/Сart/AttachProductIntoCart/IAttachProductIntoCartDTO';
+import { IDetachProductFromCartDTO } from '@application/useCases/Сart/DetachProductFromCart/IDetachProductFromCartDTO';
 
 export class ICartRepositoryInMemoryImpl implements ICartRepository {
-  constructor(
-    private readonly carts: Cart[]
-  ) {}
+  constructor(private readonly carts: Cart[]) {}
 
   async assignCartOwner({ public_id }: IAssignCartOwnerDTO): Promise<Cart> {
     return new Promise((resolve, reject) => {
@@ -35,17 +34,22 @@ export class ICartRepositoryInMemoryImpl implements ICartRepository {
 
   async attachProductIntoCart({
     cart_id,
-    product_id
+    product_id,
   }: IAttachProductIntoCartDTO): Promise<void> {
-      return new Promise((resolve, reject) => {
-
-      });
+    return new Promise((resolve, reject) => {});
   }
 
   async findAttachmentBetweenProductAndCart({
     cart_id,
-    product_id
+    product_id,
   }: IAttachProductIntoCartDTO): Promise<boolean> {
-      return true;
+    return true;
+  }
+
+  async detachProductFromCart({
+    cart_id,
+    product_id,
+  }: IDetachProductFromCartDTO): Promise<void> {
+    return new Promise((resolve, reject) => {});
   }
 }

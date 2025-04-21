@@ -1,3 +1,4 @@
+import { IDetachProductFromCartDTO } from './../../application/useCases/Сart/DetachProductFromCart/IDetachProductFromCartDTO';
 import { Cart } from "@domain/entities/Cart";
 import { Product } from "@domain/entities/Product";
 import { IAssignCartOwnerDTO } from "@application/useCases/Сart/AssignCartOwner/IAssignCartOwnerDTO";
@@ -9,4 +10,5 @@ export interface ICartRepository {
     listCartContent(DTO: IListCartContentDTO): Promise<Product[] | null>;
     attachProductIntoCart(DTO: IAttachProductIntoCartDTO): Promise<void>;
     findAttachmentBetweenProductAndCart(DTO: IAttachProductIntoCartDTO): Promise<boolean>;
+    detachProductFromCart(DTO: IDetachProductFromCartDTO): Promise<void>;
 }
