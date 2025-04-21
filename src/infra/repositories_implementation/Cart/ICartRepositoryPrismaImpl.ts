@@ -1,5 +1,5 @@
 import { IAssignCartOwnerDTO } from '@application/useCases/Сart/AssignCartOwner/IAssignCartOwnerDTO';
-import { IAttachProductIntoCart } from '@application/useCases/Сart/AttachProductIntoCart/IAttachProductIntoCartDTO';
+import { IAttachProductIntoCartDTO } from '@application/useCases/Сart/AttachProductIntoCart/IAttachProductIntoCartDTO';
 import { IListCartContentDTO } from '@application/useCases/Сart/ListCartContent/IListCartContentDTO';
 import { Cart } from '@domain/entities/Cart';
 import { Product } from '@domain/entities/Product';
@@ -45,12 +45,28 @@ export class ICartRepositoryPrismaImpl implements ICartRepository {
   async attachProductIntoCart({
     cart_id,
     product_id
-  }: IAttachProductIntoCart): Promise<void> {
+  }: IAttachProductIntoCartDTO): Promise<void> {
       await prisma.pivot_Cart_Product.create({
         data: {
-          product_id: product_id,
-          cart_id: cart_id
+          cart_id: cart_id,
+          product_id: product_id
         }
       });
+  }
+
+  async findAttachmentBetweenProductAndCart({
+    cart_id,
+    product_id
+  }: IAttachProductIntoCartDTO): Promise<boolean> {
+      const attachment = await prisma.pivot_Cart_Product.findFirst({
+        where: {
+          cart_id: cart_id,
+          product_id: product_id
+        }
+      });
+
+      if(!attachment) return false;
+
+      return true;
   }
 }

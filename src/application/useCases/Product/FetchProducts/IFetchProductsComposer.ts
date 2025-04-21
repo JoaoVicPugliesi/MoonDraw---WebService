@@ -1,4 +1,4 @@
-import { IFetchProductsFactory } from '@application/factories/Product/IFetchProducts/IFetchProductsFactory';
+import { IFetchProductsFactory } from '@application/factories/Product/FetchProducts/IFetchProductsFactory';
 import { IFetchProductsController } from './IFetchProductsController';
 import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
 

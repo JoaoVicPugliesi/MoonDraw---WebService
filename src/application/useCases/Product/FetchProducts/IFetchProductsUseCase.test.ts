@@ -1,4 +1,4 @@
-import { IFetchProductsInMemoryFactory } from '@application/factories/Product/IFetchProducts/IFetchProductsInMemoryFactory';
+import { IFetchProductsInMemoryFactory } from '@application/factories/Product/FetchProducts/IFetchProductsInMemoryFactory';
 import { IFetchProductsDTO } from '@application/useCases/Product/FetchProducts/IFetchProductsDTO';
 
 import { Product } from '@domain/entities/Product';

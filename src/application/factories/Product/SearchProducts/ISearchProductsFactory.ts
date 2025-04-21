@@ -1,4 +1,4 @@
-import { ICacheServiceRedisImpl } from './../../../../infra/services_implementation/CacheService/ICacheServiceRedisImpl';
+import { ICacheServiceRedisImpl } from '../../../../infra/services_implementation/CacheService/ICacheServiceRedisImpl';
 import { ISearchProductsUseCase } from '@application/useCases/Product/SearchProducts/ISearchProductsUseCase';
 import { iProductDecorator } from '@application/decorators/IProductDecorator';
 

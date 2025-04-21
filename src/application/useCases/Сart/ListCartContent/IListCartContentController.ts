@@ -20,7 +20,7 @@ export class IListCartContentController {
         adapter,
         this.iTokenService
       );
-      iEnsureAccessTokenMiddleware.ensure();
+      await iEnsureAccessTokenMiddleware.ensure();
 
       const { public_id }: IListCartContentDTO = adapter.req
         .query as IListCartContentDTO;

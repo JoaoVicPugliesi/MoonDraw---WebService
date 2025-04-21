@@ -6,14 +6,10 @@ import { IConfirmMailValidator } from '@application/validators/IConfirmMailValid
 import { InvalidUserNotFoundError } from '@application/handlers/UseCasesResponses/User/IConfirmMailHandlers';
 
 export class IConfirmMailController {
-
-  private readonly iConfirmMailValidator: IConfirmMailValidator;
-
   constructor(
-    private readonly iConfirmMailUseCase: IConfirmMailUseCase
-  ) {
-    this.iConfirmMailValidator = new IConfirmMailValidator();
-  }
+    private readonly iConfirmMailUseCase: IConfirmMailUseCase,
+    private readonly iConfirmMailValidator: IConfirmMailValidator
+  ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const schema = this.iConfirmMailValidator.validate();

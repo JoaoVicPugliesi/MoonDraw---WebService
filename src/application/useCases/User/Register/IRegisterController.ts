@@ -15,13 +15,11 @@ import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/
 import { InvalidOwnerNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/Cart/IAssignCartOwnerHandlers';
 
 export class IRegisterController {
-  private readonly iRegisterValidator: IRegisterValidator;
-
+ 
   constructor(
-    private readonly iRegisterUseCase: IRegisterUseCase
-  ) {
-    this.iRegisterValidator = new IRegisterValidator();
-  }
+    private readonly iRegisterUseCase: IRegisterUseCase,
+    private readonly iRegisterValidator: IRegisterValidator
+  ) {}
 
   async handle(adapter: RequestResponseAdapter): Promise<void> {
     const schema = this.iRegisterValidator.validate();

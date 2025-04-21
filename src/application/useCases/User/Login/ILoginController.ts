@@ -11,13 +11,10 @@ import {
 import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 
 export class ILoginController {
-  private readonly iLoginValidator: ILoginValidator;
-
   constructor(
-    private readonly iLoginUseCase: ILoginUseCase
-  ) {
-    this.iLoginValidator = new ILoginValidator();
-  }
+    private readonly iLoginUseCase: ILoginUseCase,
+    private readonly iLoginValidator: ILoginValidator
+  ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const schema = this.iLoginValidator.validate();

@@ -20,7 +20,7 @@ export class ISearchProductsController {
         adapter,
         this.iTokenService
       );
-      iEnsureAccessTokenMiddleware.ensure();
+      await iEnsureAccessTokenMiddleware.ensure();
 
       const { name }: ISearchProductsDTO = adapter.req
         .params as ISearchProductsDTO;

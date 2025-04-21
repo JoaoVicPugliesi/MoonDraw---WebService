@@ -4,7 +4,7 @@ import { randomUUID } from 'crypto';
 import { IAssignCartOwnerDTO } from '@application/useCases/Сart/AssignCartOwner/IAssignCartOwnerDTO';
 import { IListCartContentDTO } from '@application/useCases/Сart/ListCartContent/IListCartContentDTO';
 import { ICartRepository } from '@domain/repositories/ICartRepository';
-import { IAttachProductIntoCart } from '@application/useCases/Сart/AttachProductIntoCart/IAttachProductIntoCartDTO';
+import { IAttachProductIntoCartDTO } from '@application/useCases/Сart/AttachProductIntoCart/IAttachProductIntoCartDTO';
 
 export class ICartRepositoryInMemoryImpl implements ICartRepository {
   constructor(
@@ -36,9 +36,16 @@ export class ICartRepositoryInMemoryImpl implements ICartRepository {
   async attachProductIntoCart({
     cart_id,
     product_id
-  }: IAttachProductIntoCart): Promise<void> {
+  }: IAttachProductIntoCartDTO): Promise<void> {
       return new Promise((resolve, reject) => {
 
       });
+  }
+
+  async findAttachmentBetweenProductAndCart({
+    cart_id,
+    product_id
+  }: IAttachProductIntoCartDTO): Promise<boolean> {
+      return true;
   }
 }

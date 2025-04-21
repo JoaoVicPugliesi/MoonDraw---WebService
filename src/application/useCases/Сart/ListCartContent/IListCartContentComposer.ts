@@ -1,4 +1,4 @@
-import { IListCartContentFactory } from "@application/factories/Cart/IListCartContent/IListCartContentFactory";
+import { IListCartContentFactory } from "@application/factories/Cart/ListCartContent/IListCartContentFactory";
 import { IListCartContentController } from "./IListCartContentController";
 import { ITokenServiceJWTImpl } from "@infra/services_implementation/ITokenServiceJWTImpl";
 

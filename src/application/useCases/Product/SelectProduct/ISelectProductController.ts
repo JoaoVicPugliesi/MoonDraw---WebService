@@ -20,7 +20,7 @@ export class ISelectProductController {
         adapter,
         this.iTokenService
       );
-      iEnsureAccessTokenMiddleware.ensure();
+      await iEnsureAccessTokenMiddleware.ensure();
       const { public_id }: ISelectProductDTO = adapter.req
         .query as ISelectProductDTO;
       const response:

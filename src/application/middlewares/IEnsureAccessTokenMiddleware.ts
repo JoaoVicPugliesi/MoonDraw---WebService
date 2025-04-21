@@ -26,7 +26,10 @@ export class IEnsureAccessTokenMiddleware {
         secret_key: this.secret_key,
       });
     } catch (error) {
-      return this.adapter.res.status(401).send({ message: 'Token invalid' });
+      return this.adapter.res.status(401).send({ 
+        message: 'Token invalid',
+        error: error
+      });
     }
   }
 }

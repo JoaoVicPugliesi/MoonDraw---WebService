@@ -1,5 +1,5 @@
 import { ISelectProductController } from './ISelectProductController';
-import { ISelectProductFactory } from './../../../factories/Product/ISelectProduct/ISelectProductFactory';
+import { ISelectProductFactory } from '../../../factories/Product/SelectProduct/ISelectProductFactory';
 import { ITokenServiceJWTImpl } from "@infra/services_implementation/ITokenServiceJWTImpl";
 
 const iFactory = new ISelectProductFactory();

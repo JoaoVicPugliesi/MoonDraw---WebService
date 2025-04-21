@@ -4,7 +4,7 @@ import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRegisterUseCase } from '@application/useCases/User/Register/IRegisterUseCase';
 import { IHashServiceBCryptImpl } from '@infra/services_implementation/IHashServiceBCryptImpl';
 import { IUserRepositoryInMemoryImpl } from '@infra/repositories_implementation/User/IUserRepositoryInMemoryImpl';
-import { IAssignCartOwnerFactoryInMemory } from '@application/factories/Cart/IAssignCartOwner/IAssignCartOwnerFactoryInMemory';
+import { IAssignCartOwnerFactoryInMemory } from '@application/factories/Cart/AssignCartOwner/IAssignCartOwnerFactoryInMemory';
 import { Cart } from '@domain/entities/Cart';
 
 export class IRegisterFactoryInMemory {

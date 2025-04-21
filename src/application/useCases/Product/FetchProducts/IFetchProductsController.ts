@@ -22,7 +22,7 @@ export class IFetchProductsController {
         adapter,
         this.iTokenService
       );
-      iEnsureAccessTokenMiddleware.ensure();
+      await iEnsureAccessTokenMiddleware.ensure();
       const { page }: IFetchProductsDTO = adapter.req
         .params as IFetchProductsDTO;
       const response:
