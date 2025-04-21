@@ -19,7 +19,7 @@ export class IAssignCartOwnerUseCase {
 
     if(!user) return new InvalidOwnerNotFoundErrorResponse();
     
-    const cart: Cart = await this.iCartRepository.assignCart({
+    const cart: Cart = await this.iCartRepository.assignCartOwner({
       public_id
     });
 
