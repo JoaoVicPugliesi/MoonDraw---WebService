@@ -1,5 +1,5 @@
 import { IAttachProductIntoPurchaseDTO } from '@application/useCases/Purchase/AttachProductIntoPurchase/IAttachProductIntoPurchaseDTO';
-import { SelectedProduct } from '@application/useCases/Purchase/InitiatePurchase/IInitiatePurchaseDTO';
+import { IMeasurePurchaseDTO } from '@application/useCases/Purchase/MeasurePurchase/IMeasurePurchaseDTO';
 import { ISavePurchaseDTO } from '@application/useCases/Purchase/SavePurchase/ISavePurchaseDTO';
 import { Product } from '@domain/entities/Product';
 import { Purchase } from '@domain/entities/Purchase';
@@ -8,9 +8,9 @@ import { prisma } from '@infra/db/Prisma';
 import { randomUUID } from 'crypto';
 
 export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
-  async measurePurchase(list: SelectedProduct[]): Promise<number> {
+  async measurePurchase(DTO: IMeasurePurchaseDTO[]): Promise<number> {
     let value: number = 0;
-    for(const p of list) {
+    for(const p of DTO) {
       const current: Product | null = await prisma.product.findFirst({
         where: {
           public_id: p.product_id,
