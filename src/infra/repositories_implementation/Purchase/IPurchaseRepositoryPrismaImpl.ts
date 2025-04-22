@@ -1,8 +1,11 @@
-import { IAttachProductIntoPurchaseDTO } from '@application/useCases/Purchase/IAttachProductIntoPurchase/IAttachProductIntoPurchaseDTO';
-import { SelectedProduct } from '@application/useCases/Purchase/IInitiatePurchase/IInitiatePurchaseDTO';
+import { IAttachProductIntoPurchaseDTO } from '@application/useCases/Purchase/AttachProductIntoPurchase/IAttachProductIntoPurchaseDTO';
+import { SelectedProduct } from '@application/useCases/Purchase/InitiatePurchase/IInitiatePurchaseDTO';
+import { ISavePurchaseDTO } from '@application/useCases/Purchase/SavePurchase/ISavePurchaseDTO';
 import { Product } from '@domain/entities/Product';
+import { Purchase } from '@domain/entities/Purchase';
 import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
 import { prisma } from '@infra/db/Prisma';
+import { randomUUID } from 'crypto';
 
 export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
   async measurePurchase(list: SelectedProduct[]): Promise<number> {
@@ -21,6 +24,21 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
     });
 
     return value;
+  }
+
+  async savePurchase({
+    user_id,
+    value
+  }: ISavePurchaseDTO): Promise<Purchase> {
+      const purchase: Purchase = await prisma.purchase.create({
+        data: {
+          public_id: randomUUID(),
+          user_id: user_id,
+          value: value
+        }
+      });
+
+      return purchase;
   }
 
   async attachProductIntoPurchase({
