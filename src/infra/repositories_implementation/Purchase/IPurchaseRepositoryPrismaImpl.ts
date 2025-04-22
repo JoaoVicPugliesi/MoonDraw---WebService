@@ -1,3 +1,4 @@
+import { IAttachProductIntoPurchaseDTO } from '@application/useCases/Purchase/IAttachProductIntoPurchase/IAttachProductIntoPurchaseDTO';
 import { SelectedProduct } from '@application/useCases/Purchase/IInitiatePurchase/IInitiatePurchaseDTO';
 import { Product } from '@domain/entities/Product';
 import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
@@ -20,5 +21,19 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
     });
 
     return value;
+  }
+
+  async attachProductIntoPurchase({
+    purchase_id,
+    product_id,
+    quantity
+  }: IAttachProductIntoPurchaseDTO): Promise<void> {
+      await prisma.pivot_Purchase_Product.create({
+        data: {
+          purchase_id,
+          product_id,
+          quantity
+        }
+      })
   }
 }
