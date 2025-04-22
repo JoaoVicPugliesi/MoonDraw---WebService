@@ -2,6 +2,7 @@ import { RequestResponseAdapter, ServerAdapter } from '@adapters/ServerAdapter';
 import { iSearchProducts } from '@application/useCases/Product/SearchProducts/ISearchProductsComposer';
 import { iSelectProduct } from '@application/useCases/Product/SelectProduct/ISelectProductComposer';
 import { iFetchProducts } from '@application/useCases/Product/FetchProducts/IFetchProductsComposer';
+import { iSaveProduct } from '@application/useCases/Product/SaveProduct/ISaveProductComposer';
 
 export class ProductEndpoints {
   constructor(
@@ -17,6 +18,9 @@ export class ProductEndpoints {
     });
     this.app.get('/api/products/search/:name', async (adapter: RequestResponseAdapter) => {
       await iSearchProducts.handle(adapter)
+    });
+    this.app.post('/api/products/save', async (adapter: RequestResponseAdapter) => {
+      await iSaveProduct.handle(adapter)
     });
   }
 }

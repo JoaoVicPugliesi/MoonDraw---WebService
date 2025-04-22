@@ -16,7 +16,7 @@ export class IRegisterValidator {
             required_error: 'Surname is required',
             invalid_type_error: 'Surname should be of type string',
           })
-          .max(200, { message: 'Name should have at maximum 200 characters' }),
+          .max(200, { message: 'Surname should have at maximum 200 characters' }),
 
         email: z
           .string({

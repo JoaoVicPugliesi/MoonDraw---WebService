@@ -24,12 +24,10 @@ export class IEnsureUserIsAdminMiddleware {
         complete: true
     });
 
-    console.log(tokenDecoded);
-
     const { role } = tokenDecoded.payload.content;
 
     if(role === 'client') {
-        return this.adapter.res.status(401).send({ message: 'Only admins have access' });
+        return new Error();
     }
     try {
       this.iTokenService.verify({

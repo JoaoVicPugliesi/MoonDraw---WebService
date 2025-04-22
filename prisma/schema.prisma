@@ -57,7 +57,7 @@ model Product {
   id           Int                      @default(autoincrement())
   public_id    String                   @id
   image_id     String
-  name         String
+  name         String                   @unique
   description  String                   @default("No Description")
   price        Float                    @default(0)
   supply       Int                      @default(0)
