@@ -1,11 +1,11 @@
-type Status = 'pendent' | 'completed' | 'canceled';
+type PurchaseStatus = 'pendent' | 'completed';
 
 export interface IPurchase {
   readonly id: number;
   readonly public_id: string;
   readonly user_id: string;
   readonly value: number;
-  readonly status: Status;
+  readonly status: PurchaseStatus;
 }
 
 export class Purchase implements IPurchase {
@@ -14,6 +14,6 @@ export class Purchase implements IPurchase {
     readonly public_id: string,
     readonly user_id: string,
     readonly value: number,
-    readonly status: Status
+    readonly status: PurchaseStatus
   ) {}
 }

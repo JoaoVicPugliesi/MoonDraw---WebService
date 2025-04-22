@@ -18,10 +18,9 @@ enum Role {
   admin
 }
 
-enum Status {
+enum PurchaseStatus {
   pendent
   completed
-  canceled
 }
 
 model User {
@@ -85,7 +84,7 @@ model Purchase {
   public_id String                   @id
   user_id   String
   value     Float
-  status    Status                   @default(pendent)
+  status    PurchaseStatus                   @default(pendent)
   user      User                     @relation(fields: [user_id], references: [public_id], onDelete: Cascade)
   products  Pivot_Purchase_Product[]
 

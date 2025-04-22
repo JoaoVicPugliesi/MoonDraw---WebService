@@ -1,7 +1,7 @@
-import { ISaveProductFactory } from "@application/factories/Product/SaveProduct/ISaveProductFactory";
-import { ITokenServiceJWTImpl } from "@infra/services_implementation/ITokenServiceJWTImpl";
-import { ISaveProductValidator } from "@application/validators/ISaveProductValidator";
-import { ISaveProductController } from "./ISaveProductController";
+import { ISaveProductFactory } from '@application/factories/Product/SaveProduct/ISaveProductFactory';
+import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
+import { ISaveProductValidator } from '@application/validators/ISaveProductValidator';
+import { ISaveProductController } from './ISaveProductController';
 
 const iFactory = new ISaveProductFactory();
 const iUseCase = iFactory.compose();

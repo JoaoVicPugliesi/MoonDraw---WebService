@@ -1,6 +1,6 @@
-import { ISearchProductsFactory } from "@application/factories/Product/SearchProducts/ISearchProductsFactory";
-import { ISearchProductsController } from "./ISearchProductsController";
-import { ITokenServiceJWTImpl } from "@infra/services_implementation/ITokenServiceJWTImpl";
+import { ISearchProductsFactory } from '@application/factories/Product/SearchProducts/ISearchProductsFactory';
+import { ISearchProductsController } from './ISearchProductsController';
+import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
 
 const iFactory = new ISearchProductsFactory();
 const iUseCase = iFactory.compose();

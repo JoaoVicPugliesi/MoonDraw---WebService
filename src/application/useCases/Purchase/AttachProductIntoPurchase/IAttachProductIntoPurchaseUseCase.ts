@@ -1,5 +1,5 @@
 import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
-import { IAttachProductIntoPurchaseDTO } from "./IAttachProductIntoPurchaseDTO";
+import { IAttachProductIntoPurchaseDTO } from './IAttachProductIntoPurchaseDTO';
 
 export class IAttachProductIntoPurchaseUseCase {
   constructor(

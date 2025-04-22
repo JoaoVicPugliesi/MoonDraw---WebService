@@ -1,5 +1,5 @@
-import { User } from "@domain/entities/User";
-import { IRegisterDTO } from "@application/useCases/User/Register/IRegisterDTO";
+import { User } from '@domain/entities/User';
+import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
 
 export interface IUserRepository {
   findUserByEmail(email: string): Promise<User | null>;

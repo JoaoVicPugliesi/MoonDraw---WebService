@@ -1,5 +1,5 @@
-import { IGenerateRefreshTokenDTO } from "@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO";
-import { RefreshToken } from "@domain/entities/RefreshToken";
+import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
+import { RefreshToken } from '@domain/entities/RefreshToken';
 
 export interface IRefreshTokenRepository {
   findRelatedRefreshTokens<T>(param: T): Promise<RefreshToken | RefreshToken[] | null>;

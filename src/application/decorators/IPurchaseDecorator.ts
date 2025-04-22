@@ -1,17 +1,18 @@
-import { IAttachProductIntoPurchaseDTO } from "@application/useCases/Purchase/AttachProductIntoPurchase/IAttachProductIntoPurchaseDTO";
-import { SelectedProduct } from "@application/useCases/Purchase/InitiatePurchase/IInitiatePurchaseDTO";
-import { ISavePurchaseDTO } from "@application/useCases/Purchase/SavePurchase/ISavePurchaseDTO";
-import { Purchase } from "@domain/entities/Purchase";
-import { IPurchaseRepository } from "@domain/repositories/IPurchaseRepository";
-import { IPurchaseRepositoryPrismaImpl } from "@infra/repositories_implementation/Purchase/IPurchaseRepositoryPrismaImpl";
+import { IAttachProductIntoPurchaseDTO } from '@application/useCases/Purchase/AttachProductIntoPurchase/IAttachProductIntoPurchaseDTO';
+import { IMeasurePurchaseDTO } from '@application/useCases/Purchase/MeasurePurchase/IMeasurePurchaseDTO';
+import { ISavePurchaseDTO } from '@application/useCases/Purchase/SavePurchase/ISavePurchaseDTO';
+import { Purchase } from '@domain/entities/Purchase';
+import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
+import { ICacheService } from '@domain/services/ICacheService';
+import { IPurchaseRepositoryPrismaImpl } from '@infra/repositories_implementation/Purchase/IPurchaseRepositoryPrismaImpl';
 
 export class IPurchaseDecorator implements IPurchaseRepository {
   constructor(
     private readonly decoratee: IPurchaseRepository
   ) {}
 
-  async measurePurchase(list: SelectedProduct[]): Promise<number> {
-      return await this.decoratee.measurePurchase(list);
+  async measurePurchase(DTO: IMeasurePurchaseDTO[], iCacheService: ICacheService): Promise<number> {
+      return await this.decoratee.measurePurchase(DTO, iCacheService);
   }
 
   async savePurchase({ 

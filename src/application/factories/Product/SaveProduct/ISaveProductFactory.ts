@@ -1,5 +1,5 @@
-import { iProductDecorator } from "@application/decorators/IProductDecorator";
-import { ISaveProductUseCase } from "@application/useCases/Product/SaveProduct/ISaveProductUseCase";
+import { iProductDecorator } from '@application/decorators/IProductDecorator';
+import { ISaveProductUseCase } from '@application/useCases/Product/SaveProduct/ISaveProductUseCase';
 
 export class ISaveProductFactory {
   compose(): ISaveProductUseCase {
