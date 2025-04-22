@@ -68,7 +68,7 @@ export class IProductRepositoryPrismaImpl implements IProductRepository {
   async findProductByName(name: string): Promise<Product | null> {
       const product: Product | null = await prisma.product.findUnique({
         where: {
-          name: name
+          name
         }
       });
 
