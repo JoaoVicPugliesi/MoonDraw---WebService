@@ -10,9 +10,8 @@ import { randomUUID } from 'crypto';
 export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
   async measurePurchase(list: SelectedProduct[]): Promise<number> {
     let value: number = 0;
-    let current: Product | null;
-    list.forEach(async (p: SelectedProduct) => {
-      current = await prisma.product.findFirst({
+    for(const p of list) {
+      const current: Product | null = await prisma.product.findFirst({
         where: {
           public_id: p.product_id,
         },
@@ -21,7 +20,7 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
       if (current) {
         value += current.price * p.quantity;
       }
-    });
+    };
 
     return value;
   }

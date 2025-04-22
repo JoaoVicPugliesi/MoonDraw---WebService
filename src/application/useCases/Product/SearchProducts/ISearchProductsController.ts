@@ -7,6 +7,10 @@ import {
   InvalidSearchedProductsNotFoundErrorResponse,
   ISearchProductsResponse,
 } from '@application/handlers/UseCasesResponses/Product/ISearchProductsHandlers';
+import {
+  TokenInvalidErrorResponse,
+  TokenIsMissingErrorResponse,
+} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
 export class ISearchProductsController {
   constructor(
@@ -20,7 +24,17 @@ export class ISearchProductsController {
         adapter,
         this.iTokenService
       );
-      await iEnsureAccessTokenMiddleware.ensure();
+      const ensure:
+        | TokenIsMissingErrorResponse
+        | TokenInvalidErrorResponse
+        | void = iEnsureAccessTokenMiddleware.ensure();
+
+      if (ensure instanceof TokenIsMissingErrorResponse) {
+        return adapter.res.status(401).send({ message: 'Token is missing' });
+      }
+      if (ensure instanceof TokenInvalidErrorResponse) {
+        return adapter.res.status(401).send({ message: 'Token is invalid' });
+      }
 
       const { name }: ISearchProductsDTO = adapter.req
         .params as ISearchProductsDTO;

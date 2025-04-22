@@ -6,6 +6,11 @@ import { ISaveProductUseCase } from './ISaveProductUseCase';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ISaveProductDTO } from './ISaveProductDTO';
 import { InvalidProductAlreadyExistsErrorResponse } from '@application/handlers/UseCasesResponses/Product/ISaveProductHandlers';
+import {
+  MustBeAnAdmingErrorResponse,
+  TokenInvalidErrorResponse,
+  TokenIsMissingErrorResponse,
+} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
 export class ISaveProductController {
   constructor(
@@ -22,10 +27,22 @@ export class ISaveProductController {
         adapter,
         this.iTokenService
       );
-      const ensure = await iEnsureUserIsAdminMiddleware.ensure();
+      const ensure:
+        | void
+        | TokenIsMissingErrorResponse
+        | MustBeAnAdmingErrorResponse
+        | TokenInvalidErrorResponse = iEnsureUserIsAdminMiddleware.ensure();
 
-      if(ensure instanceof Error) {
-        return adapter.res.status(401).send({ message: 'Only admins have access' });
+      if (ensure instanceof TokenIsMissingErrorResponse) {
+        return adapter.res.status(401).send({ message: 'Token is missing' });
+      }
+      if (ensure instanceof MustBeAnAdmingErrorResponse) {
+        return adapter.res
+          .status(401)
+          .send({ message: 'Only admins have access' });
+      }
+      if (ensure instanceof TokenInvalidErrorResponse) {
+        return adapter.res.status(401).send({ message: 'Token is invalid' });
       }
       const {
         image_id,

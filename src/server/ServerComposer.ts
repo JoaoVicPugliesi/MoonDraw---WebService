@@ -5,13 +5,15 @@ import { RefreshTokenEndpoints } from '@routes/RefreshToken/RefreshTokenEndpoint
 import { UserEndpoints } from '@routes/User/UserEndpoints';
 import { Routes } from '@routes/Routes';
 import { CartEndpoints } from '@routes/Cart/CartEndpoints';
+import { PurchaseEndpoints } from '@routes/Purchase/PurchaseEndpoints';
 
 const app = new FastifyServerAdapter(iFastify);
 const user = new UserEndpoints(app);
 const refreshToken = new RefreshTokenEndpoints(app);
 const product = new ProductEndpoints(app);
 const cart = new CartEndpoints(app);
-const routes = new Routes(user, refreshToken, product, cart);
+const purchase = new PurchaseEndpoints(app);
+const routes = new Routes(user, refreshToken, product, cart, purchase);
 
 app.setRoutes(routes);
 

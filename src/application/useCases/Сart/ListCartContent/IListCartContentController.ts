@@ -7,6 +7,7 @@ import {
   IListCartContentResponse,
   InvalidCartEmptyErrorResponse,
 } from '@application/handlers/UseCasesResponses/Cart/IListCartContentHandlers';
+import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
 export class IListCartContentController {
   constructor(
@@ -20,7 +21,17 @@ export class IListCartContentController {
         adapter,
         this.iTokenService
       );
-      await iEnsureAccessTokenMiddleware.ensure();
+      const ensure:
+        | TokenIsMissingErrorResponse
+        | TokenInvalidErrorResponse
+        | void = iEnsureAccessTokenMiddleware.ensure();
+
+      if (ensure instanceof TokenIsMissingErrorResponse) {
+        return adapter.res.status(401).send({ message: 'Token is missing' });
+      }
+      if (ensure instanceof TokenInvalidErrorResponse) {
+        return adapter.res.status(401).send({ message: 'Token is invalid' });
+      }
 
       const { public_id }: IListCartContentDTO = adapter.req
         .query as IListCartContentDTO;

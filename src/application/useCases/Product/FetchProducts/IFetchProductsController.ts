@@ -9,6 +9,10 @@ import {
 import { ITokenService } from '@domain/services/ITokenService';
 import { IFetchProductsUseCase } from './IFetchProductsUseCase';
 import { IFetchProductsDTO } from './IFetchProductsDTO';
+import {
+  TokenInvalidErrorResponse,
+  TokenIsMissingErrorResponse,
+} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
 export class IFetchProductsController {
   constructor(
@@ -22,9 +26,18 @@ export class IFetchProductsController {
         adapter,
         this.iTokenService
       );
-      await iEnsureAccessTokenMiddleware.ensure();
-      const { page }: IFetchProductsDTO = adapter.req
-        .params as IFetchProductsDTO;
+      const ensure:
+        | TokenIsMissingErrorResponse
+        | TokenInvalidErrorResponse
+        | void = iEnsureAccessTokenMiddleware.ensure();
+
+      if (ensure instanceof TokenIsMissingErrorResponse) {
+        return adapter.res.status(401).send({ message: 'Token is missing' });
+      }
+      if (ensure instanceof TokenInvalidErrorResponse) {
+        return adapter.res.status(401).send({ message: 'Token is invalid' });
+      }
+      const { page }: IFetchProductsDTO = adapter.req.params as IFetchProductsDTO;
       const response:
         | FetchProductsResponse
         | InvalidProductsNotFoundErrorResponse =

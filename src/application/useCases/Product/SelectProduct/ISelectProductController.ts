@@ -7,6 +7,7 @@ import {
   InvalidProductNotFoundErrorResponse,
   SelectProductResponse,
 } from '@application/handlers/UseCasesResponses/Product/ISelectProductHandlers';
+import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
 export class ISelectProductController {
   constructor(
@@ -20,7 +21,17 @@ export class ISelectProductController {
         adapter,
         this.iTokenService
       );
-      await iEnsureAccessTokenMiddleware.ensure();
+      const ensure:
+        | TokenIsMissingErrorResponse
+        | TokenInvalidErrorResponse
+        | void = iEnsureAccessTokenMiddleware.ensure();
+
+      if (ensure instanceof TokenIsMissingErrorResponse) {
+        return adapter.res.status(401).send({ message: 'Token is missing' });
+      }
+      if (ensure instanceof TokenInvalidErrorResponse) {
+        return adapter.res.status(401).send({ message: 'Token is invalid' });
+      }
       const { public_id }: ISelectProductDTO = adapter.req
         .query as ISelectProductDTO;
       const response:
@@ -40,9 +51,9 @@ export class ISelectProductController {
         product: response.product,
       });
     } catch (error) {
-      return adapter.res.status(500).send({ 
-        message: error 
-    });
+      return adapter.res.status(500).send({
+        message: error,
+      });
     }
   }
 }

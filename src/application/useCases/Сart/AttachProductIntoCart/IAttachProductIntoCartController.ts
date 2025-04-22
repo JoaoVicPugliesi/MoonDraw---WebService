@@ -6,9 +6,10 @@ import { IEnsureAccessTokenMiddleware } from '@application/middlewares/IEnsureAc
 import { IAttachProductIntoCartDTO } from './IAttachProductIntoCartDTO';
 import {
   IAttachProductIntoCartResponse,
-  InvalidAttachmentAlreadyExistsErrorResponse
+  InvalidAttachmentAlreadyExistsErrorResponse,
 } from '@application/handlers/UseCasesResponses/Cart/IAttachProductIntoCart';
 import { IAttachProductIntoCartValidator } from '@application/validators/IAttachProductIntoCartValidator';
+import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
 export class IAttachProductIntoCartController {
   constructor(
@@ -24,7 +25,17 @@ export class IAttachProductIntoCartController {
         adapter,
         this.iTokenService
       );
-      await iEnsureAccessTokenMiddleware.ensure();
+      const ensure:
+        | TokenIsMissingErrorResponse
+        | TokenInvalidErrorResponse
+        | void = iEnsureAccessTokenMiddleware.ensure();
+
+      if (ensure instanceof TokenIsMissingErrorResponse) {
+        return adapter.res.status(401).send({ message: 'Token is missing' });
+      }
+      if (ensure instanceof TokenInvalidErrorResponse) {
+        return adapter.res.status(401).send({ message: 'Token is invalid' });
+      }
       const { cart_id, product_id }: IAttachProductIntoCartDTO = schema.parse(
         adapter.req.body
       );
@@ -38,7 +49,9 @@ export class IAttachProductIntoCartController {
         });
 
       if (response instanceof InvalidAttachmentAlreadyExistsErrorResponse) {
-        return adapter.res.status(409).send({ message: 'Product already exists inside the cart' })
+        return adapter.res
+          .status(409)
+          .send({ message: 'Product already exists inside the cart' });
       }
 
       return adapter.res.status(201).send({
