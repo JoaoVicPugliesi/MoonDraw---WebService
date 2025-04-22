@@ -46,7 +46,10 @@ export class ILoginUseCase {
 
     const accessToken: string = this.iTokenService.sign({
       payload: {
-        content: public_id
+        content: {
+          public_id: public_id,
+          role: role
+        }
       },
       secret_key: process.env.SECRET_KEY as string,
       options: {

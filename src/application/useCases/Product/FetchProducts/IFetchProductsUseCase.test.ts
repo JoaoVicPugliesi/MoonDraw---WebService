@@ -10,6 +10,7 @@ const products: Product[] = [];
 const product: Product = {
   id: products.length + 1,
   public_id: randomUUID(),
+  image_id: randomUUID(),
   name: 'Air Jordan',
   description: 'No Description',
   price: 5.99,

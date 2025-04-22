@@ -51,7 +51,10 @@ export class IRefreshAccessTokenUseCase {
 
     const accessToken: string = this.iTokenService.sign({
       payload: {
-        content: user.public_id
+        content: {
+          public_id: user.public_id,
+          role: role
+        }
       },
       secret_key: this.secret_key,
       options: {

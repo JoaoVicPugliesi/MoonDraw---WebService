@@ -56,6 +56,7 @@ model RefreshToken {
 model Product {
   id           Int                      @default(autoincrement())
   public_id    String                   @id
+  image_id     String
   name         String
   description  String                   @default("No Description")
   price        Float                    @default(0)
@@ -105,6 +106,7 @@ model Pivot_Cart_Product {
 model Pivot_Purchase_Product {
   purchase_id String
   product_id  String
+  quantity    Int
 
   purchase Purchase @relation(fields: [purchase_id], references: [public_id], onDelete: Cascade)
   product  Product  @relation(fields: [product_id], references: [public_id])

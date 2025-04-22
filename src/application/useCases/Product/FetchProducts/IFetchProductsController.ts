@@ -33,16 +33,16 @@ export class IFetchProductsController {
         });
 
       if (response instanceof InvalidProductsNotFoundErrorResponse)
-        return adapter.res.status(404).send({ 
-          message: 'Products Not Found' 
+        return adapter.res.status(404).send({
+          message: 'Products Not Found',
         });
 
-      return adapter.res.status(200).send({ 
-        products: response.products 
+      return adapter.res.status(200).send({
+        products: response.products,
       });
     } catch (error) {
-      return adapter.res.status(500).send({ 
-        message: error 
+      return adapter.res.status(500).send({
+        message: error,
       });
     }
   }

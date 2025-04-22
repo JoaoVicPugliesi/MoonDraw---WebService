@@ -1,6 +1,7 @@
 export interface IProduct {
   readonly id: number;
   readonly public_id: string;
+  readonly image_id: string;
   readonly name: string;
   readonly description: string;
   readonly price: number;
@@ -13,6 +14,7 @@ export class Product implements IProduct {
   constructor(
     readonly id: number,
     readonly public_id: string,
+    readonly image_id: string,
     readonly name: string,
     readonly description: string,
     readonly price: number,
