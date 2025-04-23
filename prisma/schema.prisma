@@ -36,8 +36,7 @@ model User {
   email_verified_at DateTime?
   refreshToken      RefreshToken?
   cart              Cart?
-  purchases         Purchase[]
-
+  purchase          Purchase[]
   @@index([email, public_id])
   @@map("users")
 }
@@ -52,10 +51,20 @@ model RefreshToken {
   @@map("refresh_tokens")
 }
 
+model Cart {
+  id        Int                  @default(autoincrement())
+  public_id String               @id
+  user_id   String               @unique
+  user      User                 @relation(fields: [user_id], references: [public_id], onDelete: Cascade)
+  products  Pivot_Cart_Product[]
+
+  @@map("carts")
+}
+
 model Product {
   id           Int                      @default(autoincrement())
   public_id    String                   @id
-  image_id     String
+  image_id     String                   @unique
   name         String                   @unique
   description  String                   @default("No Description")
   price        Float                    @default(0)
@@ -69,15 +78,6 @@ model Product {
   @@map("products")
 }
 
-model Cart {
-  id        Int                  @default(autoincrement())
-  public_id String               @id
-  user_id   String               @unique
-  user      User                 @relation(fields: [user_id], references: [public_id], onDelete: Cascade)
-  products  Pivot_Cart_Product[]
-
-  @@map("carts")
-}
 
 model Purchase {
   id        Int                      @default(autoincrement())

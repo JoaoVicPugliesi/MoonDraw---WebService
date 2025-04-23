@@ -1,6 +1,9 @@
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('client', 'admin');
 
+-- CreateEnum
+CREATE TYPE "PurchaseStatus" AS ENUM ('pendent', 'completed');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
@@ -19,3 +22,6 @@ CREATE TABLE "users" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE INDEX "users_email_public_id_idx" ON "users"("email", "public_id");

@@ -25,7 +25,7 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
         `current-${p.product_id}`
       );
 
-      if (typeof currentCached === 'string') {
+      if (currentCached) {
         const currentCachedParsed: Product = JSON.parse(currentCached);
         value += currentCachedParsed.price * p.quantity;
       }

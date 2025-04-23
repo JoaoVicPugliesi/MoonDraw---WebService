@@ -19,7 +19,7 @@ export class PurchaseEndpoints {
     this.app.post('/api/purchases/checkout', async(adapter: RequestResponseAdapter) => {
         await iCheckoutPurchase.handle(adapter);
     });
-    this.app.delete('/api/purchases/remove/:public_id', async (adapter: RequestResponseAdapter) => {
+    this.app.delete('/api/purchases/remove', async (adapter: RequestResponseAdapter) => {
         await iRemovePurchase.handle(adapter);
     });
   }

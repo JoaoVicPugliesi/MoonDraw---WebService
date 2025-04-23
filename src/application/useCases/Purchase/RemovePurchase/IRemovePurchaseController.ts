@@ -33,7 +33,7 @@ export class IRemovePurchaseController {
 
     try {
       const { public_id }: IRemovePurchaseDTO = adapter.req
-        .query as IRemovePurchaseDTO;
+        .body as IRemovePurchaseDTO;
 
       await this.iRemovePurchaseUseCase.execute({
         public_id,
