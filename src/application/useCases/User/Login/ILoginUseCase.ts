@@ -51,7 +51,7 @@ export class ILoginUseCase {
           role: role
         }
       },
-      secret_key: process.env.SECRET_KEY as string,
+      secret_key: process.env.JWT_SECRET_KEY as string,
       options: {
         expiresIn: '1h',
       },

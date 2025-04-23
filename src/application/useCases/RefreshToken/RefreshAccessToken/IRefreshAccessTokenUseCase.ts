@@ -23,7 +23,7 @@ export class IRefreshAccessTokenUseCase {
     private readonly iGenerateRefreshTokenUseCase: IGenerateRefreshTokenUseCase,
     private readonly iTokenService: ITokenService
   ) {
-    this.secret_key = process.env.SECRET_KEY as string;
+    this.secret_key = process.env.JWT_SECRET_KEY as string;
   }
 
   async execute(

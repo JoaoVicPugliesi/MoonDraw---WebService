@@ -13,7 +13,7 @@ export class IEnsureUserIsAdminMiddleware {
     private readonly adapter: RequestResponseAdapter,
     private readonly iTokenService: ITokenService
   ) {
-    this.secret_key = process.env.SECRET_KEY as string;
+    this.secret_key = process.env.JWT_SECRET_KEY as string;
   }
 
   ensure():
