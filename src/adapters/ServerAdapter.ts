@@ -40,6 +40,7 @@ export interface RequestResponseAdapter {
     } & Record<string, string | string[] | undefined>;
   };
   res: {
+    redirect(url: string, status: number): void;
     setCookie(
       name: string,
       refreshToken: string,

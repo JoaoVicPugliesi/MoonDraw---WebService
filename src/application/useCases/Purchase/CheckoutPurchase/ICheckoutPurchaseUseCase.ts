@@ -20,7 +20,7 @@ export class ICheckoutPurchaseUseCase {
   }: ICheckoutPurchaseDTO): Promise<ICheckoutPurchaseResponse | PurchaseNotFoundErrorResponse> {
     const lineItems: ILineItem[] = [];
     let item: ILineItem;
-
+    
     const cachedPurchase: string | null = await this.iCacheService.get(
       `purchase-${public_id}`
     );
@@ -43,13 +43,34 @@ export class ICheckoutPurchaseUseCase {
         lineItems.push(item);
       }
 
+      const cachedPurchaseURL: string | null = await this.iCacheService.get(
+        `purchase-${public_id}-url`
+      )
+
+      if(cachedPurchaseURL) {
+        return {
+          url: cachedPurchaseURL
+        }
+      }
+
       const { url } = await this.iPaymentService.create({
         line_items: lineItems,
         cancel_url: 'http://localhost:5000',
         success_url: 'http://localhost:8000',
         mode: 'payment',
+        shipping_address_collection: {
+          allowed_countries: ['US', 'BR']
+        }
       });
 
+      await this.iCacheService.set(
+        `purchase-${public_id}-url`,
+        url,
+        {
+          EX: 300
+        }
+      )
+      
       return {
         url: url,
       };
@@ -58,9 +79,9 @@ export class ICheckoutPurchaseUseCase {
       await this.iPurchaseRepository.checkoutPurchase({
         public_id,
       });
-
+      
     if (!purchase) return new PurchaseNotFoundErrorResponse();
-
+    
     await this.iCacheService.set(
       `purchase-${public_id}`,
       JSON.stringify(purchase),
@@ -85,13 +106,34 @@ export class ICheckoutPurchaseUseCase {
       lineItems.push(item);
     }
 
+    const cachedPurchaseURL: string | null = await this.iCacheService.get(
+      `purchase-${public_id}-url`
+    )
+    
+    if(cachedPurchaseURL) {
+      return {
+        url: cachedPurchaseURL
+      }
+    }
+    
     const { url } = await this.iPaymentService.create({
       line_items: lineItems,
       cancel_url: 'http://localhost:5000',
       success_url: 'http://localhost:8000',
       mode: 'payment',
+      shipping_address_collection: {
+        allowed_countries: ['US', 'BR']
+      }
     });
-
+    
+    await this.iCacheService.set(
+      `purchase-${public_id}-url`,
+      url,
+      {
+        EX: 300
+      }
+    )
+    
     return {
       url: url,
     };

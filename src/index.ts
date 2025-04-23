@@ -1,5 +1,6 @@
 import { app } from '@server/ServerComposer';
 import { ServerAdapter } from './adapters/ServerAdapter';
+import { cache } from '../apis/redis/redis';
 
 const PORT: number = parseInt(process.env.PORT as string) ?? 5000;
 const HOST: string = process.env.HOST ?? '127.0.0.1';
@@ -33,3 +34,5 @@ class Application {
 
 const application = new Application(app, PORT, HOST);
 application.server();
+
+cache.flushAll();

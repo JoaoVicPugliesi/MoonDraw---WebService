@@ -47,7 +47,9 @@ export class ICheckoutPurchaseController {
       if (response instanceof PurchaseNotFoundErrorResponse) {
         return adapter.res.status(404).send({ message: 'Purchase not found' });
       }
-      return adapter.res.status(200).send({ url: response.url });
+      
+      console.log(response.url);
+      return adapter.res.redirect(response.url, 201);
     } catch (error) {
       return adapter.res.status(500).send({ message: error });
     }
