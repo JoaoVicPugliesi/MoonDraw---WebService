@@ -4,6 +4,7 @@ export interface IPurchase {
   readonly id: number;
   readonly public_id: string;
   readonly user_id: string;
+  readonly name: string;
   readonly value: number;
   readonly status: PurchaseStatus;
 }
@@ -13,7 +14,9 @@ export class Purchase implements IPurchase {
     readonly id: number,
     readonly public_id: string,
     readonly user_id: string,
+    readonly name: string,
     readonly value: number,
-    readonly status: PurchaseStatus
+    readonly status: PurchaseStatus,
+
   ) {}
 }

@@ -1,9 +1,10 @@
 import { IAttachProductIntoPurchaseDTO } from '@application/useCases/Purchase/AttachProductIntoPurchase/IAttachProductIntoPurchaseDTO';
+import { ICheckoutPurchaseDTO } from '@application/useCases/Purchase/CheckoutPurchase/ICheckoutPurchaseDTO';
 import { IListPurchasesDTO } from '@application/useCases/Purchase/ListPurchases/IListPurchasesDTO';
 import { IMeasurePurchaseDTO } from '@application/useCases/Purchase/MeasurePurchase/IMeasurePurchaseDTO';
 import { ISavePurchaseDTO } from '@application/useCases/Purchase/SavePurchase/ISavePurchaseDTO';
 import { Purchase } from '@domain/entities/Purchase';
-import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
+import { CheckoutPurchase, IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
 import { ICacheService } from '@domain/services/ICacheService';
 import { IPurchaseRepositoryPrismaImpl } from '@infra/repositories_implementation/Purchase/IPurchaseRepositoryPrismaImpl';
 
@@ -18,10 +19,12 @@ export class IPurchaseDecorator implements IPurchaseRepository {
 
   async savePurchase({ 
     user_id,
+    name,
     value
    }: ISavePurchaseDTO): Promise<Purchase> {
       return await this.decoratee.savePurchase({
         user_id,
+        name,
         value
       });
   }
@@ -45,6 +48,14 @@ export class IPurchaseDecorator implements IPurchaseRepository {
       return await this.decoratee.listPurchases({
         user_id,
         status
+      });
+  }
+
+  async checkoutPurchase({
+    public_id
+  }: ICheckoutPurchaseDTO): Promise<CheckoutPurchase[] | null> {
+      return await this.decoratee.checkoutPurchase({
+        public_id
       });
   }
 }

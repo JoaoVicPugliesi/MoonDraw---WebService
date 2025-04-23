@@ -7,7 +7,7 @@ interface IProductData {
     images?: Array<string>
 }
 
-interface ILineItem {
+export interface ILineItem {
     price_data: {
         currency: Currency,
         product_data: IProductData,

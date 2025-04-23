@@ -36,11 +36,12 @@ export class IInitiatePurchaseController {
       if (ensure instanceof TokenInvalidErrorResponse) {
         return adapter.res.status(401).send({ message: 'Token is invalid' });
       }
-      const { user_id, selected_products }: IInitiatePurchaseDTO = schema.parse(
+      const { user_id, name, selected_products }: IInitiatePurchaseDTO = schema.parse(
         adapter.req.body
       );
       await this.iInitiatePurchaseUseCase.execute({
         user_id,
+        name,
         selected_products,
       });
 

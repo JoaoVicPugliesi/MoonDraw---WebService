@@ -83,6 +83,7 @@ model Purchase {
   id        Int                      @default(autoincrement())
   public_id String                   @id
   user_id   String
+  name      String
   value     Float
   status    PurchaseStatus                   @default(pendent)
   user      User                     @relation(fields: [user_id], references: [public_id], onDelete: Cascade)

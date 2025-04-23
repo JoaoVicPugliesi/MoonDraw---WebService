@@ -3,11 +3,12 @@ import { Purchase } from '@domain/entities/Purchase';
 import { prisma } from '@infra/db/Prisma';
 import { randomUUID } from 'crypto';
 import { ICacheService } from '@domain/services/ICacheService';
-import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
+import { CheckoutPurchase, IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
 import { ISavePurchaseDTO } from '@application/useCases/Purchase/SavePurchase/ISavePurchaseDTO';
 import { IMeasurePurchaseDTO } from '@application/useCases/Purchase/MeasurePurchase/IMeasurePurchaseDTO';
 import { IAttachProductIntoPurchaseDTO } from '@application/useCases/Purchase/AttachProductIntoPurchase/IAttachProductIntoPurchaseDTO';
 import { IListPurchasesDTO } from '@application/useCases/Purchase/ListPurchases/IListPurchasesDTO';
+import { ICheckoutPurchaseDTO } from '@application/useCases/Purchase/CheckoutPurchase/ICheckoutPurchaseDTO';
 
 export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
   async measurePurchase(
@@ -48,11 +49,14 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
     return value;
   }
 
-  async savePurchase({ user_id, value }: ISavePurchaseDTO): Promise<Purchase> {
+  async savePurchase({ 
+    user_id, name, value 
+  }: ISavePurchaseDTO): Promise<Purchase> {
     const purchase: Purchase = await prisma.purchase.create({
       data: {
         public_id: randomUUID(),
         user_id: user_id,
+        name: name,
         value: value,
       },
     });
@@ -83,15 +87,23 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
         user_id: user_id,
         status: status,
       },
-      include: {
-        products: {
-          include: {
-            product: true,
-          },
-        },
-      }
     });
 
     return purchases;
+  }
+
+  async checkoutPurchase({
+    public_id
+  }: ICheckoutPurchaseDTO): Promise<CheckoutPurchase[] | null> {
+      const purchase: CheckoutPurchase[] | null = await prisma.pivot_Purchase_Product.findMany({
+       where: {
+        purchase_id: public_id
+       },
+       include: {
+        product: true
+       }
+      });
+
+      return purchase;
   }
 }
