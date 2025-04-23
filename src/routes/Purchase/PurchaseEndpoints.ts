@@ -14,6 +14,6 @@ export class PurchaseEndpoints {
     this.app.get('/api/purchases/:query', async (adapter: RequestResponseAdapter) => {
         await iListPurchases.handle(adapter);
     });
-
+    
   }
 }
