@@ -1,4 +1,5 @@
 import { IAttachProductIntoPurchaseDTO } from '@application/useCases/Purchase/AttachProductIntoPurchase/IAttachProductIntoPurchaseDTO';
+import { IListPurchasesDTO } from '@application/useCases/Purchase/ListPurchases/IListPurchasesDTO';
 import { IMeasurePurchaseDTO } from '@application/useCases/Purchase/MeasurePurchase/IMeasurePurchaseDTO';
 import { ISavePurchaseDTO } from '@application/useCases/Purchase/SavePurchase/ISavePurchaseDTO';
 import { Purchase } from '@domain/entities/Purchase';
@@ -34,6 +35,16 @@ export class IPurchaseDecorator implements IPurchaseRepository {
         purchase_id,
         product_id,
         quantity
+      });
+  }
+
+  async listPurchases({
+    user_id,
+    status
+  }: IListPurchasesDTO): Promise<Purchase[] | null> {
+      return await this.decoratee.listPurchases({
+        user_id,
+        status
       });
   }
 }

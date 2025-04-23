@@ -7,6 +7,7 @@ import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
 import { ISavePurchaseDTO } from '@application/useCases/Purchase/SavePurchase/ISavePurchaseDTO';
 import { IMeasurePurchaseDTO } from '@application/useCases/Purchase/MeasurePurchase/IMeasurePurchaseDTO';
 import { IAttachProductIntoPurchaseDTO } from '@application/useCases/Purchase/AttachProductIntoPurchase/IAttachProductIntoPurchaseDTO';
+import { IListPurchasesDTO } from '@application/useCases/Purchase/ListPurchases/IListPurchasesDTO';
 
 export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
   async measurePurchase(
@@ -32,9 +33,13 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
         });
 
         if (current) {
-          await iCacheService.set(`current-${current.public_id}`, JSON.stringify(current), {
-            EX: 1200
-          })
+          await iCacheService.set(
+            `current-${current.public_id}`,
+            JSON.stringify(current),
+            {
+              EX: 1200,
+            }
+          );
           value += current.price * p.quantity;
         }
       }
@@ -67,5 +72,26 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
         quantity,
       },
     });
+  }
+
+  async listPurchases({
+    user_id,
+    status,
+  }: IListPurchasesDTO): Promise<Purchase[] | null> {
+    const purchases: Purchase[] | null = await prisma.purchase.findMany({
+      where: {
+        user_id: user_id,
+        status: status,
+      },
+      include: {
+        products: {
+          include: {
+            product: true,
+          },
+        },
+      }
+    });
+
+    return purchases;
   }
 }
