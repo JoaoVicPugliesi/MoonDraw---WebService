@@ -9,6 +9,7 @@ import { IMeasurePurchaseDTO } from '@application/useCases/Purchase/MeasurePurch
 import { IAttachProductIntoPurchaseDTO } from '@application/useCases/Purchase/AttachProductIntoPurchase/IAttachProductIntoPurchaseDTO';
 import { IListPurchasesDTO } from '@application/useCases/Purchase/ListPurchases/IListPurchasesDTO';
 import { ICheckoutPurchaseDTO } from '@application/useCases/Purchase/CheckoutPurchase/ICheckoutPurchaseDTO';
+import { IRemovePurchaseDTO } from '@application/useCases/Purchase/RemovePurchase/IRemovePurchaseDTO';
 
 export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
   async measurePurchase(
@@ -105,5 +106,15 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
       });
 
       return purchase;
+  }
+
+  async removePurchase({
+    public_id
+  }: IRemovePurchaseDTO): Promise<void> {
+      await prisma.purchase.delete({
+        where: {
+          public_id: public_id
+        }
+      });
   }
 }

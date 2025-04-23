@@ -9,7 +9,7 @@ export class CartEndpoints {
   ) {}
 
   setupRoutes() {
-    this.app.get('/api/carts/cart/products/:cart_id', async (adapter: RequestResponseAdapter) => {
+    this.app.get('/api/carts/cart/products/:public_id', async (adapter: RequestResponseAdapter) => {
         await iListCartContent.handle(adapter);
     });
     this.app.post('/api/carts/cart/attach/product', async (adapter: RequestResponseAdapter) => {

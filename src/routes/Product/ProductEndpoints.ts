@@ -10,7 +10,7 @@ export class ProductEndpoints {
   ) {}
 
   setupRoutes() {
-    this.app.get('/api/products/:page(\\d+)', async (adapter: RequestResponseAdapter) => {
+    this.app.get('/api/products/:page', async (adapter: RequestResponseAdapter) => {
       await iFetchProducts.handle(adapter)
     });
     this.app.get('/api/products/product/:public_id', async (adapter: RequestResponseAdapter) => {
