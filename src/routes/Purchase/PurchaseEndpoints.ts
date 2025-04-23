@@ -2,6 +2,7 @@ import { RequestResponseAdapter, ServerAdapter } from '@adapters/ServerAdapter';
 import { iCheckoutPurchase } from '@application/useCases/Purchase/CheckoutPurchase/ICheckoutPurchaseComposer';
 import { iInitiatePurchase } from '@application/useCases/Purchase/InitiatePurchase/IInitiatePurchaseComposer';
 import { iListPurchases } from '@application/useCases/Purchase/ListPurchases/IListPurchasesComposer';
+import { iRemovePurchase } from '@application/useCases/Purchase/RemovePurchase/IRemovePurchaseComposer';
 
 export class PurchaseEndpoints {
   constructor(
@@ -17,6 +18,9 @@ export class PurchaseEndpoints {
     });
     this.app.post('/api/purchases/checkout', async(adapter: RequestResponseAdapter) => {
         await iCheckoutPurchase.handle(adapter);
-    })
+    });
+    this.app.delete('/api/purchases/remove/:public_id', async (adapter: RequestResponseAdapter) => {
+        await iRemovePurchase.handle(adapter);
+    });
   }
 }

@@ -22,7 +22,7 @@ export class ICheckoutPurchaseUseCase {
     let item: ILineItem;
     
     const cachedPurchase: string | null = await this.iCacheService.get(
-      `purchase-${public_id}`
+      `checked-purchase-${public_id}`
     );
 
     if (cachedPurchase) {
@@ -44,7 +44,7 @@ export class ICheckoutPurchaseUseCase {
       }
 
       const cachedPurchaseURL: string | null = await this.iCacheService.get(
-        `purchase-${public_id}-url`
+        `checked-checked-purchase-${public_id}-url`
       )
 
       if(cachedPurchaseURL) {
@@ -64,7 +64,7 @@ export class ICheckoutPurchaseUseCase {
       });
 
       await this.iCacheService.set(
-        `purchase-${public_id}-url`,
+        `checked-purchase-${public_id}-url`,
         url,
         {
           EX: 300
@@ -83,7 +83,7 @@ export class ICheckoutPurchaseUseCase {
     if (!purchase) return new PurchaseNotFoundErrorResponse();
     
     await this.iCacheService.set(
-      `purchase-${public_id}`,
+      `checked-purchase-${public_id}`,
       JSON.stringify(purchase),
       {
         EX: 3600,
@@ -107,7 +107,7 @@ export class ICheckoutPurchaseUseCase {
     }
 
     const cachedPurchaseURL: string | null = await this.iCacheService.get(
-      `purchase-${public_id}-url`
+      `checked-purchase-${public_id}-url`
     )
     
     if(cachedPurchaseURL) {
@@ -127,7 +127,7 @@ export class ICheckoutPurchaseUseCase {
     });
     
     await this.iCacheService.set(
-      `purchase-${public_id}-url`,
+      `checked-purchase-${public_id}-url`,
       url,
       {
         EX: 300
