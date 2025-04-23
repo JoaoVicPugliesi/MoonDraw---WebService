@@ -1,8 +1,12 @@
-import { CheckoutPurchase, IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
+import {
+  CheckoutPurchase,
+  IPurchaseRepository,
+} from '@domain/repositories/IPurchaseRepository';
 import { ICacheService } from '@domain/services/ICacheService';
 import { IPaymentService } from '@domain/services/IPaymentService';
 import { ICheckoutPurchaseDTO } from './ICheckoutPurchaseDTO';
 import { ILineItem } from '@domain/services/helpers/Payment';
+import { ICheckoutPurchaseResponse, PurchaseNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/Purchase/ICheckoutPurchaseHandlers';
 
 export class ICheckoutPurchaseUseCase {
   constructor(
@@ -12,8 +16,8 @@ export class ICheckoutPurchaseUseCase {
   ) {}
 
   async execute({ 
-    public_id
-  }: ICheckoutPurchaseDTO): Promise<any> {
+    public_id 
+  }: ICheckoutPurchaseDTO): Promise<ICheckoutPurchaseResponse | PurchaseNotFoundErrorResponse> {
     const lineItems: ILineItem[] = [];
     let item: ILineItem;
 
@@ -21,75 +25,75 @@ export class ICheckoutPurchaseUseCase {
       `purchase-${public_id}`
     );
 
-    if(cachedPurchase) {
-        const cachedPurchaseParsed: CheckoutPurchase[] = JSON.parse(cachedPurchase);
-        for(const p of cachedPurchaseParsed) {
-          item = {
-            price_data: {
-              currency: 'brl',
-              product_data: {
-                name: p.product.name,
-                description: p.product.description,
-                images: [ p.product.image_id ],
-              }
-            },
+    if (cachedPurchase) {
+      const cachedPurchaseParsed: CheckoutPurchase[] = JSON.parse(cachedPurchase);
+      for (const p of cachedPurchaseParsed) {
+        item = {
+          price_data: {
+            currency: 'brl',
             unit_amount: p.product.price * 100,
-            quantity: p.quantity
-          }
-          lineItems.push(item);
-        }
-    
-        const { url } = await this.iPaymentService.create({
-            line_items: lineItems,
-            cancel_url: '',
-            success_url: '',
-            mode: 'payment'
-        })
+            product_data: {
+              name: p.product.name,
+              description: p.product.description,
+              images: [p.product.image_id],
+            },
+          },
+          quantity: p.quantity,
+        };
+        lineItems.push(item);
+      }
 
-        return {
-          url: url
-        }
+      const { url } = await this.iPaymentService.create({
+        line_items: lineItems,
+        cancel_url: 'http://localhost:5000',
+        success_url: 'http://localhost:8000',
+        mode: 'payment',
+      });
+
+      return {
+        url: url,
+      };
     }
-    const purchase: CheckoutPurchase[] | null = await this.iPurchaseRepository.checkoutPurchase({
-        public_id
-    });
+    const purchase: CheckoutPurchase[] | null =
+      await this.iPurchaseRepository.checkoutPurchase({
+        public_id,
+      });
 
-    if(!purchase) return false;
+    if (!purchase) return new PurchaseNotFoundErrorResponse();
 
     await this.iCacheService.set(
       `purchase-${public_id}`,
       JSON.stringify(purchase),
       {
-        EX: 3600
+        EX: 3600,
       }
-    )
+    );
 
-    for(const p of purchase) {
+    for (const p of purchase) {
       item = {
         price_data: {
           currency: 'brl',
+          unit_amount: p.product.price * 100,
           product_data: {
             name: p.product.name,
             description: p.product.description,
-            images: [ p.product.image_id ],
-          }
+            images: [p.product.image_id],
+          },
         },
-        unit_amount: p.product.price * 100,
-        quantity: p.quantity
-      }
+        quantity: p.quantity,
+      };
       lineItems.push(item);
     }
 
     const { url } = await this.iPaymentService.create({
-        line_items: lineItems,
-        cancel_url: '',
-        success_url: '',
-        mode: 'payment'
+      line_items: lineItems,
+      cancel_url: 'http://localhost:5000',
+      success_url: 'http://localhost:8000',
+      mode: 'payment',
     });
 
     return {
-      url: url
-    }
-
-   }
+      url: url,
+    };
+  }
 }

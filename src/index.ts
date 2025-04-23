@@ -33,4 +33,3 @@ class Application {
 
 const application = new Application(app, PORT, HOST);
 application.server();
-

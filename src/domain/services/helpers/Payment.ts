@@ -10,9 +10,9 @@ interface IProductData {
 export interface ILineItem {
     price_data: {
         currency: Currency,
+        unit_amount: number,
         product_data: IProductData,
     },
-    unit_amount: number,
     quantity: number
 }
 
