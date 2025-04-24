@@ -3,10 +3,10 @@ import { Mail } from '@domain/providers/externals/Mail';
 import { IMailProvider } from '@domain/providers/repositories/Mail/IMailProvider';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
-const USER: string = process.env.USER as string;
-const PASS: string = process.env.PASS as string;
+const USER: string = process.env.GMAIL_USER as string;
+const PASS: string = process.env.GMAIL_PASS as string;
 
-export class INodemailerMailProviderImpl implements IMailProvider {
+export class IMailProviderGmailImpl implements IMailProvider {
   private readonly transporter;
   private readonly user: string;
   private readonly pass: string;
@@ -15,8 +15,7 @@ export class INodemailerMailProviderImpl implements IMailProvider {
     this.user = USER;
     this.pass = PASS;
     this.transporter = nodemailer.createTransport({
-      host: 'sandbox.smtp.mailtrap.io',
-      port: 2525,
+      service: 'gmail',
       auth: {
         user: this.user,
         pass: this.pass,

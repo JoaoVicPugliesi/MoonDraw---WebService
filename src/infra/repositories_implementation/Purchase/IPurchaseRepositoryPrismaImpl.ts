@@ -120,7 +120,7 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
     await prisma.purchase.delete({
       where: {
         public_id: public_id,
-        status: 'pendent'
+        status: 'pending'
       },
     });
   }

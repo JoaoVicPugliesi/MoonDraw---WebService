@@ -37,7 +37,9 @@ export class IRegisterUseCase {
   }: IRegisterDTO): Promise<
     InvalidUserConflictErrorResponse | IRegisterReponse
   > {
-    const response: User | null = await this.iUserRepository.findUserByEmail(email);
+    const response: User | null = await this.iUserRepository.findUserByEmail(
+      email
+    );
 
     if (response) return new InvalidUserConflictErrorResponse();
 
@@ -55,19 +57,13 @@ export class IRegisterUseCase {
       public_id: user.public_id,
     });
 
-    const mailResponse: SMTPTransport.SentMessageInfo =
-      await this.iMailProvider.sendMail({
-        to: {
-          email: user.email,
-        },
-        from: {
-          email: 'ecommerce@gmail.com',
-        },
-        subject: 'Confirm Email',
-        text: 'blabla',
-        body: '<p>2hd8k3</p>',
-      });
-
+    await this.iMailProvider.sendMail({
+      to: { email: user.email },
+      from: { email: 'mrlanguages62@gmail.com' },
+      subject: 'Welcome to our Website!',
+      text: `Hello ${user.name}, welcome!`,
+      body: `<p>Hello ${user.name},</p><p>Thanks for registering. Click <a href="http://localhost:8000/confirm?user=${user.public_id}">here</a> to confirm your email.</p>`,
+    });
 
     const loginResponse:
       | InvalidUserNotFoundErrorResponse
@@ -80,7 +76,6 @@ export class IRegisterUseCase {
 
     return {
       assign_cart_owner_response: iAssignCartOwnerResponse,
-      mail_response: mailResponse,
       login_response: loginResponse,
     };
   }

@@ -1,4 +1,4 @@
-type PurchaseStatus = 'pendent' | 'completed';
+type PurchaseStatus = 'pending' | 'completed';
 
 export interface IPurchase {
   readonly id: number;

@@ -36,7 +36,7 @@ export class IRefreshAccessTokenController {
           secure: true,
           sameSite: 'strict',
           path: '/',
-          maxAge: response.refresh_token?.expires_in
+          maxAge: 60 * 60 * 24 * 7
         });
       }
 

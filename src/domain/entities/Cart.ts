@@ -1,7 +1,7 @@
 export interface ICart {
-  readonly id: number;
-  readonly public_id: string;
-  readonly user_id: string;
+  readonly id: number,
+  readonly public_id: string,
+  readonly user_id: string
 }
 
 export class Cart implements ICart {

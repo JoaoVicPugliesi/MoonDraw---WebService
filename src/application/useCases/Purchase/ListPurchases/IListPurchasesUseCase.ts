@@ -32,7 +32,7 @@ export class IListPurchasesUseCase {
 
     if(!purchases) return new PurchasesNotFoundErrorResponse();
 
-    const expiresIn: number = status === 'pendent' ? 600 : 1800;
+    const expiresIn: number = status === 'pending' ? 600 : 1800;
     await this.iCacheService.set(
         `purchases-${status}-${user_id}`,
         JSON.stringify(purchases),

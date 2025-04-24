@@ -4,18 +4,18 @@ interface IPayload {
 
 interface IOptions {
   subject?: string,
-  expiresIn?: any;
-  notBefore?: any;
-  mutatePayload?: boolean;
-  allowInsecureKeySizes?: boolean;
-  allowInvalidAsymmetricKeyTypes?: boolean;
+  expiresIn?: any,
+  notBefore?: any,
+  mutatePayload?: boolean,
+  allowInsecureKeySizes?: boolean,
+  allowInvalidAsymmetricKeyTypes?: boolean
 }
 
 interface IToken {
-  token?: string;
-  payload?: IPayload;
-  secret_key?: string;
-  options?: IOptions;
+  token?: string,
+  payload?: IPayload,
+  secret_key?: string,
+  options?: IOptions
 }
 
 export class Token implements IToken {

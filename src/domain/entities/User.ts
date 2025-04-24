@@ -1,16 +1,16 @@
 type Role = 'client' | 'admin';
 
 export interface IUser {
-  readonly id: number;
-  readonly public_id: string;
-  readonly name: string;
-  readonly surname: string;
-  readonly email: string;
-  readonly password: string;
-  readonly role: Role;
-  is_active: boolean;
-  readonly created_at: Date;
-  email_verified_at?: Date | null;
+  readonly id: number,
+  readonly public_id: string,
+  readonly name: string,
+  readonly surname: string,
+  readonly email: string,
+  readonly password: string,
+  readonly role: Role,
+  is_active: boolean,
+  readonly created_at: Date,
+  email_verified_at?: Date | null
 }
 
 export class User implements IUser {

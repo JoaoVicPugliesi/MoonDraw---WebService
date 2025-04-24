@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import { CookieOptions, redirect } from 'react-router';
+import { CookieSerializeOptions } from 'fastify-cookie';
 
 export class FastifyRequestResponseAdapter implements RequestResponseAdapter {
   constructor(
@@ -23,10 +23,10 @@ export class FastifyRequestResponseAdapter implements RequestResponseAdapter {
       redirect: (url: string) => {
         this.reply.redirect(url, 201)
       },
-      setCookie: (name: string, refreshToken: string, cookieOptions: CookieOptions) => {
+      setCookie: (name: string, refreshToken: string, cookieOptions: CookieSerializeOptions) => {
         this.reply.setCookie(name, refreshToken, cookieOptions);
       },
-      clearCookie: (name: string, cookieOptions: CookieOptions) => {
+      clearCookie: (name: string, cookieOptions: CookieSerializeOptions) => {
         this.reply.clearCookie(name, cookieOptions);
       },
       unsignCookie: (name: string) => {
