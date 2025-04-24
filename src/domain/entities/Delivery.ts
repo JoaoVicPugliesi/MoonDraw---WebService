@@ -2,26 +2,33 @@ import { AllowedCountry } from '@domain/services/helpers/Payment';
 
 type DeliveryStatus = 'processing' | 'delivering' | 'delivered';
 
+interface DeliveryInstructions {
+  references: Array<string>,
+  warnings: Array<string>
+}
+
 export interface IDelivery {
   readonly id: number,
   readonly public_id: string,
   readonly user_id: string,
   readonly purchase_id: string,
   readonly status: DeliveryStatus,
-  readonly line1: string,
-  readonly line2: string,
+  readonly recipient_email: string,
+  readonly recipient_name: string,
   readonly country: AllowedCountry,
-  readonly city: string,
   readonly state: string,
-  readonly postal_code: number,
+  readonly city: string,
+  readonly address_line1: string,
+  readonly postal_code: string,
   readonly created_at: Date,
   readonly updated_at: Date,
-  readonly tracking_number?: string,
-  readonly carrier?: string,
-  readonly recipient_name?: string,
-  readonly recipient_phone?: string,
-  readonly delivery_instructions?: string,
-  readonly delivered_at?: Date
+  readonly address_line2?: string | null,
+  readonly tracking_number?: string | null,
+  readonly carrier?: string | null,
+  readonly tracking_url?: string | null,
+  readonly recipient_phone?: string | null,
+  readonly delivery_instructions?: DeliveryInstructions | null,
+  readonly delivered_at?: Date | null
 }
 
 export class Delivery implements IDelivery {
@@ -31,19 +38,21 @@ export class Delivery implements IDelivery {
     readonly user_id: string,
     readonly purchase_id: string,
     readonly status: DeliveryStatus,
-    readonly line1: string,
-    readonly line2: string,
+    readonly recipient_email: string,
+    readonly recipient_name: string,
     readonly country: AllowedCountry,
-    readonly city: string,
     readonly state: string,
-    readonly postal_code: number,
+    readonly city: string,
+    readonly address_line1: string,
+    readonly postal_code: string,
     readonly created_at: Date,
     readonly updated_at: Date,
-    readonly tracking_number?: string,
-    readonly carrier?: string,
-    readonly recipient_name?: string,
-    readonly recipient_phone?: string,
-    readonly delivery_instructions?: string,
-    readonly delivered_at?: Date
+    readonly address_line2?: string | null,
+    readonly tracking_number?: string | null,
+    readonly carrier?: string | null,
+    readonly tracking_url?: string | null,
+    readonly recipient_phone?: string | null,
+    readonly delivery_instructions?: DeliveryInstructions | null,
+    readonly delivered_at?: Date | null
   ) {}
 }

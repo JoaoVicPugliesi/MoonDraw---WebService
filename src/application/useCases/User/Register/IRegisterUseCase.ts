@@ -6,7 +6,6 @@ import {
   InvalidUserConflictErrorResponse,
   IRegisterReponse,
 } from '@application/handlers/UseCasesResponses/User/IRegisterHandlers';
-import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import {
   InvalidPasswordIsNotEqualErrorResponse,
   InvalidUserNotFoundErrorResponse,
@@ -58,8 +57,12 @@ export class IRegisterUseCase {
     });
 
     await this.iMailProvider.sendMail({
-      to: { email: user.email },
-      from: { email: 'mrlanguages62@gmail.com' },
+      to: { 
+        email: user.email 
+      },
+      from: { 
+        email: 'mrlanguages62@gmail.com' 
+      },
       subject: 'Welcome to our Website!',
       text: `Hello ${user.name}, welcome!`,
       body: `<p>Hello ${user.name},</p><p>Thanks for registering. Click <a href="http://localhost:8000/confirm?user=${user.public_id}">here</a> to confirm your email.</p>`,

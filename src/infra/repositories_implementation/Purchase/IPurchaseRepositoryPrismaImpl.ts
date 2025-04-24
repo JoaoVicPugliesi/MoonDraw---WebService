@@ -55,14 +55,14 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
 
   async savePurchase({
     user_id,
-    name,
+    title,
     value,
   }: ISavePurchaseDTO): Promise<Purchase> {
     const purchase: Purchase = await prisma.purchase.create({
       data: {
         public_id: randomUUID(),
         user_id: user_id,
-        name: name,
+        title: title,
         value: value,
       },
     });

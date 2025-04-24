@@ -42,6 +42,8 @@ export class ILoginUseCase {
     );
     if (!isPasswordEqual) return new InvalidPasswordIsNotEqualErrorResponse();
     
+    await this.iUserRepository.trackUserActivity(email);
+    
     const { public_id, name, surname, role, is_active } = user;
 
     const accessToken: string = this.iTokenService.sign({

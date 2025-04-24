@@ -11,5 +11,5 @@ export interface ILoginResponse {
         expires_in: number,
         user_id: string
     },
-    user: Omit<User, 'id' | 'public_id' | 'password' | 'created_at' | 'email_verified_at'>
+    user: Omit<User, 'id' | 'public_id' | 'password' | 'created_at' | 'email_verified_at' | 'last_login_at'>
 }

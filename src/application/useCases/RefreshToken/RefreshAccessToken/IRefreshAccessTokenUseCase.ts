@@ -48,7 +48,9 @@ export class IRefreshAccessTokenUseCase {
     if (!user) return new InvalidRefreshTokenUserNotFoundErrorResponse();
 
     const { name, surname, email, role, is_active } = user;
-
+    
+    await this.iUserRepository.trackUserActivity(email);
+    
     const accessToken: string = this.iTokenService.sign({
       payload: {
         content: {

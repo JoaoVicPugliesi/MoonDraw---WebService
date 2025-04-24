@@ -1,5 +1,5 @@
 export interface ISavePurchaseDTO {
     user_id: string,
-    name: string,
+    title: string,
     value: number
 }

@@ -10,6 +10,7 @@ export interface IUser {
   readonly role: Role,
   is_active: boolean,
   readonly created_at: Date,
+  last_login_at: Date,
   email_verified_at?: Date | null
 }
 
@@ -24,6 +25,7 @@ export class User implements IUser {
     readonly role: Role,
     public is_active: boolean,
     readonly created_at: Date,
+    public last_login_at: Date,
     public email_verified_at?: Date | null
   ) {}
 }

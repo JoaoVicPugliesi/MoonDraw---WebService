@@ -20,12 +20,12 @@ export class IPurchaseDecorator implements IPurchaseRepository {
 
   async savePurchase({ 
     user_id,
-    name,
+    title,
     value
    }: ISavePurchaseDTO): Promise<Purchase> {
       return await this.decoratee.savePurchase({
         user_id,
-        name,
+        title,
         value
       });
   }

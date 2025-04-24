@@ -3,6 +3,7 @@ import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
 import { IHashService } from '@domain/services/IHashService';
 import { randomUUID } from 'crypto';
+import { resolve } from 'path';
 
 export class IUserRepositoryInMemoryImpl implements IUserRepository {
   constructor(
@@ -13,7 +14,7 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
   async findUserByEmail(email: string): Promise<User | null> {
     return new Promise((resolve, reject) => {
       const user: User | undefined = this.users.find(
-        (user) => user.email === (email)
+        (user) => user.email === email
       );
 
       if (typeof user === 'undefined') return resolve(null);
@@ -40,6 +41,7 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
         role: 'client',
         is_active: false,
         created_at: new Date(),
+        last_login_at: new Date(),
         email_verified_at: null,
       };
 
@@ -52,7 +54,7 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
   async findUserById(public_id: string): Promise<User | null> {
     return new Promise((resolve, reject) => {
       const user: User | undefined = this.users.find(
-        (user) => user.public_id === (public_id)
+        (user) => user.public_id === public_id
       );
 
       if (typeof user === 'undefined') return resolve(null);
@@ -61,6 +63,14 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
     });
   }
 
+  async trackUserActivity(email: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const user = this.users.find((user: User) => user.email === email);
+      if (user) user.last_login_at = new Date();
+      resolve()
+    });
+  }
+  
   async activateUser<T>(param: T): Promise<void> {
     return new Promise((resolve, reject) => {
       const user: User | undefined = this.users.find(

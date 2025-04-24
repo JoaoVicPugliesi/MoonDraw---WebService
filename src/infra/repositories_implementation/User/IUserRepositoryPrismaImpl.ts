@@ -6,14 +6,12 @@ import { IUserRepository } from '@domain/repositories/IUserRepository';
 import { IHashService } from '@domain/services/IHashService';
 
 export class IUserRepositoryPrismaImpl implements IUserRepository {
-  constructor(
-    private readonly iHashService: IHashService
-  ) {}
+  constructor(private readonly iHashService: IHashService) {}
 
   async findUserByEmail(email: string): Promise<User | null> {
     const user: User | null = await prisma.user.findFirst({
       where: {
-        email: email
+        email: email,
       },
     });
 
@@ -52,6 +50,16 @@ export class IUserRepositoryPrismaImpl implements IUserRepository {
     return null;
   }
 
+  async trackUserActivity(email: string): Promise<void> {
+    await prisma.user.update({
+      where: {
+        email: email,
+      },
+      data: {
+        last_login_at: new Date(),
+      },
+    });
+  }
   async activateUser<T>(param: T): Promise<void> {
     await prisma.user.update({
       where: {

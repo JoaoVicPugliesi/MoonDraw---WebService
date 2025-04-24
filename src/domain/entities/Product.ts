@@ -7,7 +7,8 @@ export interface IProduct {
   readonly price: number,
   readonly supply: number,
   readonly publisher: string,
-  readonly published_at: Date
+  readonly published_at: Date,
+  readonly updated_at: Date
 }
 
 export class Product implements IProduct {
@@ -20,6 +21,7 @@ export class Product implements IProduct {
     readonly price: number,
     readonly supply: number,
     readonly publisher: string,
-    readonly published_at: Date
+    readonly published_at: Date,
+    readonly updated_at: Date
   ) {}
 }

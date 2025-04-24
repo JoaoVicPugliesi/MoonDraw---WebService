@@ -1,12 +1,15 @@
 type PurchaseStatus = 'pending' | 'completed';
 
 export interface IPurchase {
-  readonly id: number;
-  readonly public_id: string;
-  readonly user_id: string;
-  readonly name: string;
-  readonly value: number;
-  readonly status: PurchaseStatus;
+  readonly id: number,
+  readonly public_id: string,
+  readonly user_id: string,
+  readonly title: string,
+  readonly value: number,
+  readonly status: PurchaseStatus,
+  readonly created_at: Date,
+  readonly updated_at: Date,
+  readonly completed_at?: Date | null
 }
 
 export class Purchase implements IPurchase {
@@ -14,9 +17,11 @@ export class Purchase implements IPurchase {
     readonly id: number,
     readonly public_id: string,
     readonly user_id: string,
-    readonly name: string,
+    readonly title: string,
     readonly value: number,
     readonly status: PurchaseStatus,
-
+    readonly created_at: Date,
+    readonly updated_at: Date,
+    readonly completed_at?: Date | null
   ) {}
 }

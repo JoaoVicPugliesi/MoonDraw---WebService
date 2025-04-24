@@ -31,6 +31,10 @@ class IUserDecorator implements IUserRepository {
     return await this.decoratee.findUserById(public_id);
   }
 
+  async trackUserActivity(email: string): Promise<void> {
+      await this.decoratee.trackUserActivity(email);
+  }
+
   async activateUser<T>(param: T): Promise<void> {
     return await this.decoratee.activateUser(param);
   }

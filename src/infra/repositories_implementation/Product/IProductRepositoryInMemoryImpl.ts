@@ -72,6 +72,7 @@ export class IProductRepositoryInMemoryImpl implements IProductRepository {
         supply: supply,
         publisher: publisher,
         published_at: new Date(),
+        updated_at: new Date()
       };
       this.products.push(product);
 

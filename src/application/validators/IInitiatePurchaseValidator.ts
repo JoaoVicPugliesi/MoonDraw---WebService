@@ -7,7 +7,7 @@ export class IInitiatePurchaseValidator {
         required_error: 'User_id is required for each product',
         invalid_type_error: 'User_id must be a string',
       }),
-      name: z.string({
+      title: z.string({
         required_error: 'Name is required for each product',
         invalid_type_error: 'Name must be a string',
       }).min(5),
