@@ -7,12 +7,13 @@ import { IAttachProductIntoPurchaseDTO } from '@application/useCases/Purchase/At
 import { IListPurchasesDTO } from '@application/useCases/Purchase/ListPurchases/IListPurchasesDTO';
 import { Product } from '@domain/entities/Product';
 import { IRemovePurchaseDTO } from '@application/useCases/Purchase/RemovePurchase/IRemovePurchaseDTO';
+import { ICompletePurchaseDTO } from '@application/useCases/Purchase/CompletePurchase/ICompletePurchaseDTO';
 
 export interface CheckoutPurchase {
-    purchase_id: string;
-    product_id: string;
-    quantity: number;
-    product: Product;
+  purchase_id: string;
+  product_id: string;
+  quantity: number;
+  product: Product;
 }
 
 export interface IPurchaseRepository {
@@ -23,6 +24,9 @@ export interface IPurchaseRepository {
   savePurchase(DTO: ISavePurchaseDTO): Promise<Purchase>;
   attachProductIntoPurchase(DTO: IAttachProductIntoPurchaseDTO): Promise<void>;
   listPurchases(DTO: IListPurchasesDTO): Promise<Purchase[] | null>;
-  checkoutPurchase(DTO: ICheckoutPurchaseDTO): Promise<CheckoutPurchase[] | null>;
+  checkoutPurchase(
+    DTO: ICheckoutPurchaseDTO
+  ): Promise<CheckoutPurchase[] | null>;
   removePurchase(DTO: IRemovePurchaseDTO): Promise<void>;
+  completePurchase(DTO: Pick<ICompletePurchaseDTO, 'purchase_id'>): Promise<void>
 }

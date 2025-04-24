@@ -1,5 +1,6 @@
 import { IAttachProductIntoPurchaseDTO } from '@application/useCases/Purchase/AttachProductIntoPurchase/IAttachProductIntoPurchaseDTO';
 import { ICheckoutPurchaseDTO } from '@application/useCases/Purchase/CheckoutPurchase/ICheckoutPurchaseDTO';
+import { ICompletePurchaseDTO } from '@application/useCases/Purchase/CompletePurchase/ICompletePurchaseDTO';
 import { IListPurchasesDTO } from '@application/useCases/Purchase/ListPurchases/IListPurchasesDTO';
 import { IMeasurePurchaseDTO } from '@application/useCases/Purchase/MeasurePurchase/IMeasurePurchaseDTO';
 import { IRemovePurchaseDTO } from '@application/useCases/Purchase/RemovePurchase/IRemovePurchaseDTO';
@@ -65,6 +66,14 @@ export class IPurchaseDecorator implements IPurchaseRepository {
   }: IRemovePurchaseDTO): Promise<void> {
       await this.decoratee.removePurchase({
         public_id
+      });
+  }
+
+  async completePurchase({
+    purchase_id
+  }: Pick<ICompletePurchaseDTO, 'purchase_id'>): Promise<void> {
+      await this.decoratee.completePurchase({
+        purchase_id
       });
   }
 }

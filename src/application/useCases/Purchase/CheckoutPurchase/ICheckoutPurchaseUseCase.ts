@@ -119,7 +119,7 @@ export class ICheckoutPurchaseUseCase {
     const { url } = await this.iPaymentService.create({
       line_items: lineItems,
       cancel_url: 'http://localhost:5000',
-      success_url: 'http://localhost:8000',
+      success_url: `http://localhost:8000/api/complete/?session_id={CHECKOUT_SESSION_ID}&purchase_id=${public_id}`,
       mode: 'payment',
       shipping_address_collection: {
         allowed_countries: ['US', 'BR']

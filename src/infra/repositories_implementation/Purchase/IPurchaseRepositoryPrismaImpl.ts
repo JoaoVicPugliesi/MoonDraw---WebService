@@ -13,6 +13,7 @@ import { IAttachProductIntoPurchaseDTO } from '@application/useCases/Purchase/At
 import { IListPurchasesDTO } from '@application/useCases/Purchase/ListPurchases/IListPurchasesDTO';
 import { ICheckoutPurchaseDTO } from '@application/useCases/Purchase/CheckoutPurchase/ICheckoutPurchaseDTO';
 import { IRemovePurchaseDTO } from '@application/useCases/Purchase/RemovePurchase/IRemovePurchaseDTO';
+import { ICompletePurchaseDTO } from '@application/useCases/Purchase/CompletePurchase/ICompletePurchaseDTO';
 
 export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
   async measurePurchase(
@@ -123,5 +124,18 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
         status: 'pending'
       },
     });
+  }
+
+  async completePurchase({
+    purchase_id
+  }: Pick<ICompletePurchaseDTO, 'purchase_id'>): Promise<void> {
+      await prisma.purchase.update({
+        where: {
+          public_id: purchase_id
+        },
+        data: {
+          status: 'completed'
+        }
+      });
   }
 }
