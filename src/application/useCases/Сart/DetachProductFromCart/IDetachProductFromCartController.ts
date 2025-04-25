@@ -6,7 +6,7 @@ import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IDetachProductFromCartDTO } from './IDetachProductFromCartDTO';
 import {
   IDetachProductFromCartResponse,
-  InvalidAttachmentDoesNotExistsErrorResponse,
+  AttachmentDoesNotExistsErrorResponse,
 } from '@application/handlers/UseCasesResponses/Cart/IDetachProductFromCartHandlers';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import {
@@ -44,14 +44,14 @@ export class IDetachProductFromCartController {
         adapter.req.body
       );
       const response:
-        | InvalidAttachmentDoesNotExistsErrorResponse
+        | AttachmentDoesNotExistsErrorResponse
         | IDetachProductFromCartResponse =
         await this.iDetachProductFromCartUseCase.execute({
           cart_id,
           product_id,
         });
 
-      if (response instanceof InvalidAttachmentDoesNotExistsErrorResponse) {
+      if (response instanceof AttachmentDoesNotExistsErrorResponse) {
         return adapter.res
           .status(404)
           .send({ message: 'Attachment does not exist' });

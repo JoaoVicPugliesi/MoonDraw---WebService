@@ -4,7 +4,7 @@ import { ITokenService } from '@domain/services/ITokenService';
 import { IListCartContentDTO } from './IListCartContentDTO';
 import {
   IListCartContentResponse,
-  InvalidCartEmptyErrorResponse,
+  CartEmptyErrorResponse,
 } from '@application/handlers/UseCasesResponses/Cart/IListCartContentHandlers';
 import {
   TokenInvalidErrorResponse,
@@ -39,12 +39,12 @@ export class IListCartContentController {
       const { public_id }: IListCartContentDTO = adapter.req
         .query as IListCartContentDTO;
 
-      const response: InvalidCartEmptyErrorResponse | IListCartContentResponse =
+      const response: CartEmptyErrorResponse | IListCartContentResponse =
         await this.iListCartContentUseCase.execute({
           public_id,
         });
 
-      if (response instanceof InvalidCartEmptyErrorResponse) {
+      if (response instanceof CartEmptyErrorResponse) {
         return adapter.res.status(404).send({ message: 'Cart is Empty' });
       }
 

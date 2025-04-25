@@ -5,7 +5,7 @@ import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IAttachProductIntoCartDTO } from './IAttachProductIntoCartDTO';
 import {
   IAttachProductIntoCartResponse,
-  InvalidAttachmentAlreadyExistsErrorResponse,
+  AttachmentAlreadyExistsErrorResponse,
 } from '@application/handlers/UseCasesResponses/Cart/IAttachProductIntoCart';
 import { IAttachProductIntoCartValidator } from '@application/validators/IAttachProductIntoCartValidator';
 import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
@@ -42,14 +42,14 @@ export class IAttachProductIntoCartController {
       );
 
       const response:
-        | InvalidAttachmentAlreadyExistsErrorResponse
+        | AttachmentAlreadyExistsErrorResponse
         | IAttachProductIntoCartResponse =
         await this.iAttachProductIntoCartUseCase.execute({
           cart_id,
           product_id,
         });
 
-      if (response instanceof InvalidAttachmentAlreadyExistsErrorResponse) {
+      if (response instanceof AttachmentAlreadyExistsErrorResponse) {
         return adapter.res
           .status(409)
           .send({ message: 'Product already exists inside the cart' });

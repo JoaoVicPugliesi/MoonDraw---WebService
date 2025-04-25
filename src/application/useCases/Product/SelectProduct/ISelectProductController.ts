@@ -3,7 +3,7 @@ import { ISelectProductUseCase } from './ISelectProductUseCase';
 import { ITokenService } from '@domain/services/ITokenService';
 import { ISelectProductDTO } from './ISelectProductDTO';
 import {
-  InvalidProductNotFoundErrorResponse,
+  ProductNotFoundErrorResponse,
   SelectProductResponse,
 } from '@application/handlers/UseCasesResponses/Product/ISelectProductHandlers';
 import {
@@ -40,12 +40,12 @@ export class ISelectProductController {
         .query as ISelectProductDTO;
       const response:
         | SelectProductResponse
-        | InvalidProductNotFoundErrorResponse =
+        | ProductNotFoundErrorResponse =
         await this.iSelectProductUseCase.execute({
           public_id,
         });
 
-      if (response instanceof InvalidProductNotFoundErrorResponse) {
+      if (response instanceof ProductNotFoundErrorResponse) {
         return adapter.res.status(404).send({
           message: 'Product Not Found',
         });

@@ -2,8 +2,8 @@ import { IRefreshAccessTokenFactoryInMemory } from '@application/factories/Refre
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
 import {
-  InvalidRefreshTokenNotFoundErrorResponse,
-  InvalidRefreshTokenUserNotFoundErrorResponse,
+  RefreshTokenNotFoundErrorResponse,
+  RefreshTokenUserNotFoundErrorResponse,
   RefreshAccessTokenResponse,
 } from '@application/handlers/UseCasesResponses/RefreshToken/IRefreshAccessTokenHandler';
 import dayjs from 'dayjs';
@@ -13,8 +13,8 @@ import { configDotenv } from 'dotenv';
 configDotenv();
 
 type RefreshAccessResponse =
-  | InvalidRefreshTokenNotFoundErrorResponse
-  | InvalidRefreshTokenUserNotFoundErrorResponse
+  | RefreshTokenNotFoundErrorResponse
+  | RefreshTokenUserNotFoundErrorResponse
   | RefreshAccessTokenResponse;
 
 const users: User[] = [];
@@ -26,7 +26,7 @@ const user: User = {
   email: 'mrlanguages62@gmail.com',
   password: '$2b$10$GX73JFHmigssj00i5mES9uak392P5wSrS6caNFaQ0ybZkm2TBuBkK',
   role: 'client',
-  is_active: false,
+  is_verified: false,
   created_at: new Date(),
   last_login_at: new Date(),
   email_verified_at: null,
@@ -39,7 +39,7 @@ const user2: User = {
   email: 'mrlanguages62@gmail.com',
   password: '$2b$10$GX73JFHmigssj00i5mES9uak392P5wSrS6caNFaQ0ybZkm2TBuBkK',
   role: 'client',
-  is_active: false,
+  is_verified: false,
   created_at: new Date(),
   last_login_at: new Date(),
   email_verified_at: null,
@@ -84,9 +84,9 @@ describe('I refresh access token use case', () => {
     });
     // Assert
     expect(response).not.toBeInstanceOf(
-      InvalidRefreshTokenUserNotFoundErrorResponse
+      RefreshTokenUserNotFoundErrorResponse
     );
-    expect(response).toBeInstanceOf(InvalidRefreshTokenNotFoundErrorResponse);
+    expect(response).toBeInstanceOf(RefreshTokenNotFoundErrorResponse);
   });
 
   it('should fail because user does not exist', async () => {
@@ -105,10 +105,10 @@ describe('I refresh access token use case', () => {
     });
     // Assert
     expect(response).toBeInstanceOf(
-      InvalidRefreshTokenUserNotFoundErrorResponse
+      RefreshTokenUserNotFoundErrorResponse
     );
     expect(response).not.toBeInstanceOf(
-      InvalidRefreshTokenNotFoundErrorResponse
+      RefreshTokenNotFoundErrorResponse
     );
   });
 
@@ -127,10 +127,10 @@ describe('I refresh access token use case', () => {
     });
     // Assert
     expect(response).not.toBeInstanceOf(
-      InvalidRefreshTokenUserNotFoundErrorResponse
+      RefreshTokenUserNotFoundErrorResponse
     );
     expect(response).not.toBeInstanceOf(
-      InvalidRefreshTokenNotFoundErrorResponse
+      RefreshTokenNotFoundErrorResponse
     );
     expect(response).toHaveProperty('access_token');
   });
@@ -151,10 +151,10 @@ describe('I refresh access token use case', () => {
 
     // Assert
     expect(response).not.toBeInstanceOf(
-      InvalidRefreshTokenUserNotFoundErrorResponse
+      RefreshTokenUserNotFoundErrorResponse
     );
     expect(response).not.toBeInstanceOf(
-      InvalidRefreshTokenNotFoundErrorResponse
+      RefreshTokenNotFoundErrorResponse
     );
     expect(response).toHaveProperty('access_token');
   });

@@ -4,15 +4,15 @@ import { IRegisterValidator } from '@application/validators/IRegisterValidator';
 import { IRegisterDTO } from './IRegisterDTO';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import {
-  InvalidUserConflictErrorResponse,
+  UserConflictErrorResponse,
   IRegisterReponse,
 } from '@application/handlers/UseCasesResponses/User/IRegisterHandlers';
 import {
-  InvalidPasswordIsNotEqualErrorResponse,
-  InvalidUserNotFoundErrorResponse,
+  PasswordIsNotEqualErrorResponse,
+  UserNotFoundErrorResponse,
 } from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
-import { InvalidOwnerNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/Cart/IAssignCartOwnerHandlers';
+import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
+import { OwnerNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/Cart/IAssignCartOwnerHandlers';
 
 export class IRegisterController {
   constructor(
@@ -25,36 +25,33 @@ export class IRegisterController {
 
     try {
       const DTO: IRegisterDTO = schema.parse(adapter.req.body);
-      const response: InvalidUserConflictErrorResponse | IRegisterReponse =
+      const response: UserConflictErrorResponse | IRegisterReponse =
         await this.iRegisterUseCase.execute(DTO);
 
-      if (response instanceof InvalidUserConflictErrorResponse) {
+      if (response instanceof UserConflictErrorResponse) {
         return adapter.res.status(409).send({
           message: 'Conflict: user with email provided already exists',
         });
       }
       if (
-        response.assign_cart_owner_response instanceof
-        InvalidOwnerNotFoundErrorResponse
+        response.assign_cart_owner_response instanceof OwnerNotFoundErrorResponse
       ) {
         return adapter.res
           .status(404)
           .send({ message: 'Owner Not Found Error' });
       }
-      if (response.login_response instanceof InvalidUserNotFoundErrorResponse) {
+      if (response.login_response instanceof UserNotFoundErrorResponse) {
         return adapter.res
           .status(404)
           .send({ message: 'User or Password incorrect' });
       }
       if (
-        response.login_response instanceof
-        InvalidPasswordIsNotEqualErrorResponse
+        response.login_response instanceof PasswordIsNotEqualErrorResponse
       ) {
         return adapter.res.status(401).send({ message: 'Non authorized' });
       }
       if (
-        response.login_response instanceof
-        InvalidGenerateRefreshTokenErrorResponse
+        response.login_response instanceof GenerateRefreshTokenErrorResponse
       ) {
         return adapter.res
           .status(501)

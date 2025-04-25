@@ -6,5 +6,5 @@ export interface IUserRepository {
   saveUser(DTO: IRegisterDTO): Promise<User>;
   findUserById(DTO: Pick<User, 'public_id'>): Promise<User | null>;
   trackUserActivity(DTO: Pick<User, 'email'>): Promise<void>;
-  activateUser<T>(param: T): Promise<void>;
+  verifyUser<T>(param: T): Promise<void>;
 }

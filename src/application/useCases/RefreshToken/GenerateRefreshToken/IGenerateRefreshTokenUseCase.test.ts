@@ -1,5 +1,5 @@
 import { IGenerateRefreshTokenUseCase } from './IGenerateRefreshTokenUseCase';
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
+import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { IGenerateRefreshTokenDTO } from './IGenerateRefreshTokenDTO';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IGenerateRefreshTokenFactoryInMemory } from '@application/factories/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenInMemory';
@@ -17,13 +17,13 @@ describe('I generate refresh token use case', () => {
 
     // Act
     const response:
-      | InvalidGenerateRefreshTokenErrorResponse
+      | GenerateRefreshTokenErrorResponse
       | RefreshToken = await sut.execute({ 
         user_id 
     });
 
     // Assert
-    if (response instanceof InvalidGenerateRefreshTokenErrorResponse) {
+    if (response instanceof GenerateRefreshTokenErrorResponse) {
         return console.log('error generating refresh token');
     }
     expect(response).toHaveProperty('id');
@@ -44,11 +44,11 @@ describe('I generate refresh token use case', () => {
 
     // Act
     const response:
-      | InvalidGenerateRefreshTokenErrorResponse
+      | GenerateRefreshTokenErrorResponse
       | RefreshToken = await sut.execute({
         user_id
       });
-    if (response instanceof InvalidGenerateRefreshTokenErrorResponse) {
+    if (response instanceof GenerateRefreshTokenErrorResponse) {
         return console.log('error');
     }
     const refreshTokensRelatedToCurrentUser = refreshTokens.filter(

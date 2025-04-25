@@ -2,8 +2,8 @@ import z from 'zod';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IRefreshAccessTokenUseCase } from './IRefreshAccessTokenUseCase';
 import {
-  InvalidRefreshTokenNotFoundErrorResponse,
-  InvalidRefreshTokenUserNotFoundErrorResponse,
+  RefreshTokenNotFoundErrorResponse,
+  RefreshTokenUserNotFoundErrorResponse,
   RefreshAccessTokenResponse,
 } from '@application/handlers/UseCasesResponses/RefreshToken/IRefreshAccessTokenHandler';
 import { RefreshToken } from '@domain/entities/RefreshToken';
@@ -42,17 +42,17 @@ export class IRefreshAccessTokenController {
         public_id: refreshToken.public_id,
       };
       const response:
-        | InvalidRefreshTokenNotFoundErrorResponse
+        | RefreshTokenNotFoundErrorResponse
         | RefreshAccessTokenResponse =
         await this.iRefreshAccessTokenUseCase.execute({
           public_id,
         });
 
-      if (response instanceof InvalidRefreshTokenNotFoundErrorResponse)
+      if (response instanceof RefreshTokenNotFoundErrorResponse)
         return adapter.res
           .status(404)
           .send({ message: 'Refresh Token not found' });
-      if (response instanceof InvalidRefreshTokenUserNotFoundErrorResponse)
+      if (response instanceof RefreshTokenUserNotFoundErrorResponse)
         return adapter.res.status(404).send({ message: 'User not found' });
 
       if (response.refresh_token) {

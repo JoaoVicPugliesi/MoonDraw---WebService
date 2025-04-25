@@ -1,5 +1,5 @@
 import {
-  InvalidUserConflictErrorResponse,
+  UserConflictErrorResponse,
   IRegisterReponse,
 } from '@application/handlers/UseCasesResponses/User/IRegisterHandlers';
 import { User } from '@domain/entities/User';
@@ -14,7 +14,7 @@ configDotenv();
 // Mocks
 const iMailProvider = { sendMail: jest.fn() };
 
-type Registered = InvalidUserConflictErrorResponse | IRegisterReponse;
+type Registered = UserConflictErrorResponse | IRegisterReponse;
 const users: User[] = [];
 const refreshTokens: RefreshToken[] = [];
 
@@ -26,7 +26,7 @@ const user: User = {
   email: 'mrlanguages62@gmail.com',
   password: '$2b$10$GX73JFHmigssj00i5mES9uak392P5wSrS6caNFaQ0ybZkm2TBuBkK',
   role: 'client',
-  is_active: false,
+  is_verified: false,
   created_at: new Date(),
   last_login_at: new Date(),
   email_verified_at: null,
@@ -63,7 +63,7 @@ describe('I register use case', () => {
     });
 
     // Assert
-    expect(response).toBeInstanceOf(InvalidUserConflictErrorResponse);
+    expect(response).toBeInstanceOf(UserConflictErrorResponse);
   });
 
   it('must register a user successfully', async () => {

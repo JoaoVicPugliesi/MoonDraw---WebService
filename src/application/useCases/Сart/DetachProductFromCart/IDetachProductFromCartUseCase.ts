@@ -2,7 +2,7 @@ import { ICartRepository } from '@domain/repositories/ICartRepository';
 import { IDetachProductFromCartDTO } from './IDetachProductFromCartDTO';
 import {
   IDetachProductFromCartResponse,
-  InvalidAttachmentDoesNotExistsErrorResponse,
+  AttachmentDoesNotExistsErrorResponse,
 } from '@application/handlers/UseCasesResponses/Cart/IDetachProductFromCartHandlers';
 
 export class IDetachProductFromCartUseCase {
@@ -14,7 +14,7 @@ export class IDetachProductFromCartUseCase {
     cart_id,
     product_id,
   }: IDetachProductFromCartDTO): Promise<
-    | InvalidAttachmentDoesNotExistsErrorResponse 
+    | AttachmentDoesNotExistsErrorResponse 
     | IDetachProductFromCartResponse
   > {
     const attachment: boolean =
@@ -23,7 +23,7 @@ export class IDetachProductFromCartUseCase {
         product_id,
       });
 
-    if (!attachment) return new InvalidAttachmentDoesNotExistsErrorResponse();
+    if (!attachment) return new AttachmentDoesNotExistsErrorResponse();
 
     await this.iCartRepository.detachProductFromCart({
       cart_id,

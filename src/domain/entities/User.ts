@@ -8,7 +8,7 @@ export interface IUser {
   readonly email: string,
   readonly password: string,
   readonly role: Role,
-  is_active: boolean,
+  is_verified: boolean,
   readonly created_at: Date,
   last_login_at: Date,
   email_verified_at?: Date | null
@@ -23,7 +23,7 @@ export class User implements IUser {
     readonly email: string,
     readonly password: string,
     readonly role: Role,
-    public is_active: boolean,
+    public is_verified: boolean,
     readonly created_at: Date,
     public last_login_at: Date,
     public email_verified_at?: Date | null

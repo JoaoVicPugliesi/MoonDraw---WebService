@@ -1,7 +1,7 @@
 import { Cart } from '@domain/entities/Cart';
 import { ICartRepository } from '@domain/repositories/ICartRepository';
 import { IAssignCartOwnerDTO } from './IAssignCartOwnerDTO';
-import { IAssignCartOwnerResponse, InvalidOwnerNotFoundErrorResponse} from '@application/handlers/UseCasesResponses/Cart/IAssignCartOwnerHandlers';
+import { IAssignCartOwnerResponse, OwnerNotFoundErrorResponse} from '@application/handlers/UseCasesResponses/Cart/IAssignCartOwnerHandlers';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
 import { User } from '@domain/entities/User';
 
@@ -13,11 +13,13 @@ export class IAssignCartOwnerUseCase {
 
   async execute({ 
     public_id 
-  }: IAssignCartOwnerDTO): Promise<InvalidOwnerNotFoundErrorResponse | IAssignCartOwnerResponse> {
+  }: IAssignCartOwnerDTO): Promise<OwnerNotFoundErrorResponse | IAssignCartOwnerResponse> {
 
-    const user: User | null = await this.iUserRepository.findUserById(public_id);
+    const user: User | null = await this.iUserRepository.findUserById({
+      public_id
+    });
 
-    if(!user) return new InvalidOwnerNotFoundErrorResponse();
+    if(!user) return new OwnerNotFoundErrorResponse();
     
     const cart: Cart = await this.iCartRepository.assignCartOwner({
       public_id

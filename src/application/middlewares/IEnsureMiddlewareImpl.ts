@@ -5,6 +5,7 @@ import {
   RefreshTokenCookieMissingErrorResponse,
   TokenInvalidFormatErrorResponse,
   MustBeAnAdmingErrorResponse,
+  MustBeVerifiedErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { ITokenService } from '@domain/services/ITokenService';
 import { IEnsureMiddleware } from './IEnsureMiddleware';
@@ -80,6 +81,44 @@ export class IEnsureMiddlewareImpl implements IEnsureMiddleware {
     if (role === 'client') {
       return new MustBeAnAdmingErrorResponse();
     }
+    try {
+      iTokenService.verify({
+        token: token,
+        secret_key: secret_key,
+      });
+    } catch (error) {
+      return new TokenInvalidErrorResponse(error);
+    }
+  }
+
+  ensureUserIsVerified(
+    adapter: RequestResponseAdapter,
+    iTokenService: ITokenService,
+    secret_key: string
+  ):
+    | TokenIsMissingErrorResponse
+    | MustBeVerifiedErrorResponse
+    | TokenInvalidErrorResponse
+    | void {
+    const accessToken = adapter.req.headers?.authorization;
+
+    if (!accessToken) {
+      return new TokenIsMissingErrorResponse();
+    }
+
+    const [, token] = accessToken.split(' ');
+
+    const tokenDecoded = iTokenService.decode(token, {
+      json: true,
+      complete: true,
+    });
+
+    const { is_verified } = tokenDecoded;
+
+    if (is_verified === false) {
+      return new MustBeVerifiedErrorResponse();
+    }
+
     try {
       iTokenService.verify({
         token: token,

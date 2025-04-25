@@ -40,7 +40,7 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
         email: email,
         password: hash,
         role: 'client',
-        is_active: false,
+        is_verified: false,
         created_at: new Date(),
         last_login_at: new Date(),
         email_verified_at: null,
@@ -76,14 +76,14 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
     });
   }
   
-  async activateUser<T>(param: T): Promise<void> {
+  async verifyUser<T>(param: T): Promise<void> {
     return new Promise((resolve, reject) => {
       const user: User | undefined = this.users.find(
         (user) => user.email === (param as string)
       );
 
       if (user) {
-        user.is_active = true;
+        user.is_verified = true;
         user.email_verified_at = new Date();
         resolve();
       }

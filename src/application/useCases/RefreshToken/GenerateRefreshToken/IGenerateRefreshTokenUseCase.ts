@@ -1,4 +1,4 @@
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
+import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { RefreshToken } from '@prisma/client';
 import { IGenerateRefreshTokenDTO } from './IGenerateRefreshTokenDTO';
 import { IRefreshTokenRepository } from '@domain/repositories/IRefreshTokenRepository';
@@ -11,7 +11,7 @@ export class IGenerateRefreshTokenUseCase {
   async execute({
     user_id,
   }: IGenerateRefreshTokenDTO): Promise<
-    InvalidGenerateRefreshTokenErrorResponse | RefreshToken
+    GenerateRefreshTokenErrorResponse | RefreshToken
   > {
     const relatedTokens: RefreshToken | RefreshToken[] | null =
       await this.iRefreshTokenRepository.findRelatedRefreshTokens(
@@ -29,7 +29,7 @@ export class IGenerateRefreshTokenUseCase {
         user_id
       });
 
-    if (!refreshToken) return new InvalidGenerateRefreshTokenErrorResponse();
+    if (!refreshToken) return new GenerateRefreshTokenErrorResponse();
 
     return refreshToken;
   }

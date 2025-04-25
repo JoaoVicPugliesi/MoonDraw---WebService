@@ -1,7 +1,7 @@
 import { IConfirmMailFactoryInMemory } from '@application/factories/User/ConfirmMail/IConfirmMailFactoryInMemory';
 import { User } from '@domain/entities/User';
 import { IConfirmMailDTO } from './IConfirmMailDTO';
-import { InvalidUserNotFoundError } from '@application/handlers/UseCasesResponses/User/IConfirmMailHandlers';
+import { UserNotFoundError } from '@application/handlers/UseCasesResponses/User/IConfirmMailHandlers';
 
 const users: User[] = [];
 const user: User = {
@@ -12,7 +12,7 @@ const user: User = {
   email: 'mrlanguages62@gmail.com',
   password: '$2b$10$GX73JFHmigssj00i5mES9uak392P5wSrS6caNFaQ0ybZkm2TBuBkK',
   role: 'client',
-  is_active: false,
+  is_verified: false,
   created_at: new Date(),
   last_login_at: new Date(),
   email_verified_at: null,
@@ -34,14 +34,14 @@ describe('I confirm mail use case', () => {
     };
 
     // Act
-    const response: InvalidUserNotFoundError | void =
+    const response: UserNotFoundError | void =
       await iConfirmMailUseCase.execute({
         email,
         token,
       });
 
     // Assert
-    expect(response).toBeInstanceOf(InvalidUserNotFoundError);
+    expect(response).toBeInstanceOf(UserNotFoundError);
   });
   it('should activate user successfully', async () => {
     // Arrange
@@ -54,14 +54,14 @@ describe('I confirm mail use case', () => {
     };
 
     // Act
-    const response: InvalidUserNotFoundError | void =
+    const response: UserNotFoundError | void =
       await iConfirmMailUseCase.execute({
         email,
         token,
       });
 
     // Assert
-    expect(response).not.toBeInstanceOf(InvalidUserNotFoundError);
+    expect(response).not.toBeInstanceOf(UserNotFoundError);
     console.log(user);
   });
 });

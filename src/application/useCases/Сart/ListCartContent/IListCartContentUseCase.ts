@@ -2,7 +2,7 @@ import { Product } from '@domain/entities/Product';
 import { ICartRepository } from '@domain/repositories/ICartRepository';
 import { ICacheService } from '@domain/services/ICacheService';
 import { IListCartContentDTO } from './IListCartContentDTO';
-import { IListCartContentResponse, InvalidCartEmptyErrorResponse } from '@application/handlers/UseCasesResponses/Cart/IListCartContentHandlers';
+import { IListCartContentResponse, CartEmptyErrorResponse } from '@application/handlers/UseCasesResponses/Cart/IListCartContentHandlers';
 
 export class IListCartContentUseCase {
   constructor(
@@ -12,7 +12,7 @@ export class IListCartContentUseCase {
 
   async execute({ 
     public_id 
-  }: IListCartContentDTO): Promise<InvalidCartEmptyErrorResponse | IListCartContentResponse>  {
+  }: IListCartContentDTO): Promise<CartEmptyErrorResponse | IListCartContentResponse>  {
     const cachedContent: string | null = await this.iCacheService.get(
       `cart-${public_id}`
     );
@@ -27,7 +27,7 @@ export class IListCartContentUseCase {
       public_id,
     });
 
-    if(!content) return new InvalidCartEmptyErrorResponse();
+    if(!content) return new CartEmptyErrorResponse();
 
     await this.iCacheService.set(
         `cart-${public_id}`,

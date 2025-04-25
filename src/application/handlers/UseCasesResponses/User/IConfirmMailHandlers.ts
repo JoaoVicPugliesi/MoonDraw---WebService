@@ -1,1 +1,1 @@
-export class InvalidUserNotFoundError extends Error {}
+export class UserNotFoundError extends Error {}

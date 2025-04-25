@@ -1,14 +1,14 @@
-import { InvalidPasswordIsNotEqualErrorResponse, InvalidUserNotFoundErrorResponse, ILoginResponse } from './ILoginHandlers';
-import { InvalidGenerateRefreshTokenErrorResponse } from '../RefreshToken/IGenerateRefreshTokenHandler';
-import { IAssignCartOwnerResponse, InvalidOwnerNotFoundErrorResponse } from '../Cart/IAssignCartOwnerHandlers';
+import { PasswordIsNotEqualErrorResponse, UserNotFoundErrorResponse, ILoginResponse } from './ILoginHandlers';
+import { GenerateRefreshTokenErrorResponse } from '../RefreshToken/IGenerateRefreshTokenHandler';
+import { IAssignCartOwnerResponse, OwnerNotFoundErrorResponse } from '../Cart/IAssignCartOwnerHandlers';
 
-export class InvalidUserConflictErrorResponse extends Error {};
+export class UserConflictErrorResponse extends Error {};
 
 export interface IRegisterReponse {
-    assign_cart_owner_response: InvalidOwnerNotFoundErrorResponse 
+    assign_cart_owner_response: OwnerNotFoundErrorResponse 
           | IAssignCartOwnerResponse
-    login_response: InvalidUserNotFoundErrorResponse
-          | InvalidPasswordIsNotEqualErrorResponse
-          | InvalidGenerateRefreshTokenErrorResponse
+    login_response: UserNotFoundErrorResponse
+          | PasswordIsNotEqualErrorResponse
+          | GenerateRefreshTokenErrorResponse
           | ILoginResponse,
 }

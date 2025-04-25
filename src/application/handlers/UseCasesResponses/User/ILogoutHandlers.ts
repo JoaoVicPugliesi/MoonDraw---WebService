@@ -1,1 +1,1 @@
-export class InvalidRefreshTokenNotFoundErrorResponse extends Error {}
+export class RefreshTokenNotFoundErrorResponse extends Error {}

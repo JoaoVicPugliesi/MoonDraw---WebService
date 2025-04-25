@@ -1,4 +1,4 @@
-export class InvalidAttachmentAlreadyExistsErrorResponse extends Error {}
+export class AttachmentAlreadyExistsErrorResponse extends Error {}
 
 export interface IAttachProductIntoCartResponse {
     success: boolean

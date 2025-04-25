@@ -4,7 +4,7 @@ import { ITokenService } from '@domain/services/ITokenService';
 import { ISaveProductUseCase } from './ISaveProductUseCase';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ISaveProductDTO } from './ISaveProductDTO';
-import { InvalidProductAlreadyExistsErrorResponse } from '@application/handlers/UseCasesResponses/Product/ISaveProductHandlers';
+import { ProductAlreadyExistsErrorResponse } from '@application/handlers/UseCasesResponses/Product/ISaveProductHandlers';
 import {
   MustBeAnAdmingErrorResponse,
   TokenInvalidErrorResponse,
@@ -54,7 +54,7 @@ export class ISaveProductController {
         supply,
         publisher,
       }: ISaveProductDTO = schema.parse(adapter.req.body);
-      const response: InvalidProductAlreadyExistsErrorResponse | void =
+      const response: ProductAlreadyExistsErrorResponse | void =
         await this.iSaveProductUseCase.execute({
           image_id,
           name,
@@ -63,7 +63,7 @@ export class ISaveProductController {
           supply,
           publisher,
         });
-      if (response instanceof InvalidProductAlreadyExistsErrorResponse) {
+      if (response instanceof ProductAlreadyExistsErrorResponse) {
         return adapter.res
           .status(409)
           .send({ message: 'Product needs to have a unique name' });

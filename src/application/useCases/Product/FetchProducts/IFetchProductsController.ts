@@ -1,7 +1,7 @@
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import {
   FetchProductsResponse,
-  InvalidProductsNotFoundErrorResponse,
+  ProductsNotFoundErrorResponse,
 } from '@application/handlers/UseCasesResponses/Product/IFetchProductsHandlers';
 import { ITokenService } from '@domain/services/ITokenService';
 import { IFetchProductsUseCase } from './IFetchProductsUseCase';
@@ -40,12 +40,12 @@ export class IFetchProductsController {
         .params as IFetchProductsDTO;
       const response:
         | FetchProductsResponse
-        | InvalidProductsNotFoundErrorResponse =
+        | ProductsNotFoundErrorResponse =
         await this.iFetchProductsUseCase.execute({
           page,
         });
 
-      if (response instanceof InvalidProductsNotFoundErrorResponse)
+      if (response instanceof ProductsNotFoundErrorResponse)
         return adapter.res.status(404).send({
           message: 'Products Not Found',
         });

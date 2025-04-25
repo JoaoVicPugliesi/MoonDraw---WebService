@@ -3,7 +3,7 @@ import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IConfirmMailUseCase } from './IConfirmMailUseCase';
 import { IConfirmMailDTO } from './IConfirmMailDTO';
 import { IConfirmMailValidator } from '@application/validators/IConfirmMailValidator';
-import { InvalidUserNotFoundError } from '@application/handlers/UseCasesResponses/User/IConfirmMailHandlers';
+import { UserNotFoundError } from '@application/handlers/UseCasesResponses/User/IConfirmMailHandlers';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 
 export class IConfirmMailController {
@@ -18,10 +18,10 @@ export class IConfirmMailController {
 
     try {
       const DTO: IConfirmMailDTO = schema.parse(adapter.req.body);
-      const response: InvalidUserNotFoundError | void =
+      const response: UserNotFoundError | void =
         await this.iConfirmMailUseCase.execute(DTO);
 
-      if (response instanceof InvalidUserNotFoundError) {
+      if (response instanceof UserNotFoundError) {
         return adapter.res.status(404).send({ message: 'User Not Found' }); 
       }
 

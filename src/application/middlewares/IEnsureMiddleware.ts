@@ -1,6 +1,7 @@
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import {
   MustBeAnAdmingErrorResponse,
+  MustBeVerifiedErrorResponse,
   RefreshTokenCookieMissingErrorResponse,
   TokenInvalidErrorResponse,
   TokenInvalidFormatErrorResponse,
@@ -31,6 +32,16 @@ export interface IEnsureMiddleware {
   ):
     | TokenIsMissingErrorResponse
     | MustBeAnAdmingErrorResponse
+    | TokenInvalidErrorResponse
+    | void;
+
+  ensureUserIsVerified(
+    adapter: RequestResponseAdapter,
+    iTokenService: ITokenService,
+    secret_key: string
+  ):
+    | TokenIsMissingErrorResponse
+    | MustBeVerifiedErrorResponse
     | TokenInvalidErrorResponse
     | void;
 }

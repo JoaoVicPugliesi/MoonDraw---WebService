@@ -9,5 +9,6 @@ export class TokenInvalidFormatErrorResponse extends Error {
         super()
     }
 };
+export class MustBeVerifiedErrorResponse extends Error{}
 export class RefreshTokenCookieMissingErrorResponse extends Error{};
 export class MustBeAnAdmingErrorResponse extends Error{};

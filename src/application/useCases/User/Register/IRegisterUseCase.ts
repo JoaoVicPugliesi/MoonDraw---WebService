@@ -3,20 +3,20 @@ import { User } from '@domain/entities/User';
 import { IMailProvider } from '@domain/providers/repositories/Mail/IMailProvider';
 import { IRegisterDTO } from './IRegisterDTO';
 import {
-  InvalidUserConflictErrorResponse,
+  UserConflictErrorResponse,
   IRegisterReponse,
 } from '@application/handlers/UseCasesResponses/User/IRegisterHandlers';
 import {
-  InvalidPasswordIsNotEqualErrorResponse,
-  InvalidUserNotFoundErrorResponse,
+  PasswordIsNotEqualErrorResponse,
+  UserNotFoundErrorResponse,
   ILoginResponse,
 } from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
+import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
 import { IAssignCartOwnerUseCase } from '@application/useCases/Сart/AssignCartOwner/IAssignCartOwnerUseCase';
 import {
   IAssignCartOwnerResponse,
-  InvalidOwnerNotFoundErrorResponse,
+  OwnerNotFoundErrorResponse,
 } from '@application/handlers/UseCasesResponses/Cart/IAssignCartOwnerHandlers';
 
 export class IRegisterUseCase {
@@ -34,13 +34,13 @@ export class IRegisterUseCase {
     password,
     confirmPassword,
   }: IRegisterDTO): Promise<
-    InvalidUserConflictErrorResponse | IRegisterReponse
+    UserConflictErrorResponse | IRegisterReponse
   > {
     const response: User | null = await this.iUserRepository.findUserByEmail({
       email
     });
 
-    if (response) return new InvalidUserConflictErrorResponse();
+    if (response) return new UserConflictErrorResponse();
 
     const user: User = await this.iUserRepository.saveUser({
       name,
@@ -51,7 +51,7 @@ export class IRegisterUseCase {
     });
 
     const iAssignCartOwnerResponse:
-      | InvalidOwnerNotFoundErrorResponse
+      | OwnerNotFoundErrorResponse
       | IAssignCartOwnerResponse = await this.iAssignCartOwnerUseCase.execute({
       public_id: user.public_id,
     });
@@ -69,9 +69,9 @@ export class IRegisterUseCase {
     });
 
     const loginResponse:
-      | InvalidUserNotFoundErrorResponse
-      | InvalidPasswordIsNotEqualErrorResponse
-      | InvalidGenerateRefreshTokenErrorResponse
+      | UserNotFoundErrorResponse
+      | PasswordIsNotEqualErrorResponse
+      | GenerateRefreshTokenErrorResponse
       | ILoginResponse = await this.iLoginUseCase.execute({
       email: user.email,
       password: password,

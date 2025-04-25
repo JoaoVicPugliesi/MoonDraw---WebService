@@ -3,7 +3,7 @@ import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ISearchProductsDTO } from './ISearchProductsDTO';
 import { ISearchProductsUseCase } from './ISearchProductsUseCase';
 import {
-  InvalidSearchedProductsNotFoundErrorResponse,
+  SearchedProductsNotFoundErrorResponse,
   ISearchProductsResponse,
 } from '@application/handlers/UseCasesResponses/Product/ISearchProductsHandlers';
 import {
@@ -41,12 +41,12 @@ export class ISearchProductsController {
         .params as ISearchProductsDTO;
       const response:
         | ISearchProductsResponse
-        | InvalidSearchedProductsNotFoundErrorResponse =
+        | SearchedProductsNotFoundErrorResponse =
         await this.iSearchProductsUseCase.execute({
           name,
         });
 
-      if (response instanceof InvalidSearchedProductsNotFoundErrorResponse) {
+      if (response instanceof SearchedProductsNotFoundErrorResponse) {
         return adapter.res
           .status(404)
           .send({ message: 'Not results found related to the search' });

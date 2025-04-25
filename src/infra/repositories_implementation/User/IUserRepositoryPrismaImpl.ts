@@ -66,13 +66,13 @@ export class IUserRepositoryPrismaImpl implements IUserRepository {
       },
     });
   }
-  async activateUser<T>(param: T): Promise<void> {
+  async verifyUser<T>(param: T): Promise<void> {
     await prisma.user.update({
       where: {
         email: param as string,
       },
       data: {
-        is_active: true,
+        is_verified: true,
         email_verified_at: new Date(),
       },
     });

@@ -23,7 +23,7 @@ export class IInitiatePurchaseController {
     const ensure:
     | void
     | TokenIsMissingErrorResponse
-    | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureAccessToken(
+    | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureUserIsVerified(
         adapter,
         this.iTokenService,
         process.env.JWT_SECRET_KEY!

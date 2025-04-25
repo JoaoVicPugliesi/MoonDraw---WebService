@@ -4,11 +4,11 @@ import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ILoginValidator } from '@application/validators/ILoginValidator';
 import { ILoginDTO } from './ILoginDTO';
 import {
-  InvalidUserNotFoundErrorResponse,
-  InvalidPasswordIsNotEqualErrorResponse,
+  UserNotFoundErrorResponse,
+  PasswordIsNotEqualErrorResponse,
   ILoginResponse,
 } from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
+import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 
 export class ILoginController {
   constructor(
@@ -23,18 +23,18 @@ export class ILoginController {
       const DTO: ILoginDTO = schema.parse(adapter.req.body);
 
       const response:
-        | InvalidUserNotFoundErrorResponse
-        | InvalidPasswordIsNotEqualErrorResponse
-        | InvalidGenerateRefreshTokenErrorResponse
+        | UserNotFoundErrorResponse
+        | PasswordIsNotEqualErrorResponse
+        | GenerateRefreshTokenErrorResponse
         | ILoginResponse = await this.iLoginUseCase.execute(DTO);
 
-      if (response instanceof InvalidUserNotFoundErrorResponse)
+      if (response instanceof UserNotFoundErrorResponse)
         return adapter.res
           .status(404)
           .send({ message: 'User or Password incorrect' });
-      if (response instanceof InvalidPasswordIsNotEqualErrorResponse)
+      if (response instanceof PasswordIsNotEqualErrorResponse)
         return adapter.res.status(401).send({ message: 'Non authorized' });
-      if (response instanceof InvalidGenerateRefreshTokenErrorResponse)
+      if (response instanceof GenerateRefreshTokenErrorResponse)
         return adapter.res
           .status(501)
           .send({ message: 'Failed to generate refresh token' });

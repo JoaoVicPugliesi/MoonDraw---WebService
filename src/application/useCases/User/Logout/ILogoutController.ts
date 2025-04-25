@@ -2,7 +2,7 @@ import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ILogoutUseCase } from './ILogoutUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { ILogoutDTO } from './ILogoutDTO';
-import { InvalidRefreshTokenNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/User/ILogoutHandlers';
+import { RefreshTokenNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/User/ILogoutHandlers';
 import {
   RefreshTokenCookieMissingErrorResponse,
   TokenInvalidFormatErrorResponse,
@@ -37,12 +37,12 @@ export class ILogOutController {
       const { public_id }: ILogoutDTO = {
         public_id: refreshToken.public_id,
       };
-      const response: InvalidRefreshTokenNotFoundErrorResponse | void =
+      const response: RefreshTokenNotFoundErrorResponse | void =
         await this.iLogoutUseCase.execute({
           public_id,
         });
 
-      if (response instanceof InvalidRefreshTokenNotFoundErrorResponse) {
+      if (response instanceof RefreshTokenNotFoundErrorResponse) {
         return adapter.res
           .status(404)
           .send({ message: 'Refresh Token Not Found' });

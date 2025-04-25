@@ -1,1 +1,1 @@
-export class InvalidProductAlreadyExistsErrorResponse extends Error {};
+export class ProductAlreadyExistsErrorResponse extends Error {};

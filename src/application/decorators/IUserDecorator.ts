@@ -47,8 +47,8 @@ class IUserDecorator implements IUserRepository {
       });
   }
 
-  async activateUser<T>(param: T): Promise<void> {
-    return await this.decoratee.activateUser(param);
+  async verifyUser<T>(param: T): Promise<void> {
+    return await this.decoratee.verifyUser(param);
   }
 }
 

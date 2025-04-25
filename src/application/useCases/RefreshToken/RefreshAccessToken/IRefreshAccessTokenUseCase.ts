@@ -1,12 +1,12 @@
-import { InvalidGenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
+import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import dayjs from 'dayjs';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { ITokenService } from '@domain/services/ITokenService';
 import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import {
-  InvalidRefreshTokenNotFoundErrorResponse,
-  InvalidRefreshTokenUserNotFoundErrorResponse,
+  RefreshTokenNotFoundErrorResponse,
+  RefreshTokenUserNotFoundErrorResponse,
   RefreshAccessTokenResponse,
 } from '@application/handlers/UseCasesResponses/RefreshToken/IRefreshAccessTokenHandler';
 import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
@@ -23,7 +23,7 @@ export class IRefreshAccessTokenUseCase {
     private readonly iGenerateRefreshTokenUseCase: IGenerateRefreshTokenUseCase,
     private readonly iTokenService: ITokenService
   ) {
-    this.secret_key = process.env.JWT_SECRET_KEY as string;
+    this.secret_key = process.env.JWT_SECRET_KEY!;
   }
 
   async execute(
@@ -31,23 +31,23 @@ export class IRefreshAccessTokenUseCase {
       public_id
     }: IRefreshAccessTokenDTO
   ): Promise<
-    | InvalidRefreshTokenNotFoundErrorResponse
-    | InvalidRefreshTokenUserNotFoundErrorResponse
+    | RefreshTokenNotFoundErrorResponse
+    | RefreshTokenUserNotFoundErrorResponse
     | RefreshAccessTokenResponse
   > {
     const refreshToken: RefreshToken | null =
       await this.iRefreshTokenRepository.findRefreshToken(public_id);
 
-    if (!refreshToken) return new InvalidRefreshTokenNotFoundErrorResponse();
+    if (!refreshToken) return new RefreshTokenNotFoundErrorResponse();
 
     const user: User | null =
       await this.iUserRepository.findUserById({
         public_id: refreshToken.user_id
       });
 
-    if (!user) return new InvalidRefreshTokenUserNotFoundErrorResponse();
+    if (!user) return new RefreshTokenUserNotFoundErrorResponse();
 
-    const { name, surname, email, role, is_active } = user;
+    const { name, surname, email, role, is_verified } = user;
     
     await this.iUserRepository.trackUserActivity({
       email
@@ -57,7 +57,8 @@ export class IRefreshAccessTokenUseCase {
       payload: {
         content: {
           public_id: user.public_id,
-          role: role
+          role: role,
+          is_verified: is_verified
         }
       },
       secret_key: this.secret_key,
@@ -78,7 +79,7 @@ export class IRefreshAccessTokenUseCase {
         user_id: refreshToken.user_id,
       };
       const newRefreshToken:
-        | InvalidGenerateRefreshTokenErrorResponse
+        | GenerateRefreshTokenErrorResponse
         | RefreshToken = await this.iGenerateRefreshTokenUseCase.execute(DTO);
 
       return {
@@ -89,7 +90,7 @@ export class IRefreshAccessTokenUseCase {
           surname: surname,
           email: email,
           role: role,
-          is_active: is_active,
+          is_verified: is_verified,
         }
       };
     }
@@ -101,8 +102,8 @@ export class IRefreshAccessTokenUseCase {
         surname: surname,
         email: email,
         role: role,
-        is_active: is_active,
+        is_verified: is_verified,
       }
-    };
+    }
   }
 }

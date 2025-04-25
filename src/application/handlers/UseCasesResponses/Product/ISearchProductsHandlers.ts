@@ -1,6 +1,6 @@
 import { Product } from '@domain/entities/Product';
 
-export class InvalidSearchedProductsNotFoundErrorResponse extends Error {};
+export class SearchedProductsNotFoundErrorResponse extends Error {};
 
 export interface ISearchProductsResponse {
     result: Product[]

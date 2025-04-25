@@ -2,7 +2,7 @@ import { IFetchProductsDTO } from './IFetchProductsDTO';
 import { Product } from '@domain/entities/Product';
 import {
   FetchProductsResponse,
-  InvalidProductsNotFoundErrorResponse,
+  ProductsNotFoundErrorResponse,
 } from '@application/handlers/UseCasesResponses/Product/IFetchProductsHandlers';
 import { ICacheService } from '@domain/services/ICacheService';
 import { IProductRepository } from '@domain/repositories/IProductRepository';
@@ -16,7 +16,7 @@ export class IFetchProductsUseCase {
   async execute({
     page,
   }: IFetchProductsDTO): Promise<
-    FetchProductsResponse | InvalidProductsNotFoundErrorResponse
+    FetchProductsResponse | ProductsNotFoundErrorResponse
   > {
     const cachedProducts: string | null = await this.iCacheService.get(
       `products-${page}`
@@ -34,7 +34,7 @@ export class IFetchProductsUseCase {
         page,
       });
 
-    if (!products) return new InvalidProductsNotFoundErrorResponse();
+    if (!products) return new ProductsNotFoundErrorResponse();
 
     // products-${page}
     await this.iCacheService.set(`products-${page}`, JSON.stringify(products), {

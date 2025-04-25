@@ -1,7 +1,7 @@
 import { IProductRepository } from '@domain/repositories/IProductRepository';
 import { ISaveProductDTO } from './ISaveProductDTO';
 import { Product } from '@domain/entities/Product';
-import { InvalidProductAlreadyExistsErrorResponse } from '@application/handlers/UseCasesResponses/Product/ISaveProductHandlers';
+import { ProductAlreadyExistsErrorResponse } from '@application/handlers/UseCasesResponses/Product/ISaveProductHandlers';
 
 export class ISaveProductUseCase {
   constructor(
@@ -15,12 +15,12 @@ export class ISaveProductUseCase {
     price,
     supply,
     publisher,
-  }: ISaveProductDTO): Promise<InvalidProductAlreadyExistsErrorResponse | void> {
+  }: ISaveProductDTO): Promise<ProductAlreadyExistsErrorResponse | void> {
     const product: Product | null = await this.iProductRepository.findProductByName({
       name
     });
 
-    if(product) return new InvalidProductAlreadyExistsErrorResponse();
+    if(product) return new ProductAlreadyExistsErrorResponse();
 
     await this.iProductRepository.saveProduct({
         image_id, 

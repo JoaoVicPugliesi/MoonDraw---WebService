@@ -2,7 +2,7 @@ import { ICartRepository } from '@domain/repositories/ICartRepository';
 import { IAttachProductIntoCartDTO } from './IAttachProductIntoCartDTO';
 import {
   IAttachProductIntoCartResponse,
-  InvalidAttachmentAlreadyExistsErrorResponse,
+  AttachmentAlreadyExistsErrorResponse,
 } from '@application/handlers/UseCasesResponses/Cart/IAttachProductIntoCart';
 
 export class IAttachProductIntoCartUseCase {
@@ -12,7 +12,7 @@ export class IAttachProductIntoCartUseCase {
     cart_id,
     product_id,
   }: IAttachProductIntoCartDTO): Promise<
-    | InvalidAttachmentAlreadyExistsErrorResponse
+    | AttachmentAlreadyExistsErrorResponse
     | IAttachProductIntoCartResponse
   > {
     const attachment: boolean =
@@ -21,7 +21,7 @@ export class IAttachProductIntoCartUseCase {
         product_id,
       });
 
-    if (attachment) return new InvalidAttachmentAlreadyExistsErrorResponse();
+    if (attachment) return new AttachmentAlreadyExistsErrorResponse();
 
     await this.iCartRepository.attachProductIntoCart({
       cart_id,
