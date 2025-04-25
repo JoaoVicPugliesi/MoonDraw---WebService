@@ -1,38 +1,41 @@
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IListCartContentUseCase } from './IListCartContentUseCase';
-import { IEnsureAccessTokenMiddleware } from '@application/middlewares/IEnsureAccessTokenMiddleware';
 import { ITokenService } from '@domain/services/ITokenService';
 import { IListCartContentDTO } from './IListCartContentDTO';
 import {
   IListCartContentResponse,
   InvalidCartEmptyErrorResponse,
 } from '@application/handlers/UseCasesResponses/Cart/IListCartContentHandlers';
-import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import {
+  TokenInvalidErrorResponse,
+  TokenIsMissingErrorResponse,
+} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 
 export class IListCartContentController {
   constructor(
     private readonly iListCartContentUseCase: IListCartContentUseCase,
-    private readonly iTokenService: ITokenService
+    private readonly iTokenService: ITokenService,
+    private readonly iEnsureMiddleware: IEnsureMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
+    const ensure:
+      | TokenIsMissingErrorResponse
+      | TokenInvalidErrorResponse
+      | void = this.iEnsureMiddleware.ensureAccessToken(
+      adapter,
+      this.iTokenService,
+      process.env.JWT_SECRET_KEY!
+    );
+
+    if (ensure instanceof TokenIsMissingErrorResponse) {
+      return adapter.res.status(401).send({ message: 'Token is missing' });
+    }
+    if (ensure instanceof TokenInvalidErrorResponse) {
+      return adapter.res.status(401).send({ message: 'Token is invalid' });
+    }
     try {
-      const iEnsureAccessTokenMiddleware = new IEnsureAccessTokenMiddleware(
-        adapter,
-        this.iTokenService
-      );
-      const ensure:
-        | TokenIsMissingErrorResponse
-        | TokenInvalidErrorResponse
-        | void = iEnsureAccessTokenMiddleware.ensure();
-
-      if (ensure instanceof TokenIsMissingErrorResponse) {
-        return adapter.res.status(401).send({ message: 'Token is missing' });
-      }
-      if (ensure instanceof TokenInvalidErrorResponse) {
-        return adapter.res.status(401).send({ message: 'Token is invalid' });
-      }
-
       const { public_id }: IListCartContentDTO = adapter.req
         .query as IListCartContentDTO;
 

@@ -1,0 +1,92 @@
+import { RequestResponseAdapter } from '@adapters/ServerAdapter';
+import {
+  TokenIsMissingErrorResponse,
+  TokenInvalidErrorResponse,
+  RefreshTokenCookieMissingErrorResponse,
+  TokenInvalidFormatErrorResponse,
+  MustBeAnAdmingErrorResponse,
+} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { ITokenService } from '@domain/services/ITokenService';
+import { IEnsureMiddleware } from './IEnsureMiddleware';
+import { RefreshToken } from '@prisma/client';
+
+export class IEnsureMiddlewareImpl implements IEnsureMiddleware {
+  ensureAccessToken(
+    adapter: RequestResponseAdapter,
+    iTokenService: ITokenService,
+    secret_key: string
+  ): TokenIsMissingErrorResponse | TokenInvalidErrorResponse | void {
+    const accessToken = adapter.req.headers?.authorization;
+
+    if (!accessToken) {
+      return new TokenIsMissingErrorResponse();
+    }
+
+    const [, token] = accessToken.split(' ');
+
+    try {
+      iTokenService.verify({
+        token: token,
+        secret_key: secret_key,
+      });
+    } catch (error) {
+      return new TokenInvalidErrorResponse(error);
+    }
+  }
+
+  ensureRefreshToken(
+    adapter: RequestResponseAdapter
+  ):
+    | TokenInvalidFormatErrorResponse
+    | RefreshTokenCookieMissingErrorResponse
+    | RefreshToken {
+    const refreshTokenCookie = adapter.req.cookies.refresh_token;
+
+    if (!refreshTokenCookie) {
+      return new RefreshTokenCookieMissingErrorResponse();
+    }
+
+    try {
+      const refreshToken: RefreshToken = JSON.parse(refreshTokenCookie);
+      return refreshToken;
+    } catch (error) {
+      return new TokenInvalidFormatErrorResponse(error);
+    }
+  }
+
+  ensureUserIsAdmin(
+    adapter: RequestResponseAdapter,
+    iTokenService: ITokenService,
+    secret_key: string
+  ):
+    | TokenIsMissingErrorResponse
+    | MustBeAnAdmingErrorResponse
+    | TokenInvalidErrorResponse
+    | void {
+    const accessToken = adapter.req.headers?.authorization;
+
+    if (!accessToken) {
+      return new TokenIsMissingErrorResponse();
+    }
+
+    const [, token] = accessToken.split(' ');
+    const tokenDecoded = iTokenService.decode(token, {
+      json: true,
+      complete: true,
+    });
+
+    const { role } = tokenDecoded.payload.content;
+
+    if (role === 'client') {
+      return new MustBeAnAdmingErrorResponse();
+    }
+    try {
+      iTokenService.verify({
+        token: token,
+        secret_key: secret_key,
+      });
+    } catch (error) {
+      return new TokenInvalidErrorResponse(error);
+    }
+  }
+}

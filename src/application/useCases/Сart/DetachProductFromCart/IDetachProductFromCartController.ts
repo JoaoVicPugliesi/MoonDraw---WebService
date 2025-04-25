@@ -3,28 +3,43 @@ import { ITokenService } from '@domain/services/ITokenService';
 import { IDetachProductFromCartUseCase } from './IDetachProductFromCartUseCase';
 import { IDetachProductFromCartValidator } from '@application/validators/IDetachProductFromCartValidator';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import { IEnsureAccessTokenMiddleware } from '@application/middlewares/IEnsureAccessTokenMiddleware';
 import { IDetachProductFromCartDTO } from './IDetachProductFromCartDTO';
 import {
   IDetachProductFromCartResponse,
   InvalidAttachmentDoesNotExistsErrorResponse,
 } from '@application/handlers/UseCasesResponses/Cart/IDetachProductFromCartHandlers';
+import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import {
+  TokenInvalidErrorResponse,
+  TokenIsMissingErrorResponse,
+} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
 export class IDetachProductFromCartController {
   constructor(
     private readonly iDetachProductFromCartUseCase: IDetachProductFromCartUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iDetachProductFromCartValidator: IDetachProductFromCartValidator
+    private readonly iDetachProductFromCartValidator: IDetachProductFromCartValidator,
+    private readonly iEnsureMiddleware: IEnsureMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const schema = this.iDetachProductFromCartValidator.validate();
+    const ensure:
+      | TokenIsMissingErrorResponse
+      | TokenInvalidErrorResponse
+      | void = this.iEnsureMiddleware.ensureAccessToken(
+      adapter,
+      this.iTokenService,
+      process.env.JWT_SECRET_KEY!
+    );
+
+    if (ensure instanceof TokenIsMissingErrorResponse) {
+      return adapter.res.status(401).send({ message: 'Token is missing' });
+    }
+    if (ensure instanceof TokenInvalidErrorResponse) {
+      return adapter.res.status(401).send({ message: 'Token is invalid' });
+    }
     try {
-      const iEnsureAccessTokenMiddlware = new IEnsureAccessTokenMiddleware(
-        adapter,
-        this.iTokenService
-      );
-      await iEnsureAccessTokenMiddlware.ensure();
       const { cart_id, product_id }: IDetachProductFromCartDTO = schema.parse(
         adapter.req.body
       );

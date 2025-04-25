@@ -1,4 +1,3 @@
-import { IEnsureAccessTokenMiddleware } from '@application/middlewares/IEnsureAccessTokenMiddleware';
 import { IRemovePurchaseUseCase } from './IRemovePurchaseUseCase';
 import { ITokenService } from '@domain/services/ITokenService';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
@@ -7,22 +6,24 @@ import {
   TokenIsMissingErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { IRemovePurchaseDTO } from './IRemovePurchaseDTO';
+import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 
 export class IRemovePurchaseController {
   constructor(
     private readonly iRemovePurchaseUseCase: IRemovePurchaseUseCase,
-    private readonly iTokenService: ITokenService
+    private readonly iTokenService: ITokenService,
+    private readonly iEnsureMiddleware: IEnsureMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
-    const iEnsureAccessTokenMiddlware = new IEnsureAccessTokenMiddleware(
-      adapter,
-      this.iTokenService
-    );
     const ensure:
       | void
       | TokenIsMissingErrorResponse
-      | TokenInvalidErrorResponse = iEnsureAccessTokenMiddlware.ensure();
+      | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureAccessToken(
+      adapter,
+      this.iTokenService,
+      process.env.JWT_SECRET_KEY!
+    );
 
     if (ensure instanceof TokenIsMissingErrorResponse) {
       return adapter.res.status(401).send({ message: 'Token is missing' });

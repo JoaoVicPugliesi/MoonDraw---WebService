@@ -1,7 +1,4 @@
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-
-import { IEnsureAccessTokenMiddleware } from '@application/middlewares/IEnsureAccessTokenMiddleware';
-
 import {
   FetchProductsResponse,
   InvalidProductsNotFoundErrorResponse,
@@ -13,31 +10,34 @@ import {
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 
 export class IFetchProductsController {
   constructor(
     private readonly iFetchProductsUseCase: IFetchProductsUseCase,
-    private readonly iTokenService: ITokenService
+    private readonly iTokenService: ITokenService,
+    private readonly iEnsureMiddleware: IEnsureMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
-    try {
-      const iEnsureAccessTokenMiddleware = new IEnsureAccessTokenMiddleware(
-        adapter,
-        this.iTokenService
-      );
-      const ensure:
-        | TokenIsMissingErrorResponse
-        | TokenInvalidErrorResponse
-        | void = iEnsureAccessTokenMiddleware.ensure();
+    const ensure:
+      | TokenIsMissingErrorResponse
+      | TokenInvalidErrorResponse
+      | void = this.iEnsureMiddleware.ensureAccessToken(
+      adapter,
+      this.iTokenService,
+      process.env.JWT_SECRET_KEY!
+    );
 
-      if (ensure instanceof TokenIsMissingErrorResponse) {
-        return adapter.res.status(401).send({ message: 'Token is missing' });
-      }
-      if (ensure instanceof TokenInvalidErrorResponse) {
-        return adapter.res.status(401).send({ message: 'Token is invalid' });
-      }
-      const { page }: IFetchProductsDTO = adapter.req.params as IFetchProductsDTO;
+    if (ensure instanceof TokenIsMissingErrorResponse) {
+      return adapter.res.status(401).send({ message: 'Token is missing' });
+    }
+    if (ensure instanceof TokenInvalidErrorResponse) {
+      return adapter.res.status(401).send({ message: 'Token is invalid' });
+    }
+    try {
+      const { page }: IFetchProductsDTO = adapter.req
+        .params as IFetchProductsDTO;
       const response:
         | FetchProductsResponse
         | InvalidProductsNotFoundErrorResponse =

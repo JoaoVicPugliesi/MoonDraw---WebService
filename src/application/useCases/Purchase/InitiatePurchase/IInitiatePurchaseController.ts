@@ -3,39 +3,39 @@ import { ITokenService } from '@domain/services/ITokenService';
 import { IInitiatePurchaseUseCase } from './IInitiatePurchaseUseCase';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IInitiatePurchaseValidator } from '@application/validators/IInitiatePurchaseValidator';
-import { IEnsureAccessTokenMiddleware } from '@application/middlewares/IEnsureAccessTokenMiddleware';
 import { IInitiatePurchaseDTO } from './IInitiatePurchaseDTO';
 import {
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 
 export class IInitiatePurchaseController {
   constructor(
     private readonly iInitiatePurchaseUseCase: IInitiatePurchaseUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iInitiatePurchaseValidator: IInitiatePurchaseValidator
+    private readonly iInitiatePurchaseValidator: IInitiatePurchaseValidator,
+    private readonly iEnsureMiddleware: IEnsureMiddleware,
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const schema = this.iInitiatePurchaseValidator.validate();
-
-    try {
-      const iEnsureAccessTokenMiddlware = new IEnsureAccessTokenMiddleware(
+    const ensure:
+    | void
+    | TokenIsMissingErrorResponse
+    | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureAccessToken(
         adapter,
-        this.iTokenService
+        this.iTokenService,
+        process.env.JWT_SECRET_KEY!
       );
-      const ensure:
-        | void
-        | TokenIsMissingErrorResponse
-        | TokenInvalidErrorResponse = iEnsureAccessTokenMiddlware.ensure();
 
-      if (ensure instanceof TokenIsMissingErrorResponse) {
-        return adapter.res.status(401).send({ message: 'Token is missing' });
-      }
-      if (ensure instanceof TokenInvalidErrorResponse) {
-        return adapter.res.status(401).send({ message: 'Token is invalid' });
-      }
+    if (ensure instanceof TokenIsMissingErrorResponse) {
+      return adapter.res.status(401).send({ message: 'Token is missing' });
+    }
+    if (ensure instanceof TokenInvalidErrorResponse) {
+      return adapter.res.status(401).send({ message: 'Token is invalid' });
+    }
+    try {
       const { user_id, title, selected_products }: IInitiatePurchaseDTO = schema.parse(
         adapter.req.body
       );

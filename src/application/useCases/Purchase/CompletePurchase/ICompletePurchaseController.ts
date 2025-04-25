@@ -1,7 +1,6 @@
 import { ITokenService } from '@domain/services/ITokenService';
 import { ICompletePurchaseUseCase } from './ICompletePurchaseUseCase';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import { IEnsureAccessTokenMiddleware } from '@application/middlewares/IEnsureAccessTokenMiddleware';
 import {
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
@@ -11,22 +10,24 @@ import {
   ICompletePurchaseResponse,
   PurchaseHasNoOwnerErrorResponse,
 } from '@application/handlers/UseCasesResponses/Purchase/ICompletePurchaseHandlers';
+import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 
 export class ICompletePurchaseController {
   constructor(
     private readonly iCompletePurchaseUseCase: ICompletePurchaseUseCase,
-    private readonly iTokenService: ITokenService
+    private readonly iTokenService: ITokenService,
+    private readonly iEnsureMiddleware: IEnsureMiddleware,
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
-    const iEnsureAccessTokenMiddlware = new IEnsureAccessTokenMiddleware(
-      adapter,
-      this.iTokenService
-    );
     const ensure:
-      | void
-      | TokenIsMissingErrorResponse
-      | TokenInvalidErrorResponse = iEnsureAccessTokenMiddlware.ensure();
+    | void
+    | TokenIsMissingErrorResponse
+    | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureAccessToken(
+      adapter,
+      this.iTokenService,
+      process.env.JWT_SECRET_KEY!
+      );
 
     if (ensure instanceof TokenIsMissingErrorResponse) {
       return adapter.res.status(401).send({ message: 'Token is missing' });

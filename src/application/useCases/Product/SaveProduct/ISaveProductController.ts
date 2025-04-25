@@ -1,7 +1,6 @@
 import z from 'zod';
 import { ISaveProductValidator } from '@application/validators/ISaveProductValidator';
 import { ITokenService } from '@domain/services/ITokenService';
-import { IEnsureUserIsAdminMiddleware } from '@application/middlewares/IEnsureUserIsAdminMiddleware';
 import { ISaveProductUseCase } from './ISaveProductUseCase';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ISaveProductDTO } from './ISaveProductDTO';
@@ -11,39 +10,42 @@ import {
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 
 export class ISaveProductController {
   constructor(
     private readonly iSaveProductUseCase: ISaveProductUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iSaveProductValidator: ISaveProductValidator
+    private readonly iSaveProductValidator: ISaveProductValidator,
+    private readonly iEnsureMiddleware: IEnsureMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const schema = this.iSaveProductValidator.validate();
 
-    try {
-      const iEnsureUserIsAdminMiddleware = new IEnsureUserIsAdminMiddleware(
-        adapter,
-        this.iTokenService
-      );
-      const ensure:
-        | void
-        | TokenIsMissingErrorResponse
-        | MustBeAnAdmingErrorResponse
-        | TokenInvalidErrorResponse = iEnsureUserIsAdminMiddleware.ensure();
+    const ensure:
+      | void
+      | TokenIsMissingErrorResponse
+      | MustBeAnAdmingErrorResponse
+      | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureUserIsAdmin(
+      adapter,
+      this.iTokenService,
+      process.env.JWT_SECRET_KEY!
+    );
 
-      if (ensure instanceof TokenIsMissingErrorResponse) {
-        return adapter.res.status(401).send({ message: 'Token is missing' });
-      }
-      if (ensure instanceof MustBeAnAdmingErrorResponse) {
-        return adapter.res
-          .status(401)
-          .send({ message: 'Only admins have access' });
-      }
-      if (ensure instanceof TokenInvalidErrorResponse) {
-        return adapter.res.status(401).send({ message: 'Token is invalid' });
-      }
+    if (ensure instanceof TokenIsMissingErrorResponse) {
+      return adapter.res.status(401).send({ message: 'Token is missing' });
+    }
+    if (ensure instanceof MustBeAnAdmingErrorResponse) {
+      return adapter.res
+        .status(403)
+        .send({ message: 'Only admins have access' });
+    }
+    if (ensure instanceof TokenInvalidErrorResponse) {
+      return adapter.res.status(401).send({ message: 'Token is invalid' });
+    }
+
+    try {
       const {
         image_id,
         name,

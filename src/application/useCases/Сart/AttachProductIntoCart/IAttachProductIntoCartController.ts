@@ -2,7 +2,6 @@ import z from 'zod';
 import { ITokenService } from '@domain/services/ITokenService';
 import { IAttachProductIntoCartUseCase } from './IAttachProductIntoCartUseCase';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import { IEnsureAccessTokenMiddleware } from '@application/middlewares/IEnsureAccessTokenMiddleware';
 import { IAttachProductIntoCartDTO } from './IAttachProductIntoCartDTO';
 import {
   IAttachProductIntoCartResponse,
@@ -10,32 +9,34 @@ import {
 } from '@application/handlers/UseCasesResponses/Cart/IAttachProductIntoCart';
 import { IAttachProductIntoCartValidator } from '@application/validators/IAttachProductIntoCartValidator';
 import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 
 export class IAttachProductIntoCartController {
   constructor(
     private readonly iAttachProductIntoCartUseCase: IAttachProductIntoCartUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iAttachProductIntoCartValidator: IAttachProductIntoCartValidator
+    private readonly iAttachProductIntoCartValidator: IAttachProductIntoCartValidator,
+    private readonly iEnsureMiddleware: IEnsureMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const schema = this.iAttachProductIntoCartValidator.validate();
-    try {
-      const iEnsureAccessTokenMiddleware = new IEnsureAccessTokenMiddleware(
+    const ensure:
+    | TokenIsMissingErrorResponse
+    | TokenInvalidErrorResponse
+    | void = this.iEnsureMiddleware.ensureAccessToken(
         adapter,
-        this.iTokenService
+        this.iTokenService,
+        process.env.JWT_SECRET_KEY!
       );
-      const ensure:
-        | TokenIsMissingErrorResponse
-        | TokenInvalidErrorResponse
-        | void = iEnsureAccessTokenMiddleware.ensure();
 
-      if (ensure instanceof TokenIsMissingErrorResponse) {
-        return adapter.res.status(401).send({ message: 'Token is missing' });
-      }
-      if (ensure instanceof TokenInvalidErrorResponse) {
-        return adapter.res.status(401).send({ message: 'Token is invalid' });
-      }
+    if (ensure instanceof TokenIsMissingErrorResponse) {
+      return adapter.res.status(401).send({ message: 'Token is missing' });
+    }
+    if (ensure instanceof TokenInvalidErrorResponse) {
+      return adapter.res.status(401).send({ message: 'Token is invalid' });
+    }
+    try {
       const { cart_id, product_id }: IAttachProductIntoCartDTO = schema.parse(
         adapter.req.body
       );

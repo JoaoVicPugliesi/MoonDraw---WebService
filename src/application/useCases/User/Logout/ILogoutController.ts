@@ -3,22 +3,44 @@ import { ILogoutUseCase } from './ILogoutUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { ILogoutDTO } from './ILogoutDTO';
 import { InvalidRefreshTokenNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/User/ILogoutHandlers';
-import { IEnsureRefreshTokenMiddleware } from '@application/middlewares/IEnsureRefreshTokenMiddleware';
+import {
+  RefreshTokenCookieMissingErrorResponse,
+  TokenInvalidFormatErrorResponse,
+} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 
 export class ILogOutController {
   constructor(
-    private readonly iLogoutUseCase: ILogoutUseCase
+    private readonly iLogoutUseCase: ILogoutUseCase,
+    private readonly iEnsureMiddleware: IEnsureMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
+    const refreshToken:
+      | TokenInvalidFormatErrorResponse
+      | RefreshTokenCookieMissingErrorResponse
+      | RefreshToken = this.iEnsureMiddleware.ensureRefreshToken(
+        adapter
+      );
+
+    if (refreshToken instanceof RefreshTokenCookieMissingErrorResponse) {
+      return adapter.res.status(403).send({
+        message: 'Forbidden',
+      });
+    }
+    if (refreshToken instanceof TokenInvalidFormatErrorResponse) {
+      return adapter.res.status(400).send({
+        message: 'Invalid token format',
+      });
+    }
     try {
-      const iEnsureRefreshTokenMiddleware = new IEnsureRefreshTokenMiddleware(adapter);
-      const refreshToken: RefreshToken = iEnsureRefreshTokenMiddleware.ensure();
-      const DTO: ILogoutDTO = {
+      const { public_id }: ILogoutDTO = {
         public_id: refreshToken.public_id,
       };
       const response: InvalidRefreshTokenNotFoundErrorResponse | void =
-        await this.iLogoutUseCase.execute(DTO);
+        await this.iLogoutUseCase.execute({
+          public_id,
+        });
 
       if (response instanceof InvalidRefreshTokenNotFoundErrorResponse) {
         return adapter.res
@@ -31,11 +53,7 @@ export class ILogOutController {
 
       return adapter.res.status(204).send();
     } catch (error) {
-
-      return adapter.res
-        .status(500)
-        .send({ message: error });
-      
+      return adapter.res.status(500).send({ message: error });
     }
   }
 }
