@@ -9,6 +9,7 @@ export interface IPurchase {
   readonly status: PurchaseStatus,
   readonly created_at: Date,
   readonly updated_at: Date,
+  readonly payment_method?: string | null,
   readonly completed_at?: Date | null
 }
 
@@ -22,6 +23,7 @@ export class Purchase implements IPurchase {
     readonly status: PurchaseStatus,
     readonly created_at: Date,
     readonly updated_at: Date,
+    readonly payment_method?: string | null,
     readonly completed_at?: Date | null
   ) {}
 }

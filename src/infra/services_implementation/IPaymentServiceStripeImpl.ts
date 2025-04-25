@@ -1,5 +1,5 @@
-import { Payment } from '@domain/services/helpers/Payment';
-import { IPaymentService, IRetrieveParams } from '@domain/services/IPaymentService';
+import { IRetrieveParams, IRetrieveResponse, Payment } from '@domain/services/helpers/Payment';
+import { IPaymentService } from '@domain/services/IPaymentService';
 import { stripe } from '../../../apis/stripe/stripe';
 
 export class IPaymentServiceStripeImpl implements IPaymentService {
@@ -8,7 +8,7 @@ export class IPaymentServiceStripeImpl implements IPaymentService {
     return response;
   }
 
-  async retrieve(session_id: string, params?: IRetrieveParams): Promise<any> {
+  async retrieve(session_id: string, params?: IRetrieveParams): Promise<IRetrieveResponse> {
     return await stripe.checkout.sessions.retrieve(session_id, params);
   }
 

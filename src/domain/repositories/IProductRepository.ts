@@ -9,5 +9,5 @@ export interface IProductRepository {
     selectProduct(DTO: ISelectProductDTO): Promise<Product | null>;
     searchProducts(DTO: ISearchProductsDTO): Promise<Product[] | null>; 
     saveProduct(DTO: ISaveProductDTO): Promise<void>;
-    findProductByName(name: string): Promise<Product | null>;
+    findProductByName(DTO: Pick<Product, 'name'>): Promise<Product | null>;
 }

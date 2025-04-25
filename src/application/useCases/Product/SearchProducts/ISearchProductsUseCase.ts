@@ -10,7 +10,9 @@ export class ISearchProductsUseCase {
     private readonly iCacheService: ICacheService
   ) {}
 
-  async execute({ name }: ISearchProductsDTO): Promise<ISearchProductsResponse | InvalidSearchedProductsNotFoundErrorResponse> {
+  async execute({ 
+    name 
+  }: ISearchProductsDTO): Promise<ISearchProductsResponse | InvalidSearchedProductsNotFoundErrorResponse> {
     const cachedSearch: string | null = await this.iCacheService.get(
       `search-${name}`
     );

@@ -16,6 +16,8 @@ export interface CheckoutPurchase {
   product: Product;
 }
 
+
+
 export interface IPurchaseRepository {
   measurePurchase(
     DTO: IMeasurePurchaseDTO[],
@@ -28,5 +30,6 @@ export interface IPurchaseRepository {
     DTO: ICheckoutPurchaseDTO
   ): Promise<CheckoutPurchase[] | null>;
   removePurchase(DTO: IRemovePurchaseDTO): Promise<void>;
-  completePurchase(DTO: Pick<ICompletePurchaseDTO, 'purchase_id'>): Promise<void>
+  completePurchase(DTO: { purchase_id: string, payment_method: string }): Promise<void>;
+  findPurchaseOwner(DTO: Pick<ICompletePurchaseDTO, 'purchase_id'>): Promise<Pick<Purchase, 'user_id'> | null>;
 }

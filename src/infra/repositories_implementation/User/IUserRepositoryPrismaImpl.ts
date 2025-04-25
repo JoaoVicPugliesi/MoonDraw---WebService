@@ -8,7 +8,9 @@ import { IHashService } from '@domain/services/IHashService';
 export class IUserRepositoryPrismaImpl implements IUserRepository {
   constructor(private readonly iHashService: IHashService) {}
 
-  async findUserByEmail(email: string): Promise<User | null> {
+  async findUserByEmail({
+    email
+  }: Pick<User, 'email'>): Promise<User | null> {
     const user: User | null = await prisma.user.findFirst({
       where: {
         email: email,
@@ -38,7 +40,9 @@ export class IUserRepositoryPrismaImpl implements IUserRepository {
     return user;
   }
 
-  async findUserById(public_id: string): Promise<User | null> {
+  async findUserById({ 
+    public_id
+   }: Pick<User, 'public_id'>): Promise<User | null> {
     const user: User | null = await prisma.user.findFirst({
       where: {
         public_id: public_id,
@@ -50,7 +54,9 @@ export class IUserRepositoryPrismaImpl implements IUserRepository {
     return null;
   }
 
-  async trackUserActivity(email: string): Promise<void> {
+  async trackUserActivity({
+    email
+  }: Pick<User, 'email'>): Promise<void> {
     await prisma.user.update({
       where: {
         email: email,

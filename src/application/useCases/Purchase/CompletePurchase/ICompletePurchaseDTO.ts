@@ -1,4 +1,4 @@
 export interface ICompletePurchaseDTO {
-    session_id: string,
-    purchase_id: string
+    purchase_id: string,
+    session_id: string
 }

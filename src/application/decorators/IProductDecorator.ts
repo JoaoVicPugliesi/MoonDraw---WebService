@@ -47,8 +47,12 @@ class IProductDecorator implements IProductRepository {
     });
   }
 
-  async findProductByName(name: string): Promise<Product | null> {
-    return await this.decoratee.findProductByName(name);
+  async findProductByName({
+    name
+  }: Pick<Product, 'name'>): Promise<Product | null> {
+    return await this.decoratee.findProductByName({
+      name
+    });
   }
 }
 

@@ -80,7 +80,9 @@ export class IProductRepositoryInMemoryImpl implements IProductRepository {
     });
   }
 
-  async findProductByName(name: string): Promise<Product | null> {
+  async findProductByName({
+    name
+  }: Pick<Product, 'name'>): Promise<Product | null> {
     return new Promise((resolve, reject) => {
       const product: Product | undefined = this.products.find(
         (p: Product) => p.name === name

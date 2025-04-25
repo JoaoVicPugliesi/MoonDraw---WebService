@@ -1,4 +1,5 @@
 import { ISaveDeliveryDTO } from '@application/useCases/Delivery/SaveDelivery/ISaveDeliveryDTO';
+import { Delivery } from '@domain/entities/Delivery';
 import { IDeliveryRepository } from '@domain/repositories/IDeliveryRepository';
 import { IDeliveryRepositoryPrismaImpl } from '@infra/repositories_implementation/Delivery/IDeliveryRepositoryPrismaImpl';
 
@@ -23,8 +24,8 @@ export class IDeliveryDecorator implements IDeliveryRepository {
     tracking_url,
     recipient_phone,
     delivery_instructions,
-  }: ISaveDeliveryDTO): Promise<void> {
-    await this.decoratee.saveDelivery({
+  }: ISaveDeliveryDTO): Promise<Delivery> {
+    return await this.decoratee.saveDelivery({
       user_id,
       purchase_id,
       recipient_email,

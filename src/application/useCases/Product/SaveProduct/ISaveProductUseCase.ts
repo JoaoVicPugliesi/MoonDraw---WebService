@@ -16,7 +16,9 @@ export class ISaveProductUseCase {
     supply,
     publisher,
   }: ISaveProductDTO): Promise<InvalidProductAlreadyExistsErrorResponse | void> {
-    const product: Product | null = await this.iProductRepository.findProductByName(name);
+    const product: Product | null = await this.iProductRepository.findProductByName({
+      name
+    });
 
     if(product) return new InvalidProductAlreadyExistsErrorResponse();
 

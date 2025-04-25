@@ -9,8 +9,12 @@ class IUserDecorator implements IUserRepository {
     private readonly decoratee: IUserRepository
   ) {}
 
-  async findUserByEmail(email: string): Promise<User | null> {
-    return await this.decoratee.findUserByEmail(email);
+  async findUserByEmail({
+    email
+  }: Pick<User, 'email'>): Promise<User | null> {
+    return await this.decoratee.findUserByEmail({
+      email
+    });
   }
 
   async saveUser({
@@ -27,12 +31,20 @@ class IUserDecorator implements IUserRepository {
     });
   }
 
-  async findUserById(public_id: string): Promise<User | null> {
-    return await this.decoratee.findUserById(public_id);
+  async findUserById({ 
+    public_id
+  }: Pick<User, 'public_id'>): Promise<User | null> {
+    return await this.decoratee.findUserById({
+      public_id
+    });
   }
 
-  async trackUserActivity(email: string): Promise<void> {
-      await this.decoratee.trackUserActivity(email);
+  async trackUserActivity({
+    email
+  }: Pick<User, 'email'>): Promise<void> {
+      await this.decoratee.trackUserActivity({
+        email
+      });
   }
 
   async activateUser<T>(param: T): Promise<void> {

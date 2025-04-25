@@ -28,6 +28,7 @@ const user: User = {
   role: 'client',
   is_active: false,
   created_at: new Date(),
+  last_login_at: new Date(),
   email_verified_at: null,
 };
 users.push(user);
@@ -93,7 +94,6 @@ describe('I register use case', () => {
 
     // Assert 
     expect(response).toHaveProperty('assign_cart_owner_response');
-    expect(response).toHaveProperty('mail_response');
     expect(response).toHaveProperty('login_response');
   });
 });

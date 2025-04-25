@@ -17,6 +17,7 @@ const product: Product = {
   supply: 100,
   publisher: 'Nike',
   published_at: new Date(),
+  updated_at: new Date()
 }
 products.push(product);
 const map: Map<string, string> = new Map<string, string>();

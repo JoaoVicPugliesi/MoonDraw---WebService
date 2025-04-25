@@ -1,5 +1,6 @@
 import { IDeliveryRepository } from '@domain/repositories/IDeliveryRepository';
 import { ISaveDeliveryDTO } from './ISaveDeliveryDTO';
+import { Delivery } from '@domain/entities/Delivery';
 
 export class ISaveDeliveryUseCase {
   constructor(
@@ -22,8 +23,8 @@ export class ISaveDeliveryUseCase {
     tracking_url,
     recipient_phone,
     delivery_instructions,
-  }: ISaveDeliveryDTO) {
-    await this.iDeliveryRepository.saveDelivery({
+  }: ISaveDeliveryDTO): Promise<Delivery> {
+    return await this.iDeliveryRepository.saveDelivery({
       user_id,
       purchase_id,
       recipient_email,

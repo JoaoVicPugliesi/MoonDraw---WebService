@@ -3,7 +3,6 @@ import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
 import { IHashService } from '@domain/services/IHashService';
 import { randomUUID } from 'crypto';
-import { resolve } from 'path';
 
 export class IUserRepositoryInMemoryImpl implements IUserRepository {
   constructor(
@@ -11,7 +10,9 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
     private readonly iHashService: IHashService
   ) {}
 
-  async findUserByEmail(email: string): Promise<User | null> {
+  async findUserByEmail({
+    email
+  }: Pick<User, 'email'>): Promise<User | null> {
     return new Promise((resolve, reject) => {
       const user: User | undefined = this.users.find(
         (user) => user.email === email
@@ -51,7 +52,9 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
     });
   }
 
-  async findUserById(public_id: string): Promise<User | null> {
+  async findUserById({
+    public_id
+  }: Pick<User, 'public_id'>): Promise<User | null> {
     return new Promise((resolve, reject) => {
       const user: User | undefined = this.users.find(
         (user) => user.public_id === public_id
@@ -63,7 +66,9 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
     });
   }
 
-  async trackUserActivity(email: string): Promise<void> {
+  async trackUserActivity({ 
+    email
+   }: Pick<User, 'email'>): Promise<void> {
     return new Promise((resolve, reject) => {
       const user = this.users.find((user: User) => user.email === email);
       if (user) user.last_login_at = new Date();

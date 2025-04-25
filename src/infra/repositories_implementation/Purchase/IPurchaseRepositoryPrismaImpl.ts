@@ -14,6 +14,7 @@ import { IListPurchasesDTO } from '@application/useCases/Purchase/ListPurchases/
 import { ICheckoutPurchaseDTO } from '@application/useCases/Purchase/CheckoutPurchase/ICheckoutPurchaseDTO';
 import { IRemovePurchaseDTO } from '@application/useCases/Purchase/RemovePurchase/IRemovePurchaseDTO';
 import { ICompletePurchaseDTO } from '@application/useCases/Purchase/CompletePurchase/ICompletePurchaseDTO';
+import { User } from '@domain/entities/User';
 
 export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
   async measurePurchase(
@@ -111,31 +112,50 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
           product: true,
         },
       });
-      
-      return purchase;
-    }
-    
-  async removePurchase({ 
-    public_id 
-  }: IRemovePurchaseDTO): Promise<void> {
+
+    return purchase;
+  }
+
+  async removePurchase({ public_id }: IRemovePurchaseDTO): Promise<void> {
     await prisma.purchase.delete({
       where: {
         public_id: public_id,
-        status: 'pending'
+        status: 'pending',
       },
     });
   }
 
   async completePurchase({
-    purchase_id
-  }: Pick<ICompletePurchaseDTO, 'purchase_id'>): Promise<void> {
-      await prisma.purchase.update({
-        where: {
-          public_id: purchase_id
-        },
-        data: {
-          status: 'completed'
-        }
-      });
+    purchase_id,
+    payment_method
+  }: { purchase_id: string, payment_method: string }): Promise<void> {
+    await prisma.purchase.update({
+      where: {
+        public_id: purchase_id,
+      },
+      data: {
+        status: 'completed',
+        completed_at: new Date(),
+        payment_method: payment_method
+      },
+    });
+  }
+
+  async findPurchaseOwner({
+    purchase_id,
+  }: Pick<ICompletePurchaseDTO, 'purchase_id'>): Promise<Pick<Purchase, 'user_id'> | null> {
+    const purchase: Purchase | null = await prisma.purchase.findUnique({
+      where: {
+        public_id: purchase_id,
+      },
+    });
+
+    if (purchase) {
+      return {
+        user_id: purchase.user_id
+      };
+    }
+
+    return null;
   }
 }

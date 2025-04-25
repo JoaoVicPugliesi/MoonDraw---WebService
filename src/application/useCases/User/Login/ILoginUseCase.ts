@@ -32,7 +32,9 @@ export class ILoginUseCase {
     | InvalidGenerateRefreshTokenErrorResponse
     | ILoginResponse
   > {
-    const user: User | null = await this.iUserRepository.findUserByEmail(email);
+    const user: User | null = await this.iUserRepository.findUserByEmail({
+      email
+    });
     
     if (!user) return new InvalidUserNotFoundErrorResponse();
 
@@ -42,7 +44,9 @@ export class ILoginUseCase {
     );
     if (!isPasswordEqual) return new InvalidPasswordIsNotEqualErrorResponse();
     
-    await this.iUserRepository.trackUserActivity(email);
+    await this.iUserRepository.trackUserActivity({
+      email
+    });
     
     const { public_id, name, surname, role, is_active } = user;
 

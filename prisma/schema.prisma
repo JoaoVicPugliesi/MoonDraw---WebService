@@ -89,18 +89,19 @@ model Product {
 }
 
 model Purchase {
-  id           Int                      @default(autoincrement())
-  public_id    String                   @id
-  user_id      String
-  title         String
-  value        Float
-  status       PurchaseStatus           @default(pending)
-  created_at   DateTime                 @default(now())
-  updated_at   DateTime                 @default(now())
-  completed_at DateTime?
-  user         User                     @relation(fields: [user_id], references: [public_id], onDelete: Cascade)
-  products     Pivot_Purchase_Product[]
-  delivery     Delivery?
+  id             Int                      @default(autoincrement())
+  public_id      String                   @id
+  user_id        String
+  title          String
+  value          Float
+  status         PurchaseStatus           @default(pending)
+  created_at     DateTime                 @default(now())
+  updated_at     DateTime                 @default(now())
+  completed_at   DateTime?
+  payment_method String?
+  user           User                     @relation(fields: [user_id], references: [public_id], onDelete: Cascade)
+  products       Pivot_Purchase_Product[]
+  delivery       Delivery?
 
   @@map("purchases")
 }
@@ -140,6 +141,7 @@ model Delivery {
   country               String
   state                 String
   city                  String
+  neighborhood          String?
   address_line1         String
   address_line2         String?
   postal_code           String

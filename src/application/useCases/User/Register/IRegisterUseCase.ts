@@ -36,9 +36,9 @@ export class IRegisterUseCase {
   }: IRegisterDTO): Promise<
     InvalidUserConflictErrorResponse | IRegisterReponse
   > {
-    const response: User | null = await this.iUserRepository.findUserByEmail(
+    const response: User | null = await this.iUserRepository.findUserByEmail({
       email
-    );
+    });
 
     if (response) return new InvalidUserConflictErrorResponse();
 

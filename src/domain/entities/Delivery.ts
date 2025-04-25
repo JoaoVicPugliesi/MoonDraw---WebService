@@ -1,11 +1,4 @@
-import { AllowedCountry } from '@domain/services/helpers/Payment';
-
 type DeliveryStatus = 'processing' | 'delivering' | 'delivered';
-
-interface DeliveryInstructions {
-  references: Array<string>,
-  warnings: Array<string>
-}
 
 export interface IDelivery {
   readonly id: number,
@@ -15,19 +8,20 @@ export interface IDelivery {
   readonly status: DeliveryStatus,
   readonly recipient_email: string,
   readonly recipient_name: string,
-  readonly country: AllowedCountry,
+  readonly country: string,
   readonly state: string,
   readonly city: string,
   readonly address_line1: string,
   readonly postal_code: string,
   readonly created_at: Date,
   readonly updated_at: Date,
+  readonly neighborhood?: string,
   readonly address_line2?: string | null,
   readonly tracking_number?: string | null,
   readonly carrier?: string | null,
   readonly tracking_url?: string | null,
   readonly recipient_phone?: string | null,
-  readonly delivery_instructions?: DeliveryInstructions | null,
+  readonly delivery_instructions?: any,
   readonly delivered_at?: Date | null
 }
 
@@ -40,19 +34,20 @@ export class Delivery implements IDelivery {
     readonly status: DeliveryStatus,
     readonly recipient_email: string,
     readonly recipient_name: string,
-    readonly country: AllowedCountry,
+    readonly country: string,
     readonly state: string,
     readonly city: string,
     readonly address_line1: string,
     readonly postal_code: string,
     readonly created_at: Date,
     readonly updated_at: Date,
+    readonly neighborhood?: string,
     readonly address_line2?: string | null,
     readonly tracking_number?: string | null,
     readonly carrier?: string | null,
     readonly tracking_url?: string | null,
     readonly recipient_phone?: string | null,
-    readonly delivery_instructions?: DeliveryInstructions | null,
+    readonly delivery_instructions?: any,
     readonly delivered_at?: Date | null
   ) {}
 }

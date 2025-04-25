@@ -47,6 +47,7 @@ CREATE TABLE "deliveries" (
     "country" TEXT NOT NULL,
     "state" TEXT NOT NULL,
     "city" TEXT NOT NULL,
+    "neighborhood" TEXT,
     "address_line1" TEXT NOT NULL,
     "address_line2" TEXT,
     "postal_code" TEXT NOT NULL,

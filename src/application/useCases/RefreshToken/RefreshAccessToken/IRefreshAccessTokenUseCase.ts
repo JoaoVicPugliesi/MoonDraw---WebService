@@ -41,15 +41,17 @@ export class IRefreshAccessTokenUseCase {
     if (!refreshToken) return new InvalidRefreshTokenNotFoundErrorResponse();
 
     const user: User | null =
-      await this.iUserRepository.findUserById(
-        refreshToken.user_id
-      );
+      await this.iUserRepository.findUserById({
+        public_id: refreshToken.user_id
+      });
 
     if (!user) return new InvalidRefreshTokenUserNotFoundErrorResponse();
 
     const { name, surname, email, role, is_active } = user;
     
-    await this.iUserRepository.trackUserActivity(email);
+    await this.iUserRepository.trackUserActivity({
+      email
+    });
     
     const accessToken: string = this.iTokenService.sign({
       payload: {

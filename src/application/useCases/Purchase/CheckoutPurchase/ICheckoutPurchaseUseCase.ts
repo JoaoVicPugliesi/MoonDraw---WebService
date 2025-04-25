@@ -55,8 +55,8 @@ export class ICheckoutPurchaseUseCase {
 
       const { url } = await this.iPaymentService.create({
         line_items: lineItems,
-        cancel_url: 'http://localhost:5000',
-        success_url: 'http://localhost:8000',
+        cancel_url: 'https://localhost:5000',
+        success_url: 'https://localhost:8000/api/purchases/purchase/complete?purchase_id=${public_id}&session_id={CHECKOUT_SESSION_ID}',
         mode: 'payment',
         shipping_address_collection: {
           allowed_countries: ['US', 'BR']
@@ -118,8 +118,8 @@ export class ICheckoutPurchaseUseCase {
     
     const { url } = await this.iPaymentService.create({
       line_items: lineItems,
-      cancel_url: 'http://localhost:5000',
-      success_url: `http://localhost:8000/api/complete/?session_id={CHECKOUT_SESSION_ID}&purchase_id=${public_id}`,
+      cancel_url: 'https://localhost:5000',
+      success_url: `https://localhost:8000/api/purchases/purchase/complete?session_id={CHECKOUT_SESSION_ID}&purchase_id=${public_id}`,
       mode: 'payment',
       shipping_address_collection: {
         allowed_countries: ['US', 'BR']

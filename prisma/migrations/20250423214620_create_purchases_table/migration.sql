@@ -6,7 +6,7 @@ CREATE TABLE "purchases" (
     "name" TEXT NOT NULL,
     "value" DOUBLE PRECISION NOT NULL,
     "status" "PurchaseStatus" NOT NULL DEFAULT 'pendent',
-
+    "payment_method" TEXT,
     CONSTRAINT "purchases_pkey" PRIMARY KEY ("public_id")
 );
 

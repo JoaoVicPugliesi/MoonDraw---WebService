@@ -28,6 +28,7 @@ const user: User = {
   role: 'client',
   is_active: false,
   created_at: new Date(),
+  last_login_at: new Date(),
   email_verified_at: null,
 };
 const user2: User = {
@@ -40,6 +41,7 @@ const user2: User = {
   role: 'client',
   is_active: false,
   created_at: new Date(),
+  last_login_at: new Date(),
   email_verified_at: null,
 };
 users.push(user);

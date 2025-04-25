@@ -34,7 +34,7 @@ export interface RequestResponseAdapter {
     body?: any;
     cookies: { [cookieName: string]: string };
     params?: Record<string, any>;
-    query?: Record<string, string | string[]>;
+    query?: Record<string, any>;
     headers?: {
       authorization?: string;
     } & Record<string, string | string[] | undefined>;
