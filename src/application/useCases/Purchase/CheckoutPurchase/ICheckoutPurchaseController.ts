@@ -2,6 +2,7 @@ import { ITokenService } from '@domain/services/ITokenService';
 import { ICheckoutPurchaseUseCase } from './ICheckoutPurchaseUseCase';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import {
+  MustBeVerifiedErrorResponse,
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
@@ -23,6 +24,7 @@ export class ICheckoutPurchaseController {
     const ensure:
       | void
       | TokenIsMissingErrorResponse
+      | MustBeVerifiedErrorResponse
       | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureUserIsVerified(
       adapter,
       this.iTokenService,
@@ -31,6 +33,9 @@ export class ICheckoutPurchaseController {
 
     if (ensure instanceof TokenIsMissingErrorResponse) {
       return adapter.res.status(401).send({ message: 'Token is missing' });
+    }
+    if (ensure instanceof MustBeVerifiedErrorResponse) {
+      return adapter.res.status(403).send({ message: 'Must verify email to access' });
     }
     if (ensure instanceof TokenInvalidErrorResponse) {
       return adapter.res.status(401).send({ message: 'Token is invalid' });

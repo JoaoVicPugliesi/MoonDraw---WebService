@@ -113,7 +113,7 @@ export class IEnsureMiddlewareImpl implements IEnsureMiddleware {
       complete: true,
     });
 
-    const { is_verified } = tokenDecoded;
+    const { is_verified } = tokenDecoded.payload.content;
 
     if (is_verified === false) {
       return new MustBeVerifiedErrorResponse();
