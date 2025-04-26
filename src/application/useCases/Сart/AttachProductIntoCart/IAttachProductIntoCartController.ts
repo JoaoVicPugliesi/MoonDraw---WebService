@@ -7,20 +7,20 @@ import {
   IAttachProductIntoCartResponse,
   AttachmentAlreadyExistsErrorResponse,
 } from '@application/handlers/UseCasesResponses/Cart/IAttachProductIntoCart';
-import { IAttachProductIntoCartValidator } from '@application/validators/IAttachProductIntoCartValidator';
 import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { ICartValidator } from '@application/validators/Cart/ICartValidator';
 
 export class IAttachProductIntoCartController {
   constructor(
     private readonly iAttachProductIntoCartUseCase: IAttachProductIntoCartUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iAttachProductIntoCartValidator: IAttachProductIntoCartValidator,
+    private readonly iCartValidator: ICartValidator,
     private readonly iEnsureMiddleware: IEnsureMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
-    const schema = this.iAttachProductIntoCartValidator.validate();
+    const schema = this.iCartValidator.validateAttachmentBetweenProductAndCart();
     const ensure:
     | TokenIsMissingErrorResponse
     | TokenInvalidErrorResponse

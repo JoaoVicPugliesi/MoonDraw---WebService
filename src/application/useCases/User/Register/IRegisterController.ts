@@ -1,6 +1,5 @@
 import z from 'zod';
 import { IRegisterUseCase } from './IRegisterUseCase';
-import { IRegisterValidator } from '@application/validators/IRegisterValidator';
 import { IRegisterDTO } from './IRegisterDTO';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import {
@@ -13,20 +12,33 @@ import {
 } from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
 import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { OwnerNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/Cart/IAssignCartOwnerHandlers';
+import { IUserValidator } from '@application/validators/User/IUserValidator';
 
 export class IRegisterController {
   constructor(
     private readonly iRegisterUseCase: IRegisterUseCase,
-    private readonly iRegisterValidator: IRegisterValidator
+    private readonly iUserValidator: IUserValidator
   ) {}
 
   async handle(adapter: RequestResponseAdapter): Promise<void> {
-    const schema = this.iRegisterValidator.validate();
+    const schema = this.iUserValidator.validateRegister();
 
     try {
-      const DTO: IRegisterDTO = schema.parse(adapter.req.body);
+      const {
+        name,
+        surname,
+        email,
+        password,
+        confirmPassword
+      }: IRegisterDTO = schema.parse(adapter.req.body);
       const response: UserConflictErrorResponse | IRegisterReponse =
-        await this.iRegisterUseCase.execute(DTO);
+        await this.iRegisterUseCase.execute({
+          name,
+          surname,
+          email,
+          password,
+          confirmPassword
+        });
 
       if (response instanceof UserConflictErrorResponse) {
         return adapter.res.status(409).send({

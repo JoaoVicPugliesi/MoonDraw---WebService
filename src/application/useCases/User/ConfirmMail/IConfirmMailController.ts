@@ -2,19 +2,19 @@ import z from 'zod';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IConfirmMailUseCase } from './IConfirmMailUseCase';
 import { IConfirmMailDTO } from './IConfirmMailDTO';
-import { IConfirmMailValidator } from '@application/validators/IConfirmMailValidator';
 import { UserNotFoundError } from '@application/handlers/UseCasesResponses/User/IConfirmMailHandlers';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { IUserValidator } from '@application/validators/User/IUserValidator';
 
 export class IConfirmMailController {
   constructor(
     private readonly iConfirmMailUseCase: IConfirmMailUseCase,
-    private readonly iConfirmMailValidator: IConfirmMailValidator,
+    private readonly iUserValidator: IUserValidator,
     private readonly iEnsureMiddleware: IEnsureMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
-    const schema = this.iConfirmMailValidator.validate();
+    const schema = this.iUserValidator.validateConfirmMail();
 
     try {
       const DTO: IConfirmMailDTO = schema.parse(adapter.req.body);

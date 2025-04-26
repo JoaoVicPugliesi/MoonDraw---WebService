@@ -1,5 +1,4 @@
 import z from 'zod';
-import { ISaveProductValidator } from '@application/validators/ISaveProductValidator';
 import { ITokenService } from '@domain/services/ITokenService';
 import { ISaveProductUseCase } from './ISaveProductUseCase';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
@@ -11,17 +10,18 @@ import {
   TokenIsMissingErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { IProductValidator } from '@application/validators/Product/IProductValidator';
 
 export class ISaveProductController {
   constructor(
     private readonly iSaveProductUseCase: ISaveProductUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iSaveProductValidator: ISaveProductValidator,
+    private readonly iProductValidator: IProductValidator,
     private readonly iEnsureMiddleware: IEnsureMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
-    const schema = this.iSaveProductValidator.validate();
+    const schema = this.iProductValidator.validateSaveProduct();
 
     const ensure:
       | void

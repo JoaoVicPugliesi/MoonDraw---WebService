@@ -7,7 +7,11 @@ export class RefreshTokenEndpoints {
   ) {}
 
   setupRoutes() {
-    this.app.post('/api/refresh-token', async(adapter: RequestResponseAdapter) => {
+    this.app.post('/api/refreshtokens', {
+      schema: {
+        tags: ['Refreshtokens']
+      }
+    },async(adapter: RequestResponseAdapter) => {
       await iRefreshToken.handle(adapter);
     });
   }

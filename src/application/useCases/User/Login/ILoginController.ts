@@ -1,7 +1,6 @@
 import z from 'zod';
 import { ILoginUseCase } from './ILoginUseCase';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import { ILoginValidator } from '@application/validators/ILoginValidator';
 import { ILoginDTO } from './ILoginDTO';
 import {
   UserNotFoundErrorResponse,
@@ -9,15 +8,16 @@ import {
   ILoginResponse,
 } from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
 import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
+import { IUserValidator } from '@application/validators/User/IUserValidator';
 
 export class ILoginController {
   constructor(
     private readonly iLoginUseCase: ILoginUseCase,
-    private readonly iLoginValidator: ILoginValidator
+    private readonly iUserValidator: IUserValidator
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
-    const schema = this.iLoginValidator.validate();
+    const schema = this.iUserValidator.validateLogin();
 
     try {
       const DTO: ILoginDTO = schema.parse(adapter.req.body);

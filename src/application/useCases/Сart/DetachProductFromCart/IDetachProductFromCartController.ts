@@ -13,17 +13,18 @@ import {
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { ICartValidator } from '@application/validators/Cart/ICartValidator';
 
 export class IDetachProductFromCartController {
   constructor(
     private readonly iDetachProductFromCartUseCase: IDetachProductFromCartUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iDetachProductFromCartValidator: IDetachProductFromCartValidator,
+    private readonly iCartValidator: ICartValidator,
     private readonly iEnsureMiddleware: IEnsureMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
-    const schema = this.iDetachProductFromCartValidator.validate();
+    const schema = this.iCartValidator.validateAttachmentBetweenProductAndCart();
     const ensure:
       | TokenIsMissingErrorResponse
       | TokenInvalidErrorResponse

@@ -1,20 +1,23 @@
 import {
-  FastifyInstance,
   FastifyRequest,
   FastifyReply
 } from 'fastify';
 import fastifyCors from '@fastify/cors';
-import { RequestResponseAdapter, ServerAdapter } from '@adapters/ServerAdapter';
+import { DocSchema, RequestResponseAdapter, ServerAdapter } from '@adapters/ServerAdapter';
 import { fastifyCookie } from 'fastify-cookie';
 import { Routes } from '@routes/Routes';
 import { FastifyRequestResponseAdapter } from './FastifyRequestResponseAdapter';
 import fastifyRateLimit from '@fastify/rate-limit';
+import { jsonSchemaTransform, serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
+import fastifySwagger from '@fastify/swagger';
+import fastifySwaggerUi from '@fastify/swagger-ui';
+import { FastifyTypedInstance } from './FastifyInstance';
 
 export class FastifyServerAdapter implements ServerAdapter {
   private cookie: any;
   private routes?: Routes;
   constructor(
-    private readonly app: FastifyInstance,
+    private readonly app: FastifyTypedInstance,
   ) {}
 
   setRoutes(routes: Routes) {
@@ -26,29 +29,29 @@ export class FastifyServerAdapter implements ServerAdapter {
     this.routes.setupRoutes();
   }
 
-  get(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
-    this.app.get(url, async (req: FastifyRequest, res: FastifyReply) => {
+  get(url: string, docs: DocSchema, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
+    this.app.get(url, docs, async (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
       await callback(adapter);
     });
   }
   
-  post(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
-    this.app.post(url, async (req: FastifyRequest, res: FastifyReply) => {
+  post(url: string, docs: DocSchema, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
+    this.app.post(url, docs, async (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
       await callback(adapter);
     });
   }
 
-  put(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
-    this.app.put(url, async (req: FastifyRequest, res: FastifyReply) => {
+  put(url: string, docs: DocSchema, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
+    this.app.put(url, docs, async (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
       await callback(adapter);
     });
   }
 
-  delete(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
-    this.app.delete(url, async (req: FastifyRequest, res: FastifyReply) => {
+  delete(url: string, docs: DocSchema, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
+    this.app.delete(url, docs, async (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
       await callback(adapter);
     });
@@ -64,6 +67,20 @@ export class FastifyServerAdapter implements ServerAdapter {
 
   async init() {
     this.cookie = fastifyCookie;
+    this.app.setValidatorCompiler(validatorCompiler);
+    this.app.setSerializerCompiler(serializerCompiler);
+    await this.app.register(fastifySwagger, {
+      openapi: {
+        info: {
+          title: 'WebService',
+          version: '1.0.0'
+        }
+      },
+      transform: jsonSchemaTransform
+    });
+    await this.app.register(fastifySwaggerUi, {
+      routePrefix: '/docs',
+    });
     await this.app.register(fastifyCors, {
       credentials: true,
       origin: process.env.CORS_ORIGIN,

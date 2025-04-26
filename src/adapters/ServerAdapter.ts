@@ -1,18 +1,33 @@
+export interface DocSchema {
+  schema: {
+    description?: string,
+    tags?: Array<string>,
+    body?: object,
+    response?: Record<number, any>,
+    headers?: object,
+    params?: object
+  },
+}
+
 export interface ServerAdapter {
   delete(
     url: string,
+    docs: DocSchema,
     callback: (adapter: RequestResponseAdapter) => Promise<any>
   ): void;
   post(
     url: string,
+    docs: DocSchema,
     callback: (adapter: RequestResponseAdapter) => Promise<any>
   ): void;
   put(
     url: string,
+    docs: DocSchema,
     callback: (adapter: RequestResponseAdapter) => Promise<any>
   ): void;
   get(
     url: string,
+    docs: DocSchema,
     callback: (adapter: RequestResponseAdapter) => Promise<any>
   ): void;
   listen(options: { port: number; host: string }): Promise<void>;

@@ -1,7 +1,8 @@
 import z from 'zod';
+import { IUserValidator } from './IUserValidator';
 
-export class IRegisterValidator {
-  validate() {
+export class IUserValidatorZodImpl implements IUserValidator {
+  validateRegister(): object {
     return z
       .object({
         name: z
@@ -16,7 +17,9 @@ export class IRegisterValidator {
             required_error: 'Surname is required',
             invalid_type_error: 'Surname should be of type string',
           })
-          .max(200, { message: 'Surname should have at maximum 200 characters' }),
+          .max(200, {
+            message: 'Surname should have at maximum 200 characters',
+          }),
 
         email: z
           .string({
@@ -52,5 +55,31 @@ export class IRegisterValidator {
           });
         }
       });
+  }
+
+  validateLogin(): object {
+    return z.object({
+      email: z.string({
+        required_error: 'Email is required',
+        invalid_type_error: 'Email should be of type string',
+      }),
+      password: z.string({
+        required_error: 'Password is required',
+        invalid_type_error: 'Password should be of type string',
+      }),
+    });
+  }
+
+  validateConfirmMail(): object {
+    return z.object({
+      email: z.string({
+        required_error: 'Email is required',
+        invalid_type_error: 'Email should be a string',
+      }),
+      token: z.string({
+        required_error: 'Token is required',
+        invalid_type_error: 'Token should be a string',
+      }),
+    });
   }
 }

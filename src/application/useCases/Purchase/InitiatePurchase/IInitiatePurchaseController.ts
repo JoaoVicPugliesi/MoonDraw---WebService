@@ -2,7 +2,6 @@ import z from 'zod';
 import { ITokenService } from '@domain/services/ITokenService';
 import { IInitiatePurchaseUseCase } from './IInitiatePurchaseUseCase';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import { IInitiatePurchaseValidator } from '@application/validators/IInitiatePurchaseValidator';
 import { IInitiatePurchaseDTO } from './IInitiatePurchaseDTO';
 import {
   MustBeVerifiedErrorResponse,
@@ -10,17 +9,18 @@ import {
   TokenIsMissingErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { IPurchaseValidator } from '@application/validators/Purchase/IPurchaseValidator';
 
 export class IInitiatePurchaseController {
   constructor(
     private readonly iInitiatePurchaseUseCase: IInitiatePurchaseUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iInitiatePurchaseValidator: IInitiatePurchaseValidator,
+    private readonly iPurchaseValidator: IPurchaseValidator,
     private readonly iEnsureMiddleware: IEnsureMiddleware,
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
-    const schema = this.iInitiatePurchaseValidator.validate();
+    const schema = this.iPurchaseValidator.validateInitiatePurchase();
     const ensure:
     | void
     | TokenIsMissingErrorResponse
