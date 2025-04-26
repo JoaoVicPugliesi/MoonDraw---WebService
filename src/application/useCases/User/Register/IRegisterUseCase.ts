@@ -1,6 +1,6 @@
 import { ILoginUseCase } from '@application/useCases/User/Login/ILoginUseCase';
 import { User } from '@domain/entities/User';
-import { IMailProvider } from '@domain/providers/repositories/Mail/IMailProvider';
+import { IMailProvider } from '@domain/providers/Mail/IMailProvider';
 import { IRegisterDTO } from './IRegisterDTO';
 import {
   UserConflictErrorResponse,

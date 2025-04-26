@@ -1,16 +1,16 @@
 import { iPurchaseDecorator } from '@application/decorators/IPurchaseDecorator';
 import { ISaveDeliveryFactory } from '@application/factories/Delivery/SaveDelivery/ISaveDeliveryFactory';
 import { ICompletePurchaseUseCase } from '@application/useCases/Purchase/CompletePurchase/ICompletePurchaseUseCase';
-import { IPaymentServiceStripeImpl } from '@infra/services_implementation/IPaymentServiceStripeImpl';
+import { IPaymentProviderStripeImpl } from '@infra/providers_implementation/Payment/IPaymentProviderStripeImpl';
 
 export class ICompletePurchaseFactory {
   compose(): ICompletePurchaseUseCase {
-    const iPaymentServiceStripeImpl = new IPaymentServiceStripeImpl();
+    const iPaymentProviderStripeImpl = new IPaymentProviderStripeImpl();
     const iSaveDeliveryFactory = new ISaveDeliveryFactory();
     const iSaveDeliveryUseCase = iSaveDeliveryFactory.compose();
     return new ICompletePurchaseUseCase(
       iPurchaseDecorator,
-      iPaymentServiceStripeImpl,
+      iPaymentProviderStripeImpl,
       iSaveDeliveryUseCase
     );
   }

@@ -8,7 +8,7 @@ import { fastifyCookie } from 'fastify-cookie';
 import { Routes } from '@routes/Routes';
 import { FastifyRequestResponseAdapter } from './FastifyRequestResponseAdapter';
 import fastifyRateLimit from '@fastify/rate-limit';
-import { jsonSchemaTransform, serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
+import { jsonSchemaTransform, serializerCompiler } from 'fastify-type-provider-zod';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { FastifyTypedInstance } from './FastifyInstance';
@@ -67,7 +67,12 @@ export class FastifyServerAdapter implements ServerAdapter {
 
   async init() {
     this.cookie = fastifyCookie;
-    this.app.setValidatorCompiler(validatorCompiler);
+    const noopValidatorCompiler = () => {
+      return () => {
+        return true; 
+      };
+    };
+    this.app.setValidatorCompiler(noopValidatorCompiler);
     this.app.setSerializerCompiler(serializerCompiler);
     await this.app.register(fastifySwagger, {
       openapi: {

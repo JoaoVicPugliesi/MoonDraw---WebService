@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { IHashService } from '@domain/services/IHashService';
+import { IHashService } from '@domain/services/Hash/IHashService';
 
 export class IHashServiceBCryptImpl implements IHashService {
 

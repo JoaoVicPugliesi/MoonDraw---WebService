@@ -1,5 +1,5 @@
 import { ICompletePurchaseFactory } from './../../../factories/Purchase/CompletePurchase/ICompletePurchaseFactory';
-import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
+import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { ICompletePurchaseController } from './ICompletePurchaseController';
 import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
 

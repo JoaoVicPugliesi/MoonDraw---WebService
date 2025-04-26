@@ -1,19 +1,19 @@
 import { Product } from '@domain/entities/Product';
 import { ICartRepository } from '@domain/repositories/ICartRepository';
-import { ICacheService } from '@domain/services/ICacheService';
+import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import { IListCartContentDTO } from './IListCartContentDTO';
 import { IListCartContentResponse, CartEmptyErrorResponse } from '@application/handlers/UseCasesResponses/Cart/IListCartContentHandlers';
 
 export class IListCartContentUseCase {
   constructor(
     private readonly iCartRepository: ICartRepository,
-    private readonly iCacheService: ICacheService
+    private readonly iCacheProvider: ICacheProvider
   ) {}
 
   async execute({ 
     public_id 
   }: IListCartContentDTO): Promise<CartEmptyErrorResponse | IListCartContentResponse>  {
-    const cachedContent: string | null = await this.iCacheService.get(
+    const cachedContent: string | null = await this.iCacheProvider.get(
       `cart-${public_id}`
     );
 
@@ -29,7 +29,7 @@ export class IListCartContentUseCase {
 
     if(!content) return new CartEmptyErrorResponse();
 
-    await this.iCacheService.set(
+    await this.iCacheProvider.set(
         `cart-${public_id}`,
         JSON.stringify(content),
         {

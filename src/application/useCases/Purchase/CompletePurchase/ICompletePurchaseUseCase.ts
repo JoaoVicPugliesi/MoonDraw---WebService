@@ -1,6 +1,6 @@
 import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
 import { ICompletePurchaseDTO } from './ICompletePurchaseDTO';
-import { IPaymentService } from '@domain/services/IPaymentService';
+import { IPaymentProvider } from '@domain/providers/Payment/IPaymentProvider';
 import { ISaveDeliveryUseCase } from '@application/useCases/Delivery/SaveDelivery/ISaveDeliveryUseCase';
 import { Delivery } from '@domain/entities/Delivery';
 import { Purchase } from '@domain/entities/Purchase';
@@ -8,12 +8,12 @@ import {
   ICompletePurchaseResponse,
   PurchaseHasNoOwnerErrorResponse,
 } from '@application/handlers/UseCasesResponses/Purchase/ICompletePurchaseHandlers';
-import { IRetrieveResponse } from '@domain/services/helpers/Payment';
+import { IRetrieveResponse } from '@domain/providers/Payment/Payment';
 
 export class ICompletePurchaseUseCase {
   constructor(
     private readonly iPurchaseRepository: IPurchaseRepository,
-    private readonly iPaymentService: IPaymentService,
+    private readonly iPaymentProvider: IPaymentProvider,
     private readonly iSaveDeliveryUseCase: ISaveDeliveryUseCase
   ) {}
 
@@ -31,7 +31,7 @@ export class ICompletePurchaseUseCase {
     if (!owner) return new PurchaseHasNoOwnerErrorResponse();
 
     const { user_id } = owner;
-    const session: IRetrieveResponse = await this.iPaymentService.retrieve(
+    const session: IRetrieveResponse = await this.iPaymentProvider.retrieve(
       session_id,
       {
         expand: ['payment_intent.payment_method'],

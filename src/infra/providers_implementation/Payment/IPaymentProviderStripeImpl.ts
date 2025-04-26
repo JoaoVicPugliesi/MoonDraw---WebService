@@ -1,8 +1,8 @@
-import { IRetrieveParams, IRetrieveResponse, Payment } from '@domain/services/helpers/Payment';
-import { IPaymentService } from '@domain/services/IPaymentService';
-import { stripe } from '../../../apis/stripe/stripe';
+import { IRetrieveParams, IRetrieveResponse, Payment } from '@domain/providers/Payment/Payment';
+import { IPaymentProvider } from '@domain/providers/Payment/IPaymentProvider';
+import { stripe } from '../../../../apis/stripe/stripe';
 
-export class IPaymentServiceStripeImpl implements IPaymentService {
+export class IPaymentProviderStripeImpl implements IPaymentProvider {
   async create(params: Payment): Promise<any> {
     const response = await stripe.checkout.sessions.create(params);
     return response;

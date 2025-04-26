@@ -10,7 +10,7 @@ import {
   CheckoutPurchase,
   IPurchaseRepository,
 } from '@domain/repositories/IPurchaseRepository';
-import { ICacheService } from '@domain/services/ICacheService';
+import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import { IPurchaseRepositoryPrismaImpl } from '@infra/repositories_implementation/Purchase/IPurchaseRepositoryPrismaImpl';
 
 export class IPurchaseDecorator implements IPurchaseRepository {
@@ -18,9 +18,9 @@ export class IPurchaseDecorator implements IPurchaseRepository {
 
   async measurePurchase(
     DTO: IMeasurePurchaseDTO[],
-    iCacheService: ICacheService
+    iCacheProvider: ICacheProvider
   ): Promise<number> {
-    return await this.decoratee.measurePurchase(DTO, iCacheService);
+    return await this.decoratee.measurePurchase(DTO, iCacheProvider);
   }
 
   async savePurchase({

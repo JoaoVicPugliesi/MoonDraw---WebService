@@ -2,17 +2,17 @@ import {
   CheckoutPurchase,
   IPurchaseRepository,
 } from '@domain/repositories/IPurchaseRepository';
-import { ICacheService } from '@domain/services/ICacheService';
-import { IPaymentService } from '@domain/services/IPaymentService';
+import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
+import { IPaymentProvider } from '@domain/providers/Payment/IPaymentProvider';
 import { ICheckoutPurchaseDTO } from './ICheckoutPurchaseDTO';
-import { ILineItem } from '@domain/services/helpers/Payment';
+import { ILineItem } from '@domain/providers/Payment/Payment';
 import { ICheckoutPurchaseResponse, PurchaseNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/Purchase/ICheckoutPurchaseHandlers';
 
 export class ICheckoutPurchaseUseCase {
   constructor(
     private readonly iPurchaseRepository: IPurchaseRepository,
-    private readonly iPaymentService: IPaymentService,
-    private readonly iCacheService: ICacheService
+    private readonly iPaymentProvider: IPaymentProvider,
+    private readonly iCacheProvider: ICacheProvider
   ) {}
 
   async execute({ 
@@ -21,7 +21,7 @@ export class ICheckoutPurchaseUseCase {
     const lineItems: ILineItem[] = [];
     let item: ILineItem;
     
-    const cachedPurchase: string | null = await this.iCacheService.get(
+    const cachedPurchase: string | null = await this.iCacheProvider.get(
       `purchase-${public_id}`
     );
 
@@ -43,7 +43,7 @@ export class ICheckoutPurchaseUseCase {
         lineItems.push(item);
       }
 
-      const cachedPurchaseURL: string | null = await this.iCacheService.get(
+      const cachedPurchaseURL: string | null = await this.iCacheProvider.get(
         `purchase-${public_id}-url`
       )
 
@@ -53,7 +53,7 @@ export class ICheckoutPurchaseUseCase {
         }
       }
 
-      const { url } = await this.iPaymentService.create({
+      const { url } = await this.iPaymentProvider.create({
         line_items: lineItems,
         cancel_url: 'https://localhost:5000',
         success_url: 'https://localhost:8000/api/purchases/purchase/complete?purchase_id=${public_id}&session_id={CHECKOUT_SESSION_ID}',
@@ -63,7 +63,7 @@ export class ICheckoutPurchaseUseCase {
         }
       });
 
-      await this.iCacheService.set(
+      await this.iCacheProvider.set(
         `purchase-${public_id}-url`,
         url,
         {
@@ -82,7 +82,7 @@ export class ICheckoutPurchaseUseCase {
       
     if (!purchase) return new PurchaseNotFoundErrorResponse();
     
-    await this.iCacheService.set(
+    await this.iCacheProvider.set(
       `purchase-${public_id}`,
       JSON.stringify(purchase),
       {
@@ -106,7 +106,7 @@ export class ICheckoutPurchaseUseCase {
       lineItems.push(item);
     }
 
-    const cachedPurchaseURL: string | null = await this.iCacheService.get(
+    const cachedPurchaseURL: string | null = await this.iCacheProvider.get(
       `purchase-${public_id}-url`
     )
     
@@ -116,7 +116,7 @@ export class ICheckoutPurchaseUseCase {
       }
     }
     
-    const { url } = await this.iPaymentService.create({
+    const { url } = await this.iPaymentProvider.create({
       line_items: lineItems,
       cancel_url: 'https://localhost:5000',
       success_url: `https://localhost:8000/api/purchases/purchase/complete?session_id={CHECKOUT_SESSION_ID}&purchase_id=${public_id}`,
@@ -126,7 +126,7 @@ export class ICheckoutPurchaseUseCase {
       }
     });
     
-    await this.iCacheService.set(
+    await this.iCacheProvider.set(
       `purchase-${public_id}-url`,
       url,
       {

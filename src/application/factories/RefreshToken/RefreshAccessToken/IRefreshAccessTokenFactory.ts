@@ -1,5 +1,5 @@
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
-import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
+import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { IRefreshAccessTokenUseCase } from '@application/useCases/RefreshToken/RefreshAccessToken/IRefreshAccessTokenUseCase';
 import { iRefreshTokenDecorator } from '@application/decorators/IRefreshTokenDecorator';
 import { iUserDecorator } from '@application/decorators/IUserDecorator';

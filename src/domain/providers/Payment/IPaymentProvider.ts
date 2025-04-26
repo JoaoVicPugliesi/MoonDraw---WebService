@@ -1,7 +1,6 @@
-import { IRetrieveParams, IRetrieveResponse, Payment } from "./helpers/Payment";
+import { IRetrieveParams, IRetrieveResponse, Payment } from "./Payment";
 
-
-export interface IPaymentService {
+export interface IPaymentProvider {
   create(params: Payment, options?: object): Promise<any>;
   retrieve(
     session_id: string,

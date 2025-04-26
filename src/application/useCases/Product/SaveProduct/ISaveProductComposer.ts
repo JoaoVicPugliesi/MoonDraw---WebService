@@ -1,5 +1,5 @@
 import { ISaveProductFactory } from '@application/factories/Product/SaveProduct/ISaveProductFactory';
-import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
+import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { ISaveProductController } from './ISaveProductController';
 import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
 import { IProductValidatorZodImpl } from '@application/validators/Product/IProductValidatorZodImpl';

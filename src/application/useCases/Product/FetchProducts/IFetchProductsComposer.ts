@@ -1,6 +1,6 @@
 import { IFetchProductsFactory } from '@application/factories/Product/FetchProducts/IFetchProductsFactory';
 import { IFetchProductsController } from './IFetchProductsController';
-import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
+import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
 
 const iFactory = new IFetchProductsFactory();

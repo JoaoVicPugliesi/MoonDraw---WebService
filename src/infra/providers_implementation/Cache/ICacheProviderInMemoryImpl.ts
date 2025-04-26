@@ -1,13 +1,16 @@
-// src/infra/services_implementation/ICacheServiceInMemoryImpl.ts
-import { ICacheService } from '@domain/services/ICacheService';
+import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 
-export class ICacheServiceInMemoryImpl implements ICacheService {
+export class ICacheProviderInMemoryImpl implements ICacheProvider {
   constructor(
     private readonly cache: Map<string, string> = new Map()
   ) {}
 
-  async get(key: string): Promise<string | undefined> {
-    return this.cache.get(key);
+  async get(key: string): Promise<string | null> {
+    const result: string | undefined = this.cache.get(key);
+
+    if(typeof result === 'undefined') return null;
+
+    return result;
   }
 
   async set(key: string, value: string, _options?: { EX: number }): Promise<void> {

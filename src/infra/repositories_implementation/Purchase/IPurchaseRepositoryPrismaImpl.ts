@@ -2,7 +2,7 @@ import { Product } from '@domain/entities/Product';
 import { Purchase } from '@domain/entities/Purchase';
 import { prisma } from '@infra/db/Prisma';
 import { randomUUID } from 'crypto';
-import { ICacheService } from '@domain/services/ICacheService';
+import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import {
   CheckoutPurchase,
   IPurchaseRepository,
@@ -14,16 +14,15 @@ import { IListPurchasesDTO } from '@application/useCases/Purchase/ListPurchases/
 import { ICheckoutPurchaseDTO } from '@application/useCases/Purchase/CheckoutPurchase/ICheckoutPurchaseDTO';
 import { IRemovePurchaseDTO } from '@application/useCases/Purchase/RemovePurchase/IRemovePurchaseDTO';
 import { ICompletePurchaseDTO } from '@application/useCases/Purchase/CompletePurchase/ICompletePurchaseDTO';
-import { User } from '@domain/entities/User';
 
 export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
   async measurePurchase(
     DTO: IMeasurePurchaseDTO[],
-    iCacheService: ICacheService
+    iCacheProvider: ICacheProvider
   ): Promise<number> {
     let value: number = 0;
     for (const p of DTO) {
-      const currentCached: string | null = await iCacheService.get(
+      const currentCached: string | null = await iCacheProvider.get(
         `current-${p.product_id}`
       );
 
@@ -40,7 +39,7 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
         });
 
         if (current) {
-          await iCacheService.set(
+          await iCacheProvider.set(
             `current-${current.public_id}`,
             JSON.stringify(current),
             {

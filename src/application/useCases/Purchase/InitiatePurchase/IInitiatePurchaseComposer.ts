@@ -1,5 +1,5 @@
 import { IInitiatePurchaseFactory } from '@application/factories/Purchase/InitiatePurchase/IInitiatePurchaseFactory';
-import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
+import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { IInitiatePurchaseController } from './IInitiatePurchaseController';
 import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
 import { IPurchaseValidatorZodImpl } from '@application/validators/Purchase/IPurchaseValidatorZodImpl';

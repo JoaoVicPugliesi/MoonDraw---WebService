@@ -1,13 +1,6 @@
-export interface ISetOptions {
-    EX?: number;
-    PX?: number; 
-    NX?: true;
-    XX?: true;
-    KEEPTTL?: true;
-    GET?: true;
-  }
-  
-export interface ICacheService {
+import { ISetOptions } from "./Cache";
+
+export interface ICacheProvider {
     set(key: string, val: string, options?: ISetOptions): Promise<void>;
     get(key: string): Promise<string | null>;
     ttl(key: string): Promise<number>;

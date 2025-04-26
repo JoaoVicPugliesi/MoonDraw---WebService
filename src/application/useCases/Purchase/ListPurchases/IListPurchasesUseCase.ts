@@ -1,4 +1,4 @@
-import { ICacheService } from '@domain/services/ICacheService';
+import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
 import { IListPurchasesDTO } from './IListPurchasesDTO';
 import { Purchase } from '@domain/entities/Purchase';
@@ -7,14 +7,14 @@ import { IListPurchaseResponse, PurchasesNotFoundErrorResponse } from '@applicat
 export class IListPurchasesUseCase {
   constructor(
     private readonly iPurchaseRepository: IPurchaseRepository,
-    private readonly iCacheService: ICacheService
+    private readonly iCacheProvider: ICacheProvider
   ) {}
 
   async execute({ 
     user_id, 
     status 
   }: IListPurchasesDTO): Promise<IListPurchaseResponse | PurchasesNotFoundErrorResponse> {
-    const cachedPurchases: string | null = await this.iCacheService.get(
+    const cachedPurchases: string | null = await this.iCacheProvider.get(
         `purchases-${status}-${user_id}`
     );
 
@@ -33,7 +33,7 @@ export class IListPurchasesUseCase {
     if(!purchases) return new PurchasesNotFoundErrorResponse();
 
     const expiresIn: number = status === 'pending' ? 600 : 1800;
-    await this.iCacheService.set(
+    await this.iCacheProvider.set(
         `purchases-${status}-${user_id}`,
         JSON.stringify(purchases),
         {

@@ -1,11 +1,11 @@
 import { User } from '@domain/entities/User';
 import { IGenerateRefreshTokenFactoryInMemory } from '@application/factories/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenInMemory';
-import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
+import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { IRefreshAccessTokenUseCase } from '@application/useCases/RefreshToken/RefreshAccessToken/IRefreshAccessTokenUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRefreshTokenRepositoryInMemoryImpl } from '@infra/repositories_implementation/RefreshToken/IRefreshTokenRepositoryInMemoryImpl';
 import { IUserRepositoryInMemoryImpl } from '@infra/repositories_implementation/User/IUserRepositoryInMemoryImpl';
-import { IHashServiceBCryptImpl } from '@infra/services_implementation/IHashServiceBCryptImpl';
+import { IHashServiceBCryptImpl } from '@infra/services/IHashServiceBCryptImpl';
 
 export class IRefreshAccessTokenFactoryInMemory {
 

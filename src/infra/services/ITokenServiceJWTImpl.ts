@@ -1,4 +1,4 @@
-import { Token } from '@domain/services/helpers/Token';
+import { Token } from '@domain/services/Token/Token';
 import { ITokenService } from '@domain/services/ITokenService';
 import { JwtPayload, sign, verify, decode } from 'jsonwebtoken';
 

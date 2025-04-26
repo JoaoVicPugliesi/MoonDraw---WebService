@@ -1,5 +1,5 @@
 import { IProductRepository } from '@domain/repositories/IProductRepository';
-import { ICacheService } from '@domain/services/ICacheService';
+import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import { ISearchProductsDTO } from './ISearchProductsDTO';
 import { Product } from '@domain/entities/Product';
 import { SearchedProductsNotFoundErrorResponse, ISearchProductsResponse } from '@application/handlers/UseCasesResponses/Product/ISearchProductsHandlers';
@@ -7,13 +7,13 @@ import { SearchedProductsNotFoundErrorResponse, ISearchProductsResponse } from '
 export class ISearchProductsUseCase {
   constructor(
     private readonly iProductRepository: IProductRepository,
-    private readonly iCacheService: ICacheService
+    private readonly iCacheProvider: ICacheProvider
   ) {}
 
   async execute({ 
     name 
   }: ISearchProductsDTO): Promise<ISearchProductsResponse | SearchedProductsNotFoundErrorResponse> {
-    const cachedSearch: string | null = await this.iCacheService.get(
+    const cachedSearch: string | null = await this.iCacheProvider.get(
       `search-${name}`
     );
 
@@ -31,7 +31,7 @@ export class ISearchProductsUseCase {
 
     if (!search) return new SearchedProductsNotFoundErrorResponse();
 
-    await this.iCacheService.set(`search-${name}`, JSON.stringify(search), {
+    await this.iCacheProvider.set(`search-${name}`, JSON.stringify(search), {
       EX: 1800
     });
 

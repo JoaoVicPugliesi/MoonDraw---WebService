@@ -1,4 +1,4 @@
-import { Token } from './helpers/Token';
+import { Token } from './Token/Token';
 
 export interface ITokenService {
   sign(params: Token): string;

@@ -1,8 +1,8 @@
 
-import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
+import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { ILoginUseCase } from '@application/useCases/User/Login/ILoginUseCase';
 import { IGenerateRefreshTokenFactory } from '@application/factories/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenFactory';
-import { IHashServiceBCryptImpl } from '@infra/services_implementation/IHashServiceBCryptImpl';
+import { IHashServiceBCryptImpl } from '@infra/services/IHashServiceBCryptImpl';
 import { iUserDecorator } from '@application/decorators/IUserDecorator';
 
 export class ILoginFactory {

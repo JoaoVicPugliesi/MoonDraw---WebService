@@ -1,6 +1,6 @@
 import { ICheckoutPurchaseFactory } from '@application/factories/Purchase/CheckoutPurchase/ICheckoutPurchaseFactory';
 import { ICheckoutPurchaseController } from './ICheckoutPurchaseController';
-import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
+import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
 
 const iFactory = new ICheckoutPurchaseFactory();

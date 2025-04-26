@@ -4,13 +4,13 @@ import {
   FetchProductsResponse,
   ProductsNotFoundErrorResponse,
 } from '@application/handlers/UseCasesResponses/Product/IFetchProductsHandlers';
-import { ICacheService } from '@domain/services/ICacheService';
+import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import { IProductRepository } from '@domain/repositories/IProductRepository';
 
 export class IFetchProductsUseCase {
   constructor(
     private readonly iProductRepository: IProductRepository,
-    private readonly iCacheService: ICacheService
+    private readonly iCacheProvider: ICacheProvider
   ) {}
 
   async execute({
@@ -18,7 +18,7 @@ export class IFetchProductsUseCase {
   }: IFetchProductsDTO): Promise<
     FetchProductsResponse | ProductsNotFoundErrorResponse
   > {
-    const cachedProducts: string | null = await this.iCacheService.get(
+    const cachedProducts: string | null = await this.iCacheProvider.get(
       `products-${page}`
     );
 
@@ -37,7 +37,7 @@ export class IFetchProductsUseCase {
     if (!products) return new ProductsNotFoundErrorResponse();
 
     // products-${page}
-    await this.iCacheService.set(`products-${page}`, JSON.stringify(products), {
+    await this.iCacheProvider.set(`products-${page}`, JSON.stringify(products), {
       EX: 900,
     });
 

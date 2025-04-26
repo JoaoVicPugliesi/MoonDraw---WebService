@@ -1,5 +1,5 @@
 import { IListPurchasesFactory } from "@application/factories/Purchase/ListPurchases/IListPurchasesFactory";
-import { ITokenServiceJWTImpl } from "@infra/services_implementation/ITokenServiceJWTImpl";
+import { ITokenServiceJWTImpl } from "@infra/services/ITokenServiceJWTImpl";
 import { IListPurchasesController } from "./IListPurchasesController";
 import { IEnsureMiddlewareImpl } from "@application/middlewares/IEnsureMiddlewareImpl";
 

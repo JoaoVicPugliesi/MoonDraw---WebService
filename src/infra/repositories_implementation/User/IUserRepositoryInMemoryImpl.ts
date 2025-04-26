@@ -1,7 +1,7 @@
 import { User } from '@domain/entities/User';
 import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
-import { IHashService } from '@domain/services/IHashService';
+import { IHashService } from '@domain/services/Hash/IHashService';
 import { randomUUID } from 'crypto';
 
 export class IUserRepositoryInMemoryImpl implements IUserRepository {

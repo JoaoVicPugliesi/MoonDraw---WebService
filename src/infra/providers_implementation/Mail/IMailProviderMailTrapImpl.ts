@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
-import { Mail } from '@domain/providers/externals/Mail';
-import { IMailProvider } from '@domain/providers/repositories/Mail/IMailProvider';
+import { Mail } from '@domain/providers/Mail/Mail';
+import { IMailProvider } from '@domain/providers/Mail/IMailProvider';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 const USER: string = process.env.MAILTRAP_USER as string;

@@ -1,11 +1,11 @@
 import { iCartDecorator } from '@application/decorators/ICartDecorator';
 import { IListCartContentUseCase } from '@application/useCases/Сart/ListCartContent/IListCartContentUseCase';
-import { ICacheServiceRedisImpl } from '@infra/services_implementation/CacheService/ICacheServiceRedisImpl';
+import { ICacheProviderRedisImpl } from '@infra/providers_implementation/Cache/ICacheProviderRedisImpl';
 
 export class IListCartContentFactory {
     compose(): IListCartContentUseCase {
-        const iCacheService = new ICacheServiceRedisImpl();
+        const iCacheProvider = new ICacheProviderRedisImpl();
 
-        return new IListCartContentUseCase(iCartDecorator, iCacheService);
+        return new IListCartContentUseCase(iCartDecorator, iCacheProvider);
     }
 }

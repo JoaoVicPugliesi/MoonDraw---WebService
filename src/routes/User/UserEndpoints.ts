@@ -54,7 +54,7 @@ export class UserEndpoints {
       await iLogin.handle(adapter);
     });
 
-    this.app.post('/api/logout', {
+    this.app.post('/api/users/logout', {
       schema: {
         tags: ['Users']
       }

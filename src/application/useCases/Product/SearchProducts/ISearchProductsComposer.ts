@@ -1,6 +1,6 @@
 import { ISearchProductsFactory } from '@application/factories/Product/SearchProducts/ISearchProductsFactory';
 import { ISearchProductsController } from './ISearchProductsController';
-import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
+import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
 
 const iFactory = new ISearchProductsFactory();

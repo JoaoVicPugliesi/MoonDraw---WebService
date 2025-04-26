@@ -1,14 +1,14 @@
 import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
 import { IMeasurePurchaseDTO } from './IMeasurePurchaseDTO';
-import { ICacheService } from '@domain/services/ICacheService';
+import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 
 export class IMeasurePurchaseUseCase {
   constructor(
     private readonly iPurchaseRepository: IPurchaseRepository,
-    private readonly iCacheService: ICacheService
+    private readonly iCacheProvider: ICacheProvider
   ) {}
 
   async execute(DTO: IMeasurePurchaseDTO[]): Promise<number> {
-    return await this.iPurchaseRepository.measurePurchase(DTO, this.iCacheService);
+    return await this.iPurchaseRepository.measurePurchase(DTO, this.iCacheProvider);
   }
 }

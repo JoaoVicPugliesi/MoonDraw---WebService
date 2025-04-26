@@ -2,7 +2,7 @@ import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
 import { User } from '@domain/entities/User';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
 import { IUserRepositoryPrismaImpl } from '@infra/repositories_implementation/User/IUserRepositoryPrismaImpl';
-import { IHashServiceBCryptImpl } from '@infra/services_implementation/IHashServiceBCryptImpl';
+import { IHashServiceBCryptImpl } from '@infra/services/IHashServiceBCryptImpl';
 
 class IUserDecorator implements IUserRepository {
   constructor(

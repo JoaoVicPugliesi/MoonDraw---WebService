@@ -1,14 +1,14 @@
 import { iProductDecorator } from '@application/decorators/IProductDecorator';
 import { ISelectProductUseCase } from '@application/useCases/Product/SelectProduct/ISelectProductUseCase';
-import { ICacheServiceRedisImpl } from '@infra/services_implementation/CacheService/ICacheServiceRedisImpl';
+import { ICacheProviderRedisImpl } from '@infra/providers_implementation/Cache/ICacheProviderRedisImpl';
 
 export class ISelectProductFactory {
   compose(): ISelectProductUseCase {
-    const iCacheServiceRedisImpl = new ICacheServiceRedisImpl();
+    const iCacheProviderRedisImpl = new ICacheProviderRedisImpl();
 
     return new ISelectProductUseCase(
       iProductDecorator,
-      iCacheServiceRedisImpl
+      iCacheProviderRedisImpl
     );
   }
 }

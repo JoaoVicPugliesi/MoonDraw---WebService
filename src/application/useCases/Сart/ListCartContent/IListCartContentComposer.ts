@@ -1,6 +1,6 @@
 import { IListCartContentFactory } from '@application/factories/Cart/ListCartContent/IListCartContentFactory';
 import { IListCartContentController } from './IListCartContentController';
-import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
+import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
 
 const iFactory = new IListCartContentFactory();

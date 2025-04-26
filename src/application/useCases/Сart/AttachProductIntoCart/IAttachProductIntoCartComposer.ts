@@ -1,6 +1,6 @@
 import { IAttachProductIntoCartFactory } from '@application/factories/Cart/AttachProductIntoCart/IAttachProductIntoCartFactory';
 import { IAttachProductIntoCartController } from './IAttachProductIntoCartController';
-import { ITokenServiceJWTImpl } from '@infra/services_implementation/ITokenServiceJWTImpl';
+import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
 import { ICartValidatorZodImpl } from '@application/validators/Cart/ICartValidatorZodImpl';
 

@@ -1,7 +1,7 @@
 import { IConfirmMailUseCase } from '@application/useCases/User/ConfirmMail/IConfirmMailUseCase';
 import { User } from '@domain/entities/User';
 import { IUserRepositoryInMemoryImpl } from '@infra/repositories_implementation/User/IUserRepositoryInMemoryImpl';
-import { IHashServiceBCryptImpl } from '@infra/services_implementation/IHashServiceBCryptImpl';
+import { IHashServiceBCryptImpl } from '@infra/services/IHashServiceBCryptImpl';
 
 export class IConfirmMailFactoryInMemory {
   constructor(

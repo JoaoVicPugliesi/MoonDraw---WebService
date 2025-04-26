@@ -3,7 +3,7 @@ import { prisma } from '@infra/db/Prisma';
 import { randomUUID } from 'crypto';
 import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
-import { IHashService } from '@domain/services/IHashService';
+import { IHashService } from '@domain/services/Hash/IHashService';
 
 export class IUserRepositoryPrismaImpl implements IUserRepository {
   constructor(private readonly iHashService: IHashService) {}
