@@ -1,6 +1,6 @@
 import { iProductDecorator } from '@application/decorators/IProductDecorator';
 import { IFetchProductsUseCase } from '@application/useCases/Product/FetchProducts/IFetchProductsUseCase';
-import { ICacheProviderRedisImpl } from '@infra/providers_implementation/Cache/ICacheProviderRedisImpl';
+import { ICacheProviderRedisImpl } from '@infra/providers/Cache/ICacheProviderRedisImpl';
 
 export class IFetchProductsFactory {
     compose(): IFetchProductsUseCase {

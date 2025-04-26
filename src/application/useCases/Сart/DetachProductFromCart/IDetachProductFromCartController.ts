@@ -1,7 +1,6 @@
 import z from 'zod';
-import { ITokenService } from '@domain/services/ITokenService';
+import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IDetachProductFromCartUseCase } from './IDetachProductFromCartUseCase';
-import { IDetachProductFromCartValidator } from '@application/validators/IDetachProductFromCartValidator';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IDetachProductFromCartDTO } from './IDetachProductFromCartDTO';
 import {

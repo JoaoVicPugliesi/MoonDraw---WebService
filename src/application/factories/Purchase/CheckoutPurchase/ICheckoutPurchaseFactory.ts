@@ -1,7 +1,7 @@
 import { iPurchaseDecorator } from '@application/decorators/IPurchaseDecorator';
 import { ICheckoutPurchaseUseCase } from '@application/useCases/Purchase/CheckoutPurchase/ICheckoutPurchaseUseCase';
-import { ICacheProviderRedisImpl } from '@infra/providers_implementation/Cache/ICacheProviderRedisImpl';
-import { IPaymentProviderStripeImpl } from '@infra/providers_implementation/Payment/IPaymentProviderStripeImpl';
+import { ICacheProviderRedisImpl } from '@infra/providers/Cache/ICacheProviderRedisImpl';
+import { IPaymentProviderStripeImpl } from '@infra/providers/Payment/IPaymentProviderStripeImpl';
 
 export class ICheckoutPurchaseFactory {
   compose(): ICheckoutPurchaseUseCase {

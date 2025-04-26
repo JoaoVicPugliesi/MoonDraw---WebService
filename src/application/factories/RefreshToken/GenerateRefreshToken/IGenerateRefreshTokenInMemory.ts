@@ -1,6 +1,6 @@
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { IRefreshTokenRepositoryInMemoryImpl } from '@infra/repositories_implementation/RefreshToken/IRefreshTokenRepositoryInMemoryImpl';
+import { IRefreshTokenRepositoryInMemoryImpl } from '@infra/repositories/RefreshToken/IRefreshTokenRepositoryInMemoryImpl';
 
 export class IGenerateRefreshTokenFactoryInMemory {
 

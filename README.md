@@ -6,7 +6,7 @@ A WebService for our e-commerce platform.
 # Non-Functional Requirements
 
 # High Level Design
-/// SomePicture
+![HighLevelDesign](images/HighLevelDesign.png)
 
 # Deep Dive 
 /// SomePicture

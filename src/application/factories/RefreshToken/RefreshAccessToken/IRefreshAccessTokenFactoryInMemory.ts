@@ -3,8 +3,8 @@ import { IGenerateRefreshTokenFactoryInMemory } from '@application/factories/Ref
 import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { IRefreshAccessTokenUseCase } from '@application/useCases/RefreshToken/RefreshAccessToken/IRefreshAccessTokenUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { IRefreshTokenRepositoryInMemoryImpl } from '@infra/repositories_implementation/RefreshToken/IRefreshTokenRepositoryInMemoryImpl';
-import { IUserRepositoryInMemoryImpl } from '@infra/repositories_implementation/User/IUserRepositoryInMemoryImpl';
+import { IRefreshTokenRepositoryInMemoryImpl } from '@infra/repositories/RefreshToken/IRefreshTokenRepositoryInMemoryImpl';
+import { IUserRepositoryInMemoryImpl } from '@infra/repositories/User/IUserRepositoryInMemoryImpl';
 import { IHashServiceBCryptImpl } from '@infra/services/IHashServiceBCryptImpl';
 
 export class IRefreshAccessTokenFactoryInMemory {

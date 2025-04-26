@@ -3,7 +3,7 @@ import { ILoginFactoryInMemory } from '@application/factories/User/Login/ILoginF
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRegisterUseCase } from '@application/useCases/User/Register/IRegisterUseCase';
 import { IHashServiceBCryptImpl } from '@infra/services/IHashServiceBCryptImpl';
-import { IUserRepositoryInMemoryImpl } from '@infra/repositories_implementation/User/IUserRepositoryInMemoryImpl';
+import { IUserRepositoryInMemoryImpl } from '@infra/repositories/User/IUserRepositoryInMemoryImpl';
 import { IAssignCartOwnerFactoryInMemory } from '@application/factories/Cart/AssignCartOwner/IAssignCartOwnerFactoryInMemory';
 import { Cart } from '@domain/entities/Cart';
 

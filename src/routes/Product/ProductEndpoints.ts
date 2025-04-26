@@ -3,43 +3,42 @@ import { iSearchProducts } from '@application/useCases/Product/SearchProducts/IS
 import { iSelectProduct } from '@application/useCases/Product/SelectProduct/ISelectProductComposer';
 import { iFetchProducts } from '@application/useCases/Product/FetchProducts/IFetchProductsComposer';
 import { iSaveProduct } from '@application/useCases/Product/SaveProduct/ISaveProductComposer';
-import { IProductValidator } from '@application/validators/Product/IProductValidator';
+import { IProductDocs } from './docs/IProductDocs';
 
 export class ProductEndpoints {
   constructor(
     private readonly app: ServerAdapter,
-    private readonly iProductValidator: IProductValidator
+    private readonly iProductDocs: IProductDocs
   ) {}
 
   setupRoutes() {
-    this.app.get('/api/products/:page', {
-      schema: {
-        tags: ['Products']
+    this.app.get(
+      '/api/products/:page',
+      this.iProductDocs.fetchProductsDocs(),
+      async (adapter: RequestResponseAdapter) => {
+        await iFetchProducts.handle(adapter);
       }
-    },async (adapter: RequestResponseAdapter) => {
-      await iFetchProducts.handle(adapter)
-    });
-    this.app.get('/api/products/product/:public_id', {
-      schema: {
-        tags: ['Products']
+    );
+    this.app.get(
+      '/api/products/product/:public_id',
+      this.iProductDocs.searchProductDocs(),
+      async (adapter: RequestResponseAdapter) => {
+        await iSelectProduct.handle(adapter);
       }
-    },async (adapter: RequestResponseAdapter) => {
-      await iSelectProduct.handle(adapter)
-    });
-    this.app.get('/api/products/search/:name', {
-      schema: {
-        tags: ['Products']
+    );
+    this.app.get(
+      '/api/products/search/:name',
+      this.iProductDocs.searchProductDocs(),
+      async (adapter: RequestResponseAdapter) => {
+        await iSearchProducts.handle(adapter);
       }
-    },async (adapter: RequestResponseAdapter) => {
-      await iSearchProducts.handle(adapter)
-    });
-    this.app.post('/api/products/save', {
-      schema: {
-        body: this.iProductValidator.validateSaveProduct(),
-        tags: ['Products']
+    );
+    this.app.post(
+      '/api/products/save',
+      this.iProductDocs.saveProductDocs(),
+      async (adapter: RequestResponseAdapter) => {
+        await iSaveProduct.handle(adapter);
       }
-    },async (adapter: RequestResponseAdapter) => {
-      await iSaveProduct.handle(adapter)
-    });
+    );
   }
 }

@@ -5,7 +5,7 @@ import { IListCartContentDTO } from '@application/useCases/Сart/ListCartContent
 import { Cart } from '@domain/entities/Cart';
 import { Product } from '@domain/entities/Product';
 import { ICartRepository } from '@domain/repositories/ICartRepository';
-import { ICartRepositoryPrismaImpl } from '@infra/repositories_implementation/Cart/ICartRepositoryPrismaImpl';
+import { ICartRepositoryPrismaImpl } from '@infra/repositories/Cart/ICartRepositoryPrismaImpl';
 
 class ICartDecorator implements ICartRepository {
     constructor(

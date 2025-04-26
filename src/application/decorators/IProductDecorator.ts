@@ -3,7 +3,7 @@ import { ISelectProductDTO } from '@application/useCases/Product/SelectProduct/I
 import { IFetchProductsDTO } from '@application/useCases/Product/FetchProducts/IFetchProductsDTO';
 import { Product } from '@domain/entities/Product';
 import { IProductRepository } from '@domain/repositories/IProductRepository';
-import { IProductRepositoryPrismaImpl } from '@infra/repositories_implementation/Product/IProductRepositoryPrismaImpl';
+import { IProductRepositoryPrismaImpl } from '@infra/repositories/Product/IProductRepositoryPrismaImpl';
 import { ISaveProductDTO } from '@application/useCases/Product/SaveProduct/ISaveProductDTO';
 
 class IProductDecorator implements IProductRepository {

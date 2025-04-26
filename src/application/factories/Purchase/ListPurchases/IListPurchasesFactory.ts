@@ -1,6 +1,6 @@
 import { iPurchaseDecorator } from '@application/decorators/IPurchaseDecorator';
 import { IListPurchasesUseCase } from '@application/useCases/Purchase/ListPurchases/IListPurchasesUseCase';
-import { ICacheProviderRedisImpl } from '@infra/providers_implementation/Cache/ICacheProviderRedisImpl';
+import { ICacheProviderRedisImpl } from '@infra/providers/Cache/ICacheProviderRedisImpl';
 
 export class IListPurchasesFactory {
   compose(): IListPurchasesUseCase {

@@ -1,7 +1,7 @@
-import { ICacheProviderInMemoryImpl } from '@infra/providers_implementation/Cache/ICacheProviderInMemoryImpl';
+import { ICacheProviderInMemoryImpl } from '@infra/providers/Cache/ICacheProviderInMemoryImpl';
 import { IFetchProductsUseCase } from '@application/useCases/Product/FetchProducts/IFetchProductsUseCase';
 import { Product } from '@domain/entities/Product';
-import { IProductRepositoryInMemoryImpl } from '@infra/repositories_implementation/Product/IProductRepositoryInMemoryImpl';
+import { IProductRepositoryInMemoryImpl } from '@infra/repositories/Product/IProductRepositoryInMemoryImpl';
 
 export class IFetchProductsInMemoryFactory {
   constructor(

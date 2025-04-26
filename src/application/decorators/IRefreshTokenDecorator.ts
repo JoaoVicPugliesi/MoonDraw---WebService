@@ -1,7 +1,7 @@
 import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRefreshTokenRepository } from '@domain/repositories/IRefreshTokenRepository';
-import { IRefreshTokenRepositoryPrismaImpl } from '@infra/repositories_implementation/RefreshToken/IRefreshTokenRepositoryPrismaImpl';
+import { IRefreshTokenRepositoryPrismaImpl } from '@infra/repositories/RefreshToken/IRefreshTokenRepositoryPrismaImpl';
 
 class IRefreshTokenDecorator implements IRefreshTokenRepository {
   constructor(

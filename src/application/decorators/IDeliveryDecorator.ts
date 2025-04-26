@@ -1,7 +1,7 @@
 import { ISaveDeliveryDTO } from '@application/useCases/Delivery/SaveDelivery/ISaveDeliveryDTO';
 import { Delivery } from '@domain/entities/Delivery';
 import { IDeliveryRepository } from '@domain/repositories/IDeliveryRepository';
-import { IDeliveryRepositoryPrismaImpl } from '@infra/repositories_implementation/Delivery/IDeliveryRepositoryPrismaImpl';
+import { IDeliveryRepositoryPrismaImpl } from '@infra/repositories/Delivery/IDeliveryRepositoryPrismaImpl';
 
 export class IDeliveryDecorator implements IDeliveryRepository {
   constructor(

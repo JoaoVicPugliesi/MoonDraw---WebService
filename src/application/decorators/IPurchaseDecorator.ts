@@ -11,7 +11,7 @@ import {
   IPurchaseRepository,
 } from '@domain/repositories/IPurchaseRepository';
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
-import { IPurchaseRepositoryPrismaImpl } from '@infra/repositories_implementation/Purchase/IPurchaseRepositoryPrismaImpl';
+import { IPurchaseRepositoryPrismaImpl } from '@infra/repositories/Purchase/IPurchaseRepositoryPrismaImpl';
 
 export class IPurchaseDecorator implements IPurchaseRepository {
   constructor(private readonly decoratee: IPurchaseRepository) {}

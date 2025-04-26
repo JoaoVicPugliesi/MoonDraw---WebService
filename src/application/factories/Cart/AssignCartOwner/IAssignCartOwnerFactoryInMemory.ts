@@ -1,7 +1,7 @@
 import { Cart } from '@domain/entities/Cart';
 import { IAssignCartOwnerUseCase } from '@application/useCases/Сart/AssignCartOwner/IAssignCartOwnerUseCase';
-import { ICartRepositoryInMemoryImpl } from '@infra/repositories_implementation/Cart/ICartRepositoryInMemoryImpl';
-import { IUserRepositoryInMemoryImpl } from '@infra/repositories_implementation/User/IUserRepositoryInMemoryImpl';
+import { ICartRepositoryInMemoryImpl } from '@infra/repositories/Cart/ICartRepositoryInMemoryImpl';
+import { IUserRepositoryInMemoryImpl } from '@infra/repositories/User/IUserRepositoryInMemoryImpl';
 import { User } from '@domain/entities/User';
 import { IHashServiceBCryptImpl } from '@infra/services/IHashServiceBCryptImpl';
 

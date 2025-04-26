@@ -2,7 +2,7 @@ import { ILoginFactory } from '@application/factories/User/Login/ILoginFactory';
 import { IRegisterUseCase } from '@application/useCases/User/Register/IRegisterUseCase';
 import { iUserDecorator } from '@application/decorators/IUserDecorator';
 import { IAssignCartOwnerFactory } from '@application/factories/Cart/AssignCartOwner/IAssignCartOwnerFactory';
-import { IMailProviderGmailImpl } from '@infra/providers_implementation/Mail/IMailProviderGmailImpl';
+import { IMailProviderGmailImpl } from '@infra/providers/Mail/IMailProviderGmailImpl';
 
 export class IRegisterFactory {
   compose(): IRegisterUseCase {
