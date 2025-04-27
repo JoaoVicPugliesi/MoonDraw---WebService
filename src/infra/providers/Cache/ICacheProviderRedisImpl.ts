@@ -17,7 +17,11 @@ export class ICacheProviderRedisImpl implements ICacheProvider {
     return await cache.ttl(key);
   }
 
-  async flush() {
+  async flushAll() {
     await cache.flushAll();
+  }
+
+  async del(key: string): Promise<void> {
+    await cache.del(key);  
   }
 }

@@ -43,7 +43,7 @@ export class ILoginController {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        path: 'http://localhost:5173',
+        path: '*',
         maxAge: response.refresh_token.expires_in,
       });
 

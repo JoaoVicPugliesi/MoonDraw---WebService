@@ -1,13 +1,11 @@
 import { User } from '@domain/entities/User';
 import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
-import { IHashService } from '@domain/services/Hash/IHashService';
 import { randomUUID } from 'crypto';
 
 export class IUserRepositoryInMemoryImpl implements IUserRepository {
   constructor(
-    private readonly users: User[],
-    private readonly iHashService: IHashService
+    private readonly users: User[]
   ) {}
 
   async findUserByEmail({
@@ -30,7 +28,6 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
     email,
     password,
   }: IRegisterDTO): Promise<User> {
-    const hash: string = await this.iHashService.hash(password);
     return new Promise((resolve, reject) => {
       const user: User = {
         id: this.users.length + 1,
@@ -38,7 +35,7 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
         name: name,
         surname: surname,
         email: email,
-        password: hash,
+        password: password,
         role: 'client',
         is_verified: false,
         created_at: new Date(),
@@ -73,22 +70,6 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
       const user = this.users.find((user: User) => user.email === email);
       if (user) user.last_login_at = new Date();
       resolve()
-    });
-  }
-  
-  async verifyUser<T>(param: T): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const user: User | undefined = this.users.find(
-        (user) => user.email === (param as string)
-      );
-
-      if (user) {
-        user.is_verified = true;
-        user.email_verified_at = new Date();
-        resolve();
-      }
-
-      resolve();
     });
   }
 }

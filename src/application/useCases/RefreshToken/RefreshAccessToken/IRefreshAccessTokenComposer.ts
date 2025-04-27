@@ -6,6 +6,6 @@ const iFactory = new IRefreshAccessTokenFactory();
 const iUseCase = iFactory.compose();
 const iEnsureMiddleware = new IEnsureMiddlewareImpl();
 const iController = new IRefreshAccessTokenController(iUseCase, iEnsureMiddleware);
-const iRefreshToken: IRefreshAccessTokenController = iController;
+const iRefreshAccessToken: IRefreshAccessTokenController = iController;
 
-export { iRefreshToken };
+export { iRefreshAccessToken };

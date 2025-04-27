@@ -46,14 +46,9 @@ class IUserDecorator implements IUserRepository {
         email
       });
   }
-
-  async verifyUser<T>(param: T): Promise<void> {
-    return await this.decoratee.verifyUser(param);
-  }
 }
 
-const iHashService = new IHashServiceBCryptImpl();
-const decoratee = new IUserRepositoryPrismaImpl(iHashService);
+const decoratee = new IUserRepositoryPrismaImpl();
 const iUserDecorator = new IUserDecorator(decoratee);
 
 export { iUserDecorator };

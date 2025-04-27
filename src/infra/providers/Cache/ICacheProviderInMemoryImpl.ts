@@ -21,8 +21,12 @@ export class ICacheProviderInMemoryImpl implements ICacheProvider {
     return this.cache.size;
   }
 
-  async flush(): Promise<void> {
+  async flushAll(): Promise<void> {
     return this.cache.clear();
+  }
+
+  async del(key: string): Promise<void> {
+    this.cache.delete(key);
   }
 
 }

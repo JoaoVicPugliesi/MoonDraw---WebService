@@ -13,7 +13,7 @@ export class UserEndpoints {
 
   setupRoutes() {
     this.app.post(
-      '/api/users/register',
+      '/users/register',
       this.iUserDocs.registerDocs(),
       async (adapter: RequestResponseAdapter) => {
         await iRegister.handle(adapter);
@@ -21,7 +21,7 @@ export class UserEndpoints {
     );
 
     this.app.post(
-      '/api/users/login',
+      '/users/login',
       this.iUserDocs.loginDocs(),
       async (adapter: RequestResponseAdapter) => {
         await iLogin.handle(adapter);
@@ -29,16 +29,16 @@ export class UserEndpoints {
     );
 
     this.app.post(
-      '/api/users/logout',
+      '/users/logout',
       this.iUserDocs.logoutDocs(),
       async (adapter: RequestResponseAdapter) => {
         await iLogout.handle(adapter);
       }
     );
 
-    this.app.put(
-      '/api/users/confirmMail',
-      this.iUserDocs.confirMailDocs(),
+    this.app.post(
+      '/users/confirmMail',
+      this.iUserDocs.confirmMailDocs(),
       async (adapter: RequestResponseAdapter) => {
         await iConfirmMail.handle(adapter);
       }

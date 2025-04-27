@@ -35,8 +35,8 @@ export class IUserValidatorZodImpl implements IUserValidator {
             required_error: 'Password is required',
             invalid_type_error: 'Password should be of type string',
           })
-          .min(8, { message: 'Password should have minimum length of 8' })
-          .max(255, 'Password is too long')
+          .min(15, { message: 'Password should have minimum length of 15' })
+          .max(255, { message: 'Password is too long'} )
           .regex(/^(?=.*[A-Z]).{8,}$/, {
             message:
               'Should Contain at least one uppercase letter and have a minimum length of 8 characters.',
@@ -72,10 +72,6 @@ export class IUserValidatorZodImpl implements IUserValidator {
 
   validateConfirmMail(): object {
     return z.object({
-      email: z.string({
-        required_error: 'Email is required',
-        invalid_type_error: 'Email should be a string',
-      }),
       token: z.string({
         required_error: 'Token is required',
         invalid_type_error: 'Token should be a string',

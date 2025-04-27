@@ -2,7 +2,7 @@ import { User } from '@domain/entities/User';
 import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { IHashService } from '@domain/services/Hash/IHashService';
-import { ITokenService } from '@domain/services/ITokenService';
+import { ITokenService } from '@domain/services/Token/ITokenService';
 import { ILoginDTO } from './ILoginDTO';
 import {
   UserNotFoundErrorResponse,

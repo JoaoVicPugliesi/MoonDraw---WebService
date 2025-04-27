@@ -4,14 +4,7 @@ import { IRegisterDTO } from './IRegisterDTO';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import {
   UserConflictErrorResponse,
-  IRegisterReponse,
 } from '@application/handlers/UseCasesResponses/User/IRegisterHandlers';
-import {
-  PasswordIsNotEqualErrorResponse,
-  UserNotFoundErrorResponse,
-} from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
-import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
-import { OwnerNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/Cart/IAssignCartOwnerHandlers';
 import { IUserValidator } from '@application/validators/User/IUserValidator';
 
 export class IRegisterController {
@@ -31,7 +24,7 @@ export class IRegisterController {
         password,
         confirmPassword
       }: IRegisterDTO = schema.parse(adapter.req.body);
-      const response: UserConflictErrorResponse | IRegisterReponse =
+      const response: UserConflictErrorResponse | void =
         await this.iRegisterUseCase.execute({
           name,
           surname,
@@ -42,53 +35,11 @@ export class IRegisterController {
 
       if (response instanceof UserConflictErrorResponse) {
         return adapter.res.status(409).send({
-          message: 'Conflict: user with email provided already exists',
+          message: 'User already exists',
         });
       }
-      if (
-        response.assign_cart_owner_response instanceof OwnerNotFoundErrorResponse
-      ) {
-        return adapter.res
-          .status(404)
-          .send({ message: 'Owner Not Found Error' });
-      }
-      if (response.login_response instanceof UserNotFoundErrorResponse) {
-        return adapter.res
-          .status(404)
-          .send({ message: 'User or Password incorrect' });
-      }
-      if (
-        response.login_response instanceof PasswordIsNotEqualErrorResponse
-      ) {
-        return adapter.res.status(401).send({ message: 'Non authorized' });
-      }
-      if (
-        response.login_response instanceof GenerateRefreshTokenErrorResponse
-      ) {
-        return adapter.res
-          .status(501)
-          .send({ message: 'Failed to generate refresh token' });
-      }
-
-      adapter.res.setCookie(
-        'refresh_token',
-        JSON.stringify(response.login_response.refresh_token),
-        {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'strict',
-          path: '/',
-          maxAge: response.login_response.refresh_token.expires_in,
-        }
-      );
-
       return adapter.res.status(201).send({
-        message: 'User created successfully',
-        current_user: {
-          access_token: response.login_response.access_token,
-          user: response.login_response.user,
-          cart: response.assign_cart_owner_response.cart,
-        },
+        message: 'User Saved',
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -97,7 +48,6 @@ export class IRegisterController {
           errors: error.flatten().fieldErrors,
         });
       }
-
       return adapter.res.status(500).send({
         message: 'Intern Server Error',
       });

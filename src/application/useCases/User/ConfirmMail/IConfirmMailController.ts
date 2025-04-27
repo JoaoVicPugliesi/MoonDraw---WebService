@@ -2,9 +2,9 @@ import z from 'zod';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IConfirmMailUseCase } from './IConfirmMailUseCase';
 import { IConfirmMailDTO } from './IConfirmMailDTO';
-import { UserNotFoundError } from '@application/handlers/UseCasesResponses/User/IConfirmMailHandlers';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import { IUserValidator } from '@application/validators/User/IUserValidator';
+import { TokenExpiredErrorResponse } from '@application/handlers/UseCasesResponses/User/IConfirmMailHandlers';
 
 export class IConfirmMailController {
   constructor(
@@ -15,14 +15,17 @@ export class IConfirmMailController {
 
   async handle(adapter: RequestResponseAdapter) {
     const schema = this.iUserValidator.validateConfirmMail();
-
     try {
-      const DTO: IConfirmMailDTO = schema.parse(adapter.req.body);
-      const response: UserNotFoundError | void =
-        await this.iConfirmMailUseCase.execute(DTO);
+      const {
+        token
+      }: IConfirmMailDTO = schema.parse(adapter.req.body);
+      const response: TokenExpiredErrorResponse | void =
+        await this.iConfirmMailUseCase.execute({
+          token
+        });
 
-      if (response instanceof UserNotFoundError) {
-        return adapter.res.status(404).send({ message: 'User Not Found' }); 
+      if (response instanceof TokenExpiredErrorResponse) {
+        return adapter.res.status(401).send({ message: 'Token Expired' }); 
       }
 
       return adapter.res.status(204).send();

@@ -4,5 +4,5 @@ export interface IUserDocs {
     registerDocs(): DocSchema;
     loginDocs(): DocSchema;
     logoutDocs(): DocSchema;
-    confirMailDocs(): DocSchema;
+    confirmMailDocs(): DocSchema;
 }

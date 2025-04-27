@@ -1,6 +1,5 @@
 import { app } from '@server/ServerComposer';
 import { ServerAdapter } from './adapters/ServerAdapter';
-import { cache } from '../apis/redis/redis';
 
 class Application {
   constructor(
@@ -23,6 +22,7 @@ class Application {
 
       console.log(`🚀 server is running on http://${this.host}:${this.port}`);
     } catch (error) {
+      console.log(error);
       this.app.log.error(error as Error);
       process.exit(1);
     }
@@ -31,5 +31,3 @@ class Application {
 
 const application = new Application(app, +process.env.PORT!, process.env.HOST!);
 application.server();
-
-cache.flushAll();

@@ -1,6 +1,5 @@
 import {
   UserConflictErrorResponse,
-  IRegisterReponse,
 } from '@application/handlers/UseCasesResponses/User/IRegisterHandlers';
 import { User } from '@domain/entities/User';
 import { RefreshToken } from '@domain/entities/RefreshToken';
@@ -14,7 +13,6 @@ configDotenv();
 // Mocks
 const iMailProvider = { sendMail: jest.fn() };
 
-type Registered = UserConflictErrorResponse | IRegisterReponse;
 const users: User[] = [];
 const refreshTokens: RefreshToken[] = [];
 
@@ -40,8 +38,6 @@ describe('I register use case', () => {
     // Arrange
     const iRegisterFactoryInMemory = new IRegisterFactoryInMemory(
       users,
-      carts,
-      refreshTokens,
       iMailProvider
     );
     const sut: IRegisterUseCase = iRegisterFactoryInMemory.compose();
@@ -54,7 +50,7 @@ describe('I register use case', () => {
     };
     
     // Act
-    const response: Registered = await sut.execute({
+    const response: UserConflictErrorResponse | void = await sut.execute({
       name,
       surname,
       email,
@@ -71,8 +67,6 @@ describe('I register use case', () => {
     const usersSpliced = users.toSpliced(0);
     const iRegisterFactoryInMemory = new IRegisterFactoryInMemory(
       usersSpliced,
-      carts,
-      refreshTokens,
       iMailProvider
     );
     const sut: IRegisterUseCase = iRegisterFactoryInMemory.compose();
@@ -84,7 +78,7 @@ describe('I register use case', () => {
       confirmPassword: 'Mrlanguages1234##',
     };
     // Act
-    const response: Registered = await sut.execute({
+    const response: UserConflictErrorResponse | void = await sut.execute({
       name,
       surname,
       email,
@@ -93,7 +87,6 @@ describe('I register use case', () => {
     });
 
     // Assert 
-    expect(response).toHaveProperty('assign_cart_owner_response');
-    expect(response).toHaveProperty('login_response');
+    expect(response).not.toBeInstanceOf(UserConflictErrorResponse);
   });
 });

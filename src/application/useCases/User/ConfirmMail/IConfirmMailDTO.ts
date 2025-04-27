@@ -1,5 +1,3 @@
-import { IUser } from '@domain/entities/User';
-
-export interface IConfirmMailDTO extends Pick<IUser, 'email'> {
+export interface IConfirmMailDTO  {
   token: string;
 }

@@ -19,23 +19,8 @@ export class IUserDocsSwaggerZodImpl implements IUserDocs {
           201: z
             .object({
               message: z.string(),
-              current_user: z.object({
-                access_token: z.string(),
-                user: z.object({
-                  name: z.string(),
-                  surname: z.string(),
-                  email: z.string(),
-                  role: z.string(),
-                  is_verified: z.boolean(),
-                }),
-                cart: z.object({
-                  id: z.number(),
-                  public_id: z.string(),
-                  user_id: z.string(),
-                }),
-              }),
             })
-            .describe('User Created Successfully'),
+            .describe('User Saved'),
         },
       },
     };
@@ -51,7 +36,7 @@ export class IUserDocsSwaggerZodImpl implements IUserDocs {
     };
   }
 
-  confirMailDocs(): DocSchema {
+  confirmMailDocs(): DocSchema {
     return {
       schema: {
         body: this.iUserValidator.validateConfirmMail(),

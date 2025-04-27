@@ -14,35 +14,35 @@ export class PurchaseEndpoints {
 
   setupRoutes() {
     this.app.post(
-      '/api/purchases/initiate',
+      '/purchases/initiate',
       this.iPurchaseDocs.initiatePurchaseDocs(),
       async (adapter: RequestResponseAdapter) => {
         await iInitiatePurchase.handle(adapter);
       }
     );
     this.app.get(
-      '/api/purchases',
+      '/purchases/list',
       this.iPurchaseDocs.listPurchasesDocs(),
       async (adapter: RequestResponseAdapter) => {
         await iListPurchases.handle(adapter);
       }
     );
     this.app.post(
-      '/api/purchases/checkout',
+      '/purchases/checkout',
       this.iPurchaseDocs.checkoutPurchaseDocs(),
       async (adapter: RequestResponseAdapter) => {
         await iCheckoutPurchase.handle(adapter);
       }
     );
     this.app.delete(
-      '/api/purchases/remove',
+      '/purchases/remove',
       this.iPurchaseDocs.removePurchaseDocs(),
       async (adapter: RequestResponseAdapter) => {
         await iRemovePurchase.handle(adapter);
       }
     );
     this.app.post(
-      '/api/purchases/purchase/complete',
+      '/purchases/purchase/complete',
       this.iPurchaseDocs.completePurchaseDocs(),
       async (adapter: RequestResponseAdapter) => {
         await iCompletePurchase.handle(adapter);

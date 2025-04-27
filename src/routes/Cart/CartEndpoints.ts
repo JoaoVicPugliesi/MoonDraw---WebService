@@ -12,21 +12,21 @@ export class CartEndpoints {
 
   setupRoutes() {
     this.app.get(
-      '/api/carts/cart/products/:public_id',
+      '/carts/cart/products/:public_id',
       this.iCartDocs.listCartContentDocs(),
       async (adapter: RequestResponseAdapter) => {
         await iListCartContent.handle(adapter);
       }
     );
     this.app.post(
-      '/api/carts/cart/attach/product',
+      '/carts/cart/attach/product',
       this.iCartDocs.attachProductIntoCartDocs(),
       async (adapter: RequestResponseAdapter) => {
         await iAttachProductIntoCart.handle(adapter);
       }
     );
     this.app.delete(
-      '/api/carts/cart/detach/product',
+      '/carts/cart/detach/product',
       this.iCartDocs.detachProductFromCartDocs(),
       async (adapter: RequestResponseAdapter) => {
         await iDetachProductFromCart.handle(adapter);

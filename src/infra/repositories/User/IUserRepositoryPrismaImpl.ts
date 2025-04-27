@@ -3,10 +3,8 @@ import { prisma } from '@infra/db/Prisma';
 import { randomUUID } from 'crypto';
 import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
-import { IHashService } from '@domain/services/Hash/IHashService';
 
 export class IUserRepositoryPrismaImpl implements IUserRepository {
-  constructor(private readonly iHashService: IHashService) {}
 
   async findUserByEmail({
     email
@@ -26,14 +24,15 @@ export class IUserRepositoryPrismaImpl implements IUserRepository {
     email,
     password,
   }: IRegisterDTO): Promise<User> {
-    const hash: string = await this.iHashService.hash(password);
     const user: User = await prisma.user.create({
       data: {
         public_id: randomUUID(),
         name: name,
         surname: surname,
         email: email,
-        password: hash,
+        password: password,
+        is_verified: true,
+        email_verified_at: new Date()
       },
     });
 
@@ -63,17 +62,6 @@ export class IUserRepositoryPrismaImpl implements IUserRepository {
       },
       data: {
         last_login_at: new Date(),
-      },
-    });
-  }
-  async verifyUser<T>(param: T): Promise<void> {
-    await prisma.user.update({
-      where: {
-        email: param as string,
-      },
-      data: {
-        is_verified: true,
-        email_verified_at: new Date(),
       },
     });
   }
