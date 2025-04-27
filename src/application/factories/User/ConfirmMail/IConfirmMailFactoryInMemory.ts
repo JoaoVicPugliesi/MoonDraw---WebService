@@ -14,7 +14,7 @@ export class IConfirmMailFactoryInMemory {
   compose(): IConfirmMailUseCase {
     const iHashService = new IHashServiceBCryptImpl();
     const iCacheProvider = new ICacheProviderInMemoryImpl();
-    const iUserRepository = new IUserRepositoryInMemoryImpl(this.users, iHashService);
+    const iUserRepository = new IUserRepositoryInMemoryImpl(this.users);
     const iCartRepository = new ICartRepositoryInMemoryImpl(this.carts)
     return new IConfirmMailUseCase(iUserRepository, iCartRepository, iCacheProvider);
   }

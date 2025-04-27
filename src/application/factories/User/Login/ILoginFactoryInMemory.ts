@@ -15,7 +15,7 @@ export class ILoginFactoryInMemory {
 
   compose(): ILoginUseCase {
     const iHashService = new IHashServiceBCryptImpl();
-    const iUserRepository = new IUserRepositoryInMemoryImpl(this.users, iHashService);
+    const iUserRepository = new IUserRepositoryInMemoryImpl(this.users);
     const iTokenService = new ITokenServiceJWTImpl();
     const iGenerateRefreshTokenFactoryInMemory = new IGenerateRefreshTokenFactoryInMemory(this.refreshTokens);
     const iGenerateRefreshTokenUseCase = iGenerateRefreshTokenFactoryInMemory.compose();

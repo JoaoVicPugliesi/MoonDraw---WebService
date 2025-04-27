@@ -41,10 +41,10 @@ export class ILoginController {
           
       adapter.res.setCookie('refresh_token', JSON.stringify(response.refresh_token), {
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite: 'strict',
-        path: '*',
-        maxAge: response.refresh_token.expires_in,
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7,
       });
 
       return adapter.res.status(200).send({

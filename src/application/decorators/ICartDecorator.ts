@@ -1,6 +1,7 @@
 import { IAssignCartOwnerDTO } from '@application/useCases/Сart/AssignCartOwner/IAssignCartOwnerDTO';
 import { IAttachProductIntoCartDTO } from '@application/useCases/Сart/AttachProductIntoCart/IAttachProductIntoCartDTO';
 import { IDetachProductFromCartDTO } from '@application/useCases/Сart/DetachProductFromCart/IDetachProductFromCartDTO';
+import { IGetCartDTO } from '@application/useCases/Сart/GetCart/IGetCartDTO';
 import { IListCartContentDTO } from '@application/useCases/Сart/ListCartContent/IListCartContentDTO';
 import { Cart } from '@domain/entities/Cart';
 import { Product } from '@domain/entities/Product';
@@ -14,8 +15,8 @@ class ICartDecorator implements ICartRepository {
 
     async assignCartOwner({ 
         public_id 
-    }: IAssignCartOwnerDTO): Promise<Cart> {
-        return await this.decoratee.assignCartOwner({
+    }: IAssignCartOwnerDTO): Promise<void> {
+        await this.decoratee.assignCartOwner({
             public_id
         });
     }
@@ -56,6 +57,14 @@ class ICartDecorator implements ICartRepository {
             cart_id,
             product_id
         })
+    }
+
+    async getCart({
+        user_id
+    }: IGetCartDTO): Promise<Cart | null> {
+        return await this.decoratee.getCart({
+            user_id
+        });
     }
 }
 

@@ -34,7 +34,9 @@ export class ILogOutController {
       });
     }
     try {
-      const { public_id }: ILogoutDTO = {
+      const { 
+        public_id 
+      }: ILogoutDTO = {
         public_id: refreshToken.public_id,
       };
       const response: RefreshTokenNotFoundErrorResponse | void =
@@ -48,10 +50,11 @@ export class ILogOutController {
           .send({ message: 'Refresh Token Not Found' });
       }
 
-      adapter.res.clearCookie('refresh_token');
-      adapter.res.unsignCookie('refresh_token');
+      adapter.res.clearCookie('refresh_token', {
+        path: '/'
+      });
 
-      return adapter.res.status(204).send();
+      return adapter.res.status(200).send();
     } catch (error) {
       return adapter.res.status(500).send({ message: error });
     }

@@ -3,6 +3,7 @@ import { iAttachProductIntoCart } from '@application/useCases/Сart/AttachProduc
 import { iDetachProductFromCart } from '@application/useCases/Сart/DetachProductFromCart/IDetachProductFromCartComposer';
 import { iListCartContent } from '@application/useCases/Сart/ListCartContent/IListCartContentComposer';
 import { ICartDocs } from './docs/ICartDocs';
+import { iGetCart } from '@application/useCases/Сart/GetCart/IGetCartComposer';
 
 export class CartEndpoints {
   constructor(
@@ -30,6 +31,17 @@ export class CartEndpoints {
       this.iCartDocs.detachProductFromCartDocs(),
       async (adapter: RequestResponseAdapter) => {
         await iDetachProductFromCart.handle(adapter);
+      }
+    );
+    this.app.get(
+      '/carts/cart/:user_id',
+      {
+        schema: {
+          tags: ['carts']
+        }
+      },
+      async (adapter: RequestResponseAdapter) => {
+        await iGetCart.handle(adapter);
       }
     );
   }

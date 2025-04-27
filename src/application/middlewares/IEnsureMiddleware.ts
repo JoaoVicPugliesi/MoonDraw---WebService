@@ -8,7 +8,7 @@ import {
   TokenIsMissingErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
-import { ITokenService } from '@domain/services/ITokenService';
+import { ITokenService } from '@domain/services/Token/ITokenService';
 import { RefreshToken } from '@prisma/client';
 
 export interface IEnsureMiddleware {

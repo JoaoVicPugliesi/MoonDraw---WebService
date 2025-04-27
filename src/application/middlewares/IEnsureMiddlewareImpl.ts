@@ -7,7 +7,7 @@ import {
   MustBeAnAdmingErrorResponse,
   MustBeVerifiedErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
-import { ITokenService } from '@domain/services/ITokenService';
+import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IEnsureMiddleware } from './IEnsureMiddleware';
 import { RefreshToken } from '@prisma/client';
 
@@ -48,7 +48,8 @@ export class IEnsureMiddlewareImpl implements IEnsureMiddleware {
     }
 
     try {
-      const refreshToken: RefreshToken = JSON.parse(refreshTokenCookie);
+      const decodeCookie = decodeURIComponent(refreshTokenCookie);
+      const refreshToken: RefreshToken = JSON.parse(decodeCookie);
       return refreshToken;
     } catch (error) {
       return new TokenInvalidFormatErrorResponse(error);

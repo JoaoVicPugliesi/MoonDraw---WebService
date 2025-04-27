@@ -7,17 +7,18 @@ import { IAssignCartOwnerDTO } from '@application/useCases/Сart/AssignCartOwner
 import { IAttachProductIntoCartDTO } from '@application/useCases/Сart/AttachProductIntoCart/IAttachProductIntoCartDTO';
 import { IDetachProductFromCartDTO } from '@application/useCases/Сart/DetachProductFromCart/IDetachProductFromCartDTO';
 import { IListCartContentDTO } from '@application/useCases/Сart/ListCartContent/IListCartContentDTO';
+import { IGetCartDTO } from '@application/useCases/Сart/GetCart/IGetCartDTO';
 
 export class ICartRepositoryPrismaImpl implements ICartRepository {
-  async assignCartOwner({ public_id }: IAssignCartOwnerDTO): Promise<Cart> {
-    const cart: Cart = await prisma.cart.create({
+  async assignCartOwner({ 
+    public_id 
+  }: IAssignCartOwnerDTO): Promise<void> {
+    await prisma.cart.create({
       data: {
         public_id: randomUUID(),
         user_id: public_id,
       },
     });
-
-    return cart;
   }
 
   async listCartContent({
@@ -81,5 +82,17 @@ export class ICartRepositoryPrismaImpl implements ICartRepository {
        }
       },
     });
+  }
+
+  async getCart({
+    user_id
+  }: IGetCartDTO): Promise<Cart | null> {
+      const cart: Cart | null = await prisma.cart.findUnique({
+        where: {
+          user_id: user_id
+        }
+      });
+
+      return cart;
   }
 }
