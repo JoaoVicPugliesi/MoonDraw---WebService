@@ -6,8 +6,8 @@ import {
 } from '@application/handlers/UseCasesResponses/User/IRegisterHandlers';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
-import { randomUUID } from 'crypto';
 import { IHashService } from '@domain/services/Hash/IHashService';
+import { v4 as uuidv4 } from 'uuid';
 
 export class IRegisterUseCase {
   constructor(
@@ -31,7 +31,7 @@ export class IRegisterUseCase {
 
     if (response) return new UserConflictErrorResponse();
     
-    const token: string = randomUUID();
+    const token: string = uuidv4();
     const hash = await this.iHashService.hash(password);
 
     await this.iCacheProvider.set(

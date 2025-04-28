@@ -3,7 +3,7 @@ import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRefreshTokenRepository } from '@domain/repositories/IRefreshTokenRepository';
 import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
 import dayjs from 'dayjs';
-import { randomUUID } from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 
 export class IRefreshTokenRepositoryPrismaImpl implements IRefreshTokenRepository {
   async findRelatedRefreshTokens<T>(
@@ -49,7 +49,7 @@ export class IRefreshTokenRepositoryPrismaImpl implements IRefreshTokenRepositor
     const expiresIn = dayjs().add(14, 'days').unix();
     const refreshToken: RefreshToken | null = await prisma.refreshToken.create({
       data: {
-        public_id: randomUUID(),
+        public_id: uuidv4(),
         user_id: user_id,
         expires_in: expiresIn,
       },

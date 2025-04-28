@@ -1,7 +1,7 @@
 import { prisma } from '@infra/db/Prisma';
 import { Cart } from '@domain/entities/Cart';
 import { Product } from '@domain/entities/Product';
-import { randomUUID } from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 import { ICartRepository } from '@domain/repositories/ICartRepository';
 import { IAssignCartOwnerDTO } from '@application/useCases/Сart/AssignCartOwner/IAssignCartOwnerDTO';
 import { IAttachProductIntoCartDTO } from '@application/useCases/Сart/AttachProductIntoCart/IAttachProductIntoCartDTO';
@@ -15,7 +15,7 @@ export class ICartRepositoryPrismaImpl implements ICartRepository {
   }: IAssignCartOwnerDTO): Promise<void> {
     await prisma.cart.create({
       data: {
-        public_id: randomUUID(),
+        public_id: uuidv4(),
         user_id: public_id,
       },
     });

@@ -5,7 +5,7 @@ import { ISearchProductsDTO } from '@application/useCases/Product/SearchProducts
 import { ISelectProductDTO } from '@application/useCases/Product/SelectProduct/ISelectProductDTO';
 import { IFetchProductsDTO } from '@application/useCases/Product/FetchProducts/IFetchProductsDTO';
 import { ISaveProductDTO } from '@application/useCases/Product/SaveProduct/ISaveProductDTO';
-import { randomUUID } from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 
 export class IProductRepositoryPrismaImpl implements IProductRepository {
   async fetchProducts({ page }: IFetchProductsDTO): Promise<Product[] | null> {
@@ -54,7 +54,7 @@ export class IProductRepositoryPrismaImpl implements IProductRepository {
   }: ISaveProductDTO): Promise<void> {
     await prisma.product.create({
       data: {
-        public_id: randomUUID(),
+        public_id: uuidv4(),
         image_id: image_id,
         name: name,
         description: description,

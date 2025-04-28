@@ -1,6 +1,6 @@
 import { User } from '@domain/entities/User';
 import { prisma } from '@infra/db/Prisma';
-import { randomUUID } from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
 
@@ -26,7 +26,7 @@ export class IUserRepositoryPrismaImpl implements IUserRepository {
   }: IRegisterDTO): Promise<User> {
     const user: User = await prisma.user.create({
       data: {
-        public_id: randomUUID(),
+        public_id: uuidv4(),
         name: name,
         surname: surname,
         email: email,

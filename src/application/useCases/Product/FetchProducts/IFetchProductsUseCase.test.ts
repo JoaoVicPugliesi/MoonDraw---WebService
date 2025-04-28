@@ -1,16 +1,15 @@
+import { v4 as uuidv4 } from 'uuid';
 import { IFetchProductsInMemoryFactory } from '@application/factories/Product/FetchProducts/IFetchProductsInMemoryFactory';
 import { IFetchProductsDTO } from '@application/useCases/Product/FetchProducts/IFetchProductsDTO';
-
 import { Product } from '@domain/entities/Product';
 import { IFetchProductsUseCase } from './IFetchProductsUseCase';
-import { InvalidProductsNotFoundErrorResponse, FetchProductsResponse } from '@application/handlers/UseCasesResponses/Product/IFetchProductsHandlers';
-import { randomUUID } from 'crypto';
+import { ProductsNotFoundErrorResponse, FetchProductsResponse } from '@application/handlers/UseCasesResponses/Product/IFetchProductsHandlers';
 
 const products: Product[] = [];
 const product: Product = {
   id: products.length + 1,
-  public_id: randomUUID(),
-  image_id: randomUUID(),
+  public_id: uuidv4(),
+  image_id: uuidv4(),
   name: 'Air Jordan',
   description: 'No Description',
   price: 5.99,
@@ -34,12 +33,12 @@ describe('I Fetch products use case', () => {
     };
 
     // Act
-    const response: FetchProductsResponse | InvalidProductsNotFoundErrorResponse = await sut.execute({
+    const response: FetchProductsResponse | ProductsNotFoundErrorResponse = await sut.execute({
       page,
     });
 
     // Assert
-    expect(response).not.toBeInstanceOf(InvalidProductsNotFoundErrorResponse);
+    expect(response).not.toBeInstanceOf(ProductsNotFoundErrorResponse);
     expect(response).toHaveProperty('products');
   });
 });

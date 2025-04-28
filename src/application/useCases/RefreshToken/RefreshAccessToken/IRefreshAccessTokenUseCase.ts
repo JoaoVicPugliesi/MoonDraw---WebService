@@ -1,7 +1,7 @@
 import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import dayjs from 'dayjs';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
-import { ITokenService } from '@domain/services/ITokenService';
+import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import {
@@ -47,7 +47,13 @@ export class IRefreshAccessTokenUseCase {
 
     if (!user) return new RefreshTokenUserNotFoundErrorResponse();
 
-    const { name, surname, email, role, is_verified } = user;
+    const { 
+      name, 
+      surname, 
+      email, 
+      role, 
+      is_verified 
+    } = user;
     
     await this.iUserRepository.trackUserActivity({
       email

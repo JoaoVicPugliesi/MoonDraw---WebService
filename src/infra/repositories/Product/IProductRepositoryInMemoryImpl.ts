@@ -4,12 +4,14 @@ import { IFetchProductsDTO } from '@application/useCases/Product/FetchProducts/I
 import { Product } from '@domain/entities/Product';
 import { IProductRepository } from '@domain/repositories/IProductRepository';
 import { ISaveProductDTO } from '@application/useCases/Product/SaveProduct/ISaveProductDTO';
-import { randomUUID } from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 
 export class IProductRepositoryInMemoryImpl implements IProductRepository {
   constructor(private readonly products: Product[]) {}
 
-  async fetchProducts({ page }: IFetchProductsDTO): Promise<Product[] | null> {
+  async fetchProducts({ 
+    page 
+  }: IFetchProductsDTO): Promise<Product[] | null> {
     return new Promise((resolve, reject) => {
       const pageSize: number = 10;
       const productsSpliced: Product[] = this.products.slice(
@@ -64,7 +66,7 @@ export class IProductRepositoryInMemoryImpl implements IProductRepository {
     return new Promise((resolve, reject) => {
       const product: Product = {
         id: this.products.length + 1,
-        public_id: randomUUID(),
+        public_id: uuidv4(),
         image_id: image_id,
         name: name,
         description: description,

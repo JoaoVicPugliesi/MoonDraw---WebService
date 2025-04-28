@@ -1,7 +1,7 @@
 import { User } from '@domain/entities/User';
 import { IRegisterDTO } from '@application/useCases/User/Register/IRegisterDTO';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
-import { randomUUID } from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 
 export class IUserRepositoryInMemoryImpl implements IUserRepository {
   constructor(
@@ -31,7 +31,7 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
     return new Promise((resolve, reject) => {
       const user: User = {
         id: this.users.length + 1,
-        public_id: randomUUID(),
+        public_id: uuidv4(),
         name: name,
         surname: surname,
         email: email,

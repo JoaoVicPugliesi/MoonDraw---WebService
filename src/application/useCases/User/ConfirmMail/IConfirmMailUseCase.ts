@@ -1,14 +1,14 @@
 import { User } from '@domain/entities/User';
-import { ICartRepository } from '@domain/repositories/ICartRepository';
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import { IConfirmMailDTO } from './IConfirmMailDTO';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
 import { TokenExpiredErrorResponse } from '@application/handlers/UseCasesResponses/User/IConfirmMailHandlers';
+import { IAssignCartOwnerUseCase } from '@application/useCases/Сart/AssignCartOwner/IAssignCartOwnerUseCase';
 
 export class IConfirmMailUseCase {
   constructor(
     private readonly iUserRepository: IUserRepository,
-    private readonly iCartRepository: ICartRepository,
+    private readonly iAssignCartOwner: IAssignCartOwnerUseCase,
     private readonly iCacheProvider: ICacheProvider
   ) {}
 
@@ -33,14 +33,8 @@ export class IConfirmMailUseCase {
     });
     
     await this.iCacheProvider.del(`user-${token}`);
-    
-    const cachedUserNull: string | null = await this.iCacheProvider.get(
-      `user-${token}`
-    );
-    
-    console.log(cachedUserNull);
 
-    await this.iCartRepository.assignCartOwner({
+    await this.iAssignCartOwner.execute({
       public_id
     });
   }

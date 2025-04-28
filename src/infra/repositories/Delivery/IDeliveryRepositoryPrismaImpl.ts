@@ -2,7 +2,7 @@ import { ISaveDeliveryDTO } from '@application/useCases/Delivery/SaveDelivery/IS
 import { Delivery } from '@domain/entities/Delivery';
 import { IDeliveryRepository } from '@domain/repositories/IDeliveryRepository';
 import { prisma } from '@infra/db/Prisma';
-import { randomUUID } from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 
 export class IDeliveryRepositoryPrismaImpl implements IDeliveryRepository {
   async saveDelivery({
@@ -24,7 +24,7 @@ export class IDeliveryRepositoryPrismaImpl implements IDeliveryRepository {
   }: ISaveDeliveryDTO): Promise<Delivery> {
     return await prisma.delivery.create({
       data: {
-        public_id: randomUUID(),
+        public_id: uuidv4(),
         user_id: user_id,
         purchase_id: purchase_id,
         recipient_email: recipient_email,

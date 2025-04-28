@@ -1,5 +1,5 @@
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { randomUUID } from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 import { IRefreshTokenRepository } from '@domain/repositories/IRefreshTokenRepository';
 import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
 import dayjs from 'dayjs';
@@ -54,7 +54,7 @@ export class IRefreshTokenRepositoryInMemoryImpl implements IRefreshTokenReposit
       return new Promise((resolve, reject) => {
         const refreshToken: RefreshToken = {
           id: this.refreshTokens.length + 1,
-          public_id: randomUUID(),
+          public_id: uuidv4(),
           expires_in: expiresIn,
           user_id: user_id,
         };

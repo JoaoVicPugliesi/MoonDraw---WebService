@@ -2,8 +2,10 @@
 A WebService for our e-commerce platform.
 
 # Functional Requirements 
-
+1 - Users should be able to view
 # Non-Functional Requirements
+
+# Core Entities & APIs 
 
 # High Level Design
 ![HighLevelDesign](images/HighLevelDesign.png)

@@ -1,7 +1,7 @@
 import { Product } from '@domain/entities/Product';
 import { Purchase } from '@domain/entities/Purchase';
 import { prisma } from '@infra/db/Prisma';
-import { randomUUID } from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import {
   CheckoutPurchase,
@@ -61,7 +61,7 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
   }: ISavePurchaseDTO): Promise<Purchase> {
     const purchase: Purchase = await prisma.purchase.create({
       data: {
-        public_id: randomUUID(),
+        public_id: uuidv4(),
         user_id: user_id,
         title: title,
         value: value,
