@@ -11,7 +11,9 @@ export class RefreshTokenEndpoints {
   setupRoutes() {
     this.app.post(
       '/refreshtokens/refreshAccessToken',
-      this.iRefreshTokenDocs.refreshTokenDocs(),
+      {
+        docs: this.iRefreshTokenDocs.refreshTokenDoc(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iRefreshAccessToken.handle(adapter);
       }

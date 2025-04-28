@@ -1,8 +1,7 @@
 import { User } from '@domain/entities/User';
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
-import { IConfirmMailDTO } from './IConfirmMailDTO';
+import { IConfirmMailDTO, TokenExpiredErrorResponse } from './IConfirmMailDTO';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
-import { TokenExpiredErrorResponse } from '@application/handlers/UseCasesResponses/User/IConfirmMailHandlers';
 import { IAssignCartOwnerUseCase } from '@application/useCases/Сart/AssignCartOwner/IAssignCartOwnerUseCase';
 
 export class IConfirmMailUseCase {
@@ -30,6 +29,7 @@ export class IConfirmMailUseCase {
       password,
     });
     
+    await this.iCacheProvider.del(`user-processing-${email}`);
     await this.iCacheProvider.del(`user-${token}`);
 
     await this.iAssignCartOwner.execute({

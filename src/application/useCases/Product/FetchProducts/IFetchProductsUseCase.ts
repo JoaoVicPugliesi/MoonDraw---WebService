@@ -1,9 +1,6 @@
-import { IFetchProductsDTO } from './IFetchProductsDTO';
+import { FetchProductsResponse, IFetchProductsDTO, ProductsNotFoundErrorResponse } from './IFetchProductsDTO';
 import { Product } from '@domain/entities/Product';
-import {
-  FetchProductsResponse,
-  ProductsNotFoundErrorResponse,
-} from '@application/handlers/UseCasesResponses/Product/IFetchProductsHandlers';
+;
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import { IProductRepository } from '@domain/repositories/IProductRepository';
 

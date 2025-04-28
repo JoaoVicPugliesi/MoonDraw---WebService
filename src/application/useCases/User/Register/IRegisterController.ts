@@ -1,10 +1,8 @@
 import z from 'zod';
 import { IRegisterUseCase } from './IRegisterUseCase';
-import { IRegisterDTO } from './IRegisterDTO';
+import { IRegisterDTO, UserConflictErrorResponse, UserProcessingConflictErrorResponse } from './IRegisterDTO';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import {
-  UserConflictErrorResponse,
-} from '@application/handlers/UseCasesResponses/User/IRegisterHandlers';
+
 import { IUserValidator } from '@application/validators/User/IUserValidator';
 
 export class IRegisterController {
@@ -24,8 +22,11 @@ export class IRegisterController {
         password,
         confirmPassword
       }: IRegisterDTO = schema.parse(adapter.req.body);
-      const response: UserConflictErrorResponse | void =
-        await this.iRegisterUseCase.execute({
+      const response: 
+      | UserConflictErrorResponse
+      | UserProcessingConflictErrorResponse 
+      | void 
+      = await this.iRegisterUseCase.execute({
           name,
           surname,
           email,
@@ -36,6 +37,12 @@ export class IRegisterController {
       if (response instanceof UserConflictErrorResponse) {
         return adapter.res.status(409).send({
           message: 'User already exists',
+        });
+      }
+
+      if(response instanceof UserProcessingConflictErrorResponse) {
+        return adapter.res.status(409).send({
+          message: 'User already processing'
         });
       }
       return adapter.res.status(201).send({

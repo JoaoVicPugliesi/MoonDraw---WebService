@@ -1,16 +1,11 @@
 import { User } from '@domain/entities/User';
-import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
+import { GenerateRefreshTokenErrorResponse, IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { IHashService } from '@domain/services/Hash/IHashService';
 import { ITokenService } from '@domain/services/Token/ITokenService';
-import { ILoginDTO } from './ILoginDTO';
-import {
-  UserNotFoundErrorResponse,
-  PasswordIsNotEqualErrorResponse,
-  ILoginResponse,
-} from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
+import { ILoginDTO, ILoginResponse, PasswordIsNotEqualErrorResponse, UserNotFoundErrorResponse } from './ILoginDTO';
+
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
 
 export class ILoginUseCase {
@@ -82,8 +77,6 @@ export class ILoginUseCase {
         name: name,
         surname: surname,
         email: email,
-        role: role,
-        is_verified: is_verified,
       }
     };
   }

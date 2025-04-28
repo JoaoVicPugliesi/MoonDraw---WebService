@@ -1,15 +1,9 @@
-import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import dayjs from 'dayjs';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { ITokenService } from '@domain/services/Token/ITokenService';
-import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
+import { IRefreshAccessTokenDTO, RefreshAccessTokenResponse, RefreshTokenNotFoundErrorResponse, RefreshTokenUserNotFoundErrorResponse } from './IRefreshAccessTokenDTO';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import {
-  RefreshTokenNotFoundErrorResponse,
-  RefreshTokenUserNotFoundErrorResponse,
-  RefreshAccessTokenResponse,
-} from '@application/handlers/UseCasesResponses/RefreshToken/IRefreshAccessTokenHandler';
-import { IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
+import { GenerateRefreshTokenErrorResponse, IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
 import { User } from '@domain/entities/User';
 import { IRefreshTokenRepository } from '@domain/repositories/IRefreshTokenRepository';
 import { IUserRepository } from '@domain/repositories/IUserRepository';

@@ -8,7 +8,9 @@ import { ISaveProductDTO } from '@application/useCases/Product/SaveProduct/ISave
 import { v4 as uuidv4 } from 'uuid';
 
 export class IProductRepositoryPrismaImpl implements IProductRepository {
-  async fetchProducts({ page }: IFetchProductsDTO): Promise<Product[] | null> {
+  async fetchProducts({ 
+    page 
+  }: IFetchProductsDTO): Promise<Product[] | null> {
     const products: Product[] | null = await prisma.product.findMany({
       skip: 10 * (page - 1),
       take: 10,

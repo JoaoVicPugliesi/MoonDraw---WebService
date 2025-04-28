@@ -1,8 +1,7 @@
 import { Product } from '@domain/entities/Product';
 import { ICartRepository } from '@domain/repositories/ICartRepository';
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
-import { IListCartContentDTO } from './IListCartContentDTO';
-import { IListCartContentResponse, CartEmptyErrorResponse } from '@application/handlers/UseCasesResponses/Cart/IListCartContentHandlers';
+import { CartEmptyErrorResponse, IListCartContentDTO, IListCartContentResponse } from './IListCartContentDTO';
 
 export class IListCartContentUseCase {
   constructor(

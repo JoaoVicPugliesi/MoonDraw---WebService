@@ -14,28 +14,36 @@ export class ProductEndpoints {
   setupRoutes() {
     this.app.get(
       '/products/:page',
-      this.iProductDocs.fetchProductsDocs(),
+      {
+        docs: this.iProductDocs.fetchProductsDocs(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iFetchProducts.handle(adapter);
       }
     );
     this.app.get(
       '/products/product/:public_id',
-      this.iProductDocs.searchProductDocs(),
+      {
+        docs: this.iProductDocs.selectProductDocs(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iSelectProduct.handle(adapter);
       }
     );
     this.app.get(
       '/products/search/:name',
-      this.iProductDocs.searchProductDocs(),
+      {
+        docs: this.iProductDocs.searchProductDocs(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iSearchProducts.handle(adapter);
       }
     );
     this.app.post(
       '/products/save',
-      this.iProductDocs.saveProductDocs(),
+      {
+        docs: this.iProductDocs.saveProductDocs(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iSaveProduct.handle(adapter);
       }

@@ -1,9 +1,6 @@
 import { ICartRepository } from '@domain/repositories/ICartRepository';
-import { IAttachProductIntoCartDTO } from './IAttachProductIntoCartDTO';
-import {
-  IAttachProductIntoCartResponse,
-  AttachmentAlreadyExistsErrorResponse,
-} from '@application/handlers/UseCasesResponses/Cart/IAttachProductIntoCart';
+import { AttachmentAlreadyExistsErrorResponse, IAttachProductIntoCartDTO, IAttachProductIntoCartResponse } from './IAttachProductIntoCartDTO';
+
 
 export class IAttachProductIntoCartUseCase {
   constructor(private readonly iCartRepository: ICartRepository) {}

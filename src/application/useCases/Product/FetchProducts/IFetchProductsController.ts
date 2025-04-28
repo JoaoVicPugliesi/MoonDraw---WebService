@@ -1,16 +1,10 @@
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import {
-  FetchProductsResponse,
-  ProductsNotFoundErrorResponse,
-} from '@application/handlers/UseCasesResponses/Product/IFetchProductsHandlers';
-import { ITokenService } from '@domain/services/ITokenService';
+import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IFetchProductsUseCase } from './IFetchProductsUseCase';
-import { IFetchProductsDTO } from './IFetchProductsDTO';
-import {
-  TokenInvalidErrorResponse,
-  TokenIsMissingErrorResponse,
-} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { FetchProductsResponse, IFetchProductsDTO, ProductsNotFoundErrorResponse } from './IFetchProductsDTO';
+
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
 export class IFetchProductsController {
   constructor(

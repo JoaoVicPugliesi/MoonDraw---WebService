@@ -11,10 +11,11 @@ import { iPurchaseDocs } from '@routes/Purchase/docs/IPurchaseDocsSwaggerZodImpl
 import { iRefreshTokenDocs } from '@routes/RefreshToken/docs/IRefreshTokenDocsSwaggerZodImpl';
 import { iProductDocs } from '@routes/Product/docs/IProductDocsSwaggerZodImpl';
 import { iCartDocs } from '@routes/Cart/docs/ICartDocsSwaggerZodImpl';
+import { iUserConfigs } from '@routes/User/config/IUserConfigsImpl';
 
 const app = new FastifyServerAdapter(iFastify);
 
-const user = new UserEndpoints(app, iUserDocs);
+const user = new UserEndpoints(app, iUserDocs, iUserConfigs);
 const refreshToken = new RefreshTokenEndpoints(app, iRefreshTokenDocs);
 const product = new ProductEndpoints(app, iProductDocs);
 const cart = new CartEndpoints(app, iCartDocs);

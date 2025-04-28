@@ -1,10 +1,9 @@
 import z from 'zod';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IConfirmMailUseCase } from './IConfirmMailUseCase';
-import { IConfirmMailDTO } from './IConfirmMailDTO';
+import { IConfirmMailDTO, TokenExpiredErrorResponse } from './IConfirmMailDTO';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import { IUserValidator } from '@application/validators/User/IUserValidator';
-import { TokenExpiredErrorResponse } from '@application/handlers/UseCasesResponses/User/IConfirmMailHandlers';
 
 export class IConfirmMailController {
   constructor(

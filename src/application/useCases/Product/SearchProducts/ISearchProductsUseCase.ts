@@ -1,8 +1,7 @@
 import { IProductRepository } from '@domain/repositories/IProductRepository';
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
-import { ISearchProductsDTO } from './ISearchProductsDTO';
+import { ISearchProductsDTO, ISearchProductsResponse, SearchedProductsNotFoundErrorResponse } from './ISearchProductsDTO';
 import { Product } from '@domain/entities/Product';
-import { SearchedProductsNotFoundErrorResponse, ISearchProductsResponse } from '@application/handlers/UseCasesResponses/Product/ISearchProductsHandlers';
 
 export class ISearchProductsUseCase {
   constructor(

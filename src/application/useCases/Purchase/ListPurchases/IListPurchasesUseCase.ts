@@ -1,8 +1,7 @@
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
-import { IListPurchasesDTO } from './IListPurchasesDTO';
+import { IListPurchaseResponse, IListPurchasesDTO, PurchasesNotFoundErrorResponse } from './IListPurchasesDTO';
 import { Purchase } from '@domain/entities/Purchase';
-import { IListPurchaseResponse, PurchasesNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/Purchase/IListPurchaseHandlers';
 
 export class IListPurchasesUseCase {
   constructor(

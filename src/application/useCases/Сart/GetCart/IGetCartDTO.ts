@@ -1,3 +1,11 @@
-import { ICart } from '@domain/entities/Cart';
+import { Cart, ICart } from '@domain/entities/Cart';
 
-export interface IGetCartDTO extends Pick<ICart, 'user_id'> {}
+// Request
+export interface IGetCartDTO extends Pick<ICart, 'user_id'> {};
+
+// Response
+export class CartNotFoundErrorResponse extends Error {}
+
+export interface IGetCartResponse {
+    cart: Cart
+}

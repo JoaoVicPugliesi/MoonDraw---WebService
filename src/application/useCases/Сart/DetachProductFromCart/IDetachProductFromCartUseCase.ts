@@ -1,9 +1,6 @@
 import { ICartRepository } from '@domain/repositories/ICartRepository';
-import { IDetachProductFromCartDTO } from './IDetachProductFromCartDTO';
-import {
-  IDetachProductFromCartResponse,
-  AttachmentDoesNotExistsErrorResponse,
-} from '@application/handlers/UseCasesResponses/Cart/IDetachProductFromCartHandlers';
+import { AttachmentDoesNotExistsErrorResponse, IDetachProductFromCartDTO, IDetachProductFromCartResponse } from './IDetachProductFromCartDTO';
+
 
 export class IDetachProductFromCartUseCase {
   constructor(

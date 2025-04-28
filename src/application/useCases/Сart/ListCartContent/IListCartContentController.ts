@@ -1,11 +1,8 @@
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IListCartContentUseCase } from './IListCartContentUseCase';
-import { ITokenService } from '@domain/services/ITokenService';
-import { IListCartContentDTO } from './IListCartContentDTO';
-import {
-  IListCartContentResponse,
-  CartEmptyErrorResponse,
-} from '@application/handlers/UseCasesResponses/Cart/IListCartContentHandlers';
+import { ITokenService } from '@domain/services/Token/ITokenService';
+import { CartEmptyErrorResponse, IListCartContentDTO, IListCartContentResponse } from './IListCartContentDTO';
+
 import {
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,

@@ -1,7 +1,6 @@
 import { ICartRepository } from '@domain/repositories/ICartRepository';
-import { IGetCartDTO } from './IGetCartDTO';
+import { CartNotFoundErrorResponse, IGetCartDTO, IGetCartResponse } from './IGetCartDTO';
 import { Cart } from '@domain/entities/Cart';
-import { CartNotFoundErrorResponse, IGetCartResponse } from '@application/handlers/UseCasesResponses/Cart/IGetCartHandlers';
 
 export class IGetCartUseCase {
   constructor(

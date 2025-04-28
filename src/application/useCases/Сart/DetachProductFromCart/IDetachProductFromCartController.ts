@@ -2,11 +2,7 @@ import z from 'zod';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IDetachProductFromCartUseCase } from './IDetachProductFromCartUseCase';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import { IDetachProductFromCartDTO } from './IDetachProductFromCartDTO';
-import {
-  IDetachProductFromCartResponse,
-  AttachmentDoesNotExistsErrorResponse,
-} from '@application/handlers/UseCasesResponses/Cart/IDetachProductFromCartHandlers';
+import { AttachmentDoesNotExistsErrorResponse, IDetachProductFromCartDTO, IDetachProductFromCartResponse } from './IDetachProductFromCartDTO';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import {
   TokenInvalidErrorResponse,

@@ -1,9 +1,6 @@
 import { User } from '@domain/entities/User';
 import { IMailProvider } from '@domain/providers/Mail/IMailProvider';
-import { IRegisterDTO } from './IRegisterDTO';
-import {
-  UserConflictErrorResponse,
-} from '@application/handlers/UseCasesResponses/User/IRegisterHandlers';
+import { IRegisterDTO, UserConflictErrorResponse, UserProcessingConflictErrorResponse } from './IRegisterDTO';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import { IHashService } from '@domain/services/Hash/IHashService';
@@ -24,17 +21,29 @@ export class IRegisterUseCase {
     email,
     password
   }: IRegisterDTO): Promise<
-    UserConflictErrorResponse | void
+    | UserConflictErrorResponse 
+    | UserProcessingConflictErrorResponse
+    | void
   > {
-    const response: User | null = await this.iUserRepository.findUserByEmail({
+    const user: User | null = await this.iUserRepository.findUserByEmail({
       email
     });
 
-    if (response) return new UserConflictErrorResponse();
+    if (user) return new UserConflictErrorResponse();
+
+    const cachedUser: string | null = await this.iCacheProvider.get(`user-processing-${email}`);
+
+    if(cachedUser) return new UserProcessingConflictErrorResponse();
     
     const token: string = this.iIdService.id6Len();
     const hash = await this.iHashService.hash(password);
-
+    await this.iCacheProvider.set(
+      `user-processing-${email}`,
+      'processing',
+      {
+        EX: 900
+      }
+    )
     await this.iCacheProvider.set(
       `user-${token}`,
       JSON.stringify({

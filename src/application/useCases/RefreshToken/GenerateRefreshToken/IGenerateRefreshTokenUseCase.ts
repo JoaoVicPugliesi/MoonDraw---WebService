@@ -1,6 +1,5 @@
-import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
 import { RefreshToken } from '@prisma/client';
-import { IGenerateRefreshTokenDTO } from './IGenerateRefreshTokenDTO';
+import { GenerateRefreshTokenErrorResponse, IGenerateRefreshTokenDTO } from './IGenerateRefreshTokenDTO';
 import { IRefreshTokenRepository } from '@domain/repositories/IRefreshTokenRepository';
 
 export class IGenerateRefreshTokenUseCase {

@@ -1,14 +1,9 @@
 import z from 'zod';
 import { ILoginUseCase } from './ILoginUseCase';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import { ILoginDTO } from './ILoginDTO';
-import {
-  UserNotFoundErrorResponse,
-  PasswordIsNotEqualErrorResponse,
-  ILoginResponse,
-} from '@application/handlers/UseCasesResponses/User/ILoginHandlers';
-import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
+import { ILoginDTO, ILoginResponse, PasswordIsNotEqualErrorResponse, UserNotFoundErrorResponse } from './ILoginDTO';
 import { IUserValidator } from '@application/validators/User/IUserValidator';
+import { GenerateRefreshTokenErrorResponse } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
 
 export class ILoginController {
   constructor(

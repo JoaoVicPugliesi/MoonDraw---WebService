@@ -1,6 +1,5 @@
-import { ILogoutDTO } from './ILogoutDTO';
+import { ILogoutDTO, RefreshTokenNotFoundErrorResponse } from './ILogoutDTO';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { RefreshTokenNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/User/ILogoutHandlers';
 import { IRefreshTokenRepository } from '@domain/repositories/IRefreshTokenRepository';
 
 export class ILogoutUseCase {

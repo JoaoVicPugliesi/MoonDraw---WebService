@@ -15,6 +15,7 @@ export interface IUser {
 }
 
 export class User implements IUser {
+
   constructor(
     readonly id: number,
     readonly public_id: string,
@@ -29,3 +30,4 @@ export class User implements IUser {
     public email_verified_at?: Date | null
   ) {}
 }
+

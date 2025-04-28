@@ -1,10 +1,6 @@
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
-import { ISelectProductDTO } from './ISelectProductDTO';
+import { ISelectProductDTO, ProductNotFoundErrorResponse, SelectProductResponse } from './ISelectProductDTO';
 import { Product } from '@domain/entities/Product';
-import {
-  ProductNotFoundErrorResponse,
-  SelectProductResponse,
-} from '@application/handlers/UseCasesResponses/Product/ISelectProductHandlers';
 import { IProductRepository } from '@domain/repositories/IProductRepository';
 
 export class ISelectProductUseCase {

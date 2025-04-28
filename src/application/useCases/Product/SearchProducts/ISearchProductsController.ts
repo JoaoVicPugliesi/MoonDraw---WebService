@@ -1,16 +1,10 @@
-import { ITokenService } from '@domain/services/ITokenService';
+import { ITokenService } from '@domain/services/Token/ITokenService';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import { ISearchProductsDTO } from './ISearchProductsDTO';
+import { ISearchProductsDTO, ISearchProductsResponse, SearchedProductsNotFoundErrorResponse } from './ISearchProductsDTO';
 import { ISearchProductsUseCase } from './ISearchProductsUseCase';
-import {
-  SearchedProductsNotFoundErrorResponse,
-  ISearchProductsResponse,
-} from '@application/handlers/UseCasesResponses/Product/ISearchProductsHandlers';
-import {
-  TokenInvalidErrorResponse,
-  TokenIsMissingErrorResponse,
-} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
 export class ISearchProductsController {
   constructor(

@@ -1,3 +1,11 @@
-import { IProduct } from '@domain/entities/Product';
+import { IProduct, Product } from '@domain/entities/Product';
 
-export interface ISearchProductsDTO extends Pick<IProduct, 'name'> {}
+// Request
+export interface ISearchProductsDTO extends Pick<IProduct, 'name'> {};
+
+// Response
+export class SearchedProductsNotFoundErrorResponse extends Error {};
+
+export interface ISearchProductsResponse {
+    result: Product[]
+}

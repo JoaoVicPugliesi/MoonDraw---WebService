@@ -1,13 +1,10 @@
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ILogoutUseCase } from './ILogoutUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { ILogoutDTO } from './ILogoutDTO';
-import { RefreshTokenNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/User/ILogoutHandlers';
-import {
-  RefreshTokenCookieMissingErrorResponse,
-  TokenInvalidFormatErrorResponse,
-} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { ILogoutDTO, RefreshTokenNotFoundErrorResponse } from './ILogoutDTO';
+
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { RefreshTokenCookieMissingErrorResponse, TokenInvalidFormatErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
 export class ILogOutController {
   constructor(

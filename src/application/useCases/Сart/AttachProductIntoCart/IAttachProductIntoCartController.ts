@@ -1,15 +1,12 @@
 import z from 'zod';
-import { ITokenService } from '@domain/services/ITokenService';
+import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IAttachProductIntoCartUseCase } from './IAttachProductIntoCartUseCase';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import { IAttachProductIntoCartDTO } from './IAttachProductIntoCartDTO';
-import {
-  IAttachProductIntoCartResponse,
-  AttachmentAlreadyExistsErrorResponse,
-} from '@application/handlers/UseCasesResponses/Cart/IAttachProductIntoCart';
-import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { AttachmentAlreadyExistsErrorResponse, IAttachProductIntoCartDTO, IAttachProductIntoCartResponse } from './IAttachProductIntoCartDTO';
+
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import { ICartValidator } from '@application/validators/Cart/ICartValidator';
+import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
 export class IAttachProductIntoCartController {
   constructor(

@@ -15,35 +15,45 @@ export class PurchaseEndpoints {
   setupRoutes() {
     this.app.post(
       '/purchases/initiate',
-      this.iPurchaseDocs.initiatePurchaseDocs(),
+      {
+        docs: this.iPurchaseDocs.initiatePurchaseDocs(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iInitiatePurchase.handle(adapter);
       }
     );
     this.app.get(
       '/purchases/list',
-      this.iPurchaseDocs.listPurchasesDocs(),
+      {
+        docs: this.iPurchaseDocs.listPurchasesDocs(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iListPurchases.handle(adapter);
       }
     );
     this.app.post(
       '/purchases/checkout',
-      this.iPurchaseDocs.checkoutPurchaseDocs(),
+      {
+        docs: this.iPurchaseDocs.checkoutPurchaseDocs(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iCheckoutPurchase.handle(adapter);
       }
     );
     this.app.delete(
       '/purchases/remove',
-      this.iPurchaseDocs.removePurchaseDocs(),
+      {
+        docs: this.iPurchaseDocs.removePurchaseDocs(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iRemovePurchase.handle(adapter);
       }
     );
     this.app.post(
       '/purchases/purchase/complete',
-      this.iPurchaseDocs.completePurchaseDocs(),
+      {
+        docs: this.iPurchaseDocs.completePurchaseDocs(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iCompletePurchase.handle(adapter);
       }

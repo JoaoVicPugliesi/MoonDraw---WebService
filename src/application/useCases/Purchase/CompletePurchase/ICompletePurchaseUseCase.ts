@@ -1,13 +1,10 @@
 import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
-import { ICompletePurchaseDTO } from './ICompletePurchaseDTO';
+import { ICompletePurchaseDTO, ICompletePurchaseResponse, PurchaseHasNoOwnerErrorResponse } from './ICompletePurchaseDTO';
 import { IPaymentProvider } from '@domain/providers/Payment/IPaymentProvider';
 import { ISaveDeliveryUseCase } from '@application/useCases/Delivery/SaveDelivery/ISaveDeliveryUseCase';
 import { Delivery } from '@domain/entities/Delivery';
 import { Purchase } from '@domain/entities/Purchase';
-import {
-  ICompletePurchaseResponse,
-  PurchaseHasNoOwnerErrorResponse,
-} from '@application/handlers/UseCasesResponses/Purchase/ICompletePurchaseHandlers';
+
 import { IRetrieveResponse } from '@domain/providers/Payment/Payment';
 
 export class ICompletePurchaseUseCase {

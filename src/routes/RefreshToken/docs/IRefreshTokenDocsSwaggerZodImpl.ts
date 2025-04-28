@@ -2,7 +2,7 @@ import { DocSchema } from '@adapters/ServerAdapter';
 import { IRefreshTokenDocs } from './IRefreshTokenDocs';
 
 export class IRefreshTokenDocsSwaggerZodImpl implements IRefreshTokenDocs {
-  refreshTokenDocs(): DocSchema {
+  refreshTokenDoc(): DocSchema {
     return {
       schema: {
         tags: ['Refreshtokens'],

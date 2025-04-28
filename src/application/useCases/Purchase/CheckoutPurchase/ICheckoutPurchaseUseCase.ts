@@ -4,9 +4,8 @@ import {
 } from '@domain/repositories/IPurchaseRepository';
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import { IPaymentProvider } from '@domain/providers/Payment/IPaymentProvider';
-import { ICheckoutPurchaseDTO } from './ICheckoutPurchaseDTO';
+import { ICheckoutPurchaseDTO, ICheckoutPurchaseResponse, PurchaseNotFoundErrorResponse } from './ICheckoutPurchaseDTO';
 import { ILineItem } from '@domain/providers/Payment/Payment';
-import { ICheckoutPurchaseResponse, PurchaseNotFoundErrorResponse } from '@application/handlers/UseCasesResponses/Purchase/ICheckoutPurchaseHandlers';
 
 export class ICheckoutPurchaseUseCase {
   constructor(

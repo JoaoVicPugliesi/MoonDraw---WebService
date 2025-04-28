@@ -1,3 +1,9 @@
 import { IUser } from '@domain/entities/User';
 
-export interface IAssignCartOwnerDTO extends Pick<IUser, 'public_id'> {}
+// Request
+export interface IAssignCartOwnerDTO extends Pick<IUser, 'public_id'> {};
+
+// Response
+export class OwnerNotFoundErrorResponse extends Error {};
+
+export interface IAssignCartOwnerResponse {}

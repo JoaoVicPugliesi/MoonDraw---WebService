@@ -1,16 +1,10 @@
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ISelectProductUseCase } from './ISelectProductUseCase';
-import { ITokenService } from '@domain/services/ITokenService';
-import { ISelectProductDTO } from './ISelectProductDTO';
-import {
-  ProductNotFoundErrorResponse,
-  SelectProductResponse,
-} from '@application/handlers/UseCasesResponses/Product/ISelectProductHandlers';
-import {
-  TokenInvalidErrorResponse,
-  TokenIsMissingErrorResponse,
-} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { ITokenService } from '@domain/services/Token/ITokenService';
+import { ISelectProductDTO, ProductNotFoundErrorResponse, SelectProductResponse } from './ISelectProductDTO';
+
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
 export class ISelectProductController {
   constructor(

@@ -14,21 +14,27 @@ export class CartEndpoints {
   setupRoutes() {
     this.app.get(
       '/carts/cart/products/:public_id',
-      this.iCartDocs.listCartContentDocs(),
+      {
+        docs: this.iCartDocs.listCartContentDocs(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iListCartContent.handle(adapter);
       }
     );
     this.app.post(
       '/carts/cart/attach/product',
-      this.iCartDocs.attachProductIntoCartDocs(),
+      {
+        docs: this.iCartDocs.attachProductIntoCartDocs(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iAttachProductIntoCart.handle(adapter);
       }
     );
     this.app.delete(
       '/carts/cart/detach/product',
-      this.iCartDocs.detachProductFromCartDocs(),
+      {
+        docs: this.iCartDocs.detachProductFromCartDocs(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iDetachProductFromCart.handle(adapter);
       }
@@ -36,8 +42,10 @@ export class CartEndpoints {
     this.app.get(
       '/carts/cart/:user_id',
       {
-        schema: {
-          tags: ['carts']
+        docs: {
+          schema: {
+            tags: ['carts']
+          }
         }
       },
       async (adapter: RequestResponseAdapter) => {

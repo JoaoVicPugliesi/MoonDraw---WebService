@@ -9,7 +9,7 @@ export class IUserDocsSwaggerZodImpl implements IUserDocs {
     private readonly iUserValidator: IUserValidator
   ) {}
 
-  registerDocs(): DocSchema {
+  registerDoc(): DocSchema {
     return {
       schema: {
         description: 'IRegisterUseCase',
@@ -26,7 +26,7 @@ export class IUserDocsSwaggerZodImpl implements IUserDocs {
     };
   }
 
-  loginDocs(): DocSchema {
+  loginDoc(): DocSchema {
     return {
       schema: {
         description: 'ILoginUseCase',
@@ -36,7 +36,7 @@ export class IUserDocsSwaggerZodImpl implements IUserDocs {
     };
   }
 
-  confirmMailDocs(): DocSchema {
+  confirmMailDoc(): DocSchema {
     return {
       schema: {
         body: this.iUserValidator.validateConfirmMail(),
@@ -45,7 +45,7 @@ export class IUserDocsSwaggerZodImpl implements IUserDocs {
     };
   }
 
-  logoutDocs(): DocSchema {
+  logoutDoc(): DocSchema {
     return {
       schema: {
         tags: ['Users'],

@@ -9,25 +9,38 @@ export interface DocSchema {
   },
 }
 
+export interface EndpointConfig {
+  rateLimit?: {
+    max?: number,
+    timeWindow: '1 minute'
+  }
+}
+
+export interface EndpointOptions {
+  docs?: DocSchema,
+  config?: EndpointConfig,
+  ban?: 2,
+}
+
 export interface ServerAdapter {
   delete(
     url: string,
-    docs: DocSchema,
+    options: EndpointOptions,
     callback: (adapter: RequestResponseAdapter) => Promise<any>
   ): void;
   post(
     url: string,
-    docs: DocSchema,
+    options: EndpointOptions,
     callback: (adapter: RequestResponseAdapter) => Promise<any>
   ): void;
   put(
     url: string,
-    docs: DocSchema,
+    options: EndpointOptions,
     callback: (adapter: RequestResponseAdapter) => Promise<any>
   ): void;
   get(
     url: string,
-    docs: DocSchema,
+    options: EndpointOptions,
     callback: (adapter: RequestResponseAdapter) => Promise<any>
   ): void;
   listen(options: { port: number; host: string }): Promise<void>;

@@ -1,17 +1,11 @@
-import { ITokenService } from '@domain/services/ITokenService';
+import { ITokenService } from '@domain/services/Token/ITokenService';
 import { ICompletePurchaseUseCase } from './ICompletePurchaseUseCase';
 import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-import {
-  MustBeVerifiedErrorResponse,
-  TokenInvalidErrorResponse,
-  TokenIsMissingErrorResponse,
-} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
-import { ICompletePurchaseDTO } from './ICompletePurchaseDTO';
-import {
-  ICompletePurchaseResponse,
-  PurchaseHasNoOwnerErrorResponse,
-} from '@application/handlers/UseCasesResponses/Purchase/ICompletePurchaseHandlers';
+
+import { ICompletePurchaseDTO, ICompletePurchaseResponse, PurchaseHasNoOwnerErrorResponse } from './ICompletePurchaseDTO';
+
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { MustBeVerifiedErrorResponse, TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
 export class ICompletePurchaseController {
   constructor(

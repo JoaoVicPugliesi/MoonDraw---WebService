@@ -1,7 +1,6 @@
 import { IProductRepository } from '@domain/repositories/IProductRepository';
-import { ISaveProductDTO } from './ISaveProductDTO';
+import { ISaveProductDTO, ProductAlreadyExistsErrorResponse } from './ISaveProductDTO';
 import { Product } from '@domain/entities/Product';
-import { ProductAlreadyExistsErrorResponse } from '@application/handlers/UseCasesResponses/Product/ISaveProductHandlers';
 
 export class ISaveProductUseCase {
   constructor(

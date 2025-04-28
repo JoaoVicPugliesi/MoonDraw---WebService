@@ -1,3 +1,11 @@
 import { IPurchase } from '@domain/entities/Purchase';
 
-export interface ICheckoutPurchaseDTO extends Pick<IPurchase, 'public_id'> {}
+// Request
+export interface ICheckoutPurchaseDTO extends Pick<IPurchase, 'public_id'> {};
+
+// Response
+export class PurchaseNotFoundErrorResponse extends Error {}
+
+export interface ICheckoutPurchaseResponse {
+    url: string
+}

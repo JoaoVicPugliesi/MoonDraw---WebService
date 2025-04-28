@@ -4,25 +4,32 @@ import { iLogout } from '@application/useCases/User/Logout/ILogoutComposer';
 import { iConfirmMail } from '@application/useCases/User/ConfirmMail/IConfirmMailComposer';
 import { RequestResponseAdapter, ServerAdapter } from '@adapters/ServerAdapter';
 import { IUserDocs } from './docs/IUserDocs';
+import { IUserConfigs } from './config/IUserConfigs';
 
 export class UserEndpoints {
   constructor(
     private readonly app: ServerAdapter,
-    private readonly iUserDocs: IUserDocs
+    private readonly iUserDocs: IUserDocs,
+    private readonly iUserConfigs: IUserConfigs
   ) {}
 
   setupRoutes() {
     this.app.post(
       '/users/register',
-      this.iUserDocs.registerDocs(),
+      {
+        docs: this.iUserDocs.registerDoc(),
+        config: this.iUserConfigs.registerConfig()
+      },
       async (adapter: RequestResponseAdapter) => {
         await iRegister.handle(adapter);
       }
     );
 
     this.app.post(
-      '/users/login',
-      this.iUserDocs.loginDocs(),
+      '/users/login', 
+      {
+        docs: this.iUserDocs.loginDoc(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iLogin.handle(adapter);
       }
@@ -30,7 +37,9 @@ export class UserEndpoints {
 
     this.app.post(
       '/users/logout',
-      this.iUserDocs.logoutDocs(),
+      {
+        docs: this.iUserDocs.logoutDoc(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iLogout.handle(adapter);
       }
@@ -38,7 +47,9 @@ export class UserEndpoints {
 
     this.app.post(
       '/users/confirmMail',
-      this.iUserDocs.confirmMailDocs(),
+      {
+        docs: this.iUserDocs.confirmMailDoc(),
+      },
       async (adapter: RequestResponseAdapter) => {
         await iConfirmMail.handle(adapter);
       }
