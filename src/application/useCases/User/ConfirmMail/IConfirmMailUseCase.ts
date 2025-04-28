@@ -19,8 +19,6 @@ export class IConfirmMailUseCase {
       `user-${token}`
     );
     
-    console.log(cachedUser);
-    
     if (!cachedUser) return new TokenExpiredErrorResponse();
 
     const { name, surname, email, password }: User = JSON.parse(cachedUser);

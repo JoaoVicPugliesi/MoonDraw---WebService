@@ -18,7 +18,7 @@ export class ILoginUseCase {
     private readonly iUserRepository: IUserRepository,
     private readonly iHashService: IHashService,
     private readonly iTokenService: ITokenService,
-    private readonly iGenerateRefreshTokenUseCase: IGenerateRefreshTokenUseCase
+    private readonly iGenerateRefreshTokenUseCase: IGenerateRefreshTokenUseCase,
   ) {}
 
   async execute(

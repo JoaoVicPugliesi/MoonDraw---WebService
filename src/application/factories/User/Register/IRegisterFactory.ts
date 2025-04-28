@@ -3,18 +3,21 @@ import { iUserDecorator } from '@application/decorators/IUserDecorator';
 import { IMailProviderGmailImpl } from '@infra/providers/Mail/IMailProviderGmailImpl';
 import { ICacheProviderRedisImpl } from '@infra/providers/Cache/ICacheProviderRedisImpl';
 import { IHashServiceBCryptImpl } from '@infra/services/IHashServiceBCryptImpl';
+import { IIdServiceUUIDNanoIdImpl } from '@infra/services/IIdServiceUUIDNanoIdImpl';
 
 export class IRegisterFactory {
   compose(): IRegisterUseCase {
     const iCacheProvider = new ICacheProviderRedisImpl();
     const iMailProvider = new IMailProviderGmailImpl();
     const iHashService = new IHashServiceBCryptImpl();
+    const iIdService = new IIdServiceUUIDNanoIdImpl();
 
     return new IRegisterUseCase(
       iUserDecorator,
       iCacheProvider,
       iMailProvider,
-      iHashService
+      iHashService,
+      iIdService
     );;
   }
 }

@@ -11,7 +11,7 @@ A WebService for our e-commerce platform.
 ![HighLevelDesign](images/HighLevelDesign.png)
 
 # Deep Dive 
-/// SomePicture
+![DeepDive](images/DeepDive.png)
 
 # Software Design
 

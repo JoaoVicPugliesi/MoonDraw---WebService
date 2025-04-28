@@ -7,14 +7,15 @@ import {
 import { IUserRepository } from '@domain/repositories/IUserRepository';
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import { IHashService } from '@domain/services/Hash/IHashService';
-import { v4 as uuidv4 } from 'uuid';
+import { IIdService } from '@domain/services/IIdService/IIdService';
 
 export class IRegisterUseCase {
   constructor(
     private readonly iUserRepository: IUserRepository,
     private readonly iCacheProvider: ICacheProvider,
     private readonly iMailProvider: IMailProvider,
-    private readonly iHashService: IHashService
+    private readonly iHashService: IHashService,
+    private readonly iIdService: IIdService
   ) {}
 
   async execute({
@@ -31,7 +32,7 @@ export class IRegisterUseCase {
 
     if (response) return new UserConflictErrorResponse();
     
-    const token: string = uuidv4();
+    const token: string = this.iIdService.id6Len();
     const hash = await this.iHashService.hash(password);
 
     await this.iCacheProvider.set(
