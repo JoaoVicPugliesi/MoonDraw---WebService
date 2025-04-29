@@ -5,10 +5,10 @@ class Redis {
 
     constructor() {
         this.cache = createClient({
-            username: process.env.CACHE_USERNAME,
-            password: process.env.CACHE_PASSWORD,
+            username: process.env.REDIS_USERNAME,
+            password: process.env.REDIS_PASSWORD,
             socket: {
-                host: process.env.CACHE_HOST,
+                host: process.env.REDIS_HOST,
                 port: 13598,
             }
         });
