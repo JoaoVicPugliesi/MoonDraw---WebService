@@ -2,6 +2,7 @@ import { DocSchema } from '@adapters/ServerAdapter';
 import { IProductDocs } from './IProductDocs';
 import { IProductValidator } from '@application/validators/Product/IProductValidator';
 import { IProductValidatorZodImpl } from '@application/validators/Product/IProductValidatorZodImpl';
+import z from 'zod';
 
 export class IProductDocsSwaggerZodImpl implements IProductDocs {
   constructor(
@@ -11,6 +12,10 @@ export class IProductDocsSwaggerZodImpl implements IProductDocs {
     return {
       schema: {
         tags: ['Products'],
+        params: z
+        .object({
+          page: z.number()
+        })
       },
     };
   }
@@ -19,6 +24,10 @@ export class IProductDocsSwaggerZodImpl implements IProductDocs {
     return {
       schema: {
         tags: ['Products'],
+        params: z
+        .object({
+          public_id: z.string()
+        })
       },
     };
   }

@@ -20,7 +20,23 @@ export class IUserDocsSwaggerZodImpl implements IUserDocs {
             .object({
               message: z.string(),
             })
-            .describe('User Saved'),
+            .describe('User temporarily saved in memory, just waiting for email confirmation.'),
+          409: z
+            .object({
+              message: z.string(),
+            })
+            .describe('User already exists or is already in saving process'),
+          422: z
+            .object({
+              message: z.string(),
+              errors: z.record(z.string(), z.array(z.string()))
+            })
+            .describe('Validation Error'),
+          500: z
+            .object({
+              message: z.string()
+            })
+            .describe('Internal Server Error')
         },
       },
     };

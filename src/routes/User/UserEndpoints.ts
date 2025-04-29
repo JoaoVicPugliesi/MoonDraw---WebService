@@ -17,7 +17,9 @@ export class UserEndpoints {
     this.app.post(
       '/users/register',
       {
-        docs: this.iUserDocs.registerDoc(),
+        docs: {
+          ...this.iUserDocs.registerDoc()
+        },
         config: this.iUserConfigs.registerConfig()
       },
       async (adapter: RequestResponseAdapter) => {
@@ -29,6 +31,7 @@ export class UserEndpoints {
       '/users/login', 
       {
         docs: this.iUserDocs.loginDoc(),
+        config: this.iUserConfigs.loginConfig()
       },
       async (adapter: RequestResponseAdapter) => {
         await iLogin.handle(adapter);

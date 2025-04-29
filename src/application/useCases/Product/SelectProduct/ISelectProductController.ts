@@ -31,7 +31,7 @@ export class ISelectProductController {
     }
     try {
       const { public_id }: ISelectProductDTO = adapter.req
-        .query as ISelectProductDTO;
+        .params as ISelectProductDTO;
       const response:
         | SelectProductResponse
         | ProductNotFoundErrorResponse =

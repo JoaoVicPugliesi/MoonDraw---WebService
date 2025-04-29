@@ -5,7 +5,8 @@ export interface DocSchema {
     body?: object,
     response?: Record<number, any>,
     headers?: object,
-    params?: object
+    params?: object,
+    queryString?: string
   },
 }
 
@@ -19,7 +20,6 @@ export interface EndpointConfig {
 export interface EndpointOptions {
   docs?: DocSchema,
   config?: EndpointConfig,
-  ban?: 2,
 }
 
 export interface ServerAdapter {

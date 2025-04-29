@@ -30,28 +30,40 @@ export class FastifyServerAdapter implements ServerAdapter {
   }
 
   get(url: string, options: EndpointOptions, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
-    this.app.get(url, options, async (req: FastifyRequest, res: FastifyReply) => {
+    this.app.get(url, {
+      schema: options.docs?.schema,
+      config: options.config
+    }, async (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
       await callback(adapter);
     });
   }
   
   post(url: string, options: EndpointOptions, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
-    this.app.post(url, options, async (req: FastifyRequest, res: FastifyReply) => {
+    this.app.post(url, {
+      schema: options.docs?.schema,
+      config: options.config
+    }, async (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
       await callback(adapter);
     });
   }
 
   put(url: string, options: EndpointOptions, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
-    this.app.put(url, options, async (req: FastifyRequest, res: FastifyReply) => {
+    this.app.put(url, {
+      schema: options.docs?.schema,
+      config: options.config
+    }, async (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
       await callback(adapter);
     });
   }
-
+  
   delete(url: string, options: EndpointOptions, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
-    this.app.delete(url, options, async (req: FastifyRequest, res: FastifyReply) => {
+    this.app.delete(url, {
+      schema: options.docs?.schema,
+      config: options.config
+    }, async (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
       await callback(adapter);
     });
