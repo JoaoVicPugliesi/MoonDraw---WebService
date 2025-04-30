@@ -1,14 +1,14 @@
 import { DocSchema } from '@adapters/ServerAdapter';
 import { IProductDocs } from './IProductDocs';
-import { IProductValidator } from '@application/validators/Product/IProductValidator';
-import { IProductValidatorZodImpl } from '@application/validators/Product/IProductValidatorZodImpl';
+import { IProductValidator } from '@application/validators/Request/Product/IProductValidator';
+import { IProductValidatorZodImpl } from '@application/validators/Request/Product/IProductValidatorZodImpl';
 import z from 'zod';
 
 export class IProductDocsSwaggerZodImpl implements IProductDocs {
   constructor(
     private readonly iProductValidator: IProductValidator
   ) {}
-  fetchProductsDocs(): DocSchema {
+  fetchProductsDoc(): DocSchema {
     return {
       schema: {
         tags: ['Products'],
@@ -20,7 +20,7 @@ export class IProductDocsSwaggerZodImpl implements IProductDocs {
     };
   }
 
-  selectProductDocs(): DocSchema {
+  selectProductDoc(): DocSchema {
     return {
       schema: {
         tags: ['Products'],
@@ -32,7 +32,7 @@ export class IProductDocsSwaggerZodImpl implements IProductDocs {
     };
   }
 
-  searchProductDocs(): DocSchema {
+  searchProductDoc(): DocSchema {
     return {
       schema: {
         tags: ['Products'],
@@ -40,7 +40,7 @@ export class IProductDocsSwaggerZodImpl implements IProductDocs {
     };
   }
 
-  saveProductDocs(): DocSchema {
+  saveProductDoc(): DocSchema {
     return {
       schema: {
         body: this.iProductValidator.validateSaveProduct(),

@@ -1,9 +1,10 @@
-import { RequestResponseAdapter, ServerAdapter } from '@adapters/ServerAdapter';
+import { ServerAdapter } from '@adapters/ServerAdapter';
 import { iSearchProducts } from '@application/useCases/Product/SearchProducts/ISearchProductsComposer';
 import { iSelectProduct } from '@application/useCases/Product/SelectProduct/ISelectProductComposer';
 import { iFetchProducts } from '@application/useCases/Product/FetchProducts/IFetchProductsComposer';
 import { iSaveProduct } from '@application/useCases/Product/SaveProduct/ISaveProductComposer';
 import { IProductDocs } from './docs/IProductDocs';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class ProductEndpoints {
   constructor(
@@ -14,39 +15,39 @@ export class ProductEndpoints {
   setupRoutes() {
     this.app.get(
       '/products/:page',
-      {
-        docs: this.iProductDocs.fetchProductsDocs(),
-      },
       async (adapter: RequestResponseAdapter) => {
         await iFetchProducts.handle(adapter);
-      }
+      },
+      {
+        docs: this.iProductDocs.fetchProductsDoc(),
+      },
     );
     this.app.get(
       '/products/product/:public_id',
-      {
-        docs: this.iProductDocs.selectProductDocs(),
-      },
       async (adapter: RequestResponseAdapter) => {
         await iSelectProduct.handle(adapter);
-      }
+      },
+      {
+        docs: this.iProductDocs.selectProductDoc(),
+      },
     );
     this.app.get(
       '/products/search/:name',
-      {
-        docs: this.iProductDocs.searchProductDocs(),
-      },
       async (adapter: RequestResponseAdapter) => {
         await iSearchProducts.handle(adapter);
-      }
+      },
+      {
+        docs: this.iProductDocs.searchProductDoc(),
+      },
     );
     this.app.post(
       '/products/save',
-      {
-        docs: this.iProductDocs.saveProductDocs(),
-      },
       async (adapter: RequestResponseAdapter) => {
         await iSaveProduct.handle(adapter);
-      }
+      },
+      {
+        docs: this.iProductDocs.saveProductDoc(),
+      },
     );
   }
 }

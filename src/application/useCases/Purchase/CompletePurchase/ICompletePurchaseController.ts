@@ -1,20 +1,22 @@
+import { IPurchaseValidator } from '@application/validators/Request/Purchase/IPurchaseValidator';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { ICompletePurchaseUseCase } from './ICompletePurchaseUseCase';
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
-
-import { ICompletePurchaseDTO, ICompletePurchaseResponse, PurchaseHasNoOwnerErrorResponse } from './ICompletePurchaseDTO';
-
+import { ICompletePurchaseResponse, PurchaseHasNoOwnerErrorResponse } from './ICompletePurchaseDTO';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import { MustBeVerifiedErrorResponse, TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
+import { ZodError } from 'zod';
 
 export class ICompletePurchaseController {
   constructor(
     private readonly iCompletePurchaseUseCase: ICompletePurchaseUseCase,
     private readonly iTokenService: ITokenService,
+    private readonly iPurchaseValidator: IPurchaseValidator,
     private readonly iEnsureMiddleware: IEnsureMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
+    const schema = await this.iPurchaseValidator.validateCompletePurchase();
     const ensure:
       | void
       | TokenIsMissingErrorResponse
@@ -36,8 +38,10 @@ export class ICompletePurchaseController {
     }
 
     try {
-      const { purchase_id, session_id } = adapter.req
-        .body as ICompletePurchaseDTO;
+      const { 
+        purchase_id, 
+        session_id 
+      } = schema.parse(adapter.req.body);
       const response:
         | PurchaseHasNoOwnerErrorResponse
         | ICompletePurchaseResponse =
@@ -57,6 +61,12 @@ export class ICompletePurchaseController {
         delivery: response.delivery,
       });
     } catch (error) {
+      if(error instanceof ZodError) {
+        return adapter.res.status(422).send({
+          message: 'Validation Error',
+          errors: error.flatten().fieldErrors,
+        });
+      }
       return adapter.res.status(500).send({ message: error });
     }
   }

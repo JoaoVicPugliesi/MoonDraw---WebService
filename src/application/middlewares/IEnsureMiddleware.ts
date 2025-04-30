@@ -1,4 +1,4 @@
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 import {
   MustBeAnAdmingErrorResponse,
   MustBeVerifiedErrorResponse,

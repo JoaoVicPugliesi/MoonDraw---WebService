@@ -1,7 +1,7 @@
 import { IConfirmMailFactory } from '@application/factories/User/ConfirmMail/IConfirmMailFactory';
 import { IConfirmMailController } from './IConfirmMailController';
 import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
-import { IUserValidatorZodImpl } from '@application/validators/User/IUserValidatorZodImpl';
+import { IUserValidatorZodImpl } from '@application/validators/Request/User/IUserValidatorZodImpl';
 
 const iFactory = new IConfirmMailFactory();
 const iUseCase = iFactory.compose();

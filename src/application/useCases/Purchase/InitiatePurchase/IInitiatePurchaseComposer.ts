@@ -2,7 +2,7 @@ import { IInitiatePurchaseFactory } from '@application/factories/Purchase/Initia
 import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { IInitiatePurchaseController } from './IInitiatePurchaseController';
 import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
-import { IPurchaseValidatorZodImpl } from '@application/validators/Purchase/IPurchaseValidatorZodImpl';
+import { IPurchaseValidatorZodImpl } from '@application/validators/Request/Purchase/IPurchaseValidatorZodImpl';
 
 const iFactory = new IInitiatePurchaseFactory();
 const iUseCase = iFactory.compose();

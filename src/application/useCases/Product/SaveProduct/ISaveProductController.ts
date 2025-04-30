@@ -1,12 +1,12 @@
 import z from 'zod';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { ISaveProductUseCase } from './ISaveProductUseCase';
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ISaveProductDTO, ProductAlreadyExistsErrorResponse } from './ISaveProductDTO';
 
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
-import { IProductValidator } from '@application/validators/Product/IProductValidator';
+import { IProductValidator } from '@application/validators/Request/Product/IProductValidator';
 import { MustBeAnAdmingErrorResponse, TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class ISaveProductController {
   constructor(

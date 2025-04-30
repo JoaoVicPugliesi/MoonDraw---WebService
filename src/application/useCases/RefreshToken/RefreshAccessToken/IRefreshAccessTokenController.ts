@@ -1,10 +1,10 @@
 import z from 'zod';
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IRefreshAccessTokenUseCase } from './IRefreshAccessTokenUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRefreshAccessTokenDTO, RefreshAccessTokenResponse, RefreshTokenNotFoundErrorResponse, RefreshTokenUserNotFoundErrorResponse } from './IRefreshAccessTokenDTO';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import { RefreshTokenCookieMissingErrorResponse, TokenInvalidFormatErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 export class IRefreshAccessTokenController {
   constructor(
     private readonly iRefreshAccessTokenUseCase: IRefreshAccessTokenUseCase,

@@ -2,7 +2,7 @@ import { IAttachProductIntoCartFactory } from '@application/factories/Cart/Attac
 import { IAttachProductIntoCartController } from './IAttachProductIntoCartController';
 import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
-import { ICartValidatorZodImpl } from '@application/validators/Cart/ICartValidatorZodImpl';
+import { ICartValidatorZodImpl } from '@application/validators/Request/Cart/ICartValidatorZodImpl';
 
 const iFactory = new IAttachProductIntoCartFactory();
 const iUseCase = iFactory.compose();

@@ -1,3 +1,5 @@
+import { RequestResponseAdapter } from "./RequestResponseAdapter";
+
 export interface DocSchema {
   schema: {
     description?: string,
@@ -13,8 +15,9 @@ export interface DocSchema {
 export interface EndpointConfig {
   rateLimit?: {
     max?: number,
-    timeWindow: '1 minute'
-  }
+    timeWindow: string
+    errorResponseBuilder?(req: any, context: any): any
+  },
 }
 
 export interface EndpointOptions {
@@ -25,23 +28,23 @@ export interface EndpointOptions {
 export interface ServerAdapter {
   delete(
     url: string,
-    options: EndpointOptions,
-    callback: (adapter: RequestResponseAdapter) => Promise<any>
+    callback: (adapter: RequestResponseAdapter) => Promise<any>,
+    options?: EndpointOptions,
   ): void;
   post(
     url: string,
-    options: EndpointOptions,
-    callback: (adapter: RequestResponseAdapter) => Promise<any>
+    callback: (adapter: RequestResponseAdapter) => Promise<any>,
+    options?: EndpointOptions,
   ): void;
   put(
     url: string,
-    options: EndpointOptions,
-    callback: (adapter: RequestResponseAdapter) => Promise<any>
+    callback: (adapter: RequestResponseAdapter) => Promise<any>,
+    options?: EndpointOptions,
   ): void;
   get(
     url: string,
-    options: EndpointOptions,
-    callback: (adapter: RequestResponseAdapter) => Promise<any>
+    callback: (adapter: RequestResponseAdapter) => Promise<any>,
+    options?: EndpointOptions,
   ): void;
   listen(options: { port: number; host: string }): Promise<void>;
   log: { info(msg: string): void; error(msg: Error): void };
@@ -49,35 +52,4 @@ export interface ServerAdapter {
   run(): Promise<void>;
 }
 
-export interface CookieOptions {
-  httpOnly?: boolean;
-  secure?: boolean;
-  sameSite?: 'lax' | 'strict' | 'none' | boolean;
-  path?: string;
-  maxAge?: number;
-}
 
-export interface RequestResponseAdapter {
-  req: {
-    body?: any;
-    cookies: { [cookieName: string]: string };
-    params?: Record<string, any>;
-    query?: Record<string, any>;
-    headers?: {
-      authorization?: string;
-    } & Record<string, string | string[] | undefined>;
-  };
-  res: {
-    redirect(url: string, status: number): void;
-    setCookie(
-      name: string,
-      refreshToken: string,
-      cookieOptions: CookieOptions
-    ): any;
-    clearCookie(name: string, cookieOptions?: CookieOptions): any;
-    unsignCookie(name: string): any;
-    status(statusCode: number): any;
-    json(body: any): void;
-    send(body?: any): void;
-  };
-}

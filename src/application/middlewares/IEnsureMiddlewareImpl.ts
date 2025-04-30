@@ -1,4 +1,3 @@
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import {
   TokenIsMissingErrorResponse,
   TokenInvalidErrorResponse,
@@ -10,6 +9,7 @@ import {
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IEnsureMiddleware } from './IEnsureMiddleware';
 import { RefreshToken } from '@prisma/client';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IEnsureMiddlewareImpl implements IEnsureMiddleware {
   ensureAccessToken(

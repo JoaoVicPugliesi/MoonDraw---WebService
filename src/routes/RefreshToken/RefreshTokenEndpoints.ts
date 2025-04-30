@@ -1,6 +1,7 @@
-import { RequestResponseAdapter, ServerAdapter } from '@adapters/ServerAdapter';
+import { ServerAdapter } from '@adapters/ServerAdapter';
 import { iRefreshAccessToken } from '@application/useCases/RefreshToken/RefreshAccessToken/IRefreshAccessTokenComposer';
 import { IRefreshTokenDocs } from './docs/IRefreshTokenDocs';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class RefreshTokenEndpoints {
   constructor(
@@ -11,12 +12,12 @@ export class RefreshTokenEndpoints {
   setupRoutes() {
     this.app.post(
       '/refreshtokens/refreshAccessToken',
+      async (adapter: RequestResponseAdapter) => {
+        await iRefreshAccessToken.handle(adapter);
+      },
       {
         docs: this.iRefreshTokenDocs.refreshTokenDoc(),
       },
-      async (adapter: RequestResponseAdapter) => {
-        await iRefreshAccessToken.handle(adapter);
-      }
     );
   }
 }

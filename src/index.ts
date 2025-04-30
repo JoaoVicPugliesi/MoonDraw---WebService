@@ -15,12 +15,8 @@ class Application {
         port: this.port,
         host: this.host,
       });
-
-      this.app.log.info(
-        `🚀 server is running on http://${this.host}:${this.port}`
-      );
-
-      console.log(`🚀 server is running on http://${this.host}:${this.port}`);
+      
+      console.log(`🚀 server is running on http://localhost:${this.port}`);
     } catch (error) {
       console.log(error);
       this.app.log.error(error as Error);

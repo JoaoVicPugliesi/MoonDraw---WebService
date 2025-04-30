@@ -1,9 +1,10 @@
 import z from 'zod';
 import { IRegisterUseCase } from './IRegisterUseCase';
 import { IRegisterDTO, UserConflictErrorResponse, UserProcessingConflictErrorResponse } from './IRegisterDTO';
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 
-import { IUserValidator } from '@application/validators/User/IUserValidator';
+
+import { IUserValidator } from '@application/validators/Request/User/IUserValidator';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IRegisterController {
   constructor(
@@ -45,9 +46,7 @@ export class IRegisterController {
           message: 'User already processing'
         });
       }
-      return adapter.res.status(201).send({
-        message: 'User Saved',
-      });
+      return adapter.res.status(204).send();
     } catch (error) {
       if (error instanceof z.ZodError) {
         return adapter.res.status(422).send({

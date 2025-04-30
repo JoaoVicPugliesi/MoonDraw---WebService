@@ -1,14 +1,14 @@
 import { DocSchema } from '@adapters/ServerAdapter';
 import { ICartDocs } from './ICartDocs';
-import { ICartValidator } from '@application/validators/Cart/ICartValidator';
-import { ICartValidatorZodImpl } from '@application/validators/Cart/ICartValidatorZodImpl';
+import { ICartValidator } from '@application/validators/Request/Cart/ICartValidator';
+import { ICartValidatorZodImpl } from '@application/validators/Request/Cart/ICartValidatorZodImpl';
 
 export class ICartDocsSwaggerZodImpl implements ICartDocs {
   constructor(
     private readonly iCartValidator: ICartValidator
   ) {}
 
-  listCartContentDocs(): DocSchema {
+  listCartContentDoc(): DocSchema {
     return {
       schema: {
         description: 'ListCartContentUseCase',
@@ -17,7 +17,7 @@ export class ICartDocsSwaggerZodImpl implements ICartDocs {
     };
   }
 
-  attachProductIntoCartDocs(): DocSchema {
+  attachProductIntoCartDoc(): DocSchema {
     return {
       schema: {
         description: 'AttachProductIntoCartUseCase',
@@ -27,7 +27,7 @@ export class ICartDocsSwaggerZodImpl implements ICartDocs {
     };
   }
 
-  detachProductFromCartDocs(): DocSchema {
+  detachProductFromCartDoc(): DocSchema {
     return {
       schema: {
         description: 'DetachProductFromCartUseCase',
@@ -35,6 +35,14 @@ export class ICartDocsSwaggerZodImpl implements ICartDocs {
         tags: ['Carts'],
       },
     };
+  }
+
+  getCart(): DocSchema {
+    return {
+        schema: {
+          tags: ['Carts']
+        } 
+    }
   }
 }
 

@@ -1,9 +1,9 @@
 import z from 'zod';
 import { ILoginUseCase } from './ILoginUseCase';
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ILoginDTO, ILoginResponse, PasswordIsNotEqualErrorResponse, UserNotFoundErrorResponse } from './ILoginDTO';
-import { IUserValidator } from '@application/validators/User/IUserValidator';
+import { IUserValidator } from '@application/validators/Request/User/IUserValidator';
 import { GenerateRefreshTokenErrorResponse } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class ILoginController {
   constructor(
@@ -15,24 +15,37 @@ export class ILoginController {
     const schema = this.iUserValidator.validateLogin();
 
     try {
-      const DTO: ILoginDTO = schema.parse(adapter.req.body);
+      const {
+        email,
+        password
+      }: ILoginDTO = schema.parse(adapter.req.body);
 
       const response:
         | UserNotFoundErrorResponse
         | PasswordIsNotEqualErrorResponse
         | GenerateRefreshTokenErrorResponse
-        | ILoginResponse = await this.iLoginUseCase.execute(DTO);
+        | ILoginResponse = await this.iLoginUseCase.execute({
+          email,
+          password
+        });
 
-      if (response instanceof UserNotFoundErrorResponse)
+      if (response instanceof UserNotFoundErrorResponse) {
         return adapter.res
           .status(404)
           .send({ message: 'User or Password incorrect' });
-      if (response instanceof PasswordIsNotEqualErrorResponse)
-        return adapter.res.status(401).send({ message: 'Non authorized' });
-      if (response instanceof GenerateRefreshTokenErrorResponse)
+      }
+      if (response instanceof PasswordIsNotEqualErrorResponse) {
         return adapter.res
-          .status(501)
-          .send({ message: 'Failed to generate refresh token' });
+          .status(401)
+          .send({ message: 'Non authorized' });
+      }
+      if (response instanceof GenerateRefreshTokenErrorResponse) {
+        return adapter.res
+          .status(424)
+          .send({ 
+            message: 'Failed to generate refresh token' 
+          });
+      }
           
       adapter.res.setCookie('refresh_token', JSON.stringify(response.refresh_token), {
         httpOnly: true,

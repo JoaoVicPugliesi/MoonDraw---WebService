@@ -1,10 +1,9 @@
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ILogoutUseCase } from './ILogoutUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { ILogoutDTO, RefreshTokenNotFoundErrorResponse } from './ILogoutDTO';
-
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import { RefreshTokenCookieMissingErrorResponse, TokenInvalidFormatErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class ILogOutController {
   constructor(
@@ -21,8 +20,8 @@ export class ILogOutController {
       );
 
     if (refreshToken instanceof RefreshTokenCookieMissingErrorResponse) {
-      return adapter.res.status(403).send({
-        message: 'Forbidden',
+      return adapter.res.status(401).send({
+        message: 'Unauthorized',
       });
     }
     if (refreshToken instanceof TokenInvalidFormatErrorResponse) {
@@ -51,7 +50,7 @@ export class ILogOutController {
         path: '/'
       });
 
-      return adapter.res.status(200).send();
+      return adapter.res.status(204).send();
     } catch (error) {
       return adapter.res.status(500).send({ message: error });
     }

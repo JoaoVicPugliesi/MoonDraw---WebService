@@ -3,7 +3,7 @@ import {
   FastifyReply
 } from 'fastify';
 import fastifyCors from '@fastify/cors';
-import { EndpointOptions, RequestResponseAdapter, ServerAdapter } from '@adapters/ServerAdapter';
+import { EndpointOptions, ServerAdapter } from '@adapters/ServerAdapter';
 import { fastifyCookie } from 'fastify-cookie';
 import { Routes } from '@routes/Routes';
 import { FastifyRequestResponseAdapter } from './FastifyRequestResponseAdapter';
@@ -12,6 +12,7 @@ import { jsonSchemaTransform, serializerCompiler } from 'fastify-type-provider-z
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { FastifyTypedInstance } from './FastifyInstance';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class FastifyServerAdapter implements ServerAdapter {
   private cookie: any;
@@ -29,40 +30,49 @@ export class FastifyServerAdapter implements ServerAdapter {
     this.routes.setupRoutes();
   }
 
-  get(url: string, options: EndpointOptions, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
+  get(url: string, callback: (adapter: RequestResponseAdapter
+  ) => Promise<any>, options: EndpointOptions): void {
     this.app.get(url, {
       schema: options.docs?.schema,
-      config: options.config
-    }, async (req: FastifyRequest, res: FastifyReply) => {
+      config: {
+        rateLimit: options.config?.rateLimit
+      }
+      }, async (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
       await callback(adapter);
     });
   }
   
-  post(url: string, options: EndpointOptions, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
+  post(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>, options: EndpointOptions): void {
     this.app.post(url, {
       schema: options.docs?.schema,
-      config: options.config
+      config: {
+        rateLimit: options.config?.rateLimit
+      },
     }, async (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
       await callback(adapter);
     });
   }
 
-  put(url: string, options: EndpointOptions, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
+  put(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>, options: EndpointOptions): void {
     this.app.put(url, {
       schema: options.docs?.schema,
-      config: options.config
+      config: {
+        rateLimit: options.config?.rateLimit
+      },
     }, async (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
       await callback(adapter);
     });
   }
   
-  delete(url: string, options: EndpointOptions, callback: (adapter: RequestResponseAdapter) => Promise<any>): void {
+  delete(url: string, callback: (adapter: RequestResponseAdapter) => Promise<any>,options: EndpointOptions): void {
     this.app.delete(url, {
       schema: options.docs?.schema,
-      config: options.config
+      config: {
+        rateLimit: options.config?.rateLimit
+      },
     }, async (req: FastifyRequest, res: FastifyReply) => {
       const adapter = new FastifyRequestResponseAdapter(req, res);
       await callback(adapter);

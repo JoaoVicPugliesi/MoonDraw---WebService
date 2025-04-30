@@ -1,11 +1,11 @@
 
 import { IListPurchasesUseCase } from './IListPurchasesUseCase';
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IListPurchaseResponse, IListPurchasesDTO, PurchasesNotFoundErrorResponse } from './IListPurchasesDTO';
 
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IListPurchasesController {
   constructor(

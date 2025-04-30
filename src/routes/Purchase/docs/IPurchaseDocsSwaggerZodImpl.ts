@@ -1,11 +1,13 @@
-import { IPurchaseValidator } from '@application/validators/Purchase/IPurchaseValidator';
+import { IPurchaseValidator } from '@application/validators/Request/Purchase/IPurchaseValidator';
 import { IPurchaseDocs } from './IPurchaseDocs';
 import { DocSchema } from '@adapters/ServerAdapter';
-import { IPurchaseValidatorZodImpl } from '@application/validators/Purchase/IPurchaseValidatorZodImpl';
+import { IPurchaseValidatorZodImpl } from '@application/validators/Request/Purchase/IPurchaseValidatorZodImpl';
 
 export class IPurchaseDocsSwaggerZodImpl implements IPurchaseDocs {
-  constructor(private readonly iPurchaseValidator: IPurchaseValidator) {}
-  initiatePurchaseDocs(): DocSchema {
+  constructor(
+    private readonly iPurchaseValidator: IPurchaseValidator
+  ) {}
+  initiatePurchaseDoc(): DocSchema {
     return {
       schema: {
         description:
@@ -16,7 +18,7 @@ export class IPurchaseDocsSwaggerZodImpl implements IPurchaseDocs {
     };
   }
 
-  listPurchasesDocs(): DocSchema {
+  listPurchasesDoc(): DocSchema {
     return {
       schema: {
         description: 'It should list pending or complete purchases',
@@ -25,7 +27,7 @@ export class IPurchaseDocsSwaggerZodImpl implements IPurchaseDocs {
     };
   }
 
-  checkoutPurchaseDocs(): DocSchema {
+  checkoutPurchaseDoc(): DocSchema {
     return {
       schema: {
         description: 'It should checkout the purchase specified by public_id',
@@ -34,7 +36,7 @@ export class IPurchaseDocsSwaggerZodImpl implements IPurchaseDocs {
     };
   }
 
-  removePurchaseDocs(): DocSchema {
+  removePurchaseDoc(): DocSchema {
     return {
       schema: {
         description: 'RemovePurchaseUseCase',
@@ -43,10 +45,11 @@ export class IPurchaseDocsSwaggerZodImpl implements IPurchaseDocs {
     };
   }
 
-  completePurchaseDocs(): DocSchema {
+  completePurchaseDoc(): DocSchema {
     return {
       schema: {
         description: 'CompletePurchaseUseCase',
+        body: this.iPurchaseValidator.validateCompletePurchase(),
         tags: ['Purchases'],
       },
     };

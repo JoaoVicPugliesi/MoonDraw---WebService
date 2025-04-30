@@ -1,9 +1,9 @@
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { ICheckoutPurchaseUseCase } from './ICheckoutPurchaseUseCase';
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ICheckoutPurchaseDTO, ICheckoutPurchaseResponse, PurchaseNotFoundErrorResponse } from './ICheckoutPurchaseDTO';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import { MustBeVerifiedErrorResponse, TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class ICheckoutPurchaseController {
   constructor(

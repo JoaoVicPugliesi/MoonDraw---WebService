@@ -1,12 +1,11 @@
 import z from 'zod';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IAttachProductIntoCartUseCase } from './IAttachProductIntoCartUseCase';
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { AttachmentAlreadyExistsErrorResponse, IAttachProductIntoCartDTO, IAttachProductIntoCartResponse } from './IAttachProductIntoCartDTO';
-
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
-import { ICartValidator } from '@application/validators/Cart/ICartValidator';
+import { ICartValidator } from '@application/validators/Request/Cart/ICartValidator';
 import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IAttachProductIntoCartController {
   constructor(

@@ -1,12 +1,12 @@
 import { IRemovePurchaseUseCase } from './IRemovePurchaseUseCase';
-import { ITokenService } from '@domain/services/ITokenService';
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
+import { ITokenService } from '@domain/services/Token/ITokenService';
 import {
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { IRemovePurchaseDTO } from './IRemovePurchaseDTO';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IRemovePurchaseController {
   constructor(
@@ -33,7 +33,9 @@ export class IRemovePurchaseController {
     }
 
     try {
-      const { public_id }: IRemovePurchaseDTO = adapter.req
+      const { 
+        public_id 
+      }: IRemovePurchaseDTO = adapter.req
         .body as IRemovePurchaseDTO;
 
       await this.iRemovePurchaseUseCase.execute({

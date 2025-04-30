@@ -1,4 +1,3 @@
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IListCartContentUseCase } from './IListCartContentUseCase';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { CartEmptyErrorResponse, IListCartContentDTO, IListCartContentResponse } from './IListCartContentDTO';
@@ -8,6 +7,7 @@ import {
   TokenIsMissingErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IListCartContentController {
   constructor(

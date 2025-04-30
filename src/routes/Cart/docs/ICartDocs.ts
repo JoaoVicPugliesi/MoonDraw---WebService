@@ -1,7 +1,8 @@
 import { DocSchema } from "@adapters/ServerAdapter";
 
 export interface ICartDocs {
-    listCartContentDocs(): DocSchema;
-    attachProductIntoCartDocs(): DocSchema;
-    detachProductFromCartDocs(): DocSchema;
+    listCartContentDoc(): DocSchema;
+    attachProductIntoCartDoc(): DocSchema;
+    detachProductFromCartDoc(): DocSchema;
+    getCart(): DocSchema;
 }

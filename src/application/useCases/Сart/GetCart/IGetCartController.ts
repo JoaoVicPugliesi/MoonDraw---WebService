@@ -1,9 +1,9 @@
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import { IGetCartUseCase } from './IGetCartUseCase';
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { CartNotFoundErrorResponse, IGetCartDTO, IGetCartResponse } from './IGetCartDTO';
 import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IGetCartController {
   constructor(

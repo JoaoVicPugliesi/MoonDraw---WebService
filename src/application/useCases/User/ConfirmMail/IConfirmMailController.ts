@@ -1,9 +1,9 @@
 import z from 'zod';
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IConfirmMailUseCase } from './IConfirmMailUseCase';
 import { IConfirmMailDTO, TokenExpiredErrorResponse } from './IConfirmMailDTO';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
-import { IUserValidator } from '@application/validators/User/IUserValidator';
+import { IUserValidator } from '@application/validators/Request/User/IUserValidator';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IConfirmMailController {
   constructor(
@@ -24,10 +24,14 @@ export class IConfirmMailController {
         });
 
       if (response instanceof TokenExpiredErrorResponse) {
-        return adapter.res.status(401).send({ message: 'Token Expired' }); 
+        return adapter.res.status(401).send({ 
+          message: 'Token Expired' 
+        }); 
       }
 
-      return adapter.res.status(204).send();
+      return adapter.res.status(201).send({
+        message: 'User Saved 🚀'
+      });
     } catch (error) {
       if (error instanceof z.ZodError) {
         return adapter.res.status(422).send({

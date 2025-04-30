@@ -1,6 +1,6 @@
 import { ILoginController } from './ILoginController';
 import { ILoginFactory } from '@application/factories/User/Login/ILoginFactory';
-import { IUserValidatorZodImpl } from '@application/validators/User/IUserValidatorZodImpl';
+import { IUserValidatorZodImpl } from '@application/validators/Request/User/IUserValidatorZodImpl';
 
 const iFactory = new ILoginFactory();
 const iUseCase = iFactory.compose();

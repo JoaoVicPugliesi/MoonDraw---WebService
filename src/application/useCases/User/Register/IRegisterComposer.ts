@@ -1,6 +1,6 @@
 import { IRegisterController } from './IRegisterController';
 import { IRegisterFactory } from '@application/factories/User/Register/IRegisterFactory';
-import { IUserValidatorZodImpl } from '@application/validators/User/IUserValidatorZodImpl';
+import { IUserValidatorZodImpl } from '@application/validators/Request/User/IUserValidatorZodImpl';
 
 const iFactory = new IRegisterFactory();
 const iUseCase = iFactory.compose();

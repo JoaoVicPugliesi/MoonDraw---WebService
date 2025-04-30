@@ -1,7 +1,6 @@
 import z from 'zod';
-import { ITokenService } from '@domain/services/ITokenService';
+import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IInitiatePurchaseUseCase } from './IInitiatePurchaseUseCase';
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
 import { IInitiatePurchaseDTO } from './IInitiatePurchaseDTO';
 import {
   MustBeVerifiedErrorResponse,
@@ -9,7 +8,8 @@ import {
   TokenIsMissingErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
-import { IPurchaseValidator } from '@application/validators/Purchase/IPurchaseValidator';
+import { IPurchaseValidator } from '@application/validators/Request/Purchase/IPurchaseValidator';
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IInitiatePurchaseController {
   constructor(

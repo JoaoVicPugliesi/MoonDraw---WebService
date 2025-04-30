@@ -3,6 +3,7 @@ import { IRegisterUseCase } from '@application/useCases/User/Register/IRegisterU
 import { IHashServiceBCryptImpl } from '@infra/services/IHashServiceBCryptImpl';
 import { IUserRepositoryInMemoryImpl } from '@infra/repositories/User/IUserRepositoryInMemoryImpl';
 import { ICacheProviderInMemoryImpl } from '@infra/providers/Cache/ICacheProviderInMemoryImpl';
+import { IIdServiceUUIDNanoIdImpl } from '@infra/services/IIdServiceUUIDNanoIdImpl';
 
 export class IRegisterFactoryInMemory {
   constructor(
@@ -16,11 +17,13 @@ export class IRegisterFactoryInMemory {
     const iUserRepository = new IUserRepositoryInMemoryImpl(
       this.users
     );
+    const iIdService = new IIdServiceUUIDNanoIdImpl();
     return new IRegisterUseCase(
       iUserRepository,
       iCacheProvider,
       this.iMailProvider,
-      iHashService
+      iHashService,
+      iIdService
     );
   }
 }

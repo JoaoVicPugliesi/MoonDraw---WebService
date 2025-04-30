@@ -2,7 +2,7 @@ import z from 'zod';
 import { IUserValidator } from './IUserValidator';
 
 export class IUserValidatorZodImpl implements IUserValidator {
-  validateRegister(): object {
+  validateRegister() {
     return z
       .object({
         name: z
@@ -56,8 +56,17 @@ export class IUserValidatorZodImpl implements IUserValidator {
         }
       });
   }
+  
+  validateConfirmMail() {
+    return z.object({
+      token: z.string({
+        required_error: 'Token is required',
+        invalid_type_error: 'Token should be a string',
+      }),
+    });
+  }
 
-  validateLogin(): object {
+  validateLogin() {
     return z.object({
       email: z.string({
         required_error: 'Email is required',
@@ -70,12 +79,4 @@ export class IUserValidatorZodImpl implements IUserValidator {
     });
   }
 
-  validateConfirmMail(): object {
-    return z.object({
-      token: z.string({
-        required_error: 'Token is required',
-        invalid_type_error: 'Token should be a string',
-      }),
-    });
-  }
 }

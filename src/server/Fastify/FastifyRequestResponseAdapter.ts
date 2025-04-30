@@ -1,5 +1,6 @@
+import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { RequestResponseAdapter } from '@adapters/ServerAdapter';
+
 import { CookieSerializeOptions } from 'fastify-cookie';
 
 export class FastifyRequestResponseAdapter implements RequestResponseAdapter {

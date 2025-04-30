@@ -2,7 +2,7 @@ import { ISaveProductFactory } from '@application/factories/Product/SaveProduct/
 import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { ISaveProductController } from './ISaveProductController';
 import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
-import { IProductValidatorZodImpl } from '@application/validators/Product/IProductValidatorZodImpl';
+import { IProductValidatorZodImpl } from '@application/validators/Request/Product/IProductValidatorZodImpl';
 
 const iFactory = new ISaveProductFactory();
 const iUseCase = iFactory.compose();
