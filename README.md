@@ -45,7 +45,7 @@ Users must provide shipping and payment details at checkout.
 
 Users can confirm and complete a purchase.
 
-The system must handle order persistence, inventory updates, and payment processing (via provider).
+The system must handle order persistence, email sending, and payment processing (via provider).
 
 Users can view past purchases and order status.
 # Non-Functional Requirements

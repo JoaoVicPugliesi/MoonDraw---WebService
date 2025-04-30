@@ -47,6 +47,7 @@ export class IUserDocsSwaggerZodImpl implements IUserDocs {
   logoutDoc(): DocSchema {
     return {
       schema: {
+        description: 'Here you may desauthenticate removing from the cookies the current Refresh Token',
         tags: ['Users'],
         response: this.iUserResponseValidator.validateLogoutResponse()
       },

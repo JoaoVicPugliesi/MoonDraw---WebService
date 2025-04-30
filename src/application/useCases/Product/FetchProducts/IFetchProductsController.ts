@@ -1,7 +1,6 @@
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IFetchProductsUseCase } from './IFetchProductsUseCase';
 import { FetchProductsResponse, IFetchProductsDTO, ProductsNotFoundErrorResponse } from './IFetchProductsDTO';
-
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';

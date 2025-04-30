@@ -111,14 +111,14 @@ export class IUserResponseValidatorZodImpl implements IUserResponseValidator {
           message: z.string()
         })
         .describe(
-          'Refresh Token is in a invalid format'
+          'Refresh Token may be on the wrong format'
         ),
         401: z
         .object({
           message: z.string()
         })
         .describe(
-          'Refresh Token is Missing'
+          'Refresh Token may be missing'
         ),
         404: z
         .object({

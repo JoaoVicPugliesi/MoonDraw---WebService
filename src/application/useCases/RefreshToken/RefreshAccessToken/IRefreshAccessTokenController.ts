@@ -1,4 +1,3 @@
-import z from 'zod';
 import { IRefreshAccessTokenUseCase } from './IRefreshAccessTokenUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRefreshAccessTokenDTO, RefreshAccessTokenResponse, RefreshTokenNotFoundErrorResponse, RefreshTokenUserNotFoundErrorResponse } from './IRefreshAccessTokenDTO';
@@ -20,8 +19,8 @@ export class IRefreshAccessTokenController {
       );
       
     if (refreshToken instanceof RefreshTokenCookieMissingErrorResponse) {
-      return adapter.res.status(403).send({
-        message: 'Forbidden',
+      return adapter.res.status(401).send({
+        message: 'Unauthorized',
       });
     }
     if (refreshToken instanceof TokenInvalidFormatErrorResponse) {
@@ -30,7 +29,9 @@ export class IRefreshAccessTokenController {
       });
     }
     try {
-      const { public_id }: IRefreshAccessTokenDTO = {
+      const { 
+        public_id 
+      }: IRefreshAccessTokenDTO = {
         public_id: refreshToken.public_id,
       };
       const response:
@@ -53,7 +54,7 @@ export class IRefreshAccessTokenController {
           JSON.stringify(response.refresh_token),
           {
             httpOnly: true,
-            secure: true,
+            secure: false,
             sameSite: 'strict',
             path: '/',
             maxAge: 60 * 60 * 24 * 7,
@@ -70,14 +71,10 @@ export class IRefreshAccessTokenController {
         },
       });
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        return adapter.res.status(422).send({
-          message: 'Validation Error',
-          errors: error.flatten().fieldErrors,
-        });
-      }
-
-      return adapter.res.status(500).send({ message: 'Server internal error' });
+      return adapter.res.status(500).send({
+        message: 'Server internal error',
+        error: error
+      });
     }
   }
 }
