@@ -52,6 +52,7 @@ export class IProductDocsSwaggerZodImpl implements IProductDocs {
   saveProductDoc(): DocSchema {
     return {
       schema: {
+        description: 'Here you may by passing RBAC save a new product',
         body: this.iProductValidator.validateSaveProduct(),
         tags: ['Products'],
         response: this.iProductResponseValidator.validateSaveProduct()

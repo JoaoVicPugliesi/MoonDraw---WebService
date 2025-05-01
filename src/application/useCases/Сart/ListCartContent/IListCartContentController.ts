@@ -33,7 +33,9 @@ export class IListCartContentController {
       return adapter.res.status(401).send({ message: 'Token is invalid' });
     }
     try {
-      const { public_id }: IListCartContentDTO = adapter.req
+      const { 
+        public_id 
+      }: IListCartContentDTO = adapter.req
         .query as IListCartContentDTO;
 
       const response: CartEmptyErrorResponse | IListCartContentResponse =

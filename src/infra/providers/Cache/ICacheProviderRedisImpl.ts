@@ -1,7 +1,7 @@
 import { ISetOptions } from '@domain/providers/Cache/Cache';
 import { ICacheProvider} from '@domain/providers/Cache/ICacheProvider';
 import { SetOptions } from 'redis';
-import { cache } from '../../../../apis/redis/redis';
+import { cache } from '@api/redis/redis';
 
 export class ICacheProviderRedisImpl implements ICacheProvider {
   async set(key: string, value: string, options?: ISetOptions): Promise<void> {

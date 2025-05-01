@@ -1,6 +1,6 @@
 import { IRetrieveParams, IRetrieveResponse, Payment } from '@domain/providers/Payment/Payment';
 import { IPaymentProvider } from '@domain/providers/Payment/IPaymentProvider';
-import { stripe } from '../../../../apis/stripe/stripe';
+import { stripe } from '@api/stripe/stripe';
 
 export class IPaymentProviderStripeImpl implements IPaymentProvider {
   async create(params: Payment): Promise<any> {

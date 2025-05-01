@@ -23,6 +23,15 @@ export class CartEndpoints {
         docs: this.iCartDocs.listCartContentDoc(),
       },
     );
+    this.app.get(
+      '/carts/cart/:user_id',
+      async (adapter: RequestResponseAdapter) => {
+        await iGetCart.handle(adapter);
+      },
+      {
+        docs: this.iCartDocs.getCart()
+      },
+    );
     this.app.post(
       '/carts/cart/attach/product',
       async (adapter: RequestResponseAdapter) => {
@@ -39,15 +48,6 @@ export class CartEndpoints {
       },
       {
         docs: this.iCartDocs.detachProductFromCartDoc(),
-      },
-    );
-    this.app.get(
-      '/carts/cart/:user_id',
-      async (adapter: RequestResponseAdapter) => {
-        await iGetCart.handle(adapter);
-      },
-      {
-        docs: this.iCartDocs.getCart()
       },
     );
   }

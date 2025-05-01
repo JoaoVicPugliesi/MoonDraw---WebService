@@ -10,16 +10,15 @@
     "skipLibCheck": true,
     "moduleResolution": "NodeNext",
     "isolatedModules": true,
-
-    "baseUrl": "./src",
     "paths": {
-      "@adapters/*": ["adapters/*"],
-      "@application/*": ["application/*"],
-      "@domain/*": ["domain/*"],
-      "@infra/*": ["infra/*"],
-      "@routes/*": ["routes/*"],
-      "@server/*": ["server/*"],
-      "@tests/*": ["tests/*"],
+      "@api/*": ["./api/*"],
+      "@adapters/*": ["./src/adapters/*"],
+      "@application/*": ["./src/application/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@infra/*": ["./src/infra/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@server/*": ["./src/server/*"],
+      "@tests/*": ["./src/tests/*"],
     }
   }
 }
