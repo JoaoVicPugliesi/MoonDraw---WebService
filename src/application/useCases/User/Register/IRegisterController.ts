@@ -18,6 +18,8 @@ export class IRegisterController {
         name,
         surname,
         email,
+        role,
+        description,
         password,
         confirmPassword
       }: IRegisterDTO = schema.parse(adapter.req.body);
@@ -29,6 +31,8 @@ export class IRegisterController {
           name,
           surname,
           email,
+          role,
+          description,
           password,
           confirmPassword
         });

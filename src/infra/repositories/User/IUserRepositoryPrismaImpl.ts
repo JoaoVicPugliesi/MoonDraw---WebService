@@ -22,6 +22,7 @@ export class IUserRepositoryPrismaImpl implements IUserRepository {
     name,
     surname,
     email,
+    role,
     password,
   }: IRegisterDTO): Promise<User> {
     const user: User = await prisma.user.create({
@@ -30,8 +31,10 @@ export class IUserRepositoryPrismaImpl implements IUserRepository {
         name: name,
         surname: surname,
         email: email,
+        description: '',
         password: password,
-        is_verified: true,
+        role: role,
+        is_email_verified: true,
         email_verified_at: new Date()
       },
     });

@@ -21,6 +21,8 @@ export class IRegisterUseCase {
     name,
     surname,
     email,
+    description,
+    role,
     password
   }: IRegisterDTO): Promise<
     | UserConflictErrorResponse 
@@ -52,6 +54,8 @@ export class IRegisterUseCase {
         name: name,
         surname: surname,
         email: email,
+        description: description,
+        role: role,
         password: hash,
       }),
       {

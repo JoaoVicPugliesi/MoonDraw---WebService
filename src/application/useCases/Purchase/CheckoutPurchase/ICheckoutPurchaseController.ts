@@ -2,7 +2,7 @@ import { ITokenService } from '@domain/services/Token/ITokenService';
 import { ICheckoutPurchaseUseCase } from './ICheckoutPurchaseUseCase';
 import { ICheckoutPurchaseDTO, ICheckoutPurchaseResponse, PurchaseNotFoundErrorResponse } from './ICheckoutPurchaseDTO';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
-import { MustBeVerifiedErrorResponse, TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { MustBeABuyerErrorResponse, MustBeVerifiedErrorResponse, TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class ICheckoutPurchaseController {
@@ -16,8 +16,8 @@ export class ICheckoutPurchaseController {
     const ensure:
       | void
       | TokenIsMissingErrorResponse
-      | MustBeVerifiedErrorResponse
-      | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureUserIsVerified(
+      | MustBeABuyerErrorResponse
+      | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureUserIsABuyer(
       adapter,
       this.iTokenService,
       process.env.JWT_SECRET_KEY!
@@ -26,7 +26,7 @@ export class ICheckoutPurchaseController {
     if (ensure instanceof TokenIsMissingErrorResponse) {
       return adapter.res.status(401).send({ message: 'Access Token is missing' });
     }
-    if (ensure instanceof MustBeVerifiedErrorResponse) {
+    if (ensure instanceof MustBeABuyerErrorResponse) {
       return adapter.res.status(403).send({ message: 'Must be verified to access' });
     }
     if (ensure instanceof TokenInvalidErrorResponse) {

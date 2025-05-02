@@ -1,15 +1,10 @@
-import { IRefreshAccessTokenFactoryInMemory } from '@application/factories/RefreshToken/RefreshAccessToken/IRefreshAccessTokenFactoryInMemory';
-import { RefreshToken } from '@domain/entities/RefreshToken';
-import { IRefreshAccessTokenDTO } from './IRefreshAccessTokenDTO';
-import {
-  RefreshTokenNotFoundErrorResponse,
-  RefreshTokenUserNotFoundErrorResponse,
-  RefreshAccessTokenResponse,
-} from '@application/handlers/UseCasesResponses/RefreshToken/IRefreshAccessTokenHandler';
 import dayjs from 'dayjs';
 import { User } from '@domain/entities/User';
 import { IRefreshAccessTokenUseCase } from './IRefreshAccessTokenUseCase';
 import { configDotenv } from 'dotenv';
+import { IRefreshAccessTokenFactoryInMemory } from '@application/factories/RefreshToken/RefreshAccessToken/IRefreshAccessTokenFactoryInMemory';
+import { RefreshToken } from '@domain/entities/RefreshToken';
+import { IRefreshAccessTokenDTO, RefreshAccessTokenResponse, RefreshTokenNotFoundErrorResponse, RefreshTokenUserNotFoundErrorResponse } from './IRefreshAccessTokenDTO';
 configDotenv();
 
 type RefreshAccessResponse =
@@ -24,9 +19,10 @@ const user: User = {
   name: 'João',
   surname: 'Pugliesi',
   email: 'mrlanguages62@gmail.com',
+  description: '',
   password: '$2b$10$GX73JFHmigssj00i5mES9uak392P5wSrS6caNFaQ0ybZkm2TBuBkK',
-  role: 'client',
-  is_verified: false,
+  role: 'Buyer',
+  is_email_verified: false,
   created_at: new Date(),
   last_login_at: new Date(),
   email_verified_at: null,
@@ -37,9 +33,10 @@ const user2: User = {
   name: 'João',
   surname: 'Pugliesi',
   email: 'mrlanguages62@gmail.com',
+  description: '',
   password: '$2b$10$GX73JFHmigssj00i5mES9uak392P5wSrS6caNFaQ0ybZkm2TBuBkK',
-  role: 'client',
-  is_verified: false,
+  role: 'Buyer',
+  is_email_verified: false,
   created_at: new Date(),
   last_login_at: new Date(),
   email_verified_at: null,
@@ -53,7 +50,7 @@ const refreshToken: RefreshToken = {
   id: refreshTokens.length + 1,
   public_id: 'a09d22d2-2464-42e3-827c-fe73626ff8b6',
   expires_in: expiresIn,
-  user_id: 'a795c246-ca3b-46d0-8f66-b7ffef395b42',
+  owner_id: 'a795c246-ca3b-46d0-8f66-b7ffef395b42',
 };
 
 const expiresIn2 = dayjs().add(1, 'second').unix();
@@ -62,7 +59,7 @@ const refreshToken2: RefreshToken = {
   id: refreshTokens.length + 1,
   public_id: 'a09d22d2-2464-42e3-827c-fe73626ff8b8',
   expires_in: expiresIn2,
-  user_id: 'a795c246-ca3b-46d0-8f66-b7ffef395b43',
+  owner_id: 'a795c246-ca3b-46d0-8f66-b7ffef395b43',
 };
 refreshTokens.push(refreshToken);
 refreshTokens.push(refreshToken2);

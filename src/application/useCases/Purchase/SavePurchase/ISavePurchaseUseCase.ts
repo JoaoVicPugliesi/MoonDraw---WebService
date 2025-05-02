@@ -6,9 +6,13 @@ export class ISavePurchaseUseCase {
     private readonly iPurchaseRepository: IPurchaseRepository
   ) {}
 
-  async execute({ user_id, title, value }: ISavePurchaseDTO): Promise<Purchase> {
+  async execute({ 
+    buyer_id, 
+    title, 
+    value 
+  }: ISavePurchaseDTO): Promise<Purchase> {
     return await this.iPurchaseRepository.savePurchase({
-      user_id,
+      buyer_id,
       title,
       value,
     });

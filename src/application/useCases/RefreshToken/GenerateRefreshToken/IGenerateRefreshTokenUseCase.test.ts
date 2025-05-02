@@ -1,6 +1,5 @@
 import { IGenerateRefreshTokenUseCase } from './IGenerateRefreshTokenUseCase';
-import { GenerateRefreshTokenErrorResponse } from '@application/handlers/UseCasesResponses/RefreshToken/IGenerateRefreshTokenHandler';
-import { IGenerateRefreshTokenDTO } from './IGenerateRefreshTokenDTO';
+import { GenerateRefreshTokenErrorResponse, IGenerateRefreshTokenDTO } from './IGenerateRefreshTokenDTO';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IGenerateRefreshTokenFactoryInMemory } from '@application/factories/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenInMemory';
 
@@ -11,15 +10,15 @@ describe('I generate refresh token use case', () => {
     const iGenerateRefreshTokenFactory = new IGenerateRefreshTokenFactoryInMemory(refreshTokens);
     const sut: IGenerateRefreshTokenUseCase = iGenerateRefreshTokenFactory.compose();
     const userId: string = '56d7ff79-f16d-434b-9183-5b0db27fa4e2';
-    const { user_id }: IGenerateRefreshTokenDTO = {
-      user_id: userId,
+    const { owner_id }: IGenerateRefreshTokenDTO = {
+      owner_id: userId,
     };
 
     // Act
     const response:
       | GenerateRefreshTokenErrorResponse
       | RefreshToken = await sut.execute({ 
-        user_id 
+        owner_id 
     });
 
     // Assert
@@ -29,7 +28,7 @@ describe('I generate refresh token use case', () => {
     expect(response).toHaveProperty('id');
     expect(response).toHaveProperty('public_id');
     expect(response).toHaveProperty('expires_in');
-    expect(response.user_id).toBe(userId);
+    expect(response.owner_id).toBe(userId);
   });
   it('should delete all user related refresh tokens and create a new one', async () => {
     // Arrange
@@ -37,22 +36,22 @@ describe('I generate refresh token use case', () => {
     const sut: IGenerateRefreshTokenUseCase = iGenerateRefreshTokenFactory.compose();
     const userId: string = '56d7ff79-f16d-434b-9183-5b0db27fa4e2';
     const {
-        user_id
+        owner_id
     }: IGenerateRefreshTokenDTO = {
-      user_id: userId,
+      owner_id: userId,
     };
 
     // Act
     const response:
       | GenerateRefreshTokenErrorResponse
       | RefreshToken = await sut.execute({
-        user_id
+        owner_id
       });
     if (response instanceof GenerateRefreshTokenErrorResponse) {
         return console.log('error');
     }
     const refreshTokensRelatedToCurrentUser = refreshTokens.filter(
-      (refreshToken) => refreshToken.user_id === userId
+      (refreshToken) => refreshToken.owner_id === userId
     );
 
     // Assert

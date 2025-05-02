@@ -17,7 +17,7 @@ export class ICartRepositoryInMemoryImpl implements ICartRepository {
       const cart: Cart = {
         id: this.carts.length + 1,
         public_id: uuidv4(),
-        user_id: public_id,
+        owner_id: public_id,
       };
   }
 
@@ -51,10 +51,10 @@ export class ICartRepositoryInMemoryImpl implements ICartRepository {
   }
 
   async getCart({
-    user_id
+    owner_id
   }: IGetCartDTO): Promise<Cart | null> {
       return new Promise((resolve, reject) => {
-        const cart: Cart | undefined = this.carts.find((cart: Cart) => cart.user_id === user_id);
+        const cart: Cart | undefined = this.carts.find((cart: Cart) => cart.owner_id === owner_id);
 
         if(typeof cart === 'undefined') return null;
 

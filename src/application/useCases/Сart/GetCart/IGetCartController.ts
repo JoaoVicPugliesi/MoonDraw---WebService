@@ -31,11 +31,11 @@ export class IGetCartController {
 
     try {
       const { 
-        user_id 
+        owner_id 
       }: IGetCartDTO = adapter.req.params as IGetCartDTO;
       const response: CartNotFoundErrorResponse | IGetCartResponse =
         await this.iGetCartUseCase.execute({
-          user_id,
+          owner_id,
         });
 
       if (response instanceof CartNotFoundErrorResponse) {

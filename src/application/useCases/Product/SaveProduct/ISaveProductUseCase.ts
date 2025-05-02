@@ -8,7 +8,8 @@ export class ISaveProductUseCase {
   ) {}
 
   async execute({
-    image_id,
+    images_id,
+    artist_id,
     name,
     description,
     price,
@@ -22,7 +23,8 @@ export class ISaveProductUseCase {
     if(product) return new ProductAlreadyExistsErrorResponse();
 
     await this.iProductRepository.saveProduct({
-        image_id, 
+        images_id, 
+        artist_id,
         name,
         description,
         price,

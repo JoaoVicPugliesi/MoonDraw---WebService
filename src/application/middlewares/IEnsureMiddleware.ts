@@ -1,18 +1,19 @@
-import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
+import { RequestResponseAdapter } from "@adapters/RequestResponseAdapter";
 import {
-  MustBeAnAdmingErrorResponse,
+  MustBeABuyerErrorResponse,
+  MustBeAnArtistErrorResponse,
+  MustBeAnAdminErrorResponse,
   MustBeVerifiedErrorResponse,
   RefreshTokenCookieMissingErrorResponse,
   TokenInvalidErrorResponse,
   TokenInvalidFormatErrorResponse,
   TokenIsMissingErrorResponse,
-} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+} from "@application/handlers/MiddlewareResponses/MiddlewareHandlers";
 
-import { ITokenService } from '@domain/services/Token/ITokenService';
-import { RefreshToken } from '@prisma/client';
+import { ITokenService } from "@domain/services/Token/ITokenService";
+import { RefreshToken } from "@prisma/client";
 
 export interface IEnsureMiddleware {
-
   ensureTemporaryAccessToken(
     adapter: RequestResponseAdapter,
     iTokenService: ITokenService,
@@ -32,23 +33,33 @@ export interface IEnsureMiddleware {
     | RefreshTokenCookieMissingErrorResponse
     | RefreshToken;
 
-  ensureUserIsAdmin(
+  ensureUserIsABuyer(
     adapter: RequestResponseAdapter,
     iTokenService: ITokenService,
     secret_key: string
   ):
     | TokenIsMissingErrorResponse
-    | MustBeAnAdmingErrorResponse
+    | MustBeABuyerErrorResponse
     | TokenInvalidErrorResponse
     | void;
 
-  ensureUserIsVerified(
+  ensureUserIsAnArtist(
     adapter: RequestResponseAdapter,
     iTokenService: ITokenService,
     secret_key: string
   ):
     | TokenIsMissingErrorResponse
-    | MustBeVerifiedErrorResponse
+    | MustBeAnArtistErrorResponse
+    | TokenInvalidErrorResponse
+    | void;
+
+  ensureUserIsAnAdmin(
+    adapter: RequestResponseAdapter,
+    iTokenService: ITokenService,
+    secret_key: string
+  ):
+    | TokenIsMissingErrorResponse
+    | MustBeAnAdminErrorResponse
     | TokenInvalidErrorResponse
     | void;
 }

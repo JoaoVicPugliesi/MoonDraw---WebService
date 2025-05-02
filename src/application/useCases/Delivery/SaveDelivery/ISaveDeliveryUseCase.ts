@@ -1,6 +1,5 @@
 import { IDeliveryRepository } from '@domain/repositories/IDeliveryRepository';
 import { ISaveDeliveryDTO } from './ISaveDeliveryDTO';
-import { Delivery } from '@domain/entities/Delivery';
 
 export class ISaveDeliveryUseCase {
   constructor(
@@ -8,7 +7,7 @@ export class ISaveDeliveryUseCase {
   ) {}
 
   async execute({
-    user_id,
+    buyer_id,
     purchase_id,
     recipient_email,
     recipient_name,
@@ -25,7 +24,7 @@ export class ISaveDeliveryUseCase {
     delivery_instructions,
   }: ISaveDeliveryDTO): Promise<void> {
     await this.iDeliveryRepository.saveDelivery({
-      user_id,
+      buyer_id,
       purchase_id,
       recipient_email,
       recipient_name,

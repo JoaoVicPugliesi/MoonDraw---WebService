@@ -16,7 +16,7 @@ export class ICartRepositoryPrismaImpl implements ICartRepository {
     await prisma.cart.create({
       data: {
         public_id: uuidv4(),
-        user_id: public_id,
+        owner_id: public_id,
       },
     });
   }
@@ -46,7 +46,7 @@ export class ICartRepositoryPrismaImpl implements ICartRepository {
     cart_id,
     product_id,
   }: IAttachProductIntoCartDTO): Promise<void> {
-    await prisma.pivot_Cart_Product.create({
+    await prisma.cart_Product_Pivot.create({
       data: {
         cart_id: cart_id,
         product_id: product_id,
@@ -58,7 +58,7 @@ export class ICartRepositoryPrismaImpl implements ICartRepository {
     cart_id,
     product_id,
   }: IAttachProductIntoCartDTO): Promise<boolean> {
-    const attachment = await prisma.pivot_Cart_Product.findFirst({
+    const attachment = await prisma.cart_Product_Pivot.findFirst({
       where: {
         cart_id: cart_id,
         product_id: product_id,
@@ -74,7 +74,7 @@ export class ICartRepositoryPrismaImpl implements ICartRepository {
     cart_id,
     product_id,
   }: IDetachProductFromCartDTO): Promise<void> {
-    await prisma.pivot_Cart_Product.delete({
+    await prisma.cart_Product_Pivot.delete({
       where: {
        cart_id_product_id: {
         cart_id,
@@ -85,11 +85,11 @@ export class ICartRepositoryPrismaImpl implements ICartRepository {
   }
 
   async getCart({
-    user_id
+    owner_id
   }: IGetCartDTO): Promise<Cart | null> {
       const cart: Cart | null = await prisma.cart.findUnique({
         where: {
-          user_id: user_id
+          owner_id: owner_id
         }
       });
 

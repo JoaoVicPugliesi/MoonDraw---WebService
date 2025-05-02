@@ -3,8 +3,10 @@ import {
   TokenInvalidErrorResponse,
   RefreshTokenCookieMissingErrorResponse,
   TokenInvalidFormatErrorResponse,
-  MustBeAnAdmingErrorResponse,
+  MustBeAnAdminErrorResponse,
   MustBeVerifiedErrorResponse,
+  MustBeAnArtistErrorResponse,
+  MustBeABuyerErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IEnsureMiddleware } from './IEnsureMiddleware';
@@ -84,13 +86,13 @@ export class IEnsureMiddlewareImpl implements IEnsureMiddleware {
     }
   }
 
-  ensureUserIsAdmin(
+  ensureUserIsABuyer(
     adapter: RequestResponseAdapter,
     iTokenService: ITokenService,
     secret_key: string
   ):
     | TokenIsMissingErrorResponse
-    | MustBeAnAdmingErrorResponse
+    | MustBeABuyerErrorResponse
     | TokenInvalidErrorResponse
     | void {
     const accessToken = adapter.req.headers?.authorization;
@@ -107,8 +109,43 @@ export class IEnsureMiddlewareImpl implements IEnsureMiddleware {
 
     const { role } = tokenDecoded.payload.content;
 
-    if (role === 'client') {
-      return new MustBeAnAdmingErrorResponse();
+    if (role === 'artist' || role === 'admin') {
+      return new MustBeABuyerErrorResponse();
+    }
+    try {
+      iTokenService.verify({
+        token: token,
+        secret_key: secret_key,
+      });
+    } catch (error) {
+      return new TokenInvalidErrorResponse(error);
+    }
+  }
+  ensureUserIsAnArtist(
+    adapter: RequestResponseAdapter,
+    iTokenService: ITokenService,
+    secret_key: string
+  ):
+    | TokenIsMissingErrorResponse
+    | MustBeAnArtistErrorResponse
+    | TokenInvalidErrorResponse
+    | void {
+    const accessToken = adapter.req.headers?.authorization;
+
+    if (!accessToken) {
+      return new TokenIsMissingErrorResponse();
+    }
+
+    const [, token] = accessToken.split(' ');
+    const tokenDecoded = iTokenService.decode(token, {
+      json: true,
+      complete: true,
+    });
+
+    const { role } = tokenDecoded.payload.content;
+
+    if (role === 'buyer' || role === 'admin') {
+      return new MustBeAnArtistErrorResponse();
     }
     try {
       iTokenService.verify({
@@ -120,13 +157,13 @@ export class IEnsureMiddlewareImpl implements IEnsureMiddleware {
     }
   }
 
-  ensureUserIsVerified(
+  ensureUserIsAnAdmin(
     adapter: RequestResponseAdapter,
     iTokenService: ITokenService,
     secret_key: string
   ):
     | TokenIsMissingErrorResponse
-    | MustBeVerifiedErrorResponse
+    | MustBeAnAdminErrorResponse
     | TokenInvalidErrorResponse
     | void {
     const accessToken = adapter.req.headers?.authorization;
@@ -136,18 +173,16 @@ export class IEnsureMiddlewareImpl implements IEnsureMiddleware {
     }
 
     const [, token] = accessToken.split(' ');
-
     const tokenDecoded = iTokenService.decode(token, {
       json: true,
       complete: true,
     });
 
-    const { is_verified } = tokenDecoded.payload.content;
+    const { role } = tokenDecoded.payload.content;
 
-    if (is_verified === false) {
-      return new MustBeVerifiedErrorResponse();
+    if (role === 'buyer' || role === 'artist') {
+      return new MustBeAnAdminErrorResponse();
     }
-
     try {
       iTokenService.verify({
         token: token,

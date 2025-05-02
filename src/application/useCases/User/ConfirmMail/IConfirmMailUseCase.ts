@@ -33,6 +33,8 @@ export class IConfirmMailUseCase {
       name, 
       surname, 
       email, 
+      description,
+      role,
       password 
     }: User = JSON.parse(cachedUser);
 
@@ -40,14 +42,18 @@ export class IConfirmMailUseCase {
       name,
       surname,
       email,
+      description,
+      role,
       password,
     });
 
     await this.iCacheProvider.del(`user-processing-${email}`);
     await this.iCacheProvider.del(`user-${verification_token}`);
 
-    await this.iAssignCartOwner.execute({
-      public_id,
-    });
+    if(role === 'Buyer') {
+      await this.iAssignCartOwner.execute({
+        public_id,
+      });
+    }
   }
 }

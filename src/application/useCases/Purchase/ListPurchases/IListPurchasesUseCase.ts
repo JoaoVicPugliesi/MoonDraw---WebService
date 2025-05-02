@@ -10,11 +10,11 @@ export class IListPurchasesUseCase {
   ) {}
 
   async execute({ 
-    user_id, 
+    buyer_id, 
     status 
   }: IListPurchasesDTO): Promise<IListPurchaseResponse | PurchasesNotFoundErrorResponse> {
     const cachedPurchases: string | null = await this.iCacheProvider.get(
-        `purchases-${status}-${user_id}`
+        `purchases-${status}-${buyer_id}`
     );
 
     if(cachedPurchases) {
@@ -25,15 +25,15 @@ export class IListPurchasesUseCase {
     }
 
     const purchases: Purchase[] | null = await this.iPurchaseRepository.listPurchases({
-        user_id,
+        buyer_id,
         status
     });
 
     if(!purchases) return new PurchasesNotFoundErrorResponse();
 
-    const expiresIn: number = status === 'pending' ? 600 : 1800;
+    const expiresIn: number = status === 'Pending' ? 600 : 1800;
     await this.iCacheProvider.set(
-        `purchases-${status}-${user_id}`,
+        `purchases-${status}-${buyer_id}`,
         JSON.stringify(purchases),
         {
             EX: expiresIn

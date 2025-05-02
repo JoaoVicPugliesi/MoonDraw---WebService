@@ -1,7 +1,7 @@
 import { IUser } from '@domain/entities/User';
 
 // Request
-export interface IRegisterDTO extends Pick<IUser, 'name' | 'surname' | 'email' | 'password'> {
+export interface IRegisterDTO extends Pick<IUser, 'name' | 'surname' | 'email' | 'role' | 'description' | 'password'> {
     confirmPassword?: string
 };
 

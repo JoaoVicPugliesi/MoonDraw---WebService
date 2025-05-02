@@ -20,12 +20,14 @@ class IUserDecorator implements IUserRepository {
     name,
     surname,
     email,
+    role,
     password,
   }: IRegisterDTO): Promise<User> {
     return await this.decoratee.saveUser({
       name,
       surname,
       email,
+      role,
       password,
     });
   }

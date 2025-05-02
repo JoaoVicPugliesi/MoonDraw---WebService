@@ -12,7 +12,7 @@ export class IInitiatePurchaseUseCase {
   ) {}
 
   async execute({ 
-    user_id, 
+    buyer_id, 
     title,
     selected_products 
   }: IInitiatePurchaseDTO): Promise<void> {
@@ -21,7 +21,7 @@ export class IInitiatePurchaseUseCase {
     );
 
     const purchase: Purchase = await this.iSavePurchaseUseCase.execute({
-      user_id,
+      buyer_id,
       title,
       value,
     });

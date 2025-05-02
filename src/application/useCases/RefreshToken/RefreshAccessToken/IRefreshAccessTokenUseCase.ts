@@ -46,7 +46,7 @@ export class IRefreshAccessTokenUseCase {
       surname, 
       email, 
       role, 
-      is_verified 
+      is_email_verified 
     } = user;
     
     await this.iUserRepository.trackUserActivity({
@@ -58,7 +58,7 @@ export class IRefreshAccessTokenUseCase {
         content: {
           public_id: user.public_id,
           role: role,
-          is_verified: is_verified
+          is_email_verified: is_email_verified
         }
       },
       secret_key: this.secret_key,
@@ -90,7 +90,7 @@ export class IRefreshAccessTokenUseCase {
           surname: surname,
           email: email,
           role: role,
-          is_verified: is_verified,
+          is_email_verified: is_email_verified,
         }
       };
     }
@@ -102,7 +102,7 @@ export class IRefreshAccessTokenUseCase {
         surname: surname,
         email: email,
         role: role,
-        is_verified: is_verified,
+        is_email_verified: is_email_verified,
       }
     }
   }

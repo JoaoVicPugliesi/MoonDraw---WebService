@@ -43,14 +43,14 @@ export class ILoginUseCase {
       email
     });
     
-    const { public_id, name, surname, role, is_verified } = user;
+    const { public_id, name, surname, description, role, is_email_verified } = user;
 
     const accessToken: string = this.iTokenService.sign({
       payload: {
         content: {
           public_id: public_id,
           role: role,
-          is_verified: is_verified
+          is_email_verified: is_email_verified
         }
       },
       secret_key: process.env.JWT_SECRET_KEY!,
@@ -60,7 +60,7 @@ export class ILoginUseCase {
     });
 
     const iGenerateRefreshTokenDTO: IGenerateRefreshTokenDTO = {
-      user_id: public_id
+      owner_id: public_id
     };
     
     const refreshToken: GenerateRefreshTokenErrorResponse | RefreshToken =
@@ -77,6 +77,7 @@ export class ILoginUseCase {
         name: name,
         surname: surname,
         email: email,
+        description: description
       }
     };
   }

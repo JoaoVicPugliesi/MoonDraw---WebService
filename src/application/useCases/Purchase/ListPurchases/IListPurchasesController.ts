@@ -1,7 +1,5 @@
-
 import { IListPurchasesUseCase } from './IListPurchasesUseCase';
 import { IListPurchaseResponse, IListPurchasesDTO, PurchasesNotFoundErrorResponse } from './IListPurchasesDTO';
-
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
@@ -32,11 +30,11 @@ export class IListPurchasesController {
     }
 
     try {
-      const { user_id, status }: IListPurchasesDTO = adapter.req
+      const { buyer_id, status }: IListPurchasesDTO = adapter.req
         .query as IListPurchasesDTO;
       const response: IListPurchaseResponse | PurchasesNotFoundErrorResponse =
         await this.iListPurchasesUseCase.execute({
-          user_id,
+          buyer_id,
           status,
         });
 

@@ -29,5 +29,5 @@ export interface IPurchaseRepository {
   ): Promise<CheckoutPurchase[] | null>;
   removePurchase(DTO: IRemovePurchaseDTO): Promise<void>;
   completePurchase(DTO: { purchase_id: string, payment_method: string }): Promise<void>;
-  findPurchaseOwner(DTO: Pick<ICompletePurchaseDTO, 'purchase_id'>): Promise<Pick<Purchase, 'user_id'> | null>;
+  findPurchaseOwner(DTO: Pick<ICompletePurchaseDTO, 'purchase_id'>): Promise<Pick<Purchase, 'buyer_id'> | null>;
 }

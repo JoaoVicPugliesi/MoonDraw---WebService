@@ -47,7 +47,8 @@ export class IProductRepositoryPrismaImpl implements IProductRepository {
   }
 
   async saveProduct({
-    image_id,
+    images_id,
+    artist_id,
     name,
     description,
     price,
@@ -57,7 +58,8 @@ export class IProductRepositoryPrismaImpl implements IProductRepository {
     await prisma.product.create({
       data: {
         public_id: uuidv4(),
-        image_id: image_id,
+        artist_id: artist_id,
+        images_id: images_id,
         name: name,
         description: description,
         price: price,

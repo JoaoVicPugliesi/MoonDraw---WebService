@@ -12,7 +12,7 @@ export class IRefreshTokenRepositoryPrismaImpl implements IRefreshTokenRepositor
     const refreshTokens: RefreshToken | RefreshToken[] | null =
       await prisma.refreshToken.findMany({
         where: {
-          user_id: param as string,
+          owner_id: param as string,
         },
       });
 
@@ -37,20 +37,20 @@ export class IRefreshTokenRepositoryPrismaImpl implements IRefreshTokenRepositor
   async deleteRelatedRefreshTokens<T>(param: T): Promise<void> {
     await prisma.refreshToken.deleteMany({
       where: {
-        user_id: param as string,
+        owner_id: param as string,
       },
     });
   }
   async saveRefreshToken(
     { 
-      user_id 
+      owner_id
     }: IGenerateRefreshTokenDTO
   ): Promise<RefreshToken | null> {
     const expiresIn = dayjs().add(14, 'days').unix();
     const refreshToken: RefreshToken | null = await prisma.refreshToken.create({
       data: {
         public_id: uuidv4(),
-        user_id: user_id,
+        owner_id: owner_id,
         expires_in: expiresIn,
       },
     });

@@ -1,8 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('client', 'admin');
-
--- CreateEnum
-CREATE TYPE "PurchaseStatus" AS ENUM ('pendent', 'completed');
+CREATE TYPE "Role" AS ENUM ('Buyer', 'Artist', 'Admin');
 
 -- CreateTable
 CREATE TABLE "users" (
@@ -11,10 +8,12 @@ CREATE TABLE "users" (
     "name" TEXT NOT NULL,
     "surname" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "description" TEXT NOT NULL DEFAULT 'No Description',
     "password" TEXT NOT NULL,
-    "role" "Role" NOT NULL DEFAULT 'client',
-    "is_verified" BOOLEAN NOT NULL DEFAULT false,
+    "role" "Role" NOT NULL,
+    "is_email_verified" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "last_login_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "email_verified_at" TIMESTAMP(3),
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("public_id")

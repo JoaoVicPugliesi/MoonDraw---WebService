@@ -2,10 +2,9 @@ import z from 'zod';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { ISaveProductUseCase } from './ISaveProductUseCase';
 import { ISaveProductDTO, ProductAlreadyExistsErrorResponse } from './ISaveProductDTO';
-
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import { IProductValidator } from '@application/validators/Request/Product/IProductValidator';
-import { MustBeAnAdmingErrorResponse, TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { MustBeAnArtistErrorResponse, TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class ISaveProductController {
@@ -22,8 +21,8 @@ export class ISaveProductController {
     const ensure:
       | void
       | TokenIsMissingErrorResponse
-      | MustBeAnAdmingErrorResponse
-      | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureUserIsAdmin(
+      | MustBeAnArtistErrorResponse
+      | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureUserIsAnArtist(
       adapter,
       this.iTokenService,
       process.env.JWT_SECRET_KEY!
@@ -32,7 +31,7 @@ export class ISaveProductController {
     if (ensure instanceof TokenIsMissingErrorResponse) {
       return adapter.res.status(401).send({ message: 'Access Token is missing' });
     }
-    if (ensure instanceof MustBeAnAdmingErrorResponse) {
+    if (ensure instanceof MustBeAnArtistErrorResponse) {
       return adapter.res
         .status(403)
         .send({ message: 'Only admins have access' });
@@ -43,7 +42,8 @@ export class ISaveProductController {
 
     try {
       const {
-        image_id,
+        images_id,
+        artist_id,
         name,
         description,
         price,
@@ -52,7 +52,8 @@ export class ISaveProductController {
       }: ISaveProductDTO = schema.parse(adapter.req.body);
       const response: ProductAlreadyExistsErrorResponse | void =
         await this.iSaveProductUseCase.execute({
-          image_id,
+          images_id,
+          artist_id,
           name,
           description,
           price,

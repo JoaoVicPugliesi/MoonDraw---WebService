@@ -1,9 +1,9 @@
-type DeliveryStatus = 'processing' | 'delivering' | 'delivered';
+type DeliveryStatus = 'Processing' | 'Delivering' | 'Delivered';
 
 export interface IDelivery {
   readonly id: number,
   readonly public_id: string,
-  readonly user_id: string,
+  readonly buyer_id: string,
   readonly purchase_id: string,
   readonly status: DeliveryStatus,
   readonly recipient_email: string,
@@ -28,7 +28,7 @@ export class Delivery implements IDelivery {
   constructor(
     readonly id: number,
     readonly public_id: string,
-    readonly user_id: string,
+    readonly buyer_id: string,
     readonly purchase_id: string,
     readonly status: DeliveryStatus,
     readonly recipient_email: string,

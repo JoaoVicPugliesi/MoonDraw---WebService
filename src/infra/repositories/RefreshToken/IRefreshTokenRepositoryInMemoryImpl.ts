@@ -15,7 +15,7 @@ export class IRefreshTokenRepositoryInMemoryImpl implements IRefreshTokenReposit
     return new Promise((resolve, reject) => {
       const refreshTokens: RefreshToken | RefreshToken[] | null =
         this.refreshTokens.filter(
-          (refreshToken) => refreshToken.user_id === (param as string)
+          (refreshToken) => refreshToken.owner_id === (param as string)
         );
 
       if (refreshTokens) resolve(refreshTokens);
@@ -38,7 +38,7 @@ export class IRefreshTokenRepositoryInMemoryImpl implements IRefreshTokenReposit
   async deleteRelatedRefreshTokens<T>(param: T): Promise<void> {
     return new Promise((resolve, reject) => {
       for (let i = this.refreshTokens.length - 1; i >= 0; i--) {
-        if (this.refreshTokens[i].user_id === (param as string)) {
+        if (this.refreshTokens[i].owner_id === (param as string)) {
           this.refreshTokens.splice(i, 1);
         }
       }
@@ -48,7 +48,7 @@ export class IRefreshTokenRepositoryInMemoryImpl implements IRefreshTokenReposit
   }
 
   saveRefreshToken({
-      user_id,
+    owner_id,
     }: IGenerateRefreshTokenDTO): Promise<RefreshToken | null> {
       const expiresIn: number = dayjs().add(7, 'days').unix();
       return new Promise((resolve, reject) => {
@@ -56,7 +56,7 @@ export class IRefreshTokenRepositoryInMemoryImpl implements IRefreshTokenReposit
           id: this.refreshTokens.length + 1,
           public_id: uuidv4(),
           expires_in: expiresIn,
-          user_id: user_id,
+          owner_id:owner_id,
         };
   
         this.refreshTokens.push(refreshToken);

@@ -56,7 +56,8 @@ export class IProductRepositoryInMemoryImpl implements IProductRepository {
   }
 
   async saveProduct({
-    image_id,
+    images_id,
+    artist_id,
     name,
     description,
     price,
@@ -67,7 +68,8 @@ export class IProductRepositoryInMemoryImpl implements IProductRepository {
       const product: Product = {
         id: this.products.length + 1,
         public_id: uuidv4(),
-        image_id: image_id,
+        artist_id: artist_id,
+        images_id: images_id,
         name: name,
         description: description,
         price: price,

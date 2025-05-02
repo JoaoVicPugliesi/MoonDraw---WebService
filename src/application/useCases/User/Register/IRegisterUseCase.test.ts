@@ -1,12 +1,10 @@
-import {
-  UserConflictErrorResponse,
-} from '@application/handlers/UseCasesResponses/User/IRegisterHandlers';
+
 import { User } from '@domain/entities/User';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRegisterFactoryInMemory } from '@application/factories/User/Register/IRegisterFactoryInMemory';
 import { IRegisterUseCase } from './IRegisterUseCase';
 import { configDotenv } from 'dotenv';
-import { IRegisterDTO } from './IRegisterDTO';
+import { IRegisterDTO, IRegisterResponse, UserConflictErrorResponse, UserProcessingConflictErrorResponse } from './IRegisterDTO';
 import { Cart } from '@domain/entities/Cart';
 configDotenv();
 
@@ -22,9 +20,10 @@ const user: User = {
   name: 'João',
   surname: 'Pugliesi',
   email: 'mrlanguages62@gmail.com',
-  password: '$2b$10$GX73JFHmigssj00i5mES9uak392P5wSrS6caNFaQ0ybZkm2TBuBkK',
-  role: 'client',
-  is_verified: false,
+  description: 'saioshaohhd8dh9a0hda9hs9a',
+  password: '12345678',
+  role: 'Buyer',
+  is_email_verified: false,
   created_at: new Date(),
   last_login_at: new Date(),
   email_verified_at: null,
@@ -41,19 +40,23 @@ describe('I register use case', () => {
       iMailProvider
     );
     const sut: IRegisterUseCase = iRegisterFactoryInMemory.compose();
-    const { name, surname, email, password, confirmPassword }: IRegisterDTO = {
+    const { name, surname, email, role, description, password, confirmPassword }: IRegisterDTO = {
       name: 'João',
       surname: 'Pugliesi',
       email: 'mrlanguages62@gmail.com',
+      role: 'Buyer',
+      description: 'I am an artist',
       password: 'Mrlanguages1234##',
       confirmPassword: 'Mrlanguages1234##'
     };
     
     // Act
-    const response: UserConflictErrorResponse | void = await sut.execute({
+    const response: UserConflictErrorResponse | UserProcessingConflictErrorResponse | IRegisterResponse = await sut.execute({
       name,
       surname,
       email,
+      role,
+      description,
       password,
       confirmPassword
     });
@@ -70,18 +73,22 @@ describe('I register use case', () => {
       iMailProvider
     );
     const sut: IRegisterUseCase = iRegisterFactoryInMemory.compose();
-    const { name, surname, email, password, confirmPassword }: IRegisterDTO = {
+    const { name, surname, email, role, description, password, confirmPassword }: IRegisterDTO = {
       name: 'João',
       surname: 'Pugliesi',
       email: 'mrlanguages62@gmail.com',
+      description: 'I am an artist',
+      role: 'Buyer',
       password: 'Mrlanguages1234##',
       confirmPassword: 'Mrlanguages1234##',
     };
     // Act
-    const response: UserConflictErrorResponse | void = await sut.execute({
+    const response: UserConflictErrorResponse | UserProcessingConflictErrorResponse | IRegisterResponse | void = await sut.execute({
       name,
       surname,
       email,
+      description,
+      role,
       password,
       confirmPassword
     });

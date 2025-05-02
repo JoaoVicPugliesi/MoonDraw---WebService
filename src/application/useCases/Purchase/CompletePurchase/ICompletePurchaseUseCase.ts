@@ -19,14 +19,14 @@ export class ICompletePurchaseUseCase {
   }: ICompletePurchaseDTO): Promise<
     PurchaseHasNoOwnerErrorResponse | ICompletePurchaseResponse
   > {
-    const owner: Pick<Purchase, 'user_id'> | null =
+    const owner: Pick<Purchase, 'buyer_id'> | null =
       await this.iPurchaseRepository.findPurchaseOwner({
         purchase_id,
       });
 
     if (!owner) return new PurchaseHasNoOwnerErrorResponse();
 
-    const { user_id } = owner;
+    const { buyer_id } = owner;
     const session: IRetrieveResponse = await this.iPaymentProvider.retrieve(
       session_id,
       {
@@ -47,7 +47,7 @@ export class ICompletePurchaseUseCase {
 
     await this.iSaveDeliveryUseCase.execute({
       purchase_id,
-      user_id,
+      buyer_id,
       country: customer_details?.address?.country ?? '',
       city: customer_details?.address?.city ?? '',
       recipient_email: customer_details?.email ?? '',

@@ -55,14 +55,14 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
   }
 
   async savePurchase({
-    user_id,
+    buyer_id,
     title,
     value,
   }: ISavePurchaseDTO): Promise<Purchase> {
     const purchase: Purchase = await prisma.purchase.create({
       data: {
         public_id: uuidv4(),
-        user_id: user_id,
+        buyer_id: buyer_id,
         title: title,
         value: value,
       },
@@ -76,7 +76,7 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
     product_id,
     quantity,
   }: IAttachProductIntoPurchaseDTO): Promise<void> {
-    await prisma.pivot_Purchase_Product.create({
+    await prisma.purchase_Product_Pivot.create({
       data: {
         purchase_id,
         product_id,
@@ -86,12 +86,12 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
   }
 
   async listPurchases({
-    user_id,
+    buyer_id,
     status,
   }: IListPurchasesDTO): Promise<Purchase[] | null> {
     const purchases: Purchase[] | null = await prisma.purchase.findMany({
       where: {
-        user_id: user_id,
+        buyer_id: buyer_id,
         status: status,
       },
     });
@@ -103,7 +103,7 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
     public_id,
   }: ICheckoutPurchaseDTO): Promise<CheckoutPurchase[] | null> {
     const purchase: CheckoutPurchase[] | null =
-      await prisma.pivot_Purchase_Product.findMany({
+      await prisma.purchase_Product_Pivot.findMany({
         where: {
           purchase_id: public_id,
         },
@@ -119,7 +119,7 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
     await prisma.purchase.delete({
       where: {
         public_id: public_id,
-        status: 'pending',
+        status: 'Pending',
       },
     });
   }
@@ -133,7 +133,7 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
         public_id: purchase_id,
       },
       data: {
-        status: 'completed',
+        status: 'Completed',
         completed_at: new Date(),
         payment_method: payment_method
       },
@@ -142,7 +142,7 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
 
   async findPurchaseOwner({
     purchase_id,
-  }: Pick<ICompletePurchaseDTO, 'purchase_id'>): Promise<Pick<Purchase, 'user_id'> | null> {
+  }: Pick<ICompletePurchaseDTO, 'purchase_id'>): Promise<Pick<Purchase, 'buyer_id'> | null> {
     const purchase: Purchase | null = await prisma.purchase.findUnique({
       where: {
         public_id: purchase_id,
@@ -151,7 +151,7 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
 
     if (purchase) {
       return {
-        user_id: purchase.user_id
+        buyer_id: purchase.buyer_id
       };
     }
 

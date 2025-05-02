@@ -3,7 +3,7 @@ import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IInitiatePurchaseUseCase } from './IInitiatePurchaseUseCase';
 import { IInitiatePurchaseDTO } from './IInitiatePurchaseDTO';
 import {
-  MustBeVerifiedErrorResponse,
+  MustBeABuyerErrorResponse,
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
 } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
@@ -24,8 +24,8 @@ export class IInitiatePurchaseController {
     const ensure:
     | void
     | TokenIsMissingErrorResponse
-    | MustBeVerifiedErrorResponse
-    | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureUserIsVerified(
+    | MustBeABuyerErrorResponse
+    | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureUserIsABuyer(
         adapter,
         this.iTokenService,
         process.env.JWT_SECRET_KEY!
@@ -34,18 +34,18 @@ export class IInitiatePurchaseController {
     if (ensure instanceof TokenIsMissingErrorResponse) {
       return adapter.res.status(401).send({ message: 'Access Token is missing' });
     }
-    if(ensure instanceof MustBeVerifiedErrorResponse) {
+    if(ensure instanceof MustBeABuyerErrorResponse) {
       return adapter.res.status(403).send({ message: 'Must verify email to access' });
     }
     if (ensure instanceof TokenInvalidErrorResponse) {
       return adapter.res.status(401).send({ message: 'Access Token is invalid' });
     }
     try {
-      const { user_id, title, selected_products }: IInitiatePurchaseDTO = schema.parse(
+      const { buyer_id, title, selected_products }: IInitiatePurchaseDTO = schema.parse(
         adapter.req.body
       );
       await this.iInitiatePurchaseUseCase.execute({
-        user_id,
+        buyer_id,
         title,
         selected_products,
       });

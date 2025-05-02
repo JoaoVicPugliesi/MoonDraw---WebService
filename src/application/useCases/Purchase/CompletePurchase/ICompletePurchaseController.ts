@@ -1,11 +1,11 @@
+import { ZodError } from 'zod';
 import { IPurchaseValidator } from '@application/validators/Request/Purchase/IPurchaseValidator';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { ICompletePurchaseUseCase } from './ICompletePurchaseUseCase';
 import { ICompletePurchaseResponse, PurchaseHasNoOwnerErrorResponse } from './ICompletePurchaseDTO';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
-import { MustBeVerifiedErrorResponse, TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { MustBeABuyerErrorResponse, TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
-import { ZodError } from 'zod';
 
 export class ICompletePurchaseController {
   constructor(
@@ -20,8 +20,8 @@ export class ICompletePurchaseController {
     const ensure:
       | void
       | TokenIsMissingErrorResponse
-      | MustBeVerifiedErrorResponse
-      | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureUserIsVerified(
+      | MustBeABuyerErrorResponse
+      | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureUserIsABuyer(
       adapter,
       this.iTokenService,
       process.env.JWT_SECRET_KEY!
@@ -30,7 +30,7 @@ export class ICompletePurchaseController {
     if (ensure instanceof TokenIsMissingErrorResponse) {
       return adapter.res.status(401).send({ message: 'Token is missing' });
     }
-    if (ensure instanceof MustBeVerifiedErrorResponse) {
+    if (ensure instanceof MustBeABuyerErrorResponse) {
       return adapter.res.status(403).send({ message: 'Must verify email to access' });
     }
     if (ensure instanceof TokenInvalidErrorResponse) {

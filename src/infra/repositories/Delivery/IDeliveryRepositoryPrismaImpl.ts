@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class IDeliveryRepositoryPrismaImpl implements IDeliveryRepository {
   async saveDelivery({
-    user_id,
+    buyer_id,
     purchase_id,
     recipient_email,
     recipient_name,
@@ -25,7 +25,7 @@ export class IDeliveryRepositoryPrismaImpl implements IDeliveryRepository {
     return await prisma.delivery.create({
       data: {
         public_id: uuidv4(),
-        user_id: user_id,
+        buyer_id: buyer_id,
         purchase_id: purchase_id,
         recipient_email: recipient_email,
         recipient_name: recipient_name,
