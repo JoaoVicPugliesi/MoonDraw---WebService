@@ -64,10 +64,8 @@ export class IRefreshAccessTokenController {
 
       return adapter.res.status(200).send({
         current_user: {
-          token: {
             access_token: response.access_token,
             user: response.user,
-          },
         },
       });
     } catch (error) {

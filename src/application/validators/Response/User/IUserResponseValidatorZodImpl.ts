@@ -70,6 +70,7 @@ export class IUserResponseValidatorZodImpl implements IUserResponseValidator {
               name: z.string(),
               surname: z.string(),
               email: z.string(),
+              description: z.string()
             }),
           }),
         })

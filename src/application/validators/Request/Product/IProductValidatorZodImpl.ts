@@ -4,10 +4,14 @@ import { IProductValidator } from "./IProductValidator";
 export class IProductValidatorZodImpl implements IProductValidator {
   validateSaveProduct() {
     return z.object({
-      image_id: z.string({
-        required_error: "image_id is required",
-        invalid_type_error: "image_id should be of type string",
-      }),
+      images_id: z.array(z.string({
+        required_error: "images_id is required",
+        invalid_type_error: "images_id should be an array of strings",
+      })),
+      artist_id: z.string({
+        required_error: "artist_id is required",
+        invalid_type_error: "artist_id should be of type string",
+      }), 
       name: z.string({
         required_error: "name is required",
         invalid_type_error: "name should be of type string",

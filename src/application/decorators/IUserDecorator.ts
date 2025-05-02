@@ -20,6 +20,7 @@ class IUserDecorator implements IUserRepository {
     name,
     surname,
     email,
+    description,
     role,
     password,
   }: IRegisterDTO): Promise<User> {
@@ -27,6 +28,7 @@ class IUserDecorator implements IUserRepository {
       name,
       surname,
       email,
+      description,
       role,
       password,
     });

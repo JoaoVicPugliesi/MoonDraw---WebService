@@ -23,10 +23,10 @@ class IRefreshTokenDecorator implements IRefreshTokenRepository {
   }
 
   async saveRefreshToken({
-    user_id,
+    owner_id,
   }: IGenerateRefreshTokenDTO): Promise<RefreshToken | null> {
     return await this.decoratee.saveRefreshToken({
-      user_id,
+      owner_id,
     });
   }
 }

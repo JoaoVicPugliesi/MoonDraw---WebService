@@ -9,7 +9,7 @@ export class IDeliveryDecorator implements IDeliveryRepository {
   ) {}
 
   async saveDelivery({
-    user_id,
+    buyer_id,
     purchase_id,
     recipient_email,
     recipient_name,
@@ -26,7 +26,7 @@ export class IDeliveryDecorator implements IDeliveryRepository {
     delivery_instructions,
   }: ISaveDeliveryDTO): Promise<Delivery> {
     return await this.decoratee.saveDelivery({
-      user_id,
+      buyer_id,
       purchase_id,
       recipient_email,
       recipient_name,

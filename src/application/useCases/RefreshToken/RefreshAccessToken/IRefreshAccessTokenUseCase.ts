@@ -36,7 +36,7 @@ export class IRefreshAccessTokenUseCase {
 
     const user: User | null =
       await this.iUserRepository.findUserById({
-        public_id: refreshToken.user_id
+        public_id: refreshToken.owner_id
       });
 
     if (!user) return new RefreshTokenUserNotFoundErrorResponse();
@@ -45,6 +45,7 @@ export class IRefreshAccessTokenUseCase {
       name, 
       surname, 
       email, 
+      description,
       role, 
       is_email_verified 
     } = user;
@@ -73,10 +74,10 @@ export class IRefreshAccessTokenUseCase {
 
     if (refreshTokenExpired) {
       await this.iRefreshTokenRepository.deleteRelatedRefreshTokens(
-        refreshToken.user_id
+        refreshToken.owner_id
       );
       const DTO: IGenerateRefreshTokenDTO = {
-        user_id: refreshToken.user_id,
+        owner_id: refreshToken.owner_id,
       };
       const newRefreshToken:
         | GenerateRefreshTokenErrorResponse
@@ -89,8 +90,7 @@ export class IRefreshAccessTokenUseCase {
           name: name,
           surname: surname,
           email: email,
-          role: role,
-          is_email_verified: is_email_verified,
+          description: description
         }
       };
     }
@@ -101,8 +101,7 @@ export class IRefreshAccessTokenUseCase {
         name: name,
         surname: surname,
         email: email,
-        role: role,
-        is_email_verified: is_email_verified,
+        description: description
       }
     }
   }

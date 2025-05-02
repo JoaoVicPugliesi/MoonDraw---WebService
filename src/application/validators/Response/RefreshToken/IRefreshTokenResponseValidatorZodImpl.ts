@@ -14,6 +14,7 @@ export class IRefreshTokenResponseValidatorZodImpl
               name: z.string(),
               surname: z.string(),
               email: z.string(),
+              description: z.string()
             }),
           }),
         })

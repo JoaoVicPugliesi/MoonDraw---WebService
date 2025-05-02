@@ -14,6 +14,9 @@ export class IProductRepositoryPrismaImpl implements IProductRepository {
     const products: Product[] | null = await prisma.product.findMany({
       skip: 10 * (page - 1),
       take: 10,
+      orderBy: {
+        published_at: 'desc'
+      }
     });
 
     return products;

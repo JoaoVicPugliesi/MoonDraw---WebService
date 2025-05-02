@@ -8,24 +8,24 @@ export class IGenerateRefreshTokenUseCase {
   ) {}
 
   async execute({
-    user_id,
+    owner_id,
   }: IGenerateRefreshTokenDTO): Promise<
     GenerateRefreshTokenErrorResponse | RefreshToken
   > {
     const relatedTokens: RefreshToken | RefreshToken[] | null =
       await this.iRefreshTokenRepository.findRelatedRefreshTokens(
-        user_id
+        owner_id
       );
 
     if (relatedTokens) {
       await this.iRefreshTokenRepository.deleteRelatedRefreshTokens(
-        user_id
+        owner_id
       );
     }
 
     const refreshToken: RefreshToken | null =
       await this.iRefreshTokenRepository.saveRefreshToken({
-        user_id
+        owner_id
       });
 
     if (!refreshToken) return new GenerateRefreshTokenErrorResponse();

@@ -5,7 +5,6 @@ import { IRefreshAccessTokenUseCase } from '@application/useCases/RefreshToken/R
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRefreshTokenRepositoryInMemoryImpl } from '@infra/repositories/RefreshToken/IRefreshTokenRepositoryInMemoryImpl';
 import { IUserRepositoryInMemoryImpl } from '@infra/repositories/User/IUserRepositoryInMemoryImpl';
-import { IHashServiceBCryptImpl } from '@infra/services/IHashServiceBCryptImpl';
 
 export class IRefreshAccessTokenFactoryInMemory {
 
@@ -15,9 +14,8 @@ export class IRefreshAccessTokenFactoryInMemory {
   ) {}
 
   compose(): IRefreshAccessTokenUseCase {
-    const iHashService = new IHashServiceBCryptImpl();
     const iRefreshTokenRepository = new IRefreshTokenRepositoryInMemoryImpl(this.refreshTokens);
-    const iUserRepository = new IUserRepositoryInMemoryImpl(this.users, iHashService);
+    const iUserRepository = new IUserRepositoryInMemoryImpl(this.users);
     const iTokenService = new ITokenServiceJWTImpl();
     const iGenerateRefreshTokenFactoryInMemory = new IGenerateRefreshTokenFactoryInMemory(this.refreshTokens);
     const iGenerateRefreshTokenUseCase = iGenerateRefreshTokenFactoryInMemory.compose()

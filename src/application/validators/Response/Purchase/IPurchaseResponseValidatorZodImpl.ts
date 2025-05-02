@@ -43,7 +43,7 @@ export class IPurchaseResponseValidatorZodImpl
             z.object({
               id: z.number(),
               public_id: z.string(),
-              user_id: z.string(),
+              buyer_id: z.string(),
               title: z.string(),
               value: z.number(),
               status: z.string(),

@@ -9,7 +9,7 @@ export class ICartResponseValidatorZodImpl implements ICartResponseValidator {
           cart: z.object({
             id: z.number(),
             public_id: z.string(),
-            user_id: z.string(),
+            owner_id: z.string(),
           }),
         })
         .describe('Cart was returned based on the specified user_id'),
@@ -38,7 +38,8 @@ export class ICartResponseValidatorZodImpl implements ICartResponseValidator {
             z.object({
               id: z.number(),
               public_id: z.string(),
-              image_id: z.string(),
+              images_id: z.array(z.string()),
+              artist_id: z.string(),
               name: z.string(),
               description: z.string(),
               price: z.number(),

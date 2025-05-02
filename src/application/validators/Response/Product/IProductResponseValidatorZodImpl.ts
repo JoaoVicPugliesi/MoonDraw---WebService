@@ -12,7 +12,8 @@ export class IProductResponseValidatorZodImpl
             z.object({
               id: z.number(),
               public_id: z.string(),
-              image_id: z.string(),
+              images_id: z.array(z.string()),
+              artist_id: z.string(),
               name: z.string(),
               description: z.string(),
               price: z.number(),
@@ -50,7 +51,8 @@ export class IProductResponseValidatorZodImpl
           product: z.object({
             id: z.number(),
             public_id: z.string(),
-            image_id: z.string(),
+            images_id: z.array(z.string()),
+            artist_id: z.string(),
             name: z.string(),
             description: z.string(),
             price: z.number(),
@@ -88,7 +90,8 @@ export class IProductResponseValidatorZodImpl
             z.object({
               id: z.number(),
               public_id: z.string(),
-              image_id: z.string(),
+              images_id: z.array(z.string()),
+              artist_id: z.string(),
               name: z.string(),
               description: z.string(),
               price: z.number(),

@@ -30,7 +30,8 @@ class IProductDecorator implements IProductRepository {
   }
 
   async saveProduct({
-    image_id,
+    images_id,
+    artist_id,
     name,
     description,
     price,
@@ -38,7 +39,8 @@ class IProductDecorator implements IProductRepository {
     publisher,
   }: ISaveProductDTO): Promise<void> {
     await this.decoratee.saveProduct({
-      image_id,
+      images_id,
+      artist_id,
       name,
       description,
       price,

@@ -60,10 +60,10 @@ class ICartDecorator implements ICartRepository {
     }
 
     async getCart({
-        user_id
+        owner_id
     }: IGetCartDTO): Promise<Cart | null> {
         return await this.decoratee.getCart({
-            user_id
+            owner_id
         });
     }
 }

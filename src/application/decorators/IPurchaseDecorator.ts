@@ -24,12 +24,12 @@ export class IPurchaseDecorator implements IPurchaseRepository {
   }
 
   async savePurchase({
-    user_id,
+    buyer_id,
     title,
     value,
   }: ISavePurchaseDTO): Promise<Purchase> {
     return await this.decoratee.savePurchase({
-      user_id,
+      buyer_id,
       title,
       value,
     });
@@ -48,11 +48,11 @@ export class IPurchaseDecorator implements IPurchaseRepository {
   }
 
   async listPurchases({
-    user_id,
+    buyer_id,
     status,
   }: IListPurchasesDTO): Promise<Purchase[] | null> {
     return await this.decoratee.listPurchases({
-      user_id,
+      buyer_id,
       status,
     });
   }
@@ -85,7 +85,7 @@ export class IPurchaseDecorator implements IPurchaseRepository {
     purchase_id,
   }: Pick<ICompletePurchaseDTO, 'purchase_id'>): Promise<Pick<
     Purchase,
-    'user_id'
+    'buyer_id'
   > | null> {
     return await this.decoratee.findPurchaseOwner({
       purchase_id,
