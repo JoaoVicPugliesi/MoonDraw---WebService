@@ -16,6 +16,16 @@ export class IProductRepositoryPrismaImpl implements IProductRepository {
       take: 10,
       orderBy: {
         published_at: 'desc'
+      },
+      include: {
+        artist: {
+          select: {
+            public_id: true,
+            icon_id: true,
+            name: true,
+            surname: true
+          }
+        }
       }
     });
 

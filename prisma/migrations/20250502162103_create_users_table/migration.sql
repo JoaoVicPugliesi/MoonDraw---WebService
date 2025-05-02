@@ -5,6 +5,7 @@ CREATE TYPE "Role" AS ENUM ('Buyer', 'Artist', 'Admin');
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "public_id" TEXT NOT NULL,
+    "icon_id" TEXT NOT NULL UNIQUE,
     "name" TEXT NOT NULL,
     "surname" TEXT NOT NULL,
     "email" TEXT NOT NULL,

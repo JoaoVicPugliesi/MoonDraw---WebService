@@ -1,10 +1,14 @@
-
 import { User } from '@domain/entities/User';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRegisterFactoryInMemory } from '@application/factories/User/Register/IRegisterFactoryInMemory';
 import { IRegisterUseCase } from './IRegisterUseCase';
 import { configDotenv } from 'dotenv';
-import { IRegisterDTO, IRegisterResponse, UserConflictErrorResponse, UserProcessingConflictErrorResponse } from './IRegisterDTO';
+import {
+  IRegisterDTO,
+  IRegisterResponse,
+  UserConflictErrorResponse,
+  UserProcessingConflictErrorResponse,
+} from './IRegisterDTO';
 import { Cart } from '@domain/entities/Cart';
 configDotenv();
 
@@ -16,6 +20,7 @@ const refreshTokens: RefreshToken[] = [];
 
 const user: User = {
   id: users.length + 1,
+  icon_id: 'ashaius91919wh19wh9',
   public_id: '56d7ff79-f16d-434b-9183-5b0db27fa4e2',
   name: 'João',
   surname: 'Pugliesi',
@@ -40,25 +45,39 @@ describe('I register use case', () => {
       iMailProvider
     );
     const sut: IRegisterUseCase = iRegisterFactoryInMemory.compose();
-    const { name, surname, email, role, description, password, confirmPassword }: IRegisterDTO = {
-      name: 'João',
-      surname: 'Pugliesi',
-      email: 'mrlanguages62@gmail.com',
-      role: 'Buyer',
-      description: 'I am an artist',
-      password: 'Mrlanguages1234##',
-      confirmPassword: 'Mrlanguages1234##'
-    };
-    
-    // Act
-    const response: UserConflictErrorResponse | UserProcessingConflictErrorResponse | IRegisterResponse = await sut.execute({
+    const {
+      icon_id,
       name,
       surname,
       email,
       role,
       description,
       password,
-      confirmPassword
+      confirmPassword,
+    }: IRegisterDTO = {
+      icon_id: 'asaioshaiosh919',
+      name: 'João',
+      surname: 'Pugliesi',
+      email: 'mrlanguages62@gmail.com',
+      role: 'Buyer',
+      description: 'I am an artist',
+      password: 'Mrlanguages1234##',
+      confirmPassword: 'Mrlanguages1234##',
+    };
+
+    // Act
+    const response:
+      | UserConflictErrorResponse
+      | UserProcessingConflictErrorResponse
+      | IRegisterResponse = await sut.execute({
+      icon_id,
+      name,
+      surname,
+      email,
+      role,
+      description,
+      password,
+      confirmPassword,
     });
 
     // Assert
@@ -73,7 +92,17 @@ describe('I register use case', () => {
       iMailProvider
     );
     const sut: IRegisterUseCase = iRegisterFactoryInMemory.compose();
-    const { name, surname, email, role, description, password, confirmPassword }: IRegisterDTO = {
+    const {
+      icon_id,
+      name,
+      surname,
+      email,
+      role,
+      description,
+      password,
+      confirmPassword,
+    }: IRegisterDTO = {
+      icon_id: 'a8s9a9sy82shasq8',
       name: 'João',
       surname: 'Pugliesi',
       email: 'mrlanguages62@gmail.com',
@@ -83,17 +112,22 @@ describe('I register use case', () => {
       confirmPassword: 'Mrlanguages1234##',
     };
     // Act
-    const response: UserConflictErrorResponse | UserProcessingConflictErrorResponse | IRegisterResponse | void = await sut.execute({
+    const response:
+      | UserConflictErrorResponse
+      | UserProcessingConflictErrorResponse
+      | IRegisterResponse
+      | void = await sut.execute({
+      icon_id,
       name,
       surname,
       email,
       description,
       role,
       password,
-      confirmPassword
+      confirmPassword,
     });
 
-    // Assert 
+    // Assert
     expect(response).not.toBeInstanceOf(UserConflictErrorResponse);
   });
 });

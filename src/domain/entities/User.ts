@@ -3,6 +3,7 @@ type Role = 'Buyer' | 'Artist' | 'Admin';
 export interface IUser {
   readonly id: number,
   readonly public_id: string,
+  readonly icon_id: string,
   readonly name: string,
   readonly surname: string,
   readonly email: string,
@@ -16,10 +17,10 @@ export interface IUser {
 }
 
 export class User implements IUser {
-
   constructor(
     readonly id: number,
     readonly public_id: string,
+    readonly icon_id: string,
     readonly name: string,
     readonly surname: string,
     readonly email: string,

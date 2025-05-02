@@ -19,6 +19,7 @@ const refreshTokens: RefreshToken[] = [];
 const user: User = {
   id: users.length + 1,
   public_id: '56d7ff79-f16d-434b-9183-5b0db27fa4e2',
+  icon_id: 'sjajskasja9uw1921u9w',
   name: 'João',
   surname: 'Pugliesi',
   email: 'mrlanguages62@gmail.com',

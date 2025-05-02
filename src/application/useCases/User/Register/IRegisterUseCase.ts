@@ -18,6 +18,7 @@ export class IRegisterUseCase {
   ) {}
 
   async execute({
+    icon_id,
     name,
     surname,
     email,
@@ -32,6 +33,8 @@ export class IRegisterUseCase {
     const user: User | null = await this.iUserRepository.findUserByEmail({
       email
     });
+
+    console.log(icon_id);
 
     if (user) return new UserConflictErrorResponse();
 
@@ -51,6 +54,7 @@ export class IRegisterUseCase {
     await this.iCacheProvider.set(
       `user-${verificationToken}`,
       JSON.stringify({
+        icon_id: icon_id,
         name: name,
         surname: surname,
         email: email,

@@ -33,6 +33,7 @@ enum DeliveryStatus {
 model User {
   id                Int           @default(autoincrement())
   public_id         String        @id
+  icon_id           String        @unique
   name              String
   surname           String
   email             String        @unique

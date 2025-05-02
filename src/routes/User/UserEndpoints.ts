@@ -6,6 +6,7 @@ import { ServerAdapter } from '@adapters/ServerAdapter';
 import { IUserDocs } from './docs/IUserDocs';
 import { IUserConfigs } from './config/IUserConfigs';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
+import { iResendVerificationToken } from '@application/useCases/User/ResendVerificationToken/IResendVerificationTokenComposer';
 
 export class UserEndpoints {
   constructor(
@@ -34,6 +35,15 @@ export class UserEndpoints {
       {
         docs: this.iUserDocs.confirmMailDoc(),
       },
+    );
+    this.app.post(
+      '/users/resendVerificationToken',
+      async (adapter: RequestResponseAdapter) => {
+        await iResendVerificationToken.handle(adapter);
+      },
+      {
+        docs: this.iUserDocs.resendVerificationToken()
+      }
     );
 
     this.app.post(

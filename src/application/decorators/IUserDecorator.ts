@@ -17,6 +17,7 @@ class IUserDecorator implements IUserRepository {
   }
 
   async saveUser({
+    icon_id,
     name,
     surname,
     email,
@@ -25,6 +26,7 @@ class IUserDecorator implements IUserRepository {
     password,
   }: IRegisterDTO): Promise<User> {
     return await this.decoratee.saveUser({
+      icon_id,
       name,
       surname,
       email,

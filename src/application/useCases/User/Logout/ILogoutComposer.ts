@@ -1,10 +1,9 @@
-import { ILogoutUseCase } from './ILogoutUseCase';
 import { ILogOutController } from './ILogoutController';
-import { IRefreshTokenRepositoryPrismaImpl } from '@infra/repositories/RefreshToken/IRefreshTokenRepositoryPrismaImpl';
 import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
+import { ILogoutFactory } from '@application/factories/User/Logout/ILogoutFactory';
 
-const iRepo = new IRefreshTokenRepositoryPrismaImpl();
-const iUseCase = new ILogoutUseCase(iRepo);
+const iFactory = new ILogoutFactory();
+const iUseCase = iFactory.compose();
 const iEnsureMiddleware = new IEnsureMiddlewareImpl();
 const iController = new ILogOutController(iUseCase, iEnsureMiddleware);
 const iLogout: ILogOutController = iController;

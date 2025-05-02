@@ -19,6 +19,7 @@ export class IUserRepositoryPrismaImpl implements IUserRepository {
   }
 
   async saveUser({
+    icon_id,
     name,
     surname,
     email,
@@ -28,6 +29,7 @@ export class IUserRepositoryPrismaImpl implements IUserRepository {
     const user: User = await prisma.user.create({
       data: {
         public_id: uuidv4(),
+        icon_id: icon_id,
         name: name,
         surname: surname,
         email: email,

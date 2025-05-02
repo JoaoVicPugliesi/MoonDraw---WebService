@@ -15,6 +15,6 @@ export class ILogoutUseCase {
 
     if (!refreshToken) return new RefreshTokenNotFoundErrorResponse();
 
-    await this.iRefreshTokenRepository.deleteRelatedRefreshTokens(refreshToken.user_id);
+    await this.iRefreshTokenRepository.deleteRelatedRefreshTokens(refreshToken.owner_id);
   }
 }

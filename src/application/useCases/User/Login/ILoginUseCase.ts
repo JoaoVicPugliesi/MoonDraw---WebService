@@ -43,7 +43,7 @@ export class ILoginUseCase {
       email
     });
     
-    const { public_id, name, surname, description, role, is_email_verified } = user;
+    const { public_id, icon_id, name, surname, description, role, is_email_verified } = user;
 
     const accessToken: string = this.iTokenService.sign({
       payload: {
@@ -74,6 +74,7 @@ export class ILoginUseCase {
       access_token: accessToken,
       refresh_token: refreshToken,
       user: {
+        icon_id: icon_id,
         name: name,
         surname: surname,
         email: email,

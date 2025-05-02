@@ -38,6 +38,7 @@ export class IFetchProductsUseCase {
       EX: 900,
     });
 
+    console.log(products);
     return {
       products: products,
     };

@@ -30,6 +30,7 @@ export class IConfirmMailUseCase {
     if (!cachedUser) return new TokenExpiredErrorResponse();
 
     const { 
+      icon_id,
       name, 
       surname, 
       email, 
@@ -39,6 +40,7 @@ export class IConfirmMailUseCase {
     }: User = JSON.parse(cachedUser);
 
     const { public_id }: User = await this.iUserRepository.saveUser({
+      icon_id,
       name,
       surname,
       email,

@@ -21,6 +21,12 @@ export class IProductResponseValidatorZodImpl
               publisher: z.string(),
               published_at: z.date(),
               updated_at: z.date(),
+              artist: z.object({
+                public_id: z.string(),
+                icon_id: z.string(),
+                name: z.string(),
+                surname: z.string(),
+              })
             })
           ),
         })

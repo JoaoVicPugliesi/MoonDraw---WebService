@@ -19,6 +19,8 @@ export class ICartRepositoryInMemoryImpl implements ICartRepository {
         public_id: uuidv4(),
         owner_id: public_id,
       };
+
+      this.carts.push(cart);
   }
 
   async listCartContent({

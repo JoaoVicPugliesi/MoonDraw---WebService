@@ -23,18 +23,22 @@ export class IUserRepositoryInMemoryImpl implements IUserRepository {
   }
 
   async saveUser({
+    icon_id,
     name,
     surname,
     email,
+    description,
     password,
   }: IRegisterDTO): Promise<User> {
     return new Promise((resolve, reject) => {
       const user: User = {
         id: this.users.length + 1,
         public_id: uuidv4(),
+        icon_id: icon_id,
         name: name,
         surname: surname,
         email: email,
+        description: description,
         password: password,
         role: 'Buyer',
         is_email_verified: false,

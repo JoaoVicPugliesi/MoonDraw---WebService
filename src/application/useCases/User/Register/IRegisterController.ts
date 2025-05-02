@@ -15,6 +15,7 @@ export class IRegisterController {
 
     try {
       const {
+        icon_id,
         name,
         surname,
         email,
@@ -28,6 +29,7 @@ export class IRegisterController {
       | UserProcessingConflictErrorResponse 
       | IRegisterResponse
       = await this.iRegisterUseCase.execute({
+          icon_id,
           name,
           surname,
           email,

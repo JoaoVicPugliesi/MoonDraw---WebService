@@ -33,6 +33,15 @@ export class IUserDocsSwaggerZodImpl implements IUserDocs {
     };
   }
 
+  resendVerificationToken(): DocSchema {
+    return {
+      schema: {
+        description: 'Here you may receive again the confirmation sent token by email',
+        tags: ['Users'],
+      }
+    }
+  }
+
   loginDoc(): DocSchema {
     return {
       schema: {
