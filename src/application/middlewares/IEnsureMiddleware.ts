@@ -12,6 +12,13 @@ import { ITokenService } from '@domain/services/Token/ITokenService';
 import { RefreshToken } from '@prisma/client';
 
 export interface IEnsureMiddleware {
+
+  ensureTemporaryAccessToken(
+    adapter: RequestResponseAdapter,
+    iTokenService: ITokenService,
+    secret_key: string
+  ): TokenIsMissingErrorResponse | TokenInvalidErrorResponse | string;
+
   ensureAccessToken(
     adapter: RequestResponseAdapter,
     iTokenService: ITokenService,

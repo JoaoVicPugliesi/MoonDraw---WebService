@@ -125,7 +125,6 @@ export class IPurchaseResponseValidatorZodImpl
       201: z
         .object({
           message: z.string(),
-          delivery: z.object({}),
         })
         .describe('Purchase completed originating a new delivery'),
       400: z

@@ -57,8 +57,7 @@ export class ICompletePurchaseController {
       }
 
       return adapter.res.status(201).send({
-        message: 'Purchase Complete and Delivery Registed',
-        delivery: response.delivery,
+        message: 'Purchase Completed and Delivery Saved',
       });
     } catch (error) {
       if(error instanceof ZodError) {

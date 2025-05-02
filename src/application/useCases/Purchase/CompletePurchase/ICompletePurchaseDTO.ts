@@ -9,6 +9,4 @@ export interface ICompletePurchaseDTO {
 // Response
 export class PurchaseHasNoOwnerErrorResponse extends Error {};
 
-export interface ICompletePurchaseResponse {
-    delivery: Delivery
-}
+export interface ICompletePurchaseResponse {}

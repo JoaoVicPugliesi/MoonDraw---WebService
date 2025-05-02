@@ -8,7 +8,8 @@ export interface CookieOptions {
   
   export interface RequestResponseAdapter {
     req: {
-      body?: any;
+      ip?: string;
+      body?: unknown;
       cookies: { [cookieName: string]: string };
       params?: Record<string, any>;
       query?: Record<string, any>;

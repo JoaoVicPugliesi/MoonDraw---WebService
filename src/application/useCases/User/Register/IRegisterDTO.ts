@@ -9,5 +9,7 @@ export interface IRegisterDTO extends Pick<IUser, 'name' | 'surname' | 'email' |
 export class UserConflictErrorResponse extends Error {};
 export class UserProcessingConflictErrorResponse extends Error{};
 
-export interface IRegisterReponse {}
+export interface IRegisterResponse {
+    temporary_access_token: string
+}
    

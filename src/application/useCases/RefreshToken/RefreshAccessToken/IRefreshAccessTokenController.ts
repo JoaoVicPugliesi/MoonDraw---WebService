@@ -20,7 +20,7 @@ export class IRefreshAccessTokenController {
       
     if (refreshToken instanceof RefreshTokenCookieMissingErrorResponse) {
       return adapter.res.status(401).send({
-        message: 'Unauthorized',
+        message: 'Refresh Token is missing',
       });
     }
     if (refreshToken instanceof TokenInvalidFormatErrorResponse) {

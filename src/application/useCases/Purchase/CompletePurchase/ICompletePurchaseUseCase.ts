@@ -2,7 +2,6 @@ import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
 import { ICompletePurchaseDTO, ICompletePurchaseResponse, PurchaseHasNoOwnerErrorResponse } from './ICompletePurchaseDTO';
 import { IPaymentProvider } from '@domain/providers/Payment/IPaymentProvider';
 import { ISaveDeliveryUseCase } from '@application/useCases/Delivery/SaveDelivery/ISaveDeliveryUseCase';
-import { Delivery } from '@domain/entities/Delivery';
 import { Purchase } from '@domain/entities/Purchase';
 
 import { IRetrieveResponse } from '@domain/providers/Payment/Payment';
@@ -37,20 +36,16 @@ export class ICompletePurchaseUseCase {
 
     const { customer_details } = session;
     const { payment_intent } = session;
-    let paymentMethodType: string = '';
-    if (
-      typeof payment_intent === 'object' &&
-      payment_intent &&
-      'payment_method' in payment_intent &&
-      typeof payment_intent.payment_method === 'object' &&
-      payment_intent.payment_method &&
-      'type' in payment_intent.payment_method &&
-      typeof payment_intent.payment_method.type === 'string'
-    ) {
-      paymentMethodType = payment_intent.payment_method.type;
+    interface IPaymentMethod {
+      payment_intent: {
+        payment_method: {
+          type: string
+        }
+      }
     }
+    let paymentMethodType: IPaymentMethod = payment_intent as IPaymentMethod;
 
-    const delivery: Delivery = await this.iSaveDeliveryUseCase.execute({
+    await this.iSaveDeliveryUseCase.execute({
       purchase_id,
       user_id,
       country: customer_details?.address?.country ?? '',
@@ -66,11 +61,9 @@ export class ICompletePurchaseUseCase {
 
     await this.iPurchaseRepository.completePurchase({
       purchase_id,
-      payment_method: paymentMethodType,
+      payment_method: paymentMethodType.payment_intent.payment_method.type,
     });
 
-    return {
-      delivery: delivery,
-    };
+    return {}
   }
 }

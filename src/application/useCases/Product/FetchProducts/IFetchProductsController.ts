@@ -23,10 +23,10 @@ export class IFetchProductsController {
     );
 
     if (ensure instanceof TokenIsMissingErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Token is missing' });
+      return adapter.res.status(401).send({ message: 'Access Token is missing' });
     }
     if (ensure instanceof TokenInvalidErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Token is invalid' });
+      return adapter.res.status(401).send({ message: 'Access Token is invalid' });
     }
     try {
       const { page }: IFetchProductsDTO = adapter.req

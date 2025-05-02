@@ -32,13 +32,13 @@ export class IInitiatePurchaseController {
       );
 
     if (ensure instanceof TokenIsMissingErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Token is missing' });
+      return adapter.res.status(401).send({ message: 'Access Token is missing' });
     }
     if(ensure instanceof MustBeVerifiedErrorResponse) {
       return adapter.res.status(403).send({ message: 'Must verify email to access' });
     }
     if (ensure instanceof TokenInvalidErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Token is invalid' });
+      return adapter.res.status(401).send({ message: 'Access Token is invalid' });
     }
     try {
       const { user_id, title, selected_products }: IInitiatePurchaseDTO = schema.parse(

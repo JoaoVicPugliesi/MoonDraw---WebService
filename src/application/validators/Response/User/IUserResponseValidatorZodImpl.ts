@@ -4,8 +4,10 @@ import { IUserResponseValidator } from './IUserResponseValidator';
 export class IUserResponseValidatorZodImpl implements IUserResponseValidator {
   validateRegisterResponse(): Record<number, any> {
     return {
-      204: z
-        .object({})
+      201: z
+        .object({
+          temporary_access_token: z.string()
+        })
         .describe(
           'User temporarily saved in memory, just waiting for email confirmation.'
         ),
@@ -35,6 +37,10 @@ export class IUserResponseValidatorZodImpl implements IUserResponseValidator {
           message: z.string(),
         })
         .describe('User finally saved persistently.'),
+      401: z
+        .object({
+          message: z.string()
+        }).describe('Temporary token may be missing or expired. Verification token may be wrong or expired'),
       409: z
         .object({
           message: z.string(),

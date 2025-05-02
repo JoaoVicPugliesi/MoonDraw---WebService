@@ -24,13 +24,13 @@ export class ICheckoutPurchaseController {
     );
 
     if (ensure instanceof TokenIsMissingErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Token is missing' });
+      return adapter.res.status(401).send({ message: 'Access Token is missing' });
     }
     if (ensure instanceof MustBeVerifiedErrorResponse) {
-      return adapter.res.status(403).send({ message: 'Must verify email to access' });
+      return adapter.res.status(403).send({ message: 'Must be verified to access' });
     }
     if (ensure instanceof TokenInvalidErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Token is invalid' });
+      return adapter.res.status(401).send({ message: 'Access Token is invalid' });
     }
 
     try {

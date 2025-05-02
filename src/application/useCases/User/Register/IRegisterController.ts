@@ -1,8 +1,6 @@
 import z from 'zod';
 import { IRegisterUseCase } from './IRegisterUseCase';
-import { IRegisterDTO, UserConflictErrorResponse, UserProcessingConflictErrorResponse } from './IRegisterDTO';
-
-
+import { IRegisterDTO, IRegisterResponse, UserConflictErrorResponse, UserProcessingConflictErrorResponse } from './IRegisterDTO';
 import { IUserValidator } from '@application/validators/Request/User/IUserValidator';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
@@ -26,7 +24,7 @@ export class IRegisterController {
       const response: 
       | UserConflictErrorResponse
       | UserProcessingConflictErrorResponse 
-      | void 
+      | IRegisterResponse
       = await this.iRegisterUseCase.execute({
           name,
           surname,
@@ -46,7 +44,9 @@ export class IRegisterController {
           message: 'User already processing'
         });
       }
-      return adapter.res.status(204).send();
+      return adapter.res.status(201).send({
+        temporary_access_token: response.temporary_access_token
+      });
     } catch (error) {
       if (error instanceof z.ZodError) {
         return adapter.res.status(422).send({

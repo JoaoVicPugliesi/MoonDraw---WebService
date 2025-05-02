@@ -12,6 +12,34 @@ import { RefreshToken } from '@prisma/client';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IEnsureMiddlewareImpl implements IEnsureMiddleware {
+  ensureTemporaryAccessToken(
+    adapter: RequestResponseAdapter,
+    iTokenService: ITokenService,
+    secret_key: string
+  ): TokenIsMissingErrorResponse | TokenInvalidErrorResponse | string {
+    const temporaryAccessToken = adapter.req.headers?.authorization;
+
+    if (!temporaryAccessToken) return new TokenIsMissingErrorResponse();
+    
+    const [, token] = temporaryAccessToken.split(' ');
+    const tokenDecoded = iTokenService.decode(token, {
+      JSON: true,
+      complete: true,
+    });
+    const { verification_token } = tokenDecoded.payload.content;
+
+    try {
+      iTokenService.verify({
+        token: token,
+        secret_key: secret_key,
+      });
+
+      return verification_token;
+    } catch (error) {
+      return new TokenInvalidErrorResponse(error);
+    }
+  }
+
   ensureAccessToken(
     adapter: RequestResponseAdapter,
     iTokenService: ITokenService,

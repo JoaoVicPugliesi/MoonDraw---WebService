@@ -8,6 +8,10 @@ export class IConfirmMailFactory {
     const iCacheProvider = new ICacheProviderRedisImpl();
     const iAssignCartOwnerFactory = new IAssignCartOwnerFactory();
     const iAssignCartOwnerUseCase = iAssignCartOwnerFactory.compose();
-    return new IConfirmMailUseCase(iUserDecorator, iAssignCartOwnerUseCase, iCacheProvider);
+    return new IConfirmMailUseCase(
+      iUserDecorator,
+      iAssignCartOwnerUseCase,
+      iCacheProvider
+    );
   }
 }

@@ -59,7 +59,7 @@ export class IUserValidatorZodImpl implements IUserValidator {
   
   validateConfirmMail() {
     return z.object({
-      token: z.string({
+      verification_token: z.string({
         required_error: 'Token is required',
         invalid_type_error: 'Token should be a string',
       }),

@@ -1,36 +1,72 @@
 import z from 'zod';
 import { IConfirmMailUseCase } from './IConfirmMailUseCase';
-import { IConfirmMailDTO, TokenExpiredErrorResponse } from './IConfirmMailDTO';
+import {
+  IConfirmMailDTO,
+  TokenExpiredErrorResponse,
+  TokenDoesNotMatchErrorResponse,
+} from './IConfirmMailDTO';
 import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
 import { IUserValidator } from '@application/validators/Request/User/IUserValidator';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
+import { ITokenService } from '@domain/services/Token/ITokenService';
+import {
+  TokenInvalidErrorResponse,
+  TokenIsMissingErrorResponse,
+} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 
 export class IConfirmMailController {
   constructor(
     private readonly iConfirmMailUseCase: IConfirmMailUseCase,
     private readonly iUserValidator: IUserValidator,
+    private readonly iTokenService: ITokenService,
     private readonly iEnsureMiddleware: IEnsureMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const schema = this.iUserValidator.validateConfirmMail();
+
+    const ensure:
+      | string
+      | TokenIsMissingErrorResponse
+      | TokenInvalidErrorResponse =
+      this.iEnsureMiddleware.ensureTemporaryAccessToken(
+        adapter,
+        this.iTokenService,
+        process.env.JWT_TEMPORARY_KEY!
+      );
+
+    if (ensure instanceof TokenIsMissingErrorResponse) {
+      return adapter.res.status(401).send({ message: 'Access Token is missing' });
+    }
+
+    if (ensure instanceof TokenInvalidErrorResponse) {
+      return adapter.res.status(401).send({ message: 'Access Token is invalid' });
+    }
+
     try {
-      const {
-        token
-      }: IConfirmMailDTO = schema.parse(adapter.req.body);
-      const response: TokenExpiredErrorResponse | void =
-        await this.iConfirmMailUseCase.execute({
-          token
+      const { verification_token }: IConfirmMailDTO = schema.parse(adapter.req.body);
+      const response:
+        | TokenDoesNotMatchErrorResponse
+        | TokenExpiredErrorResponse
+        | void = await this.iConfirmMailUseCase.execute({
+        verification_token,
+        ensure_verification_token: ensure,
+      });
+
+      if (response instanceof TokenDoesNotMatchErrorResponse) {
+        return adapter.res.status(401).send({
+          message: 'Verification Token does not match',
         });
+      }
 
       if (response instanceof TokenExpiredErrorResponse) {
-        return adapter.res.status(401).send({ 
-          message: 'Token Expired' 
-        }); 
+        return adapter.res.status(401).send({
+          message: 'Verification Token is expired',
+        });
       }
 
       return adapter.res.status(201).send({
-        message: 'User Saved 🚀'
+        message: 'User Saved 🚀',
       });
     } catch (error) {
       if (error instanceof z.ZodError) {

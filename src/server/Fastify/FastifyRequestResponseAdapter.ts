@@ -11,6 +11,8 @@ export class FastifyRequestResponseAdapter implements RequestResponseAdapter {
 
   get req() {
     return {
+      any: this.request,
+      ip: this.request.ip,
       cookies: this.request.cookies,
       body: this.request.body,
       params: this.request.params as Record<string, string>,

@@ -23,8 +23,8 @@ export class ISaveDeliveryUseCase {
     tracking_url,
     recipient_phone,
     delivery_instructions,
-  }: ISaveDeliveryDTO): Promise<Delivery> {
-    return await this.iDeliveryRepository.saveDelivery({
+  }: ISaveDeliveryDTO): Promise<void> {
+    await this.iDeliveryRepository.saveDelivery({
       user_id,
       purchase_id,
       recipient_email,

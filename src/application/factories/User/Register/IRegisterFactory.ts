@@ -4,6 +4,7 @@ import { ICacheProviderRedisImpl } from '@infra/providers/Cache/ICacheProviderRe
 import { IHashServiceBCryptImpl } from '@infra/services/IHashServiceBCryptImpl';
 import { IIdServiceUUIDNanoIdImpl } from '@infra/services/IIdServiceUUIDNanoIdImpl';
 import { IMailProviderMailTrapImpl } from '@infra/providers/Mail/IMailProviderMailTrapImpl';
+import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 
 export class IRegisterFactory {
   compose(): IRegisterUseCase {
@@ -11,13 +12,15 @@ export class IRegisterFactory {
     const iMailProvider = new IMailProviderMailTrapImpl();
     const iHashService = new IHashServiceBCryptImpl();
     const iIdService = new IIdServiceUUIDNanoIdImpl();
+    const iTokenService = new ITokenServiceJWTImpl();
 
     return new IRegisterUseCase(
       iUserDecorator,
       iCacheProvider,
       iMailProvider,
       iHashService,
-      iIdService
+      iIdService,
+      iTokenService
     );;
   }
 }

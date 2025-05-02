@@ -1,10 +1,11 @@
 import { User } from '@domain/entities/User';
 import { IMailProvider } from '@domain/providers/Mail/IMailProvider';
-import { IRegisterDTO, UserConflictErrorResponse, UserProcessingConflictErrorResponse } from './IRegisterDTO';
+import { IRegisterDTO, IRegisterResponse, UserConflictErrorResponse, UserProcessingConflictErrorResponse } from './IRegisterDTO';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import { IHashService } from '@domain/services/Hash/IHashService';
 import { IIdService } from '@domain/services/IIdService/IIdService';
+import { ITokenService } from '@domain/services/Token/ITokenService';
 
 export class IRegisterUseCase {
   constructor(
@@ -12,7 +13,8 @@ export class IRegisterUseCase {
     private readonly iCacheProvider: ICacheProvider,
     private readonly iMailProvider: IMailProvider,
     private readonly iHashService: IHashService,
-    private readonly iIdService: IIdService
+    private readonly iIdService: IIdService,
+    private readonly iTokenService: ITokenService
   ) {}
 
   async execute({
@@ -23,7 +25,7 @@ export class IRegisterUseCase {
   }: IRegisterDTO): Promise<
     | UserConflictErrorResponse 
     | UserProcessingConflictErrorResponse
-    | void
+    | IRegisterResponse
   > {
     const user: User | null = await this.iUserRepository.findUserByEmail({
       email
@@ -35,7 +37,7 @@ export class IRegisterUseCase {
 
     if(cachedUser) return new UserProcessingConflictErrorResponse();
     
-    const token: string = this.iIdService.id6Len();
+    const verificationToken: string = this.iIdService.id6Len();
     const hash = await this.iHashService.hash(password);
     await this.iCacheProvider.set(
       `user-processing-${email}`,
@@ -45,7 +47,7 @@ export class IRegisterUseCase {
       }
     )
     await this.iCacheProvider.set(
-      `user-${token}`,
+      `user-${verificationToken}`,
       JSON.stringify({
         name: name,
         surname: surname,
@@ -69,8 +71,23 @@ export class IRegisterUseCase {
       body: 
       ` 
         <p>Visit https://localhost:5000/verification and type in the code below.</p> <br>
-        <p>Code: ${token}</p>
+        <p>Code: ${verificationToken}</p>
       `,
     });
+
+    const temporaryAccessToken = this.iTokenService.sign({
+      payload: {
+        content: {
+          verification_token: verificationToken
+        }
+      },
+      secret_key: process.env.JWT_TEMPORARY_KEY!,
+      options: {
+        expiresIn: '15m'
+      }
+    })
+    return {
+      temporary_access_token: temporaryAccessToken
+    }
   }
 }

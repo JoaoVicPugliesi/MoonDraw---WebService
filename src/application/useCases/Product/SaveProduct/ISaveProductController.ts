@@ -30,7 +30,7 @@ export class ISaveProductController {
     );
 
     if (ensure instanceof TokenIsMissingErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Token is missing' });
+      return adapter.res.status(401).send({ message: 'Access Token is missing' });
     }
     if (ensure instanceof MustBeAnAdmingErrorResponse) {
       return adapter.res
@@ -38,7 +38,7 @@ export class ISaveProductController {
         .send({ message: 'Only admins have access' });
     }
     if (ensure instanceof TokenInvalidErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Token is invalid' });
+      return adapter.res.status(401).send({ message: 'Access Token is invalid' });
     }
 
     try {
