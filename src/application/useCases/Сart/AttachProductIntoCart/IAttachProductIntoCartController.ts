@@ -1,36 +1,70 @@
 import z from 'zod';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IAttachProductIntoCartUseCase } from './IAttachProductIntoCartUseCase';
-import { AttachmentAlreadyExistsErrorResponse, IAttachProductIntoCartDTO, IAttachProductIntoCartResponse } from './IAttachProductIntoCartDTO';
+import {
+  AttachmentAlreadyExistsErrorResponse,
+  IAttachProductIntoCartDTO,
+  IAttachProductIntoCartResponse,
+} from './IAttachProductIntoCartDTO';
 import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
 import { ICartValidator } from '@application/validators/Request/Cart/ICartValidator';
-import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
+import {
+  TokenInvalidErrorResponse,
+  TokenIsMissingErrorResponse,
+} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
+import { LimitExceededErrorResponse } from '@application/handlers/MiddlewareResponses/RateLimitingMiddlwareHandlers';
+import { IRateLimiterProvider } from '@domain/providers/RateLimiter/IRateLimiterProvider';
+import { IEnsureRateLimitingMiddleware } from '@application/middlewares/RateLimiting/IEnsureRateLimitingMiddleware';
 
 export class IAttachProductIntoCartController {
   constructor(
     private readonly iAttachProductIntoCartUseCase: IAttachProductIntoCartUseCase,
     private readonly iTokenService: ITokenService,
     private readonly iCartValidator: ICartValidator,
-    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware,
+    private readonly iRateLimiterProvider: IRateLimiterProvider,
+    private readonly iEnsureRateLimitingMiddleware: IEnsureRateLimitingMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
-    const schema = this.iCartValidator.validateAttachmentBetweenProductAndCart();
-    const ensure:
-    | TokenIsMissingErrorResponse
-    | TokenInvalidErrorResponse
-    | void = this.iEnsureAuthMiddleware.ensureAccessToken(
+    const schema =
+      this.iCartValidator.validateAttachmentBetweenProductAndCart();
+    const iEnsureRateLimiting: void | LimitExceededErrorResponse =
+      await this.iEnsureRateLimitingMiddleware.ensureFixedWindow(
         adapter,
-        this.iTokenService,
-        process.env.JWT_SECRET_KEY!
+        this.iRateLimiterProvider,
+        5,
+        60,
+        60 * 2
       );
 
-    if (ensure instanceof TokenIsMissingErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Access Token is missing' });
+    if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
+      const number: number = iEnsureRateLimiting.accessBanTime();
+      console.log(number);
+      return adapter.res.status(429).send({
+        message: 'Exceeded Attach Product Into Cart Rate Limit',
+        retryAfter: number,
+      });
     }
-    if (ensure instanceof TokenInvalidErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Access Token is invalid' });
+    const iEnsureAuth:
+      | TokenIsMissingErrorResponse
+      | TokenInvalidErrorResponse
+      | void = this.iEnsureAuthMiddleware.ensureAccessToken(
+      adapter,
+      this.iTokenService,
+      process.env.JWT_SECRET_KEY!
+    );
+
+    if (iEnsureAuth instanceof TokenIsMissingErrorResponse) {
+      return adapter.res
+        .status(401)
+        .send({ message: 'Access Token is missing' });
+    }
+    if (iEnsureAuth instanceof TokenInvalidErrorResponse) {
+      return adapter.res
+        .status(401)
+        .send({ message: 'Access Token is invalid' });
     }
     try {
       const { cart_id, product_id }: IAttachProductIntoCartDTO = schema.parse(

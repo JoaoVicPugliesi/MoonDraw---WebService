@@ -26,7 +26,7 @@ export class IProductResponseValidatorZodImpl
                 icon_id: z.string(),
                 name: z.string(),
                 surname: z.string(),
-              })
+              }),
             })
           ),
         })
@@ -41,6 +41,12 @@ export class IProductResponseValidatorZodImpl
           message: z.string(),
         })
         .describe('Products may be not found based on the specified page'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),
@@ -79,6 +85,12 @@ export class IProductResponseValidatorZodImpl
           message: z.string(),
         })
         .describe('Product may be not found based on the specified public_id'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),
@@ -119,6 +131,12 @@ export class IProductResponseValidatorZodImpl
           message: z.string(),
         })
         .describe('Products may be not found based on the specified search'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),
@@ -158,6 +176,12 @@ export class IProductResponseValidatorZodImpl
           errors: z.record(z.string(), z.array(z.string())),
         })
         .describe('Validation Error'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),

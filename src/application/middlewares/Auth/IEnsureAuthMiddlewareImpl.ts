@@ -6,7 +6,7 @@ import {
   MustBeAnAdminErrorResponse,
   MustBeAnArtistErrorResponse,
   MustBeABuyerErrorResponse,
-} from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
+} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IEnsureAuthMiddleware } from './IEnsureAuthMiddleware';
 import { RefreshToken } from '@prisma/client';

@@ -4,7 +4,6 @@ import { iLogout } from '@application/useCases/User/Logout/ILogoutComposer';
 import { iConfirmMail } from '@application/useCases/User/ConfirmMail/IConfirmMailComposer';
 import { ServerAdapter } from '@adapters/ServerAdapter';
 import { IUserDocs } from './docs/IUserDocs';
-import { IUserConfigs } from './config/IUserConfigs';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 import { iResendVerificationToken } from '@application/useCases/User/ResendVerificationToken/IResendVerificationTokenComposer';
 
@@ -12,7 +11,6 @@ export class UserEndpoints {
   constructor(
     private readonly app: ServerAdapter,
     private readonly iUserDocs: IUserDocs,
-    private readonly iUserConfigs: IUserConfigs
   ) {}
 
   setupRoutes() {
@@ -52,7 +50,6 @@ export class UserEndpoints {
       },
       {
         docs: this.iUserDocs.loginDoc(),
-        config: this.iUserConfigs.loginConfig()
       },
     );
 

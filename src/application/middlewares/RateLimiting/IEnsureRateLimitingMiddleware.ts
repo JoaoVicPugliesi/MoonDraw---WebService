@@ -8,5 +8,6 @@ export interface IEnsureRateLimitingMiddleware {
     iRateLimiterProvider: IRateLimiterProvider,
     limit: number,
     timeWindow: number,
+    banTime: number
   ): Promise<LimitExceededErrorResponse | void>;
 }

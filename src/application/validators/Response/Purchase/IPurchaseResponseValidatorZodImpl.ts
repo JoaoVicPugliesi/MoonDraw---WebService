@@ -10,7 +10,9 @@ export class IPurchaseResponseValidatorZodImpl
         .object({
           message: z.string(),
         })
-        .describe('Purchase initiated based on the user_id, name and list of products provided'),
+        .describe(
+          'Purchase initiated based on the user_id, name and list of products provided'
+        ),
       401: z
         .object({
           message: z.string(),
@@ -27,6 +29,12 @@ export class IPurchaseResponseValidatorZodImpl
           errors: z.record(z.string(), z.array(z.string())),
         })
         .describe('Validation Error'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('InitiatePurchase Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),
@@ -54,7 +62,9 @@ export class IPurchaseResponseValidatorZodImpl
             })
           ),
         })
-        .describe('User related purchases returned based on the user_id and status provided'),
+        .describe(
+          'User related purchases returned based on the user_id and status provided'
+        ),
       401: z
         .object({
           message: z.string(),
@@ -64,7 +74,15 @@ export class IPurchaseResponseValidatorZodImpl
         .object({
           message: z.string(),
         })
-        .describe('User may not have related purchases based on the user_id and status provided'),
+        .describe(
+          'User may not have related purchases based on the user_id and status provided'
+        ),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('ListPurchases Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),
@@ -79,7 +97,9 @@ export class IPurchaseResponseValidatorZodImpl
         .object({
           message: z.string(),
         })
-        .describe('Purchase checked out followed by redirection to payment page'),
+        .describe(
+          'Purchase checked out followed by redirection to payment page'
+        ),
       401: z
         .object({
           message: z.string(),
@@ -96,6 +116,12 @@ export class IPurchaseResponseValidatorZodImpl
           errors: z.record(z.string(), z.array(z.string())),
         })
         .describe('Validation Error'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),
@@ -112,6 +138,12 @@ export class IPurchaseResponseValidatorZodImpl
           message: z.string(),
         })
         .describe('Token may be missing or invalid'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),
@@ -148,6 +180,12 @@ export class IPurchaseResponseValidatorZodImpl
           errors: z.record(z.string(), z.array(z.string())),
         })
         .describe('Validation Error'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),

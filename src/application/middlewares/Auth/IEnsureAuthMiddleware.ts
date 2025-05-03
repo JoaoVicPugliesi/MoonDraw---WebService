@@ -7,7 +7,7 @@ import {
   TokenInvalidErrorResponse,
   TokenInvalidFormatErrorResponse,
   TokenIsMissingErrorResponse,
-} from "@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers";
+} from "@application/handlers/MiddlewareResponses/MiddlewareHandlers";
 
 import { ITokenService } from "@domain/services/Token/ITokenService";
 import { RefreshToken } from "@prisma/client";

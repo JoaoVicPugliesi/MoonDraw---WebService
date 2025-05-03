@@ -6,7 +6,7 @@ export class IUserResponseValidatorZodImpl implements IUserResponseValidator {
     return {
       201: z
         .object({
-          temporary_access_token: z.string()
+          temporary_access_token: z.string(),
         })
         .describe(
           'User temporarily saved in memory, just waiting for email confirmation.'
@@ -22,6 +22,12 @@ export class IUserResponseValidatorZodImpl implements IUserResponseValidator {
           errors: z.record(z.string(), z.array(z.string())),
         })
         .describe('Validation Error'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),
@@ -39,8 +45,11 @@ export class IUserResponseValidatorZodImpl implements IUserResponseValidator {
         .describe('User finally saved persistently.'),
       401: z
         .object({
-          message: z.string()
-        }).describe('Temporary token may be missing or expired. Verification token may be wrong or expired'),
+          message: z.string(),
+        })
+        .describe(
+          'Temporary token may be missing or expired. Verification token may be wrong or expired'
+        ),
       409: z
         .object({
           message: z.string(),
@@ -52,6 +61,12 @@ export class IUserResponseValidatorZodImpl implements IUserResponseValidator {
           errors: z.record(z.string(), z.array(z.string())),
         })
         .describe('Validation Error'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),
@@ -70,7 +85,7 @@ export class IUserResponseValidatorZodImpl implements IUserResponseValidator {
               name: z.string(),
               surname: z.string(),
               email: z.string(),
-              description: z.string()
+              description: z.string(),
             }),
           }),
         })
@@ -98,6 +113,12 @@ export class IUserResponseValidatorZodImpl implements IUserResponseValidator {
           message: z.string(),
         })
         .describe('Refresh Token was not generated correctly'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),
@@ -107,38 +128,36 @@ export class IUserResponseValidatorZodImpl implements IUserResponseValidator {
   }
 
   validateLogoutResponse(): Record<number, any> {
-      return {
-        204: z
+    return {
+      204: z
         .object({})
-        .describe(
-          'User is logged out and Refresh Token removed'
-        ),
-        400: z
+        .describe('User is logged out and Refresh Token removed'),
+      400: z
         .object({
-          message: z.string()
+          message: z.string(),
         })
-        .describe(
-          'Refresh Token may be on the wrong format'
-        ),
-        401: z
+        .describe('Refresh Token may be on the wrong format'),
+      401: z
         .object({
-          message: z.string()
+          message: z.string(),
         })
-        .describe(
-          'Refresh Token may be missing'
-        ),
-        404: z
+        .describe('Refresh Token may be missing'),
+      404: z
         .object({
-          message: z.string()
+          message: z.string(),
         })
-        .describe(
-          'Refresh Token Not Found'
-        ),
-        500: z
+        .describe('Refresh Token Not Found'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
+      500: z
         .object({
           message: z.string(),
         })
         .describe('Internal Server Error'),
-      } 
+    };
   }
 }

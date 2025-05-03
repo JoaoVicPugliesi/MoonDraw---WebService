@@ -14,7 +14,7 @@ export class IRefreshTokenResponseValidatorZodImpl
               name: z.string(),
               surname: z.string(),
               email: z.string(),
-              description: z.string()
+              description: z.string(),
             }),
           }),
         })
@@ -38,10 +38,16 @@ export class IRefreshTokenResponseValidatorZodImpl
         .describe(
           'Refresh Token was not found or refresh token user (owner) was not found'
         ),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),
-          error: z.object({})
+          error: z.object({}),
         })
         .describe('Internal Server Error'),
     };

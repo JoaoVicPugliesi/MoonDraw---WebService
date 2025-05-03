@@ -94,6 +94,11 @@ export class FastifyServerAdapter implements ServerAdapter {
         return true; 
       };
     };
+    const noopSerializerCompiler = () => {
+      return () => {
+        return ''; 
+      };
+    };
     this.app.setValidatorCompiler(noopValidatorCompiler);
     this.app.setSerializerCompiler(serializerCompiler);
     await this.app.register(fastifySwagger, {

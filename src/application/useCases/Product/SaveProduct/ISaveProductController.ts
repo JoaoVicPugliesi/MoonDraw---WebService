@@ -11,21 +11,42 @@ import {
   MustBeAnArtistErrorResponse,
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
-} from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
+} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
+import { IRateLimiterProvider } from '@domain/providers/RateLimiter/IRateLimiterProvider';
+import { IEnsureRateLimitingMiddleware } from '@application/middlewares/RateLimiting/IEnsureRateLimitingMiddleware';
+import { LimitExceededErrorResponse } from '@application/handlers/MiddlewareResponses/RateLimitingMiddlwareHandlers';
 
 export class ISaveProductController {
   constructor(
     private readonly iSaveProductUseCase: ISaveProductUseCase,
     private readonly iTokenService: ITokenService,
     private readonly iProductValidator: IProductValidator,
-    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware,
+    private readonly iRateLimiterProvider: IRateLimiterProvider,
+    private readonly iEnsureRateLimitingMiddleware: IEnsureRateLimitingMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const schema = this.iProductValidator.validateSaveProduct();
+    const iEnsureRateLimiting: void | LimitExceededErrorResponse =
+      await this.iEnsureRateLimitingMiddleware.ensureFixedWindow(
+        adapter,
+        this.iRateLimiterProvider,
+        5,
+        60,
+        60 * 2
+      );
 
-    const ensure:
+    if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
+      const number: number = iEnsureRateLimiting.accessBanTime();
+      console.log(number);
+      return adapter.res.status(429).send({
+        message: 'Exceeded Save Product Rate Limit',
+        retryAfter: number,
+      });
+    }
+    const iEnsureAuth:
       | void
       | TokenIsMissingErrorResponse
       | MustBeAnArtistErrorResponse
@@ -36,17 +57,17 @@ export class ISaveProductController {
         process.env.JWT_SECRET_KEY!
       );
 
-    if (ensure instanceof TokenIsMissingErrorResponse) {
+    if (iEnsureAuth instanceof TokenIsMissingErrorResponse) {
       return adapter.res
         .status(401)
         .send({ message: 'Access Token is missing' });
     }
-    if (ensure instanceof MustBeAnArtistErrorResponse) {
+    if (iEnsureAuth instanceof MustBeAnArtistErrorResponse) {
       return adapter.res
         .status(403)
         .send({ message: 'Only admins have access' });
     }
-    if (ensure instanceof TokenInvalidErrorResponse) {
+    if (iEnsureAuth instanceof TokenInvalidErrorResponse) {
       return adapter.res
         .status(401)
         .send({ message: 'Access Token is invalid' });

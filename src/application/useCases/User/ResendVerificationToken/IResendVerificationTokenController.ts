@@ -6,17 +6,42 @@ import {
   IResendVerificationTokenResponse,
   SessionIsExpiredErrorResponse,
 } from './IResendVerificationTokenDTO';
-import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
+import {
+  TokenInvalidErrorResponse,
+  TokenIsMissingErrorResponse,
+} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { IRateLimiterProvider } from '@domain/providers/RateLimiter/IRateLimiterProvider';
+import { IEnsureRateLimitingMiddleware } from '@application/middlewares/RateLimiting/IEnsureRateLimitingMiddleware';
+import { LimitExceededErrorResponse } from '@application/handlers/MiddlewareResponses/RateLimitingMiddlwareHandlers';
 
 export class IResendVerificationTokenController {
   constructor(
     private readonly iResendVerificationTokenUseCase: IResendVerificationTokenUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware,
+    private readonly iRateLimiterProvider: IRateLimiterProvider,
+    private readonly iEnsureRateLimitingMiddleware: IEnsureRateLimitingMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
-    const ensure:
+    const iEnsureRateLimiting: void | LimitExceededErrorResponse =
+      await this.iEnsureRateLimitingMiddleware.ensureFixedWindow(
+        adapter,
+        this.iRateLimiterProvider,
+        5,
+        60,
+        60 * 2
+      );
+
+    if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
+      const number: number = iEnsureRateLimiting.accessBanTime();
+      console.log(number);
+      return adapter.res.status(429).send({
+        message: 'Exceeded Resend Verification Token Rate Limit',
+        retryAfter: number,
+      });
+    }
+    const iEnsureAuth:
       | string
       | TokenIsMissingErrorResponse
       | TokenInvalidErrorResponse =
@@ -26,13 +51,13 @@ export class IResendVerificationTokenController {
         process.env.JWT_TEMPORARY_KEY!
       );
 
-    if (ensure instanceof TokenIsMissingErrorResponse) {
+    if (iEnsureAuth instanceof TokenIsMissingErrorResponse) {
       return adapter.res
         .status(401)
         .send({ message: 'Temporary Access Token is missing' });
     }
 
-    if (ensure instanceof TokenInvalidErrorResponse) {
+    if (iEnsureAuth instanceof TokenInvalidErrorResponse) {
       return adapter.res
         .status(401)
         .send({ message: 'Temporary Access Token is invalid' });
@@ -43,7 +68,7 @@ export class IResendVerificationTokenController {
         | SessionIsExpiredErrorResponse
         | IResendVerificationTokenResponse =
         await this.iResendVerificationTokenUseCase.execute({
-          verification_token: ensure,
+          verification_token: iEnsureAuth,
         });
 
       if (response instanceof SessionIsExpiredErrorResponse) {
@@ -55,10 +80,10 @@ export class IResendVerificationTokenController {
         message: 'Token resended',
       });
     } catch (error) {
-      return adapter.res.status(500).send({ 
+      return adapter.res.status(500).send({
         message: 'Server internal error',
-        error: error
-    });
+        error: error,
+      });
     }
   }
 }

@@ -12,20 +12,40 @@ import { ITokenService } from '@domain/services/Token/ITokenService';
 import {
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
-} from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
+} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { IEnsureRateLimitingMiddleware } from '@application/middlewares/RateLimiting/IEnsureRateLimitingMiddleware';
+import { IRateLimiterProvider } from '@domain/providers/RateLimiter/IRateLimiterProvider';
+import { LimitExceededErrorResponse } from '@application/handlers/MiddlewareResponses/RateLimitingMiddlwareHandlers';
 
 export class IConfirmMailController {
   constructor(
     private readonly iConfirmMailUseCase: IConfirmMailUseCase,
     private readonly iUserValidator: IUserValidator,
     private readonly iTokenService: ITokenService,
-    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware,
+    private readonly iRateLimiterProvider: IRateLimiterProvider,
+    private readonly iEnsureRateLimitingMiddleware: IEnsureRateLimitingMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const schema = this.iUserValidator.validateConfirmMail();
+    const iEnsureRateLimiting: void | LimitExceededErrorResponse =
+      await this.iEnsureRateLimitingMiddleware.ensureFixedWindow(
+        adapter,
+        this.iRateLimiterProvider,
+        5,
+        900,
+        60 * 2
+      );
 
-    const ensure:
+    if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
+      const number: number = iEnsureRateLimiting.accessBanTime();
+      return adapter.res.status(429).send({
+        message: 'Exceeded Confirm Mail Rate Limit',
+        retryAfter: number,
+      });
+    }
+    const iEnsureAuth:
       | string
       | TokenIsMissingErrorResponse
       | TokenInvalidErrorResponse =
@@ -35,22 +55,28 @@ export class IConfirmMailController {
         process.env.JWT_TEMPORARY_KEY!
       );
 
-    if (ensure instanceof TokenIsMissingErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Temporary Access Token is missing' });
+    if (iEnsureAuth instanceof TokenIsMissingErrorResponse) {
+      return adapter.res
+        .status(401)
+        .send({ message: 'Temporary Access Token is missing' });
     }
 
-    if (ensure instanceof TokenInvalidErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Temporary Access Token is invalid' });
+    if (iEnsureAuth instanceof TokenInvalidErrorResponse) {
+      return adapter.res
+        .status(401)
+        .send({ message: 'Temporary Access Token is invalid' });
     }
 
     try {
-      const { verification_token }: IConfirmMailDTO = schema.parse(adapter.req.body);
+      const { verification_token }: IConfirmMailDTO = schema.parse(
+        adapter.req.body
+      );
       const response:
         | TokenDoesNotMatchErrorResponse
         | TokenExpiredErrorResponse
         | void = await this.iConfirmMailUseCase.execute({
         verification_token,
-        ensure_verification_token: ensure,
+        ensure_verification_token: iEnsureAuth,
       });
 
       if (response instanceof TokenDoesNotMatchErrorResponse) {

@@ -23,6 +23,12 @@ export class ICartResponseValidatorZodImpl implements ICartResponseValidator {
           message: z.string(),
         })
         .describe('Cart may be empty'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),
@@ -63,6 +69,12 @@ export class ICartResponseValidatorZodImpl implements ICartResponseValidator {
           message: z.string(),
         })
         .describe('Cart may be empty'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),
@@ -97,6 +109,12 @@ export class ICartResponseValidatorZodImpl implements ICartResponseValidator {
           errors: z.record(z.string(), z.array(z.string())),
         })
         .describe('Validation Error'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),
@@ -108,7 +126,9 @@ export class ICartResponseValidatorZodImpl implements ICartResponseValidator {
     return {
       204: z
         .object({})
-        .describe('Detachment was removed based on the cart_id and product_id provided'),
+        .describe(
+          'Detachment was removed based on the cart_id and product_id provided'
+        ),
       401: z
         .object({
           message: z.string(),
@@ -125,6 +145,12 @@ export class ICartResponseValidatorZodImpl implements ICartResponseValidator {
           errors: z.record(z.string(), z.array(z.string())),
         })
         .describe('Validation Error'),
+      429: z
+        .object({
+          message: z.string(),
+          retryAfter: z.number(),
+        })
+        .describe('Rate Limiter may have been violated'),
       500: z
         .object({
           message: z.string(),

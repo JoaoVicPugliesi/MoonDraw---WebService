@@ -9,17 +9,22 @@ export class IEnsureRateLimitingMiddlewareImpl implements IEnsureRateLimitingMid
     adapter: RequestResponseAdapter,
     iRateLimiterProvider: IRateLimiterProvider,
     limit: number,
-    timeWindow: number
+    timeWindow: number,
+    banTime: number
   ): Promise<LimitExceededErrorResponse | void> {
-    const key = `ratelimit-${adapter.req.ip}`;
-    await iRateLimiterProvider.incr(key);
-    const count: string | null = await iRateLimiterProvider.get(key);
-    if (Number(count) === 1) {
+    const ip = adapter.req.ip;
+    const key = `ratelimit-${ip}`;
+    
+    const count = await iRateLimiterProvider.incr(key);
+    
+    if (count === 1) {
       await iRateLimiterProvider.expire(key, timeWindow);
     }
-
-    if (Number(count) > limit) {
-      return new LimitExceededErrorResponse();
+    
+    if (count > limit) {
+      const ttl = await iRateLimiterProvider.ttl(key);
+      return new LimitExceededErrorResponse(ttl);
     }
+
   }
 }
