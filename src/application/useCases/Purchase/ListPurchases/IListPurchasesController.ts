@@ -1,32 +1,43 @@
 import { IListPurchasesUseCase } from './IListPurchasesUseCase';
-import { IListPurchaseResponse, IListPurchasesDTO, PurchasesNotFoundErrorResponse } from './IListPurchasesDTO';
-import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import {
+  IListPurchaseResponse,
+  IListPurchasesDTO,
+  PurchasesNotFoundErrorResponse,
+} from './IListPurchasesDTO';
+import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
 import { ITokenService } from '@domain/services/Token/ITokenService';
-import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import {
+  TokenInvalidErrorResponse,
+  TokenIsMissingErrorResponse,
+} from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IListPurchasesController {
   constructor(
     private readonly iListPurchasesUseCase: IListPurchasesUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iEnsureMiddleware: IEnsureMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const ensure:
       | TokenIsMissingErrorResponse
       | TokenInvalidErrorResponse
-      | void = this.iEnsureMiddleware.ensureAccessToken(
+      | void = this.iEnsureAuthMiddleware.ensureAccessToken(
       adapter,
       this.iTokenService,
       process.env.JWT_SECRET_KEY!
     );
 
     if (ensure instanceof TokenIsMissingErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Access Token is missing' });
+      return adapter.res
+        .status(401)
+        .send({ message: 'Access Token is missing' });
     }
     if (ensure instanceof TokenInvalidErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Access Token is invalid' });
+      return adapter.res
+        .status(401)
+        .send({ message: 'Access Token is invalid' });
     }
 
     try {

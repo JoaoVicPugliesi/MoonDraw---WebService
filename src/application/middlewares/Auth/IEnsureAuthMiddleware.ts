@@ -3,17 +3,16 @@ import {
   MustBeABuyerErrorResponse,
   MustBeAnArtistErrorResponse,
   MustBeAnAdminErrorResponse,
-  MustBeVerifiedErrorResponse,
   RefreshTokenCookieMissingErrorResponse,
   TokenInvalidErrorResponse,
   TokenInvalidFormatErrorResponse,
   TokenIsMissingErrorResponse,
-} from "@application/handlers/MiddlewareResponses/MiddlewareHandlers";
+} from "@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers";
 
 import { ITokenService } from "@domain/services/Token/ITokenService";
 import { RefreshToken } from "@prisma/client";
 
-export interface IEnsureMiddleware {
+export interface IEnsureAuthMiddleware {
   ensureTemporaryAccessToken(
     adapter: RequestResponseAdapter,
     iTokenService: ITokenService,

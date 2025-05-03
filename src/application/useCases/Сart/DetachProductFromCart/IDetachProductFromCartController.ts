@@ -2,11 +2,11 @@ import z from 'zod';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IDetachProductFromCartUseCase } from './IDetachProductFromCartUseCase';
 import { AttachmentDoesNotExistsErrorResponse, IDetachProductFromCartDTO, IDetachProductFromCartResponse } from './IDetachProductFromCartDTO';
-import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
 import {
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
-} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+} from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
 import { ICartValidator } from '@application/validators/Request/Cart/ICartValidator';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
@@ -15,7 +15,7 @@ export class IDetachProductFromCartController {
     private readonly iDetachProductFromCartUseCase: IDetachProductFromCartUseCase,
     private readonly iTokenService: ITokenService,
     private readonly iCartValidator: ICartValidator,
-    private readonly iEnsureMiddleware: IEnsureMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
@@ -23,7 +23,7 @@ export class IDetachProductFromCartController {
     const ensure:
       | TokenIsMissingErrorResponse
       | TokenInvalidErrorResponse
-      | void = this.iEnsureMiddleware.ensureAccessToken(
+      | void = this.iEnsureAuthMiddleware.ensureAccessToken(
       adapter,
       this.iTokenService,
       process.env.JWT_SECRET_KEY!

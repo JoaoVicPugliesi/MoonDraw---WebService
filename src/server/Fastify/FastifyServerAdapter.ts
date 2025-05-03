@@ -115,7 +115,7 @@ export class FastifyServerAdapter implements ServerAdapter {
       allowedHeaders: ['Content-Type', 'Authorization'],
     });
     await this.app.register(fastifyRateLimit, {
-      global: false,
+      global: true,
       max: Number(process.env.RATE_LIMIT_MAX),
       timeWindow: process.env.RATE_LIMIT_WINDOW,
       ban: Number(process.env.RATE_LIMIT_BAN), 

@@ -3,23 +3,23 @@ import { ITokenService } from '@domain/services/Token/ITokenService';
 import {
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
-} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+} from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
 import { IRemovePurchaseDTO } from './IRemovePurchaseDTO';
-import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IRemovePurchaseController {
   constructor(
     private readonly iRemovePurchaseUseCase: IRemovePurchaseUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iEnsureMiddleware: IEnsureMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const ensure:
       | void
       | TokenIsMissingErrorResponse
-      | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureAccessToken(
+      | TokenInvalidErrorResponse = this.iEnsureAuthMiddleware.ensureAccessToken(
       adapter,
       this.iTokenService,
       process.env.JWT_SECRET_KEY!

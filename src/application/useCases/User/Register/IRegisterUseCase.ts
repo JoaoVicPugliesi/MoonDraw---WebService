@@ -34,8 +34,6 @@ export class IRegisterUseCase {
       email
     });
 
-    console.log(icon_id);
-
     if (user) return new UserConflictErrorResponse();
 
     const cachedUser: string | null = await this.iCacheProvider.get(`user-processing-${email}`);

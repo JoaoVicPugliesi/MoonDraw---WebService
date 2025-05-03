@@ -6,8 +6,8 @@ import {
   MustBeABuyerErrorResponse,
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
-} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
-import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+} from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
+import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
 import { IPurchaseValidator } from '@application/validators/Request/Purchase/IPurchaseValidator';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
@@ -16,34 +16,40 @@ export class IInitiatePurchaseController {
     private readonly iInitiatePurchaseUseCase: IInitiatePurchaseUseCase,
     private readonly iTokenService: ITokenService,
     private readonly iPurchaseValidator: IPurchaseValidator,
-    private readonly iEnsureMiddleware: IEnsureMiddleware,
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const schema = this.iPurchaseValidator.validateInitiatePurchase();
     const ensure:
-    | void
-    | TokenIsMissingErrorResponse
-    | MustBeABuyerErrorResponse
-    | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureUserIsABuyer(
+      | void
+      | TokenIsMissingErrorResponse
+      | MustBeABuyerErrorResponse
+      | TokenInvalidErrorResponse =
+      this.iEnsureAuthMiddleware.ensureUserIsABuyer(
         adapter,
         this.iTokenService,
         process.env.JWT_SECRET_KEY!
       );
 
     if (ensure instanceof TokenIsMissingErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Access Token is missing' });
+      return adapter.res
+        .status(401)
+        .send({ message: 'Access Token is missing' });
     }
-    if(ensure instanceof MustBeABuyerErrorResponse) {
-      return adapter.res.status(403).send({ message: 'Must verify email to access' });
+    if (ensure instanceof MustBeABuyerErrorResponse) {
+      return adapter.res
+        .status(403)
+        .send({ message: 'Must verify email to access' });
     }
     if (ensure instanceof TokenInvalidErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Access Token is invalid' });
+      return adapter.res
+        .status(401)
+        .send({ message: 'Access Token is invalid' });
     }
     try {
-      const { buyer_id, title, selected_products }: IInitiatePurchaseDTO = schema.parse(
-        adapter.req.body
-      );
+      const { buyer_id, title, selected_products }: IInitiatePurchaseDTO =
+        schema.parse(adapter.req.body);
       await this.iInitiatePurchaseUseCase.execute({
         buyer_id,
         title,

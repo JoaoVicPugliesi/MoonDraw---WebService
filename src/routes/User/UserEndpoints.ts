@@ -22,8 +22,7 @@ export class UserEndpoints {
         await iRegister.handle(adapter);
       },
       {
-        docs: this.iUserDocs.registerDoc(),
-        config: this.iUserConfigs.registerConfig()
+        docs: this.iUserDocs.registerDoc()
       }
     );
     

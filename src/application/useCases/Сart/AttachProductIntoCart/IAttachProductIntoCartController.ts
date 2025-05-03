@@ -2,9 +2,9 @@ import z from 'zod';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IAttachProductIntoCartUseCase } from './IAttachProductIntoCartUseCase';
 import { AttachmentAlreadyExistsErrorResponse, IAttachProductIntoCartDTO, IAttachProductIntoCartResponse } from './IAttachProductIntoCartDTO';
-import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
 import { ICartValidator } from '@application/validators/Request/Cart/ICartValidator';
-import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IAttachProductIntoCartController {
@@ -12,7 +12,7 @@ export class IAttachProductIntoCartController {
     private readonly iAttachProductIntoCartUseCase: IAttachProductIntoCartUseCase,
     private readonly iTokenService: ITokenService,
     private readonly iCartValidator: ICartValidator,
-    private readonly iEnsureMiddleware: IEnsureMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
@@ -20,7 +20,7 @@ export class IAttachProductIntoCartController {
     const ensure:
     | TokenIsMissingErrorResponse
     | TokenInvalidErrorResponse
-    | void = this.iEnsureMiddleware.ensureAccessToken(
+    | void = this.iEnsureAuthMiddleware.ensureAccessToken(
         adapter,
         this.iTokenService,
         process.env.JWT_SECRET_KEY!

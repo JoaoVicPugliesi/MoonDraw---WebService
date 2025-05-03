@@ -1,10 +1,10 @@
 import { createClient, RedisClientType } from 'redis';
 
 class Redis {
-    private readonly cache: RedisClientType;
+    private readonly redis: RedisClientType;
 
     constructor() {
-        this.cache = createClient({
+        this.redis = createClient({
             username: process.env.REDIS_USERNAME,
             password: process.env.REDIS_PASSWORD,
             socket: {
@@ -15,16 +15,16 @@ class Redis {
     }
 
     async connect(): Promise<void> {
-        await this.cache.connect();
+        await this.redis.connect();
     }
 
     accessRedis(): RedisClientType {
-        return this.cache;
+        return this.redis;
     }
 }
 
-const redis: Redis = new Redis();
-redis.connect();
-const cache: RedisClientType = redis.accessRedis();
+const redisInstance: Redis = new Redis();
+redisInstance.connect();
+const redis: RedisClientType = redisInstance.accessRedis();
 
-export { cache };
+export { redis };

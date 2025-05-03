@@ -75,7 +75,7 @@ export class IProductRepositoryPrismaImpl implements IProductRepository {
         images_id: images_id,
         name: name,
         description: description,
-        price: price,
+        price: price * 100,
         supply: supply,
         publisher: publisher,
       },

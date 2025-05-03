@@ -80,7 +80,7 @@ model Product {
   artist_id    String   @unique
   name         String   @unique
   description  String   @default("No Description")
-  price        Float    @default(0)
+  price        Int    @default(0)
   supply       Int      @default(0)
   publisher    String
   published_at DateTime @default(now())

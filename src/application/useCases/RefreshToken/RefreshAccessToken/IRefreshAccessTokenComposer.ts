@@ -1,11 +1,11 @@
 import { IRefreshAccessTokenFactory } from '@application/factories/RefreshToken/RefreshAccessToken/IRefreshAccessTokenFactory';
 import { IRefreshAccessTokenController } from './IRefreshAccessTokenController';
-import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
+import { IEnsureAuthMiddlewareImpl } from '@application/middlewares/Auth/IEnsureAuthMiddlewareImpl';
 
 const iFactory = new IRefreshAccessTokenFactory();
 const iUseCase = iFactory.compose();
-const iEnsureMiddleware = new IEnsureMiddlewareImpl();
-const iController = new IRefreshAccessTokenController(iUseCase, iEnsureMiddleware);
+const iEnsureAuthMiddleware = new IEnsureAuthMiddlewareImpl();
+const iController = new IRefreshAccessTokenController(iUseCase, iEnsureAuthMiddleware);
 const iRefreshAccessToken: IRefreshAccessTokenController = iController;
 
 export { iRefreshAccessToken };

@@ -1,26 +1,25 @@
 import { IListCartContentUseCase } from './IListCartContentUseCase';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { CartEmptyErrorResponse, IListCartContentDTO, IListCartContentResponse } from './IListCartContentDTO';
-
 import {
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
-} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
-import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+} from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
+import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IListCartContentController {
   constructor(
     private readonly iListCartContentUseCase: IListCartContentUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iEnsureMiddleware: IEnsureMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const ensure:
       | TokenIsMissingErrorResponse
       | TokenInvalidErrorResponse
-      | void = this.iEnsureMiddleware.ensureAccessToken(
+      | void = this.iEnsureAuthMiddleware.ensureAccessToken(
       adapter,
       this.iTokenService,
       process.env.JWT_SECRET_KEY!

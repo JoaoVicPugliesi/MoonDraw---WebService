@@ -1,16 +1,16 @@
 import { IListCartContentFactory } from '@application/factories/Cart/ListCartContent/IListCartContentFactory';
 import { IListCartContentController } from './IListCartContentController';
 import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
-import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
+import { IEnsureAuthMiddlewareImpl } from '@application/middlewares/Auth/IEnsureAuthMiddlewareImpl';
 
 const iFactory = new IListCartContentFactory();
 const iUseCase = iFactory.compose();
 const iTokenService = new ITokenServiceJWTImpl();
-const iEnsureMiddleware = new IEnsureMiddlewareImpl();
+const iEnsureAuthMiddleware = new IEnsureAuthMiddlewareImpl();
 const iController = new IListCartContentController(
   iUseCase,
   iTokenService,
-  iEnsureMiddleware
+  iEnsureAuthMiddleware
 );
 const iListCartContent: IListCartContentController = iController;
 

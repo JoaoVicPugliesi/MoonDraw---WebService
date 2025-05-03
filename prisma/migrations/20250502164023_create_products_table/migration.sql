@@ -6,7 +6,7 @@ CREATE TABLE "products" (
     "artist_id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL DEFAULT 'No Description',
-    "price" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "price" INTEGER NOT NULL DEFAULT 0,
     "supply" INTEGER NOT NULL DEFAULT 0,
     "publisher" TEXT NOT NULL,
     "published_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

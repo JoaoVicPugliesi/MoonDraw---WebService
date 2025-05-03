@@ -1,15 +1,23 @@
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { ICheckoutPurchaseUseCase } from './ICheckoutPurchaseUseCase';
-import { ICheckoutPurchaseDTO, ICheckoutPurchaseResponse, PurchaseNotFoundErrorResponse } from './ICheckoutPurchaseDTO';
-import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
-import { MustBeABuyerErrorResponse, MustBeVerifiedErrorResponse, TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import {
+  ICheckoutPurchaseDTO,
+  ICheckoutPurchaseResponse,
+  PurchaseNotFoundErrorResponse,
+} from './ICheckoutPurchaseDTO';
+import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
+import {
+  MustBeABuyerErrorResponse,
+  TokenInvalidErrorResponse,
+  TokenIsMissingErrorResponse,
+} from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class ICheckoutPurchaseController {
   constructor(
     private readonly iCheckoutPurchaseUseCase: ICheckoutPurchaseUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iEnsureMiddleware: IEnsureMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
@@ -17,20 +25,27 @@ export class ICheckoutPurchaseController {
       | void
       | TokenIsMissingErrorResponse
       | MustBeABuyerErrorResponse
-      | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureUserIsABuyer(
-      adapter,
-      this.iTokenService,
-      process.env.JWT_SECRET_KEY!
-    );
+      | TokenInvalidErrorResponse =
+      this.iEnsureAuthMiddleware.ensureUserIsABuyer(
+        adapter,
+        this.iTokenService,
+        process.env.JWT_SECRET_KEY!
+      );
 
     if (ensure instanceof TokenIsMissingErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Access Token is missing' });
+      return adapter.res
+        .status(401)
+        .send({ message: 'Access Token is missing' });
     }
     if (ensure instanceof MustBeABuyerErrorResponse) {
-      return adapter.res.status(403).send({ message: 'Must be verified to access' });
+      return adapter.res
+        .status(403)
+        .send({ message: 'Must be verified to access' });
     }
     if (ensure instanceof TokenInvalidErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Access Token is invalid' });
+      return adapter.res
+        .status(401)
+        .send({ message: 'Access Token is invalid' });
     }
 
     try {

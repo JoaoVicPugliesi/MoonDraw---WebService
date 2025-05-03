@@ -1,23 +1,29 @@
 import { IRefreshAccessTokenUseCase } from './IRefreshAccessTokenUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { IRefreshAccessTokenDTO, RefreshAccessTokenResponse, RefreshTokenNotFoundErrorResponse, RefreshTokenUserNotFoundErrorResponse } from './IRefreshAccessTokenDTO';
-import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
-import { RefreshTokenCookieMissingErrorResponse, TokenInvalidFormatErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import {
+  IRefreshAccessTokenDTO,
+  RefreshAccessTokenResponse,
+  RefreshTokenNotFoundErrorResponse,
+  RefreshTokenUserNotFoundErrorResponse,
+} from './IRefreshAccessTokenDTO';
+import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
+import {
+  RefreshTokenCookieMissingErrorResponse,
+  TokenInvalidFormatErrorResponse,
+} from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 export class IRefreshAccessTokenController {
   constructor(
     private readonly iRefreshAccessTokenUseCase: IRefreshAccessTokenUseCase,
-    private readonly iEnsureMiddleware: IEnsureMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const refreshToken:
       | TokenInvalidFormatErrorResponse
       | RefreshTokenCookieMissingErrorResponse
-      | RefreshToken = this.iEnsureMiddleware.ensureRefreshToken(
-        adapter
-      );
-      
+      | RefreshToken = this.iEnsureAuthMiddleware.ensureRefreshToken(adapter);
+
     if (refreshToken instanceof RefreshTokenCookieMissingErrorResponse) {
       return adapter.res.status(401).send({
         message: 'Refresh Token is missing',
@@ -29,9 +35,7 @@ export class IRefreshAccessTokenController {
       });
     }
     try {
-      const { 
-        public_id 
-      }: IRefreshAccessTokenDTO = {
+      const { public_id }: IRefreshAccessTokenDTO = {
         public_id: refreshToken.public_id,
       };
       const response:
@@ -64,14 +68,14 @@ export class IRefreshAccessTokenController {
 
       return adapter.res.status(200).send({
         current_user: {
-            access_token: response.access_token,
-            user: response.user,
+          access_token: response.access_token,
+          user: response.user,
         },
       });
     } catch (error) {
       return adapter.res.status(500).send({
         message: 'Server internal error',
-        error: error
+        error: error,
       });
     }
   }

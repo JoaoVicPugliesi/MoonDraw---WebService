@@ -1,16 +1,16 @@
 import { IListPurchasesFactory } from "@application/factories/Purchase/ListPurchases/IListPurchasesFactory";
 import { ITokenServiceJWTImpl } from "@infra/services/ITokenServiceJWTImpl";
 import { IListPurchasesController } from "./IListPurchasesController";
-import { IEnsureMiddlewareImpl } from "@application/middlewares/IEnsureMiddlewareImpl";
+import { IEnsureAuthMiddlewareImpl } from "@application/middlewares/Auth/IEnsureAuthMiddlewareImpl";
 
 const iFactory = new IListPurchasesFactory();
 const iUseCase = iFactory.compose();
 const iTokenService = new ITokenServiceJWTImpl();
-const iEnsureMiddleware = new IEnsureMiddlewareImpl();
+const iEnsureAuthMiddleware = new IEnsureAuthMiddlewareImpl();
 const iController = new IListPurchasesController(
     iUseCase,
     iTokenService,
-    iEnsureMiddleware
+    iEnsureAuthMiddleware
 );
 const iListPurchases: IListPurchasesController = iController;
 

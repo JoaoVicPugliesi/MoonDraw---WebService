@@ -5,21 +5,21 @@ import {
   TokenExpiredErrorResponse,
   TokenDoesNotMatchErrorResponse,
 } from './IConfirmMailDTO';
-import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
 import { IUserValidator } from '@application/validators/Request/User/IUserValidator';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import {
   TokenInvalidErrorResponse,
   TokenIsMissingErrorResponse,
-} from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+} from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
 
 export class IConfirmMailController {
   constructor(
     private readonly iConfirmMailUseCase: IConfirmMailUseCase,
     private readonly iUserValidator: IUserValidator,
     private readonly iTokenService: ITokenService,
-    private readonly iEnsureMiddleware: IEnsureMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
@@ -29,7 +29,7 @@ export class IConfirmMailController {
       | string
       | TokenIsMissingErrorResponse
       | TokenInvalidErrorResponse =
-      this.iEnsureMiddleware.ensureTemporaryAccessToken(
+      this.iEnsureAuthMiddleware.ensureTemporaryAccessToken(
         adapter,
         this.iTokenService,
         process.env.JWT_TEMPORARY_KEY!

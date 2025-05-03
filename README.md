@@ -1,17 +1,17 @@
-# WebService
-A WebService for our e-commerce platform.
+# MoonDraw - WebService
+MoonDraw is an e-commerce platform surrounded by color and driven by creativity. 
 
 # Functional Requirements 
 
 🔒 Authentication & Authorization
 
-Users must be able to register with email and password.
+Users must be able to authenticate by providing related/validated metadata and by verifying email.
 
-Users must be able to log in and receive a secure token (JWT).
+Users must be able to log in and receive a secure access token (JWT) and 7 days refresh token.
 
 The system must authorize users before accessing protected resources.
 
-Middleware must validate tokens and enforce user roles (client x admin).
+Middleware must validate tokens and enforce user roles (buyers | artists | admins).
 
 🌐 API Security & Control
 
@@ -25,25 +25,27 @@ Users can search for products using filter (name).
 
 Users can view product details, including price, availability, and description.
 
-Admins can create, update, and delete products.
+Buyers can purchase products.
+Artists can create, update, and delete products.
+Admins can delete users and products in case of policies violation.
 
 🧺 Shopping Cart
 
-Users can add products to their cart.
+Buyers can add products to their cart.
 
-Users can remove products from their cart.
+Buyers can remove products from their cart.
 
-Users can view the contents of their cart.
+Buyers can view the contents of their cart.
 
 The cart must reflect real-time product availability and pricing.
 
 💳 Checkout & Orders
 
-Users can initiate a purchase from the cart.
+Buyers can initiate a purchase from the cart.
 
-Users must provide shipping and payment details at checkout.
+Buyers must provide shipping and payment details at checkout.
 
-Users can confirm and complete a purchase.
+Buyers can confirm and complete a purchase.
 
 The system must handle order persistence, email sending, and payment processing (via provider).
 

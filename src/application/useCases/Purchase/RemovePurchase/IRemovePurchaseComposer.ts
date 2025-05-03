@@ -1,16 +1,16 @@
 import { IRemovePurchaseFactory } from '@application/factories/Purchase/RemovePurchase/IRemovePurchaseFactory';
 import { ITokenServiceJWTImpl } from '@infra/services/ITokenServiceJWTImpl';
 import { IRemovePurchaseController } from './IRemovePurchaseController';
-import { IEnsureMiddlewareImpl } from '@application/middlewares/IEnsureMiddlewareImpl';
+import { IEnsureAuthMiddlewareImpl } from '@application/middlewares/Auth/IEnsureAuthMiddlewareImpl';
 
 const iFactory = new IRemovePurchaseFactory();
 const iUseCase = iFactory.compose();
 const iTokenService = new ITokenServiceJWTImpl();
-const iEnsureMiddleware = new IEnsureMiddlewareImpl();
+const iEnsureAuthMiddleware = new IEnsureAuthMiddlewareImpl();
 const iController = new IRemovePurchaseController(
     iUseCase,
     iTokenService,
-    iEnsureMiddleware
+    iEnsureAuthMiddleware
 );
 const iRemovePurchase: IRemovePurchaseController = iController;
 

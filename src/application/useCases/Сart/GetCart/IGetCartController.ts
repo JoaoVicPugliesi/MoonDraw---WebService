@@ -1,22 +1,22 @@
-import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
 import { IGetCartUseCase } from './IGetCartUseCase';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { CartNotFoundErrorResponse, IGetCartDTO, IGetCartResponse } from './IGetCartDTO';
-import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IGetCartController {
   constructor(
     private readonly iGetCartUseCase: IGetCartUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iEnsureMiddlware: IEnsureMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const ensure:
       | void
       | TokenIsMissingErrorResponse
-      | TokenInvalidErrorResponse = this.iEnsureMiddlware.ensureAccessToken(
+      | TokenInvalidErrorResponse = this.iEnsureAuthMiddleware.ensureAccessToken(
       adapter,
       this.iTokenService,
       process.env.JWT_SECRET_KEY!

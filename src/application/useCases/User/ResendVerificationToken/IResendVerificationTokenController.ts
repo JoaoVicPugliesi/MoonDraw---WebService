@@ -1,18 +1,18 @@
 import { IResendVerificationTokenUseCase } from '@application/useCases/User/ResendVerificationToken/IResendVerificationTokenUseCase';
-import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import {
   IResendVerificationTokenResponse,
   SessionIsExpiredErrorResponse,
 } from './IResendVerificationTokenDTO';
-import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
 
 export class IResendVerificationTokenController {
   constructor(
     private readonly iResendVerificationTokenUseCase: IResendVerificationTokenUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iEnsureMiddleware: IEnsureMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
@@ -20,7 +20,7 @@ export class IResendVerificationTokenController {
       | string
       | TokenIsMissingErrorResponse
       | TokenInvalidErrorResponse =
-      this.iEnsureMiddleware.ensureTemporaryAccessToken(
+      this.iEnsureAuthMiddleware.ensureTemporaryAccessToken(
         adapter,
         this.iTokenService,
         process.env.JWT_TEMPORARY_KEY!

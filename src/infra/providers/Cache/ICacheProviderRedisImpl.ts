@@ -1,27 +1,27 @@
 import { ISetOptions } from '@domain/providers/Cache/Cache';
 import { ICacheProvider} from '@domain/providers/Cache/ICacheProvider';
 import { SetOptions } from 'redis';
-import { cache } from '@api/redis/redis';
+import { redis } from '@api/redis/redis';
 
 export class ICacheProviderRedisImpl implements ICacheProvider {
   async set(key: string, value: string, options?: ISetOptions): Promise<void> {
-    await cache.set(key, value, options as SetOptions);
+    await redis.set(key, value, options as SetOptions);
   }
   async get(key: string): Promise<string | null> {
-    const element: string | null = await cache.get(key);
+    const element: string | null = await redis.get(key);
 
     return element;
   }
 
   async ttl(key: string): Promise<number> {
-    return await cache.ttl(key);
+    return await redis.ttl(key);
   }
 
   async flushAll() {
-    await cache.flushAll();
+    await redis.flushAll();
   }
 
   async del(key: string): Promise<void> {
-    await cache.del(key);  
+    await redis.del(key);  
   }
 }

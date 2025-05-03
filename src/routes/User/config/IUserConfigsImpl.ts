@@ -10,21 +10,12 @@ export class IUserConfigsImpl implements IUserConfigs {
       },
     };
   }
-
-  loginConfig(): EndpointConfig {
-    return {
-      rateLimit: {
-        max: 5,
-        timeWindow: '1 minute',
-      }
-    }
-  }
-
+  
   confirmMailConfig(): EndpointConfig {
       return {
         rateLimit: {
           max: 5,
-          timeWindow: '15 minute',
+          timeWindow: '15 minutes',
           errorResponseBuilder: (req, context) => {
               return {
                 statusCode: 429,
@@ -35,6 +26,32 @@ export class IUserConfigsImpl implements IUserConfigs {
         },
       }
   }
+
+  resendVerificationTokenConfig(): EndpointConfig {
+    return {
+      rateLimit: {
+        max: 5,
+        timeWindow: '15 minutes',
+        errorResponseBuilder: (req, context) => {
+          return {
+            statusCode: 429,
+            error: 'Too many mistakes envolving resending verification token',
+            message: `Rate limit exceeded. Try again after ${context.after} so you may register again`
+          }
+      },
+      }
+    }    
+  }
+
+  loginConfig(): EndpointConfig {
+    return {
+      rateLimit: {
+        max: 5,
+        timeWindow: '1 minute',
+      }
+    }
+  }
+
 }
 
 const iUserConfigs = new IUserConfigsImpl();

@@ -1,15 +1,22 @@
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IFetchProductsUseCase } from './IFetchProductsUseCase';
-import { FetchProductsResponse, IFetchProductsDTO, ProductsNotFoundErrorResponse } from './IFetchProductsDTO';
-import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
-import { TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import {
+  FetchProductsResponse,
+  IFetchProductsDTO,
+  ProductsNotFoundErrorResponse,
+} from './IFetchProductsDTO';
+import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
+import {
+  TokenInvalidErrorResponse,
+  TokenIsMissingErrorResponse,
+} from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class IFetchProductsController {
   constructor(
     private readonly iFetchProductsUseCase: IFetchProductsUseCase,
     private readonly iTokenService: ITokenService,
-    private readonly iEnsureMiddleware: IEnsureMiddleware
+    private readonly iEnsureMiddleware: IEnsureAuthMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
@@ -23,17 +30,19 @@ export class IFetchProductsController {
     );
 
     if (ensure instanceof TokenIsMissingErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Access Token is missing' });
+      return adapter.res
+        .status(401)
+        .send({ message: 'Access Token is missing' });
     }
     if (ensure instanceof TokenInvalidErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Access Token is invalid' });
+      return adapter.res
+        .status(401)
+        .send({ message: 'Access Token is invalid' });
     }
     try {
       const { page }: IFetchProductsDTO = adapter.req
         .params as IFetchProductsDTO;
-      const response:
-        | FetchProductsResponse
-        | ProductsNotFoundErrorResponse =
+      const response: FetchProductsResponse | ProductsNotFoundErrorResponse =
         await this.iFetchProductsUseCase.execute({
           page,
         });

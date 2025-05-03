@@ -1,21 +1,21 @@
 import { ILogoutUseCase } from './ILogoutUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { ILogoutDTO, RefreshTokenNotFoundErrorResponse } from './ILogoutDTO';
-import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
-import { RefreshTokenCookieMissingErrorResponse, TokenInvalidFormatErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
+import { RefreshTokenCookieMissingErrorResponse, TokenInvalidFormatErrorResponse } from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class ILogOutController {
   constructor(
     private readonly iLogoutUseCase: ILogoutUseCase,
-    private readonly iEnsureMiddleware: IEnsureMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
     const refreshToken:
       | TokenInvalidFormatErrorResponse
       | RefreshTokenCookieMissingErrorResponse
-      | RefreshToken = this.iEnsureMiddleware.ensureRefreshToken(
+      | RefreshToken = this.iEnsureAuthMiddleware.ensureRefreshToken(
         adapter
       );
 

@@ -1,10 +1,17 @@
 import z from 'zod';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { ISaveProductUseCase } from './ISaveProductUseCase';
-import { ISaveProductDTO, ProductAlreadyExistsErrorResponse } from './ISaveProductDTO';
-import { IEnsureMiddleware } from '@application/middlewares/IEnsureMiddleware';
+import {
+  ISaveProductDTO,
+  ProductAlreadyExistsErrorResponse,
+} from './ISaveProductDTO';
+import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
 import { IProductValidator } from '@application/validators/Request/Product/IProductValidator';
-import { MustBeAnArtistErrorResponse, TokenInvalidErrorResponse, TokenIsMissingErrorResponse } from '@application/handlers/MiddlewareResponses/MiddlewareHandlers';
+import {
+  MustBeAnArtistErrorResponse,
+  TokenInvalidErrorResponse,
+  TokenIsMissingErrorResponse,
+} from '@application/handlers/MiddlewareResponses/AuthMiddlewareHandlers';
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 
 export class ISaveProductController {
@@ -12,7 +19,7 @@ export class ISaveProductController {
     private readonly iSaveProductUseCase: ISaveProductUseCase,
     private readonly iTokenService: ITokenService,
     private readonly iProductValidator: IProductValidator,
-    private readonly iEnsureMiddleware: IEnsureMiddleware
+    private readonly iEnsureAuthMiddleware: IEnsureAuthMiddleware
   ) {}
 
   async handle(adapter: RequestResponseAdapter) {
@@ -22,14 +29,17 @@ export class ISaveProductController {
       | void
       | TokenIsMissingErrorResponse
       | MustBeAnArtistErrorResponse
-      | TokenInvalidErrorResponse = this.iEnsureMiddleware.ensureUserIsAnArtist(
-      adapter,
-      this.iTokenService,
-      process.env.JWT_SECRET_KEY!
-    );
+      | TokenInvalidErrorResponse =
+      this.iEnsureAuthMiddleware.ensureUserIsAnArtist(
+        adapter,
+        this.iTokenService,
+        process.env.JWT_SECRET_KEY!
+      );
 
     if (ensure instanceof TokenIsMissingErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Access Token is missing' });
+      return adapter.res
+        .status(401)
+        .send({ message: 'Access Token is missing' });
     }
     if (ensure instanceof MustBeAnArtistErrorResponse) {
       return adapter.res
@@ -37,7 +47,9 @@ export class ISaveProductController {
         .send({ message: 'Only admins have access' });
     }
     if (ensure instanceof TokenInvalidErrorResponse) {
-      return adapter.res.status(401).send({ message: 'Access Token is invalid' });
+      return adapter.res
+        .status(401)
+        .send({ message: 'Access Token is invalid' });
     }
 
     try {
