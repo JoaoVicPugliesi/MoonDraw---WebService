@@ -11,7 +11,7 @@ export class ISearchProductsUseCase {
 
   async execute({ 
     name 
-  }: ISearchProductsDTO): Promise<ISearchProductsResponse | SearchedProductsNotFoundErrorResponse> {
+  }: ISearchProductsDTO): Promise<ISearchProductsResponse> {
     const cachedSearch: string | null = await this.iCacheProvider.get(
       `search-${name}`
     );

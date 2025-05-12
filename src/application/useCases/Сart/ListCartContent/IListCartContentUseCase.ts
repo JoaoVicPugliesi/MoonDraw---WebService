@@ -11,7 +11,7 @@ export class IListCartContentUseCase {
 
   async execute({ 
     public_id 
-  }: IListCartContentDTO): Promise<CartEmptyErrorResponse | IListCartContentResponse>  {
+  }: IListCartContentDTO): Promise<IListCartContentResponse>  {
     const cachedContent: string | null = await this.iCacheProvider.get(
       `cart-${public_id}`
     );

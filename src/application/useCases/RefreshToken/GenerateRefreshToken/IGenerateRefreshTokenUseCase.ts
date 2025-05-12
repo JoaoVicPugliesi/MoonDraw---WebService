@@ -1,5 +1,5 @@
 import { RefreshToken } from '@prisma/client';
-import { GenerateRefreshTokenErrorResponse, IGenerateRefreshTokenDTO } from './IGenerateRefreshTokenDTO';
+import { GenerateRefreshTokenErrorResponse, IGenerateRefreshTokenDTO, IGenerateRefreshTokenResponse } from './IGenerateRefreshTokenDTO';
 import { IRefreshTokenRepository } from '@domain/repositories/IRefreshTokenRepository';
 
 export class IGenerateRefreshTokenUseCase {
@@ -9,9 +9,7 @@ export class IGenerateRefreshTokenUseCase {
 
   async execute({
     owner_id,
-  }: IGenerateRefreshTokenDTO): Promise<
-    GenerateRefreshTokenErrorResponse | RefreshToken
-  > {
+  }: IGenerateRefreshTokenDTO): Promise<IGenerateRefreshTokenResponse> {
     const relatedTokens: RefreshToken | RefreshToken[] | null =
       await this.iRefreshTokenRepository.findRelatedRefreshTokens(
         owner_id
@@ -30,6 +28,8 @@ export class IGenerateRefreshTokenUseCase {
 
     if (!refreshToken) return new GenerateRefreshTokenErrorResponse();
 
-    return refreshToken;
+    return {
+      refreshToken
+    };
   }
 }

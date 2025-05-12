@@ -1,5 +1,5 @@
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
-import { ISelectProductDTO, ProductNotFoundErrorResponse, SelectProductResponse } from './ISelectProductDTO';
+import { ISelectProductDTO, ISelectProductResponse, ProductNotFoundErrorResponse } from './ISelectProductDTO';
 import { Product } from '@domain/entities/Product';
 import { IProductRepository } from '@domain/repositories/IProductRepository';
 
@@ -11,9 +11,7 @@ export class ISelectProductUseCase {
 
   async execute({
     public_id,
-  }: ISelectProductDTO): Promise<
-    SelectProductResponse | ProductNotFoundErrorResponse
-  > {
+  }: ISelectProductDTO): Promise<ISelectProductResponse> {
     const cachedProduct: string | null = await this.iCacheProvider.get(
       `product-${public_id}`
     );

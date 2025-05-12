@@ -36,7 +36,6 @@ export class IListCartContentController {
 
     if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
       const number: number = iEnsureRateLimiting.accessBanTime();
-      console.log(number);
       return adapter.res.status(429).send({
         message: 'Exceeded List Cart Content Rate Limit',
         retryAfter: number,
@@ -65,7 +64,7 @@ export class IListCartContentController {
       const { public_id }: IListCartContentDTO = adapter.req
         .query as IListCartContentDTO;
 
-      const response: CartEmptyErrorResponse | IListCartContentResponse =
+      const response: IListCartContentResponse =
         await this.iListCartContentUseCase.execute({
           public_id,
         });

@@ -16,9 +16,7 @@ export class ICompletePurchaseUseCase {
   async execute({
     purchase_id,
     session_id,
-  }: ICompletePurchaseDTO): Promise<
-    PurchaseHasNoOwnerErrorResponse | ICompletePurchaseResponse
-  > {
+  }: ICompletePurchaseDTO): Promise<ICompletePurchaseResponse> {
     const owner: Pick<Purchase, 'buyer_id'> | null =
       await this.iPurchaseRepository.findPurchaseOwner({
         purchase_id,
@@ -64,6 +62,8 @@ export class ICompletePurchaseUseCase {
       payment_method: paymentMethodType.payment_intent.payment_method.type,
     });
 
-    return {}
+    return {
+      success: true
+    }
   }
 }

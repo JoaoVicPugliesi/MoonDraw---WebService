@@ -5,7 +5,9 @@ export interface ISelectProductDTO extends Pick<Product, 'public_id'> {};
 
 // Response
 export class ProductNotFoundErrorResponse extends Error {}
-
-export interface SelectProductResponse {
+export interface Success {
     product: Product
 }
+export type ISelectProductResponse =
+| ProductNotFoundErrorResponse
+| Success

@@ -1,21 +1,15 @@
 import dayjs from 'dayjs';
 import { User } from '@domain/entities/User';
 import { IRefreshAccessTokenUseCase } from './IRefreshAccessTokenUseCase';
-import { configDotenv } from 'dotenv';
 import { IRefreshAccessTokenFactoryInMemory } from '@application/factories/RefreshToken/RefreshAccessToken/IRefreshAccessTokenFactoryInMemory';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { IRefreshAccessTokenDTO, RefreshAccessTokenResponse, RefreshTokenNotFoundErrorResponse, RefreshTokenUserNotFoundErrorResponse } from './IRefreshAccessTokenDTO';
-configDotenv();
-
-type RefreshAccessResponse =
-  | RefreshTokenNotFoundErrorResponse
-  | RefreshTokenUserNotFoundErrorResponse
-  | RefreshAccessTokenResponse;
+import { IRefreshAccessTokenDTO, IRefreshAccessTokenResponse, RefreshTokenNotFoundErrorResponse, RefreshTokenUserNotFoundErrorResponse } from './IRefreshAccessTokenDTO';
 
 const users: User[] = [];
 const user: User = {
   id: users.length + 1,
   public_id: 'a795c246-ca3b-46d0-8f66-b7ffef395b42',
+  icon_id: '',
   name: 'João',
   surname: 'Pugliesi',
   email: 'mrlanguages62@gmail.com',
@@ -30,6 +24,7 @@ const user: User = {
 const user2: User = {
   id: users.length + 1,
   public_id: 'a795c246-ca3b-46d0-8f66-b7ffef395b43',
+  icon_id: '',
   name: 'João',
   surname: 'Pugliesi',
   email: 'mrlanguages62@gmail.com',
@@ -76,7 +71,7 @@ describe('I refresh access token use case', () => {
     const { public_id }: IRefreshAccessTokenDTO = {
       public_id: 'a09d22d2-2464-42e3-827c-fe73626ff8b6',
     };
-    const response: RefreshAccessResponse = await sut.execute({
+    const response: IRefreshAccessTokenResponse = await sut.execute({
       public_id,
     });
     // Assert
@@ -97,7 +92,7 @@ describe('I refresh access token use case', () => {
     const { public_id }: IRefreshAccessTokenDTO = {
       public_id: 'a09d22d2-2464-42e3-827c-fe73626ff8b6',
     };
-    const response: RefreshAccessResponse = await sut.execute({
+    const response: IRefreshAccessTokenResponse = await sut.execute({
       public_id,
     });
     // Assert
@@ -119,7 +114,7 @@ describe('I refresh access token use case', () => {
     const { public_id }: IRefreshAccessTokenDTO = {
       public_id: 'a09d22d2-2464-42e3-827c-fe73626ff8b6',
     };
-    const response: RefreshAccessResponse = await sut.execute({
+    const response: IRefreshAccessTokenResponse = await sut.execute({
       public_id,
     });
     // Assert
@@ -142,7 +137,7 @@ describe('I refresh access token use case', () => {
     const { public_id }: IRefreshAccessTokenDTO = {
       public_id: 'a09d22d2-2464-42e3-827c-fe73626ff8b8',
     };
-    const response: RefreshAccessResponse = await sut.execute({
+    const response: IRefreshAccessTokenResponse = await sut.execute({
       public_id,
     });
 

@@ -1,6 +1,6 @@
 import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 import { IRateLimiterProvider } from '@domain/providers/RateLimiter/IRateLimiterProvider';
-import { IEnsureRateLimitingMiddleware } from './IEnsureRateLimitingMiddleware';
+import { IEnsureRateLimitingMiddleware } from '@application/middlewares/RateLimiting/IEnsureRateLimitingMiddleware';
 import { LimitExceededErrorResponse } from '@application/handlers/MiddlewareResponses/RateLimitingMiddlwareHandlers';
 
 export class IEnsureRateLimitingMiddlewareImpl implements IEnsureRateLimitingMiddleware

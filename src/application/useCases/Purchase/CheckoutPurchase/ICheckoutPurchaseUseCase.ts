@@ -16,7 +16,7 @@ export class ICheckoutPurchaseUseCase {
 
   async execute({ 
     public_id 
-  }: ICheckoutPurchaseDTO): Promise<ICheckoutPurchaseResponse | PurchaseNotFoundErrorResponse> {
+  }: ICheckoutPurchaseDTO): Promise<ICheckoutPurchaseResponse> {
     const lineItems: ILineItem[] = [];
     let item: ILineItem;
     
@@ -34,7 +34,7 @@ export class ICheckoutPurchaseUseCase {
             product_data: {
               name: p.product.name,
               description: p.product.description,
-              images: [p.product.image_id],
+              images: [p.product.images_id],
             },
           },
           quantity: p.quantity,
@@ -97,7 +97,7 @@ export class ICheckoutPurchaseUseCase {
           product_data: {
             name: p.product.name,
             description: p.product.description,
-            images: [p.product.image_id],
+            images: [p.product.images_id],
           },
         },
         quantity: p.quantity,

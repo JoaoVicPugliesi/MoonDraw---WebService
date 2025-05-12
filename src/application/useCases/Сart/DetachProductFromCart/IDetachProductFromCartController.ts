@@ -41,7 +41,6 @@ export class IDetachProductFromCartController {
 
     if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
       const number: number = iEnsureRateLimiting.accessBanTime();
-      console.log(number);
       return adapter.res.status(429).send({
         message: 'Exceeded Detach Product From Cart Rate Limit',
         retryAfter: number,
@@ -70,9 +69,7 @@ export class IDetachProductFromCartController {
       const { cart_id, product_id }: IDetachProductFromCartDTO = schema.parse(
         adapter.req.body
       );
-      const response:
-        | AttachmentDoesNotExistsErrorResponse
-        | IDetachProductFromCartResponse =
+      const response: IDetachProductFromCartResponse =
         await this.iDetachProductFromCartUseCase.execute({
           cart_id,
           product_id,

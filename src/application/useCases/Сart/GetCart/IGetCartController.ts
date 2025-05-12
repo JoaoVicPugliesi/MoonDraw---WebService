@@ -36,7 +36,6 @@ export class IGetCartController {
 
     if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
       const number: number = iEnsureRateLimiting.accessBanTime();
-      console.log(number);
       return adapter.res.status(429).send({
         message: 'Exceeded Get Cart Rate Limit',
         retryAfter: number,
@@ -65,7 +64,7 @@ export class IGetCartController {
 
     try {
       const { owner_id }: IGetCartDTO = adapter.req.params as IGetCartDTO;
-      const response: CartNotFoundErrorResponse | IGetCartResponse =
+      const response: IGetCartResponse =
         await this.iGetCartUseCase.execute({
           owner_id,
         });

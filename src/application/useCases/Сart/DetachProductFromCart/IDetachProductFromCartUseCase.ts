@@ -10,10 +10,7 @@ export class IDetachProductFromCartUseCase {
   async execute({
     cart_id,
     product_id,
-  }: IDetachProductFromCartDTO): Promise<
-    | AttachmentDoesNotExistsErrorResponse 
-    | IDetachProductFromCartResponse
-  > {
+  }: IDetachProductFromCartDTO): Promise<IDetachProductFromCartResponse> {
     const attachment: boolean =
       await this.iCartRepository.findAttachmentBetweenProductAndCart({
         cart_id,

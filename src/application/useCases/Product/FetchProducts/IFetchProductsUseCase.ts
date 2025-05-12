@@ -1,4 +1,4 @@
-import { FetchProductsResponse, IFetchProductsDTO, ProductsNotFoundErrorResponse } from './IFetchProductsDTO';
+import { IFetchProductsResponse, IFetchProductsDTO, ProductsNotFoundErrorResponse } from './IFetchProductsDTO';
 import { Product } from '@domain/entities/Product';
 ;
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
@@ -12,9 +12,7 @@ export class IFetchProductsUseCase {
 
   async execute({
     page,
-  }: IFetchProductsDTO): Promise<
-    FetchProductsResponse | ProductsNotFoundErrorResponse
-  > {
+  }: IFetchProductsDTO): Promise<IFetchProductsResponse> {
     const cachedProducts: string | null = await this.iCacheProvider.get(
       `products-${page}`
     );
@@ -38,7 +36,6 @@ export class IFetchProductsUseCase {
       EX: 900,
     });
 
-    console.log(products);
     return {
       products: products,
     };

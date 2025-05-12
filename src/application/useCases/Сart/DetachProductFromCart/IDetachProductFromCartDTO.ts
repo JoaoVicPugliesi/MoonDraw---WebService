@@ -6,7 +6,10 @@ export interface IDetachProductFromCartDTO {
 
 // Response
 export class AttachmentDoesNotExistsErrorResponse extends Error {}
-
-export interface IDetachProductFromCartResponse {
+export interface Success {
     success: boolean
 }
+
+export type IDetachProductFromCartResponse =
+| AttachmentDoesNotExistsErrorResponse
+| Success

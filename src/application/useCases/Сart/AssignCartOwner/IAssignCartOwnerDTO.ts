@@ -5,5 +5,9 @@ export interface IAssignCartOwnerDTO extends Pick<IUser, 'public_id'> {};
 
 // Response
 export class OwnerNotFoundErrorResponse extends Error {};
-
-export interface IAssignCartOwnerResponse {}
+export interface Success {
+    success: boolean
+}
+export type IAssignCartOwnerResponse = 
+| OwnerNotFoundErrorResponse
+| Success

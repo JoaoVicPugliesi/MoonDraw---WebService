@@ -15,9 +15,7 @@ export class IResendVerificationTokenUseCase {
 
   async execute({
     verification_token,
-  }: IResendVerificationTokenDTO): Promise<
-    SessionIsExpiredErrorResponse | IResendVerificationTokenResponse
-  > {
+  }: IResendVerificationTokenDTO): Promise<IResendVerificationTokenResponse> {
     const userCached: string | null = await this.iCacheProvider.get(
       `user-${verification_token}`
     );
@@ -42,6 +40,8 @@ export class IResendVerificationTokenUseCase {
           `,
     });
 
-    return {};
+    return {
+      success: true
+    };
   }
 }

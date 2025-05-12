@@ -1,6 +1,6 @@
 import { ILogoutUseCase } from './ILogoutUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
-import { ILogoutDTO, RefreshTokenNotFoundErrorResponse } from './ILogoutDTO';
+import { ILogoutDTO, ILogoutResponse, RefreshTokenNotFoundErrorResponse } from './ILogoutDTO';
 import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
 import {
   RefreshTokenCookieMissingErrorResponse,
@@ -31,7 +31,6 @@ export class ILogOutController {
 
     if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
       const number: number = iEnsureRateLimiting.accessBanTime();
-      console.log(number);
       return adapter.res.status(429).send({
         message: 'Exceeded Logout Rate Limit',
         retryAfter: number,
@@ -56,7 +55,7 @@ export class ILogOutController {
       const { public_id }: ILogoutDTO = {
         public_id: refreshToken.public_id,
       };
-      const response: RefreshTokenNotFoundErrorResponse | void =
+      const response: ILogoutResponse =
         await this.iLogoutUseCase.execute({
           public_id,
         });

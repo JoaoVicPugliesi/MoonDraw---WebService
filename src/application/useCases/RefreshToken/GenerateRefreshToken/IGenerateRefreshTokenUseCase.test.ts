@@ -1,5 +1,5 @@
 import { IGenerateRefreshTokenUseCase } from './IGenerateRefreshTokenUseCase';
-import { GenerateRefreshTokenErrorResponse, IGenerateRefreshTokenDTO } from './IGenerateRefreshTokenDTO';
+import { GenerateRefreshTokenErrorResponse, IGenerateRefreshTokenDTO, IGenerateRefreshTokenResponse } from './IGenerateRefreshTokenDTO';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IGenerateRefreshTokenFactoryInMemory } from '@application/factories/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenInMemory';
 
@@ -15,9 +15,7 @@ describe('I generate refresh token use case', () => {
     };
 
     // Act
-    const response:
-      | GenerateRefreshTokenErrorResponse
-      | RefreshToken = await sut.execute({ 
+    const response: IGenerateRefreshTokenResponse = await sut.execute({ 
         owner_id 
     });
 
@@ -28,7 +26,7 @@ describe('I generate refresh token use case', () => {
     expect(response).toHaveProperty('id');
     expect(response).toHaveProperty('public_id');
     expect(response).toHaveProperty('expires_in');
-    expect(response.owner_id).toBe(userId);
+    expect(response.refreshToken.owner_id).toBe(userId);
   });
   it('should delete all user related refresh tokens and create a new one', async () => {
     // Arrange
@@ -42,9 +40,7 @@ describe('I generate refresh token use case', () => {
     };
 
     // Act
-    const response:
-      | GenerateRefreshTokenErrorResponse
-      | RefreshToken = await sut.execute({
+    const response: IGenerateRefreshTokenResponse = await sut.execute({
         owner_id
       });
     if (response instanceof GenerateRefreshTokenErrorResponse) {

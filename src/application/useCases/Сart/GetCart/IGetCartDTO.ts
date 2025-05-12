@@ -5,7 +5,9 @@ export interface IGetCartDTO extends Pick<ICart, 'owner_id'> {};
 
 // Response
 export class CartNotFoundErrorResponse extends Error {}
-
-export interface IGetCartResponse {
+export interface Success {
     cart: Cart
 }
+export type IGetCartResponse = 
+| CartNotFoundErrorResponse
+| Success

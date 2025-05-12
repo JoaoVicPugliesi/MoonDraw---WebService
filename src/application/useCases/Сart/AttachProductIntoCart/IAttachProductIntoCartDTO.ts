@@ -6,7 +6,10 @@ export interface IAttachProductIntoCartDTO {
 
 // Response
 export class AttachmentAlreadyExistsErrorResponse extends Error {}
-
-export interface IAttachProductIntoCartResponse {
+export interface Success {
     success: boolean
 }
+
+export type IAttachProductIntoCartResponse = 
+| AttachmentAlreadyExistsErrorResponse
+| Success

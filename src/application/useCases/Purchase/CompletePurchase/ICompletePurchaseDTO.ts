@@ -6,5 +6,9 @@ export interface ICompletePurchaseDTO {
 
 // Response
 export class PurchaseHasNoOwnerErrorResponse extends Error {};
-
-export interface ICompletePurchaseResponse {}
+export interface Success {
+    success: boolean
+}
+export type ICompletePurchaseResponse = 
+| PurchaseHasNoOwnerErrorResponse
+| Success

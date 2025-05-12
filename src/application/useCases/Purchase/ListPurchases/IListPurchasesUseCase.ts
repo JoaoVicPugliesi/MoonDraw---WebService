@@ -12,7 +12,7 @@ export class IListPurchasesUseCase {
   async execute({ 
     buyer_id, 
     status 
-  }: IListPurchasesDTO): Promise<IListPurchaseResponse | PurchasesNotFoundErrorResponse> {
+  }: IListPurchasesDTO): Promise<IListPurchaseResponse> {
     const cachedPurchases: string | null = await this.iCacheProvider.get(
         `purchases-${status}-${buyer_id}`
     );

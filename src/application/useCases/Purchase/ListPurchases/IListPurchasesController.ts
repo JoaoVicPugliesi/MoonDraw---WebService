@@ -36,7 +36,6 @@ export class IListPurchasesController {
 
     if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
       const number: number = iEnsureRateLimiting.accessBanTime();
-      console.log(number);
       return adapter.res.status(429).send({
         message: 'Exceeded List Purchases Rate Limit',
         retryAfter: number,
@@ -65,7 +64,7 @@ export class IListPurchasesController {
     try {
       const { buyer_id, status }: IListPurchasesDTO = adapter.req
         .query as IListPurchasesDTO;
-      const response: IListPurchaseResponse | PurchasesNotFoundErrorResponse =
+      const response: IListPurchaseResponse =
         await this.iListPurchasesUseCase.execute({
           buyer_id,
           status,

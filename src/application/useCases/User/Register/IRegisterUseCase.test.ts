@@ -1,22 +1,15 @@
 import { User } from '@domain/entities/User';
-import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRegisterFactoryInMemory } from '@application/factories/User/Register/IRegisterFactoryInMemory';
 import { IRegisterUseCase } from './IRegisterUseCase';
-import { configDotenv } from 'dotenv';
 import {
   IRegisterDTO,
   IRegisterResponse,
   UserConflictErrorResponse,
   UserProcessingConflictErrorResponse,
 } from './IRegisterDTO';
-import { Cart } from '@domain/entities/Cart';
-configDotenv();
-
 // Mocks
 const iMailProvider = { sendMail: jest.fn() };
-
 const users: User[] = [];
-const refreshTokens: RefreshToken[] = [];
 
 const user: User = {
   id: users.length + 1,
@@ -35,9 +28,7 @@ const user: User = {
 };
 users.push(user);
 
-const carts: Cart[] = [];
-
-describe('I register use case', () => {
+describe('Should analyse every possible end related to registering on our system', () => {
   it('must fail for the reason email should be unique and user already exists', async () => {
     // Arrange
     const iRegisterFactoryInMemory = new IRegisterFactoryInMemory(
@@ -64,12 +55,11 @@ describe('I register use case', () => {
       password: 'Mrlanguages1234##',
       confirmPassword: 'Mrlanguages1234##',
     };
-
     // Act
     const response:
-      | UserConflictErrorResponse
-      | UserProcessingConflictErrorResponse
-      | IRegisterResponse = await sut.execute({
+    | UserConflictErrorResponse
+    | UserProcessingConflictErrorResponse
+    | IRegisterResponse = await sut.execute({
       icon_id,
       name,
       surname,
@@ -79,9 +69,9 @@ describe('I register use case', () => {
       password,
       confirmPassword,
     });
-
     // Assert
     expect(response).toBeInstanceOf(UserConflictErrorResponse);
+    expect(response).not.toHaveProperty('temporary_access_token');
   });
 
   it('must register a user successfully', async () => {
@@ -126,8 +116,8 @@ describe('I register use case', () => {
       password,
       confirmPassword,
     });
-
     // Assert
     expect(response).not.toBeInstanceOf(UserConflictErrorResponse);
+    expect(response).toHaveProperty('temporary_access_token');
   });
 });

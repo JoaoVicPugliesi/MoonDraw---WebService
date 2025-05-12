@@ -40,7 +40,6 @@ export class ICompletePurchaseController {
 
     if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
       const number: number = iEnsureRateLimiting.accessBanTime();
-      console.log(number);
       return adapter.res.status(429).send({
         message: 'Exceeded Complete Purchase Rate Limit',
         retryAfter: number,
@@ -71,9 +70,7 @@ export class ICompletePurchaseController {
 
     try {
       const { purchase_id, session_id } = schema.parse(adapter.req.body);
-      const response:
-        | PurchaseHasNoOwnerErrorResponse
-        | ICompletePurchaseResponse =
+      const response: ICompletePurchaseResponse =
         await this.iCompletePurchaseUseCase.execute({
           purchase_id,
           session_id,

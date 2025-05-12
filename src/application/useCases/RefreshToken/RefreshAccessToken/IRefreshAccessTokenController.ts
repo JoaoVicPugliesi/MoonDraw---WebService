@@ -2,7 +2,7 @@ import { IRefreshAccessTokenUseCase } from './IRefreshAccessTokenUseCase';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import {
   IRefreshAccessTokenDTO,
-  RefreshAccessTokenResponse,
+  IRefreshAccessTokenResponse,
   RefreshTokenNotFoundErrorResponse,
   RefreshTokenUserNotFoundErrorResponse,
 } from './IRefreshAccessTokenDTO';
@@ -15,6 +15,7 @@ import { RequestResponseAdapter } from '@adapters/RequestResponseAdapter';
 import { IRateLimiterProvider } from '@domain/providers/RateLimiter/IRateLimiterProvider';
 import { IEnsureRateLimitingMiddleware } from '@application/middlewares/RateLimiting/IEnsureRateLimitingMiddleware';
 import { LimitExceededErrorResponse } from '@application/handlers/MiddlewareResponses/RateLimitingMiddlwareHandlers';
+
 export class IRefreshAccessTokenController {
   constructor(
     private readonly iRefreshAccessTokenUseCase: IRefreshAccessTokenUseCase,
@@ -35,7 +36,6 @@ export class IRefreshAccessTokenController {
 
     if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
       const number: number = iEnsureRateLimiting.accessBanTime();
-      console.log(number);
       return adapter.res.status(429).send({
         message: 'Exceeded Refresh Access Token Rate Limit',
         retryAfter: number,
@@ -60,9 +60,7 @@ export class IRefreshAccessTokenController {
       const { public_id }: IRefreshAccessTokenDTO = {
         public_id: refreshToken.public_id,
       };
-      const response:
-        | RefreshTokenNotFoundErrorResponse
-        | RefreshAccessTokenResponse =
+      const response: IRefreshAccessTokenResponse =
         await this.iRefreshAccessTokenUseCase.execute({
           public_id,
         });

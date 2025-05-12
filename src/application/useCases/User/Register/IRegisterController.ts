@@ -33,7 +33,6 @@ export class IRegisterController {
 
     if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
       const number: number = iEnsureRateLimiting.accessBanTime();
-      console.log(number);
       return adapter.res.status(429).send({
         message: 'Exceeded Registration Rate Limit',
         retryAfter: number,
@@ -51,10 +50,7 @@ export class IRegisterController {
         password,
         confirmPassword,
       }: IRegisterDTO = schema.parse(adapter.req.body);
-      const response:
-        | UserConflictErrorResponse
-        | UserProcessingConflictErrorResponse
-        | IRegisterResponse = await this.iRegisterUseCase.execute({
+      const response: IRegisterResponse = await this.iRegisterUseCase.execute({
         icon_id,
         name,
         surname,

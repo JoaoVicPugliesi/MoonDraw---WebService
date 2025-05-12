@@ -36,7 +36,6 @@ export class ISearchProductsController {
 
     if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
       const number: number = iEnsureRateLimiting.accessBanTime();
-      console.log(number);
       return adapter.res.status(429).send({
         message: 'Exceeded Search Products Rate Limit',
         retryAfter: number,
@@ -65,10 +64,8 @@ export class ISearchProductsController {
     try {
       const { name }: ISearchProductsDTO = adapter.req
         .params as ISearchProductsDTO;
-      const response:
-        | ISearchProductsResponse
-        | SearchedProductsNotFoundErrorResponse =
-        await this.iSearchProductsUseCase.execute({
+      const response: ISearchProductsResponse =
+      await this.iSearchProductsUseCase.execute({
           name,
         });
 

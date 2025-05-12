@@ -32,7 +32,6 @@ export class IRemovePurchaseController {
 
     if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
       const number: number = iEnsureRateLimiting.accessBanTime();
-      console.log(number);
       return adapter.res.status(429).send({
         message: 'Exceeded Remove Purchase Rate Limit',
         retryAfter: number,

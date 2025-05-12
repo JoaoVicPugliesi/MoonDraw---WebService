@@ -87,6 +87,5 @@ describe('I login use case', () => {
     // Assert
     expect(response).toHaveProperty('access_token');
     expect(response).toHaveProperty('refresh_token');
-    console.log(response);
   });
 });

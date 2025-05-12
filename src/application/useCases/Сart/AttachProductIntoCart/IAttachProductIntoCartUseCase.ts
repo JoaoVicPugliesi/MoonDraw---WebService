@@ -1,6 +1,9 @@
 import { ICartRepository } from '@domain/repositories/ICartRepository';
-import { AttachmentAlreadyExistsErrorResponse, IAttachProductIntoCartDTO, IAttachProductIntoCartResponse } from './IAttachProductIntoCartDTO';
-
+import {
+  AttachmentAlreadyExistsErrorResponse,
+  IAttachProductIntoCartDTO,
+  IAttachProductIntoCartResponse,
+} from './IAttachProductIntoCartDTO';
 
 export class IAttachProductIntoCartUseCase {
   constructor(private readonly iCartRepository: ICartRepository) {}
@@ -8,10 +11,7 @@ export class IAttachProductIntoCartUseCase {
   async execute({
     cart_id,
     product_id,
-  }: IAttachProductIntoCartDTO): Promise<
-    | AttachmentAlreadyExistsErrorResponse
-    | IAttachProductIntoCartResponse
-  > {
+  }: IAttachProductIntoCartDTO): Promise<IAttachProductIntoCartResponse> {
     const attachment: boolean =
       await this.iCartRepository.findAttachmentBetweenProductAndCart({
         cart_id,
@@ -26,7 +26,7 @@ export class IAttachProductIntoCartUseCase {
     });
 
     return {
-      success: true
-    }
+      success: true,
+    };
   }
 }

@@ -25,11 +25,7 @@ export class IRegisterUseCase {
     description,
     role,
     password
-  }: IRegisterDTO): Promise<
-    | UserConflictErrorResponse 
-    | UserProcessingConflictErrorResponse
-    | IRegisterResponse
-  > {
+  }: IRegisterDTO): Promise<IRegisterResponse> {
     const user: User | null = await this.iUserRepository.findUserByEmail({
       email
     });

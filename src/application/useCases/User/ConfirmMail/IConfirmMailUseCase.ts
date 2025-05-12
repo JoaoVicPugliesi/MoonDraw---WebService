@@ -2,6 +2,7 @@ import { User } from '@domain/entities/User';
 import { ICacheProvider } from '@domain/providers/Cache/ICacheProvider';
 import {
   IConfirmMailDTO,
+  IConfirmMailResponse,
   TokenDoesNotMatchErrorResponse,
   TokenExpiredErrorResponse,
 } from './IConfirmMailDTO';
@@ -18,9 +19,7 @@ export class IConfirmMailUseCase {
   async execute({
     verification_token,
     ensure_verification_token,
-  }: IConfirmMailDTO): Promise<
-    TokenDoesNotMatchErrorResponse | TokenExpiredErrorResponse | void
-  > {
+  }: IConfirmMailDTO): Promise<IConfirmMailResponse> {
     if (verification_token !== ensure_verification_token) return new TokenDoesNotMatchErrorResponse();
 
     const cachedUser: string | null = await this.iCacheProvider.get(
@@ -56,6 +55,10 @@ export class IConfirmMailUseCase {
       await this.iAssignCartOwner.execute({
         public_id,
       });
+    }
+
+    return {
+      success: true
     }
   }
 }

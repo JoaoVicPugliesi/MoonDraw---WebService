@@ -6,6 +6,10 @@ export interface IResendVerificationTokenDTO {
 // Response
 
 export class SessionIsExpiredErrorResponse extends Error {};
-export interface IResendVerificationTokenResponse {
-
+export interface Success {
+    success: boolean
 }
+
+export type IResendVerificationTokenResponse = 
+| SessionIsExpiredErrorResponse
+| Success

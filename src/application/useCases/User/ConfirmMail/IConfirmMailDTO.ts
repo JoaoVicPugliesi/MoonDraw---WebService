@@ -7,7 +7,10 @@ export interface IConfirmMailDTO  {
 // Response
 export class TokenDoesNotMatchErrorResponse extends Error {};
 export class TokenExpiredErrorResponse extends Error {};
-
-export interface IConfirmMailResponse {
-    
+export interface Success {
+  success: boolean
 }
+export type IConfirmMailResponse = 
+| TokenDoesNotMatchErrorResponse
+| TokenExpiredErrorResponse
+| Success

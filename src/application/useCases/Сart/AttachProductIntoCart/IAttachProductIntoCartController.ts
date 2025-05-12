@@ -41,7 +41,6 @@ export class IAttachProductIntoCartController {
 
     if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
       const number: number = iEnsureRateLimiting.accessBanTime();
-      console.log(number);
       return adapter.res.status(429).send({
         message: 'Exceeded Attach Product Into Cart Rate Limit',
         retryAfter: number,
@@ -71,9 +70,7 @@ export class IAttachProductIntoCartController {
         adapter.req.body
       );
 
-      const response:
-        | AttachmentAlreadyExistsErrorResponse
-        | IAttachProductIntoCartResponse =
+      const response: IAttachProductIntoCartResponse =
         await this.iAttachProductIntoCartUseCase.execute({
           cart_id,
           product_id,

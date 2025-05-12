@@ -4,6 +4,7 @@ import {
   IConfirmMailDTO,
   TokenExpiredErrorResponse,
   TokenDoesNotMatchErrorResponse,
+  IConfirmMailResponse,
 } from './IConfirmMailDTO';
 import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
 import { IUserValidator } from '@application/validators/Request/User/IUserValidator';
@@ -71,10 +72,7 @@ export class IConfirmMailController {
       const { verification_token }: IConfirmMailDTO = schema.parse(
         adapter.req.body
       );
-      const response:
-        | TokenDoesNotMatchErrorResponse
-        | TokenExpiredErrorResponse
-        | void = await this.iConfirmMailUseCase.execute({
+      const response: IConfirmMailResponse = await this.iConfirmMailUseCase.execute({
         verification_token,
         ensure_verification_token: iEnsureAuth,
       });

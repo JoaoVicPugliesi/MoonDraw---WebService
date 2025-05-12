@@ -1,7 +1,7 @@
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { IFetchProductsUseCase } from './IFetchProductsUseCase';
 import {
-  FetchProductsResponse,
+  IFetchProductsResponse,
   IFetchProductsDTO,
   ProductsNotFoundErrorResponse,
 } from './IFetchProductsDTO';
@@ -36,7 +36,6 @@ export class IFetchProductsController {
 
     if (iEnsureRateLimiting instanceof LimitExceededErrorResponse) {
       const number: number = iEnsureRateLimiting.accessBanTime();
-      console.log(number);
       return adapter.res.status(429).send({
         message: 'Exceeded Fetch Products Rate Limit',
         retryAfter: number,
@@ -64,7 +63,7 @@ export class IFetchProductsController {
     try {
       const { page }: IFetchProductsDTO = adapter.req
         .params as IFetchProductsDTO;
-      const response: FetchProductsResponse | ProductsNotFoundErrorResponse =
+      const response: IFetchProductsResponse =
         await this.iFetchProductsUseCase.execute({
           page,
         });

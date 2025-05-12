@@ -3,7 +3,7 @@ import { ITokenService } from '@domain/services/Token/ITokenService';
 import {
   ISelectProductDTO,
   ProductNotFoundErrorResponse,
-  SelectProductResponse,
+  ISelectProductResponse,
 } from './ISelectProductDTO';
 import { IEnsureAuthMiddleware } from '@application/middlewares/Auth/IEnsureAuthMiddleware';
 import {
@@ -64,7 +64,7 @@ export class ISelectProductController {
     try {
       const { public_id }: ISelectProductDTO = adapter.req
         .params as ISelectProductDTO;
-      const response: SelectProductResponse | ProductNotFoundErrorResponse =
+      const response: ISelectProductResponse =
         await this.iSelectProductUseCase.execute({
           public_id,
         });

@@ -5,7 +5,9 @@ export interface ISearchProductsDTO extends Pick<IProduct, 'name'> {};
 
 // Response
 export class SearchedProductsNotFoundErrorResponse extends Error {};
-
-export interface ISearchProductsResponse {
+export interface Success {
     result: Product[]
 }
+export type ISearchProductsResponse = 
+| SearchedProductsNotFoundErrorResponse
+| Success

@@ -7,7 +7,9 @@ export interface IFetchProductsDTO {
 
 // Response
 export class ProductsNotFoundErrorResponse extends Error {}
-
-export interface FetchProductsResponse {
+export interface Success {
     products: Product[]
 }
+export type IFetchProductsResponse = 
+| ProductsNotFoundErrorResponse
+| Success

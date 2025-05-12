@@ -15,9 +15,7 @@ export class IAssignCartOwnerUseCase {
 
   async execute({
     public_id,
-  }: IAssignCartOwnerDTO): Promise<
-    OwnerNotFoundErrorResponse | IAssignCartOwnerResponse
-  > {
+  }: IAssignCartOwnerDTO): Promise<IAssignCartOwnerResponse> {
     const user: User | null = await this.iUserRepository.findUserById({
       public_id,
     });
@@ -28,6 +26,8 @@ export class IAssignCartOwnerUseCase {
       public_id,
     });
 
-    return {};
+    return {
+      success: true
+    };
   }
 }

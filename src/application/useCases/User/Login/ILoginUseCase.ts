@@ -1,11 +1,9 @@
 import { User } from '@domain/entities/User';
-import { GenerateRefreshTokenErrorResponse, IGenerateRefreshTokenDTO } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
+import { GenerateRefreshTokenErrorResponse, IGenerateRefreshTokenDTO, IGenerateRefreshTokenResponse } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenDTO';
 import { IGenerateRefreshTokenUseCase } from '@application/useCases/RefreshToken/GenerateRefreshToken/IGenerateRefreshTokenUseCase';
 import { IHashService } from '@domain/services/Hash/IHashService';
 import { ITokenService } from '@domain/services/Token/ITokenService';
 import { ILoginDTO, ILoginResponse, PasswordIsNotEqualErrorResponse, UserNotFoundErrorResponse } from './ILoginDTO';
-
-import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IUserRepository } from '@domain/repositories/IUserRepository';
 
 export class ILoginUseCase {
@@ -21,12 +19,7 @@ export class ILoginUseCase {
       email,
       password
     }: ILoginDTO
-  ): Promise<
-    | UserNotFoundErrorResponse
-    | PasswordIsNotEqualErrorResponse
-    | GenerateRefreshTokenErrorResponse
-    | ILoginResponse
-  > {
+  ): Promise<ILoginResponse> {
     const user: User | null = await this.iUserRepository.findUserByEmail({
       email
     });
@@ -63,16 +56,16 @@ export class ILoginUseCase {
       owner_id: public_id
     };
     
-    const refreshToken: GenerateRefreshTokenErrorResponse | RefreshToken =
+    const response: IGenerateRefreshTokenResponse =
       await this.iGenerateRefreshTokenUseCase.execute(iGenerateRefreshTokenDTO);
 
-    if (refreshToken instanceof GenerateRefreshTokenErrorResponse) {
+    if (response instanceof GenerateRefreshTokenErrorResponse) {
       return new GenerateRefreshTokenErrorResponse();
     }
     
     return {
       access_token: accessToken,
-      refresh_token: refreshToken,
+      refresh_token: response.refreshToken,
       user: {
         icon_id: icon_id,
         name: name,

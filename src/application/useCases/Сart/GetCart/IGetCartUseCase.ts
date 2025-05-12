@@ -9,7 +9,7 @@ export class IGetCartUseCase {
 
   async execute({
     owner_id
-  }: IGetCartDTO): Promise<CartNotFoundErrorResponse | IGetCartResponse> {
+  }: IGetCartDTO): Promise<IGetCartResponse> {
     const cart: Cart | null = await this.iCartRepository.getCart({
         owner_id
     });
