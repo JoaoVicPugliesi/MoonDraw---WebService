@@ -7,6 +7,8 @@ import {
   UserConflictErrorResponse,
   UserProcessingConflictErrorResponse,
 } from './IRegisterDTO';
+import { configDotenv } from 'dotenv';
+configDotenv()
 // Mocks
 const iMailProvider = { sendMail: jest.fn() };
 const users: User[] = [];

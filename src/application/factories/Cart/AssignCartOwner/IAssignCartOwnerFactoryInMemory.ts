@@ -3,7 +3,6 @@ import { IAssignCartOwnerUseCase } from '@application/useCases/Сart/AssignCartO
 import { ICartRepositoryInMemoryImpl } from '@infra/repositories/Cart/ICartRepositoryInMemoryImpl';
 import { IUserRepositoryInMemoryImpl } from '@infra/repositories/User/IUserRepositoryInMemoryImpl';
 import { User } from '@domain/entities/User';
-import { IHashServiceBCryptImpl } from '@infra/services/IHashServiceBCryptImpl';
 
 export class IAssignCartOwnerFactoryInMemory {
   constructor(
@@ -11,9 +10,8 @@ export class IAssignCartOwnerFactoryInMemory {
     private readonly users: User[]
   ) {}
   compose(): IAssignCartOwnerUseCase {
-    const iHashService = new IHashServiceBCryptImpl();
     const iCartRepositoryInMemoryImpl = new ICartRepositoryInMemoryImpl(this.carts);
-    const iUserRepositoryInMemoryImpl = new IUserRepositoryInMemoryImpl(this.users, iHashService);
+    const iUserRepositoryInMemoryImpl = new IUserRepositoryInMemoryImpl(this.users);
     return new IAssignCartOwnerUseCase(iCartRepositoryInMemoryImpl, iUserRepositoryInMemoryImpl);
   }
 }

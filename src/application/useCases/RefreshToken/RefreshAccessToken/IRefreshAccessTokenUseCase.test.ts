@@ -4,6 +4,8 @@ import { IRefreshAccessTokenUseCase } from './IRefreshAccessTokenUseCase';
 import { IRefreshAccessTokenFactoryInMemory } from '@application/factories/RefreshToken/RefreshAccessToken/IRefreshAccessTokenFactoryInMemory';
 import { RefreshToken } from '@domain/entities/RefreshToken';
 import { IRefreshAccessTokenDTO, IRefreshAccessTokenResponse, RefreshTokenNotFoundErrorResponse, RefreshTokenUserNotFoundErrorResponse } from './IRefreshAccessTokenDTO';
+import { configDotenv } from 'dotenv';
+configDotenv();
 
 const users: User[] = [];
 const user: User = {

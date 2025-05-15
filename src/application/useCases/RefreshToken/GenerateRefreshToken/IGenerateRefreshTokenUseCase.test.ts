@@ -13,19 +13,17 @@ describe('I generate refresh token use case', () => {
     const { owner_id }: IGenerateRefreshTokenDTO = {
       owner_id: userId,
     };
-
     // Act
     const response: IGenerateRefreshTokenResponse = await sut.execute({ 
         owner_id 
     });
-
     // Assert
     if (response instanceof GenerateRefreshTokenErrorResponse) {
         return console.log('error generating refresh token');
     }
-    expect(response).toHaveProperty('id');
-    expect(response).toHaveProperty('public_id');
-    expect(response).toHaveProperty('expires_in');
+    expect(response.refreshToken).toHaveProperty('id');
+    expect(response.refreshToken).toHaveProperty('public_id');
+    expect(response.refreshToken).toHaveProperty('expires_in');
     expect(response.refreshToken.owner_id).toBe(userId);
   });
   it('should delete all user related refresh tokens and create a new one', async () => {
