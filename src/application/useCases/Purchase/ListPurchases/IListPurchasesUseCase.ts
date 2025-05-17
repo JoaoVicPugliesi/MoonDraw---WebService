@@ -29,7 +29,7 @@ export class IListPurchasesUseCase {
         status
     });
 
-    if(!purchases) return new PurchasesNotFoundErrorResponse();
+    if(!purchases || purchases.length === 0) return new PurchasesNotFoundErrorResponse();
 
     const expiresIn: number = status === 'Pending' ? 600 : 1800;
     await this.iCacheProvider.set(

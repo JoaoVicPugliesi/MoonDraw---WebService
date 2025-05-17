@@ -16,6 +16,19 @@ import { IRemovePurchaseDTO } from '@application/useCases/Purchase/RemovePurchas
 import { ICompletePurchaseDTO } from '@application/useCases/Purchase/CompletePurchase/ICompletePurchaseDTO';
 
 export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
+  async attachProductIntoPurchase({
+    purchase_id,
+    product_id,
+    quantity,
+  }: IAttachProductIntoPurchaseDTO): Promise<void> {
+    await prisma.purchase_Product_Pivot.create({
+      data: {
+        purchase_id,
+        product_id,
+        quantity,
+      },
+    });
+  }
   async measurePurchase(
     DTO: IMeasurePurchaseDTO[],
     iCacheProvider: ICacheProvider
@@ -71,19 +84,6 @@ export class IPurchaseRepositoryPrismaImpl implements IPurchaseRepository {
     return purchase;
   }
 
-  async attachProductIntoPurchase({
-    purchase_id,
-    product_id,
-    quantity,
-  }: IAttachProductIntoPurchaseDTO): Promise<void> {
-    await prisma.purchase_Product_Pivot.create({
-      data: {
-        purchase_id,
-        product_id,
-        quantity,
-      },
-    });
-  }
 
   async listPurchases({
     buyer_id,

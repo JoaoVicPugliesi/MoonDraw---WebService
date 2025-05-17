@@ -1,5 +1,5 @@
 import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
-import { IRemovePurchaseDTO } from './IRemovePurchaseDTO';
+import { IRemovePurchaseDTO, IRemovePurchaseResponse } from './IRemovePurchaseDTO';
 
 export class IRemovePurchaseUseCase {
   constructor(
@@ -8,9 +8,12 @@ export class IRemovePurchaseUseCase {
 
   async execute({
     public_id
-  }: IRemovePurchaseDTO): Promise<void> {
+  }: IRemovePurchaseDTO): Promise<IRemovePurchaseResponse> {
     await this.iPurchaseRepository.removePurchase({
         public_id
     });
+    return {
+      success: true
+    }
   }
 }

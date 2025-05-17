@@ -1,5 +1,5 @@
 import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
-import { IAttachProductIntoPurchaseDTO } from './IAttachProductIntoPurchaseDTO';
+import { IAttachProductIntoPurchaseDTO, IAttachProductIntoPurchaseResponse } from './IAttachProductIntoPurchaseDTO';
 
 export class IAttachProductIntoPurchaseUseCase {
   constructor(
@@ -10,11 +10,15 @@ export class IAttachProductIntoPurchaseUseCase {
     purchase_id,
     product_id,
     quantity,
-  }: IAttachProductIntoPurchaseDTO) {
+  }: IAttachProductIntoPurchaseDTO): Promise<IAttachProductIntoPurchaseResponse> {
     await this.iPurchaseRepository.attachProductIntoPurchase({
         purchase_id,
         product_id,
         quantity
     });
+
+    return {
+      success: true
+    }
   }
 }

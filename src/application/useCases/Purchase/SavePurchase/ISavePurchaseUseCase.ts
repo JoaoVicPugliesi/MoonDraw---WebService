@@ -1,5 +1,5 @@
 import { IPurchaseRepository } from '@domain/repositories/IPurchaseRepository';
-import { ISavePurchaseDTO } from './ISavePurchaseDTO';
+import { ISavePurchaseDTO, ISavePurchaseResponse } from './ISavePurchaseDTO';
 import { Purchase } from '@domain/entities/Purchase';
 export class ISavePurchaseUseCase {
   constructor(
@@ -10,11 +10,14 @@ export class ISavePurchaseUseCase {
     buyer_id, 
     title, 
     value 
-  }: ISavePurchaseDTO): Promise<Purchase> {
-    return await this.iPurchaseRepository.savePurchase({
+  }: ISavePurchaseDTO): Promise<ISavePurchaseResponse> {
+    const purchase: Purchase = await this.iPurchaseRepository.savePurchase({
       buyer_id,
       title,
       value,
     });
+    return {
+      purchase: purchase
+    }
   }
 }

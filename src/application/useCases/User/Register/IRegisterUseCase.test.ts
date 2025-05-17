@@ -12,7 +12,6 @@ configDotenv()
 // Mocks
 const iMailProvider = { sendMail: jest.fn() };
 const users: User[] = [];
-
 const user: User = {
   id: users.length + 1,
   icon_id: 'ashaius91919wh19wh9',

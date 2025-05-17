@@ -1,7 +1,7 @@
 import { Purchase } from '@domain/entities/Purchase';
 import { ISavePurchaseUseCase } from '../SavePurchase/ISavePurchaseUseCase';
 import { IAttachProductIntoPurchaseUseCase } from '../AttachProductIntoPurchase/IAttachProductIntoPurchaseUseCase';
-import { IInitiatePurchaseDTO } from './IInitiatePurchaseDTO';
+import { IInitiatePurchaseDTO, IInitiatePurchaseResponse } from './IInitiatePurchaseDTO';
 import { IMeasurePurchaseUseCase } from '../MeasurePurchase/IMeasurePurchaseUseCase';
 
 export class IInitiatePurchaseUseCase {
@@ -15,7 +15,7 @@ export class IInitiatePurchaseUseCase {
     buyer_id, 
     title,
     selected_products 
-  }: IInitiatePurchaseDTO): Promise<void> {
+  }: IInitiatePurchaseDTO): Promise<IInitiatePurchaseResponse> {
     const value: number = await this.iMeasurePurchaseUseCase.execute(
       selected_products
     );
@@ -32,5 +32,9 @@ export class IInitiatePurchaseUseCase {
         quantity: p.quantity,
       });
     };
+
+    return {
+      success: true
+    }
   }
 }

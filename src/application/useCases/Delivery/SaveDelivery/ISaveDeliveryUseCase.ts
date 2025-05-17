@@ -1,5 +1,5 @@
 import { IDeliveryRepository } from '@domain/repositories/IDeliveryRepository';
-import { ISaveDeliveryDTO } from './ISaveDeliveryDTO';
+import { ISaveDeliveryDTO, ISaveDeliveryResponse } from './ISaveDeliveryDTO';
 
 export class ISaveDeliveryUseCase {
   constructor(
@@ -22,7 +22,7 @@ export class ISaveDeliveryUseCase {
     tracking_url,
     recipient_phone,
     delivery_instructions,
-  }: ISaveDeliveryDTO): Promise<void> {
+  }: ISaveDeliveryDTO): Promise<ISaveDeliveryResponse> {
     await this.iDeliveryRepository.saveDelivery({
       buyer_id,
       purchase_id,
@@ -40,5 +40,9 @@ export class ISaveDeliveryUseCase {
       recipient_phone,
       delivery_instructions,
     });
+
+    return {
+      success: true
+    }
   }
 }

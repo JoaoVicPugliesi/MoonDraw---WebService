@@ -3,7 +3,6 @@ import { ICompletePurchaseDTO, ICompletePurchaseResponse, PurchaseHasNoOwnerErro
 import { IPaymentProvider } from '@domain/providers/Payment/IPaymentProvider';
 import { ISaveDeliveryUseCase } from '@application/useCases/Delivery/SaveDelivery/ISaveDeliveryUseCase';
 import { Purchase } from '@domain/entities/Purchase';
-
 import { IRetrieveResponse } from '@domain/providers/Payment/Payment';
 
 export class ICompletePurchaseUseCase {
@@ -24,7 +23,9 @@ export class ICompletePurchaseUseCase {
 
     if (!owner) return new PurchaseHasNoOwnerErrorResponse();
 
-    const { buyer_id } = owner;
+    const { 
+      buyer_id 
+    } = owner;
     const session: IRetrieveResponse = await this.iPaymentProvider.retrieve(
       session_id,
       {
@@ -32,16 +33,9 @@ export class ICompletePurchaseUseCase {
       }
     );
 
-    const { customer_details } = session;
-    const { payment_intent } = session;
-    interface IPaymentMethod {
-      payment_intent: {
-        payment_method: {
-          type: string
-        }
-      }
-    }
-    let paymentMethodType: IPaymentMethod = payment_intent as IPaymentMethod;
+    const { 
+      customer_details 
+    } = session;
 
     await this.iSaveDeliveryUseCase.execute({
       purchase_id,
@@ -59,7 +53,7 @@ export class ICompletePurchaseUseCase {
 
     await this.iPurchaseRepository.completePurchase({
       purchase_id,
-      payment_method: paymentMethodType.payment_intent.payment_method.type,
+      payment_method: 'Card',
     });
 
     return {
