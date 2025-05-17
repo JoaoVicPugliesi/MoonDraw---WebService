@@ -46,7 +46,7 @@ export class IProductRepositoryInMemoryImpl implements IProductRepository {
   }: ISearchProductsDTO): Promise<Product[] | null> {
     return new Promise((resolve, reject) => {
       const products: Product[] | undefined = this.products.filter(
-        (p: Product) => p.name.startsWith(name)
+        (p: Product) => p.name.toLowerCase().startsWith(name)
       );
 
       if (products.length <= 0) return resolve(null);

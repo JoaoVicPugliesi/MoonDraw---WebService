@@ -2,12 +2,12 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "lib": ["ES2023"],
-    "module": "ESNext",
-    "target": "ESNext",
+    "module": "NodeNext",
+    "target": "ES2022",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "isolatedModules": true,
     "paths": {
       "@api/*": ["./api/*"],

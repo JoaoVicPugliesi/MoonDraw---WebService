@@ -40,7 +40,7 @@ model User {
   description       String        @default("No Description")
   password          String
   role              Role
-  is_email_verified       Boolean       @default(false)
+  is_email_verified Boolean       @default(false)
   created_at        DateTime      @default(now())
   last_login_at     DateTime      @default(now())
   email_verified_at DateTime?
@@ -65,46 +65,49 @@ model RefreshToken {
 }
 
 model Cart {
-  id        Int    @default(autoincrement())
-  public_id String @id
-  owner_id  String @unique
-  owner     User   @relation(fields: [owner_id], references: [public_id], onDelete: Cascade)
+  id        Int                  @default(autoincrement())
+  public_id String               @id
+  owner_id  String               @unique
+  owner     User                 @relation(fields: [owner_id], references: [public_id], onDelete: Cascade)
   products  Cart_Product_Pivot[]
+
   @@map("carts")
 }
 
 model Product {
-  id           Int      @default(autoincrement())
-  public_id    String   @id
-  images_id    String[] @unique
-  artist_id    String   @unique
-  name         String   @unique
-  description  String   @default("No Description")
-  price        Int    @default(0)
-  supply       Int      @default(0)
+  id           Int                      @default(autoincrement())
+  public_id    String                   @id
+  images_id    String[]                 @unique
+  artist_id    String                   @unique
+  name         String                   @unique
+  description  String                   @default("No Description")
+  price        Int                      @default(0)
+  supply       Int                      @default(0)
   publisher    String
-  published_at DateTime @default(now())
-  updated_at   DateTime @default(now())
-  artist       User     @relation(fields: [artist_id], references: [public_id], onDelete: Cascade)
+  published_at DateTime                 @default(now())
+  updated_at   DateTime                 @default(now())
+  artist       User                     @relation(fields: [artist_id], references: [public_id], onDelete: Cascade)
   carts        Cart_Product_Pivot[]
   purchases    Purchase_Product_Pivot[]
+
   @@index([name, public_id, artist_id])
   @@map("products")
 }
 
 model Purchase {
-  id             Int            @default(autoincrement())
-  public_id      String         @id
+  id             Int                      @default(autoincrement())
+  public_id      String                   @id
   buyer_id       String
   title          String
   value          Float
-  status         PurchaseStatus @default(Pending)
-  created_at     DateTime       @default(now())
-  updated_at     DateTime       @default(now())
+  status         PurchaseStatus           @default(Pending)
+  created_at     DateTime                 @default(now())
+  updated_at     DateTime                 @default(now())
   completed_at   DateTime?
   payment_method String?
-  buyer          User           @relation(fields: [buyer_id], references: [public_id], onDelete: Cascade)
+  buyer          User                     @relation(fields: [buyer_id], references: [public_id], onDelete: Cascade)
   products       Purchase_Product_Pivot[]
+
   @@map("purchases")
 }
 

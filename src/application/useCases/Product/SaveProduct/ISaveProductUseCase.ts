@@ -1,11 +1,13 @@
 import { IProductRepository } from '@domain/repositories/IProductRepository';
-import { ISaveProductDTO, ProductAlreadyExistsErrorResponse } from './ISaveProductDTO';
+import {
+  ISaveProductDTO,
+  ISaveProductResponse,
+  ProductAlreadyExistsErrorResponse,
+} from './ISaveProductDTO';
 import { Product } from '@domain/entities/Product';
 
 export class ISaveProductUseCase {
-  constructor(
-    private readonly iProductRepository: IProductRepository
-  ) {}
+  constructor(private readonly iProductRepository: IProductRepository) {}
 
   async execute({
     images_id,
@@ -15,21 +17,26 @@ export class ISaveProductUseCase {
     price,
     supply,
     publisher,
-  }: ISaveProductDTO): Promise<ProductAlreadyExistsErrorResponse | void> {
-    const product: Product | null = await this.iProductRepository.findProductByName({
-      name
-    });
+  }: ISaveProductDTO): Promise<ISaveProductResponse> {
+    const product: Product | null =
+      await this.iProductRepository.findProductByName({
+        name,
+      });
 
-    if(product) return new ProductAlreadyExistsErrorResponse();
+    if (product) return new ProductAlreadyExistsErrorResponse();
 
     await this.iProductRepository.saveProduct({
-        images_id, 
-        artist_id,
-        name,
-        description,
-        price,
-        supply,
-        publisher
+      images_id,
+      artist_id,
+      name,
+      description,
+      price,
+      supply,
+      publisher,
     });
+
+    return {
+      success: true
+    }
   }
 }
